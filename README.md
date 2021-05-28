@@ -12,4 +12,4 @@ The goals of the development of Matel are as follows:
 
 Contributions are welcomed but must be released in accordance with Matel's licence.
 
-Ping the diff to Varik Valefor \<varikvalefor@aol.com\>, including the phrase "MATEL CONTRIBUTION" in the e-mail's subject line, or submit a pull request to this GitHub repository.
+For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for the diff of this good change can be submitted to this GitHub repository.
