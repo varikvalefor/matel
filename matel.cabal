@@ -17,7 +17,7 @@ executable matel
     main-is:          matel.hs
 
     ghc-options:      -threaded -O2
-    other-modules:    Metal.Types, GUI
+    other-modules:    Metal.Types, Metal.Data, GUI
 
     build-depends:    base ^>=4.14.1.0, brick
     hs-source-dirs:   src
