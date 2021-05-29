@@ -5,7 +5,7 @@ import GUI;
 -- | Tap tap tap
 -- Keyboard tap tap
 -- Documentation?
--- Get yer own, twit.
+-- Write your own crap.
 main :: IO ();
 main = newEmptyMVar >>= \ comVar ->
   forkIO (fetchData comVar) >> summonTUI comVar;
