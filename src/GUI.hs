@@ -5,8 +5,7 @@ import Brick.Widgets.Border;
 import Brick.Widgets.Border.Style;
 import Control.Concurrent;
 import Control.Monad;
-import Metal.Data;
-import Metal.Types;
+import Metal.Base;
 
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toWinda;
