@@ -1,5 +1,4 @@
-import Metal.Types;
-import Metal.Data;
+import Metal.Base;
 import Control.Concurrent;
 import GUI;
 
