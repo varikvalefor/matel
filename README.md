@@ -8,6 +8,9 @@ The goals of the development of Matel are as follows:
 * Matel's source code is readable.
 * The number of Matel's dependencies is minimised.
 
+## Pronunciation
+The official pronunciations of "Matel" include \/məˈtɛl\/, which is VARIK's preferred pronunciation, and \/meɪˌtəl\/.
+
 ## Contributing
 
 Contributions are welcomed but must be released in accordance with Matel's licence.
