@@ -38,6 +38,9 @@ type Winda = Widget ();
 -- representing the @username:homeserver.whatevs-based identifier of k
 -- and snd l representing the human-readable name of k, e.g., "Asshat".
 type User = (Identifier, HumanReadableName);
+-- | For all UNIXTime k, k is a seconds-since-the-UNIX-epoch-based
+-- timestamp.
+type UNIXTime = Integer;
 
 -- ROOM RECORDS --------------------------------------------------------
 
