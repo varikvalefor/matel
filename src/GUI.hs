@@ -35,9 +35,7 @@ summonTUI = takeMVar >=> simpleMain . toWinda;
 -- | For all Winda g, toWinda g converts g into a value of type Screen
 -- and returns this Screen.
 toWinda :: Winda -> Screen;
-toWinda newData = 
-  withBorderStyle unicode $
-  borderWithLabel (str "Matel") newData;
+toWinda = withBorderStyle unicode . borderWithLabel (str "Matel");
 
 -- | temporaryMessage is a Winda which is used to state that Matel is
 -- currently pretty useless.
