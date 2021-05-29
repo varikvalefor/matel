@@ -1,5 +1,16 @@
-{- This module contains functions which directly or nearly directly
- - interface with the Matrix API. -}
+{- |
+ - Module      :  $Header$
+ - Description :  $Header$ contains functions for the Matrix API.
+ - Copyright   :  (c) Varik Valefor
+ - License     :  BSD-3-Clause
+ -
+ - Maintainer  :  varikvalefor@aol.com
+ - Stability   :  unstable
+ - Portability :  portable
+ -
+ - $Header$ contains functions which directly or nearly directly
+ - interface with the Matrix API via HTTP requests.
+ - -}
 
 module Metal.MatrixAPI where
 import Metal.Base;
