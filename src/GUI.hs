@@ -10,7 +10,7 @@
  -
  - $Header$ contains some functions which Matel uses when drawing stuff
  - to the terminal.
- - Stuff is placed into this file to ensure that Matel's source code is
+ - Stuff is placed into $Header$ to ensure that Matel's source code is
  - at least somewhat organised.
  - -}
 
