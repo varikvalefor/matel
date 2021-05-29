@@ -18,7 +18,7 @@ import qualified Data.ByteString as BS;
 -- DATATYPES -----------------------------------------------------------
 
 -- | For all Identifier k, k is a "non-human-readable" name, e.g.,
--- "@johnnykissass:matrix.varikose.god".
+-- "@johnnykissass:matrix.varikose.god", as opposed to "Johnny Kissass".
 type Identifier = BS.ByteString;
 -- | For all HumanReadableName x, x is a "human-readable" name, e.g.,
 -- "Asshat", as opposed to "@asshat:matrix.varikose.god".
