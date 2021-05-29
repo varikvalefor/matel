@@ -32,7 +32,6 @@ type Screen = Widget ();
 -- | Winda is equivalent to Brick's Widget ().
 -- For all Winda k, k is a Widget which should NOT Be immediately drawn
 -- to the terminal; k requires additional processing.
--- additional processing.
 type Winda = Widget ();
 -- | For all users k, k is represented as a 2-tuple User l, with fst l
 -- representing the @username:homeserver.whatevs-based identifier of k
