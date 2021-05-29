@@ -1,3 +1,17 @@
+{- |
+ - Module      :  $Header$
+ - Description :  $Header$ contains the colour-related bits of Matel.
+ - Copyright   :  (c) Varik Valefor
+ - License     :  BSD-3-Clause
+ -
+ - Maintainer  :  varikvalefor@aol.com
+ - Stability   :  unstable
+ - Portability :  portable
+ -
+ - $Header$ contains some predefined colours which Matel uses when Matel
+ - draws Matel's TUI.
+ - -}
+
 module Colour where
 type RGBSubValue = Int;
 type RGBValue = (RGBSubValue, RGBSubValue, RGBSubValue);
