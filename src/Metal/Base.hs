@@ -60,7 +60,10 @@ data TextMess = TextMess {
   body :: MessageText,
   -- | For all TextMess k, sender k is the User-based description of the
   -- sender of k.
-  sender :: User
+  sender :: User,
+  -- | For all TextMess k, timestamp k equals the UNIX time-based
+  -- timestamp of k, according to the origin server of k.
+  timestamp :: UNIXTime
 } deriving (Eq, Read, Show);
 
 -- | For all CryptoMess k, k is an encrypted Matrix message.
