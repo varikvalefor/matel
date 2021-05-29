@@ -1,3 +1,16 @@
+{- |
+ - Module      :  $Header$
+ - Description :  $Header$ contains Metal's data types and records.
+ - Copyright   :  (c) Varik Valefor
+ - License     :  BSD-3-Clause
+ -
+ - Maintainer  :  varikvalefor@aol.com
+ - Stability   :  unstable
+ - Portability :  portable
+ -
+ - $Header$ contains the data types and records of Metal.
+ - -}
+ 
 module Metal.Base where
 import Brick;
 import qualified Data.ByteString as BS;
