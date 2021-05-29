@@ -30,12 +30,12 @@ import Metal.Base;
 -- | For all MVar Winda k, summonTUI k converts the terminal into a
 -- Matel TUI and awaits further data from k.
 summonTUI :: MVar Winda -> IO ();
-summonTUI = takeMVar >=> simpleMain . toWinda;
+summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | For all Winda g, toWinda g converts g into a value of type Screen
+-- | For all Winda g, toScreen g converts g into a value of type Screen
 -- and returns this Screen.
-toWinda :: Winda -> Screen;
-toWinda = withBorderStyle unicode . borderWithLabel (str "Matel");
+toScreen :: Winda -> Screen;
+toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
 -- | temporaryMessage is a Winda which is used to state that Matel is
 -- currently pretty useless.
