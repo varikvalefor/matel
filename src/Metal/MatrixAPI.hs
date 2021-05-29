@@ -5,10 +5,11 @@ module Metal.MatrixAPI where
 import Metal.Base;
 
 -- HIGH-LEVEL CRAP -----------------------------------------------------
+-- | For all Integer n, for all Room rm, nRecentMessages n rm fetches
+-- the n most recent messages from rm, outputting the unencrypted
+-- messages.
 nRecentMessages :: Integer -> Room -> IO [TextMess];
 nRecentMessages n rm = return [];
-{- For all Integer n, for all Room rm, nRecentMessages fetches the n
- - most recent messages from rm, outputting the unencrypted messages. -}
 
 -- LOWER-LEVEL CRAP ----------------------------------------------------
 nothingHereYetStayTuned :: ();
