@@ -40,6 +40,7 @@ type User = (Identifier, HumanReadableName);
 
 -- ROOM RECORDS --------------------------------------------------------
 
+-- | For all Room k, k is a Matrix chatroom.
 data Room = Room {
   -- | For all Room k, roomId k is the "non-human-readable" name of k,
   -- e.g., "#johnnykissassSuckupfest:matrix.varikose.god".
