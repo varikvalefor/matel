@@ -20,17 +20,18 @@ import qualified Data.ByteString as BS;
 -- | For all Identifier k, k is a "non-human-readable" name, e.g.,
 -- "@johnnykissass:matrix.varikose.god".
 type Identifier = BS.ByteString;
--- | HumanReadableName x is a "human-readable" name, e.g., "Asshat", as
--- opposed to "@asshat:matrix.varikose.god".
+-- | For all HumanReadableName x, x is a "human-readable" name, e.g.,
+-- "Asshat", as opposed to "@asshat:matrix.varikose.god".
 type HumanReadableName = BS.ByteString;
 -- | Unencrypted/de-encrypted text-based message data is of type
 -- MessageText.  This comment almost fit on one line.  #SAD!
 type MessageText = BS.ByteString;
--- | Screen is equivalent to Brick's Widget ().  Screen x is TUI data
--- which should be immediately drawn.
+-- | Screen is equivalent to Brick's Widget ().
+-- For all Screen x, x is TUI data which should be immediately drawn.
 type Screen = Widget ();
--- | Winda is equivalent to Brick's Widget ().  Winda is used to
--- represent widgets which should NOT be immediately drawn.  Windas need
+-- | Winda is equivalent to Brick's Widget ().
+-- For all Winda k, k is a Widget which should NOT Be immediately drawn
+-- to the terminal; k requires additional processing.
 -- additional processing.
 type Winda = Widget ();
 -- | For all users k, k is represented as a 2-tuple User l, with fst l
