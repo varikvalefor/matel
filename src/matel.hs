@@ -7,4 +7,4 @@ main = newEmptyMVar >>= \ comVar ->
   forkIO (fetchData comVar) >> summonTUI comVar;
 
 fetchData :: MVar Winda -> IO ();
-fetchData comVar = putMVar screenVar temporaryMessage;
+fetchData comVar = putMVar comVar temporaryMessage;
