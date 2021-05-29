@@ -23,14 +23,20 @@ import Control.Concurrent;
 import Control.Monad;
 import Metal.Base;
 
+-- | For all MVar Winda k, summonTUI k converts the terminal into a
+-- Matel TUI and awaits further data from k.
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toWinda;
 
+-- | For all Winda g, toWinda g converts g into a value of type Screen
+-- and returns this Screen.
 toWinda :: Winda -> Screen;
 toWinda newData = 
   withBorderStyle unicode $
   borderWithLabel (str "Matel") newData;
 
+-- | temporaryMessage is a Winda which is used to state that Matel is
+-- currently pretty useless.
 temporaryMessage :: Winda;
 temporaryMessage = center $ str
   "Matel is unfinished -- check back later.\nAlternatively, contribute to the project!";
