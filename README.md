@@ -1,5 +1,4 @@
 # matel
-ass
 Matel is an incomplete Haskell-based Matrix client.
 
 ## Goals
