@@ -23,5 +23,9 @@ nRecentMessages :: Integer -> Room -> IO [TextMess];
 nRecentMessages n rm = return [];
 
 -- LOWER-LEVEL CRAP ----------------------------------------------------
+-- | That nothingHereYetStayTuned exists implies that Matel is currently
+-- useless as a Matrix client.
+-- nothingHereYetStayTuned is removed when proper Matrix API support is
+-- added to Matel.
 nothingHereYetStayTuned :: ();
 nothingHereYetStayTuned = ();
