@@ -1,6 +1,6 @@
 {- |
  - Module      :  $Header$
- - Description :  $Header$ contains Metal's data types and records.
+ - Description :  $Header$ contains Metal's core data types and records.
  - Copyright   :  (c) Varik Valefor
  - License     :  BSD-3-Clause
  -
@@ -8,7 +8,7 @@
  - Stability   :  unstable
  - Portability :  portable
  -
- - $Header$ contains the data types and records of Metal.
+ - $Header$ contains the core data types and records of Metal.
  - -}
  
 module Metal.Base where
