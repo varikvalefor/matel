@@ -21,6 +21,10 @@ import Metal.Base;
 -- messages.
 nRecentMessages :: Integer -> Room -> IO [TextMess];
 nRecentMessages n rm = return [];
+-- | memberRooms equals the IO-monadic list of all rooms of which
+-- Matel's user is a member.
+memberRooms :: IO [Room];
+memberRooms = return [];
 
 -- LOWER-LEVEL CRAP ----------------------------------------------------
 -- | That nothingHereYetStayTuned exists implies that Matel is currently
