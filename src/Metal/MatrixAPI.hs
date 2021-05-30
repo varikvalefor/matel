@@ -17,7 +17,7 @@ import Metal.Base;
 
 -- HIGH-LEVEL CRAP -----------------------------------------------------
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
--- fetches the n most recent messages from rm, outputting the
+-- fetches the n most recent text-based messages from rm, outputting the
 -- unencrypted messages.
 recentMessagesFrom :: Integer -> Room -> IO [TextMess];
 recentMessagesFrom n rm = return [];
