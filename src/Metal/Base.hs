@@ -40,6 +40,16 @@ type User = (Identifier, HumanReadableName);
 -- | For all UNIXTime k, k is a seconds-since-the-UNIX-epoch-based
 -- timestamp.
 type UNIXTime = Integer;
+-- | For all ByteData k, k is some data which is represented as a string
+-- of bytes.  k most likely contains text but may contain some other
+-- type of data, e.g., a PNG file.
+type ByteData = BS.ByteString;
+-- | For all CipherByteData k, k is an encrypted sequence of bytes.
+type CipherByteData = BS.ByteString;
+-- | For all PublicKey g, g is a public key.
+type PublicKey = BS.ByteString;
+-- | For all PrivateKey g, g is a private key.
+type PrivateKey = BS.ByteString;
 
 -- ROOM RECORDS --------------------------------------------------------
 
