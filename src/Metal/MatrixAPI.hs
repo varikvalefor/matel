@@ -25,6 +25,10 @@ nRecentMessages n rm = return [];
 -- Matel's user is a member.
 memberRooms :: IO [Room];
 memberRooms = return [];
+-- | For all (Room k, MessageText g), g `isSentToRoom` k iff a message
+-- whose body is g is sent to Matrix room k.
+isSentToRoom :: MessageText -> Room -> IO ();
+isSentToRoom ms rm = return ();
 
 -- LOWER-LEVEL CRAP ----------------------------------------------------
 -- | That nothingHereYetStayTuned exists implies that Matel is currently
