@@ -26,6 +26,7 @@ import Brick.Widgets.Border.Style;
 import Control.Concurrent;
 import Control.Monad;
 import Metal.Base;
+import Metal.Messages.Standard;
 
 -- | For all MVar Winda k, summonTUI k converts the terminal into a
 -- Matel TUI and awaits further data from k.

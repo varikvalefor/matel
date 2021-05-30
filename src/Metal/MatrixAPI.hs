@@ -14,6 +14,7 @@
 
 module Metal.MatrixAPI where
 import Metal.Base;
+import Metal.Messages.Standard;
 
 -- HIGH-LEVEL CRAP -----------------------------------------------------
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm

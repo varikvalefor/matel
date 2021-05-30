@@ -52,18 +52,3 @@ data Room = Room {
   -- e.g., "Johnny Kissass's Suck-Up Fest".
   roomName :: HumanReadableName
 } deriving (Eq, Read, Show);
-
--- MESSAGE RECORDS -----------------------------------------------------
-
--- | For all TextMess k, k is an unencrypted or de-encrypted Matrix
--- message.
-data TextMess = TextMess {
-  -- | For all TextMess k, body k contains the unencrypted body of k.
-  body :: MessageText,
-  -- | For all TextMess k, sender k is the User-based description of the
-  -- sender of k.
-  sender :: User,
-  -- | For all TextMess k, timestamp k equals the UNIX time-based
-  -- timestamp of k, according to the origin server of k.
-  timestamp :: UNIXTime
-} deriving (Eq, Read, Show);

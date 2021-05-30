@@ -11,7 +11,7 @@
  - $Header$ contains the source code of the CryptoMess record type.
  - -}
 
-module Metal.CryptoMess where
+module Metal.Messages.Encrypted where
 import Metal.Base;
 import Data.ByteString as BS;
 

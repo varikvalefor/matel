@@ -24,7 +24,8 @@ executable matel
     main-is:          matel.hs
 
     ghc-options:      -threaded -O2
-    other-modules:    Metal.Base, Metal.MatrixAPI, Metal.CryptoMess,
+    other-modules:    Metal.Base, Metal.MatrixAPI,
+                      Metal.Messages.Standard, Metal.Messages.Encrypted,
                       GUI, Colour
 
     build-depends:    base ^>=4.14.1.0, brick, bytestring
