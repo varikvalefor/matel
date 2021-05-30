@@ -16,11 +16,11 @@ module Metal.MatrixAPI where
 import Metal.Base;
 
 -- HIGH-LEVEL CRAP -----------------------------------------------------
--- | For all Integer n, for all Room rm, nRecentMessages n rm fetches
--- the n most recent messages from rm, outputting the unencrypted
--- messages.
-nRecentMessages :: Integer -> Room -> IO [TextMess];
-nRecentMessages n rm = return [];
+-- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
+-- fetches the n most recent messages from rm, outputting the
+-- unencrypted messages.
+recentMessagesFrom :: Integer -> Room -> IO [TextMess];
+recentMessagesFrom n rm = return [];
 -- | memberRooms equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
 memberRooms :: IO [Room];
