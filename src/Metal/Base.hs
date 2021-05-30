@@ -67,9 +67,3 @@ data TextMess = TextMess {
   -- timestamp of k, according to the origin server of k.
   timestamp :: UNIXTime
 } deriving (Eq, Read, Show);
-
--- | For all CryptoMess k, k is an encrypted Matrix message.
-data CryptoMess = CryptoMess {
-  -- | The encryptedContent field contains the encrypted message.
-  encryptedContent :: BS.ByteString
-} deriving (Eq, Read, Show);
