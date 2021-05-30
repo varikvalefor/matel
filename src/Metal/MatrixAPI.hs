@@ -15,6 +15,7 @@
 module Metal.MatrixAPI where
 import Metal.Base;
 import Metal.Messages.Standard;
+import Data.ByteString (pack);
 
 -- HIGH-LEVEL CRAP -----------------------------------------------------
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
@@ -32,9 +33,21 @@ isSentToRoom :: MessageText -> Room -> IO ();
 isSentToRoom ms rm = return ();
 
 -- LOWER-LEVEL CRAP ----------------------------------------------------
--- | That nothingHereYetStayTuned exists implies that Matel is currently
--- useless as a Matrix client.
--- nothingHereYetStayTuned is removed when proper Matrix API support is
+-- | That stillUnfinishedStayTuned exists implies that Matel is
+-- currently useless as a Matrix client.
+-- stillUnfinishedStayTuned is removed when proper Matrix API support is
 -- added to Matel.
-nothingHereYetStayTuned :: ();
-nothingHereYetStayTuned = ();
+stillUnfinishedStayTuned :: ();
+stillUnfinishedStayTuned = ();
+
+-- For all (ByteData z, PublicKey k), encryptWKey z k encrypts z with k,
+-- outputting the resulting ciphertext.
+-- encryptWKey is currently nonfunctional.
+encryptWKey :: ByteData -> PublicKey -> CipherByteData;
+encryptWKey text key = pack [];
+
+-- For all (CipherByteData z, PrivateKey k), decryptTextWKey decrypts z
+-- with k, outputting the resulting ByteData-based data.
+-- decryptWKey is currently nonfunctional.
+decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
+decryptWKey crip key = pack [];
