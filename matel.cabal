@@ -23,7 +23,7 @@ Category:      Chat
 executable matel
     main-is:          matel.hs
 
-    ghc-options:      -threaded -O2
+    ghc-options:      -haddock -threaded -O2
     other-modules:    Metal.Base, Metal.MatrixAPI,
                       Metal.Messages.Standard, Metal.Messages.Encrypted,
                       GUI, Colour
