@@ -42,3 +42,8 @@ toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 temporaryMessage :: Winda;
 temporaryMessage = center $ str
   "Matel is unfinished -- check back later.\nAlternatively, contribute to the project!";
+
+-- | For all ([Room] r, [TextMess] t), dataToWinda r t equals a Winda
+-- which displays r and t.  dataToWinda is currently unimplemented.
+dataToWinda :: [Room] -> [TextMess] -> Winda;
+dataToWinda r t = center $ str "This bit is unimplemented.";
