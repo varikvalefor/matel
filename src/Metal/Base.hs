@@ -30,7 +30,7 @@ type MessageText = BS.ByteString;
 -- For all Screen x, x is TUI data which should be immediately drawn.
 type Screen = Widget ();
 -- | Winda is equivalent to Brick's Widget ().
--- For all Winda k, k is a Widget which should NOT Be immediately drawn
+-- For all Winda k, k is a Widget which should NOT be immediately drawn
 -- to the terminal; k requires additional processing.
 type Winda = Widget ();
 -- | For all users k, k is represented as a 2-tuple User l, with fst l
