@@ -38,7 +38,7 @@ type Winda = Widget ();
 -- and snd l representing the human-readable name of k, e.g., "Asshat".
 type User = (Identifier, HumanReadableName);
 -- | For all UNIXTime k, k is a seconds-since-the-UNIX-epoch-based
--- timestamp.
+-- timestamp.  The time zone is not standardised.
 type UNIXTime = Integer;
 -- | For all ByteData k, k is some data which is represented as a string
 -- of bytes.  k most likely contains text but may contain some other
