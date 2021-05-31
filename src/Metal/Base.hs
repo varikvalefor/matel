@@ -45,6 +45,7 @@ type UNIXTime = Integer;
 -- type of data, e.g., a PNG file.
 type ByteData = Stringth;
 -- | For all CipherByteData k, k is an encrypted sequence of bytes.
+-- The decrypted k is of type ByteData.
 type CipherByteData = Stringth;
 -- | For all PublicKey g, g is a public key.
 type PublicKey = Stringth;
