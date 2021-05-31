@@ -41,8 +41,9 @@ toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 -- | temporaryMessage is a Winda which is used to state that Matel is
 -- currently pretty useless.
 temporaryMessage :: Winda;
-temporaryMessage = center $ str
-  "Matel is unfinished -- check back later.\nAlternatively, contribute to the project!";
+temporaryMessage = center $ str $
+  "Matel is unfinished -- check back later.\n" ++
+  "Alternatively, contribute to the project!";
 
 -- | For all ([Room] r, [StdMess] t), dataToWinda r t equals a Winda
 -- which displays r and t.  dataToWinda is currently unimplemented.
