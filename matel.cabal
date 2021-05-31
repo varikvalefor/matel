@@ -26,6 +26,8 @@ Copyright:     (c) Varik Valefor 2021.
 
 Category:      Chat
 
+Stability:     unstable
+
 Source-repository head
   type:     git
   location: https://github.com/varikvalefor/matel
