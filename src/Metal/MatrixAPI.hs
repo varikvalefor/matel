@@ -27,8 +27,8 @@ recentMessagesFrom n rm = return [];
 -- Matel's user is a member.
 memberRooms :: IO [Room];
 memberRooms = return [];
--- | For all (Room k, MessageText g), g `isSentToRoom` k iff a message
--- whose body is g is sent to Matrix room k.
+-- | For all (Room k, MessageText g), g `isSentToRoom` k only if a
+-- message whose body is g is sent to Matrix room k.
 isSentToRoom :: MessageText -> Room -> IO ();
 isSentToRoom ms rm = return ();
 
