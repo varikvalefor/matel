@@ -1,6 +1,6 @@
 {- |
  - Module      :  $Header$
- - Description :  $Header$ defines the TextMess record type.
+ - Description :  $Header$ defines the StdMess record type.
  - Copyright   :  (c) Varik Valefor
  - License     :  BSD-3-Clause
  -
@@ -8,21 +8,32 @@
  - Stability   :  unstable
  - Portability :  portable
  -
- - $Header$ contains the definition of the TextMess record type.
+ - $Header$ contains the definition of the StdMess record type.
  - -}
 
 module Metal.Messages.Standard where
 import Metal.Base;
 
--- | For all TextMess k, k is an unencrypted or de-encrypted Matrix
+data MessageType = TextInnit | Image | Attach deriving (Eq, Read, Show);
+
+-- | For all StdMess k, k is an unencrypted or de-encrypted Matrix
 -- message.
-data TextMess = TextMess {
-  -- | For all TextMess k, body k contains the unencrypted body of k.
+data StdMess = StdMess {
+  -- | For all stdMess k, msgType k indicates whether k is text-based or
+  -- contains some sort of attachment.
+  --
+  -- For all StdMess k...
+  -- msgType k == TextInnit iff k is text-based.
+  -- msgType k == Image iff k contains an embedded image.
+  -- msgType k == Attach iff k contains an attachment of some other
+  -- type.
+  msgType :: MessageType,
+  -- | For all StdMess k, body k contains the unencrypted body of k.
   body :: MessageText,
-  -- | For all TextMess k, sender k is the User-based description of the
+  -- | For all StdMess k, sender k is the User-based description of the
   -- sender of k.
   sender :: User,
-  -- | For all TextMess k, timestamp k equals the UNIX time-based
+  -- | For all StdMess k, timestamp k equals the UNIX time-based
   -- timestamp of k, according to the origin server of k.
   timestamp :: UNIXTime
 } deriving (Eq, Read, Show);

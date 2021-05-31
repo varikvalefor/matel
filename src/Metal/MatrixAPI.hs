@@ -21,7 +21,7 @@ import Data.ByteString (pack);
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
 -- fetches the n most recent text-based messages from rm, outputting the
 -- unencrypted messages.
-recentMessagesFrom :: Integer -> Room -> IO [TextMess];
+recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
 -- | memberRooms equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
