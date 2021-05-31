@@ -27,6 +27,10 @@ Copyright:     (c) Varik Valefor 2021.
 
 Category:      Chat
 
+Source-repository head
+    type:     git
+		location: https://github.com/varikvalefor/matel
+
 executable matel
     main-is:          matel.hs
 
