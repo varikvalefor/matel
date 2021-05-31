@@ -1,6 +1,6 @@
 {- |
  - Module      :  $Header$
- - Description :  $Header$ contains Metal's core data types and records.
+ - Description :  $Header$ contains Metal's core data types.
  - Copyright   :  (c) Varik Valefor
  - License     :  BSD-3-Clause
  -
@@ -8,7 +8,7 @@
  - Stability   :  unstable
  - Portability :  portable
  -
- - $Header$ contains the core data types and records of Metal.
+ - $Header$ contains the core data types of Metal.
  - -}
  
 module Metal.Base where
@@ -53,15 +53,3 @@ type PrivateKey = Stringth;
 -- | Stringth is equivalent to BS.ByteString and added only for the sake
 -- of convenience.
 type Stringth = BS.ByteString;
-
--- ROOM RECORDS --------------------------------------------------------
-
--- | For all Room k, k is a Matrix chatroom.
-data Room = Room {
-  -- | For all Room k, roomId k is the "non-human-readable" name of k,
-  -- e.g., "#johnnykissassSuckupfest:matrix.varikose.god".
-  roomId :: Identifier,
-  -- | For all Room k, roomName k is the "human-readable" name of k,
-  -- e.g., "Johnny Kissass's Suck-Up Fest".
-  roomName :: HumanReadableName
-} deriving (Eq, Read, Show);
