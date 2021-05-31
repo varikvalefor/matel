@@ -7,7 +7,7 @@ import GUI;
 -- Documentation?
 -- Write your own crap.
 main :: IO ();
-main = newEmptyMVar >>= \ comVar ->
+main = newEmptyMVar >>= \comVar ->
   forkIO (fetchData comVar) >> summonTUI comVar;
 
 -- | For all MVar Winda k, fetchData k collects data from Matrix, parses
