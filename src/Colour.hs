@@ -26,10 +26,10 @@ type RGBSubValue = Int;
 type RGBValue = (RGBSubValue, RGBSubValue, RGBSubValue);
 
 -- MESSAGES ------------------------------------------------------------
--- | messHighlight is the colour of the highlighted message, although
+-- | messHight is the colour of the highlighted message, although
 -- the meaning of such highlighting is yet to be determined.
-messHighlight :: RGBValue;
-messHighlight = (255, 0, 0);
+messHight :: RGBValue;
+messHight = (255, 0, 0);
 -- | messStd is the default message text colour.
 messStd :: RGBValue;
 messStd = (0, 0, 0);
