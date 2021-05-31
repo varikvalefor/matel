@@ -16,6 +16,7 @@ Description:   Matel is a currently incomplete Haskell-based Matrix
                guidelines which are described at Matel's GitHub page,
                http://github.com/varikvalefor/matel.
 License:       BSD-3-Clause
+License-file:  LICENSE
 Author:        Varik Valefor
 Maintainer:    varikvalefor@aol.com
 
