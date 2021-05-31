@@ -13,7 +13,6 @@
 
 module Metal.Messages.Encrypted where
 import Metal.Base;
-import Data.ByteString as BS;
 
 -- | For all CryptoMess k, k is an encrypted Matrix message.
 data CryptoMess = CryptoMess {
@@ -21,23 +20,23 @@ data CryptoMess = CryptoMess {
   -- "ciphertext" field of k's source.
   -- [SNAKE ROAD SIGN] Remember that the decrypted ciphertext may
   -- actually contain an attachment, as opposed to a text message.
-  ciphertext :: BS.ByteString,
+  ciphertext :: Stringth,
   -- | For all CryptoMess k, algorithm k equals the content of the
   -- "algorithm" field of k's source.
-  algorithm :: BS.ByteString,
+  algorithm :: Stringth,
   -- | For all CryptoMess k, device_id k equals the content of the
   -- "device_id" field of k's source.
-  device_id :: BS.ByteString,
+  device_id :: Stringth,
   -- | For all CryptoMess k, relates_to k equals the content of the
   -- "event_id" field of the "m.relates_to" dingus of k's source.
-  relates_to :: BS.ByteString,
+  relates_to :: Stringth,
   -- | For all CryptoMess k, sender_key k equals the content of the
   -- "sender_key" field of k's source.
-  sender_key :: BS.ByteString,
+  sender_key :: Stringth,
   -- | For all CryptoMess k, session_id k equals the content of the
   -- "session_id" field of k's source.
-  session_id :: BS.ByteString,
+  session_id :: Stringth,
   -- | For all CryptoMess k, sender k equals the content of the
   -- "sender" field of k's source.
-  sender :: BS.ByteString
+  sender :: Stringth
 } deriving (Eq, Read, Show);

@@ -19,13 +19,13 @@ import qualified Data.ByteString as BS;
 
 -- | For all Identifier k, k is a "non-human-readable" name, e.g.,
 -- "@johnnykissass:matrix.varikose.god", as opposed to "Johnny Kissass".
-type Identifier = BS.ByteString;
+type Identifier = Stringth;
 -- | For all HumanReadableName x, x is a "human-readable" name, e.g.,
 -- "Asshat", as opposed to "@asshat:matrix.varikose.god".
-type HumanReadableName = BS.ByteString;
+type HumanReadableName = Stringth;
 -- | Unencrypted/de-encrypted text-based message data is of type
 -- MessageText.  This comment almost fit on one line.  #SAD!
-type MessageText = BS.ByteString;
+type MessageText = Stringth;
 -- | Screen is equivalent to Brick's Widget ().
 -- For all Screen x, x is TUI data which should be immediately drawn.
 type Screen = Widget ();
@@ -43,13 +43,13 @@ type UNIXTime = Integer;
 -- | For all ByteData k, k is some data which is represented as a string
 -- of bytes.  k most likely contains text but may contain some other
 -- type of data, e.g., a PNG file.
-type ByteData = BS.ByteString;
+type ByteData = Stringth;
 -- | For all CipherByteData k, k is an encrypted sequence of bytes.
-type CipherByteData = BS.ByteString;
+type CipherByteData = Stringth;
 -- | For all PublicKey g, g is a public key.
-type PublicKey = BS.ByteString;
+type PublicKey = Stringth;
 -- | For all PrivateKey g, g is a private key.
-type PrivateKey = BS.ByteString;
+type PrivateKey = Stringth;
 -- | Stringth is equivalent to BS.ByteString and added only for the sake
 -- of convenience.
 type Stringth = BS.ByteString;
