@@ -50,6 +50,9 @@ type CipherByteData = BS.ByteString;
 type PublicKey = BS.ByteString;
 -- | For all PrivateKey g, g is a private key.
 type PrivateKey = BS.ByteString;
+-- | Stringth is equivalent to BS.ByteString and added only for the sake
+-- of convenience.
+type Stringth = BS.ByteString;
 
 -- ROOM RECORDS --------------------------------------------------------
 
