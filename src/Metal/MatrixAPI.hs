@@ -20,7 +20,7 @@ import Data.ByteString (pack);
 -- HIGH-LEVEL CRAP -----------------------------------------------------
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
 -- fetches the n most recent text-based messages from rm, outputting the
--- unencrypted messages.
+-- unencrypted/decrypted messages.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
 -- | memberRooms equals the IO-monadic list of all rooms of which
