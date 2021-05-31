@@ -14,6 +14,7 @@
 
 module Metal.MatrixAPI where
 import Metal.Base;
+import Metal.Room;
 import Metal.Messages.Standard;
 import Data.ByteString (pack);
 
