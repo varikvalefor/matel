@@ -1,9 +1,6 @@
-Cabal-version: 2.4
 Name:          matel
 Version:       0.1.0.0
-
 Synopsis:      TUI client for the Matrix instant messaging service.
-
 Description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
                which is intuitive but well-documented, in addition to
@@ -26,6 +23,8 @@ Maintainer:    varikvalefor@aol.com
 Copyright:     (c) Varik Valefor 2021.
 
 Category:      Chat
+
+Cabal-version: 2.4
 
 Source-repository head
   type:     git
