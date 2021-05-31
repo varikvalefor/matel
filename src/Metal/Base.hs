@@ -1,12 +1,12 @@
 {- |
- - Module      :  $Header$
- - Description :  $Header$ contains Metal's core data types.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
+ - Module:      $Header$
+ - Description: $Header$ contains Metal's core data types.
+ - Copyright:   (c) Varik Valefor
+ - License:     BSD-3-Clause
  -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
+ - Maintainer:  varikvalefor@aol.com
+ - Stability:   unstable
+ - Portability: portable
  -
  - $Header$ contains the core data types of Metal.
  - -}
