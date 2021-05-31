@@ -14,6 +14,10 @@
  - default colour scheme may not work well with all terminals.  Luckily,
  - VARIK, being a cool guy, writes the Colour module such that modifying
  - Matel's colour scheme should be pretty easy.
+ -
+ - The current design of Colour is extremely unstable and shall most
+ - likely be eventually tossed in favour of a relatively "clean"
+ - solution, e.g., actually using Brick to Brick's full potential.
  - -}
 
 module Colour where
