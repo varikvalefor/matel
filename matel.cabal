@@ -36,7 +36,7 @@ executable matel
   main-is:          matel.hs
 
   ghc-options:      -haddock -threaded -O2
-  other-modules:    Metal.Base, Metal.MatrixAPI,
+  other-modules:    Metal.Base, Metal.MatrixAPI, Metal.Room,
                     Metal.Messages.Standard, Metal.Messages.Encrypted,
                     GUI, Colour
 
