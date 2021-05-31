@@ -16,7 +16,7 @@ import Metal.Base;
 
 data MessageType = TextInnit | Image | Attach deriving (Eq, Read, Show);
 
--- | For all StdMess k, k is an unencrypted or de-encrypted Matrix
+-- | For all StdMess k, k is an unencrypted or decrypted Matrix
 -- message.  k may be a standard text-based message or a message which
 -- contains some sort of attachment.
 data StdMess = StdMess {
