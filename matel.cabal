@@ -6,9 +6,11 @@ Description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
                which is intuitive but well-documented, in addition to
                having some very readable source code.
+							 .
                Identified bugs and similar nasties can be e-mailed to
                the maintainer such that the resulting message's header
                contains the phrase "MATEL CONTRIBUTION".
+							 .
                Alternatively, men who wish to fix such bugs when such
                bugs are encountered can follow the contribution
                guidelines which are described at Matel's GitHub page,
