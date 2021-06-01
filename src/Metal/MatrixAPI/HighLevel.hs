@@ -32,5 +32,5 @@ memberRooms = return [];
 
 -- | For all (Room k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
-isSentToRoom :: MessageText -> Room -> IO ();
+isSentToRoom :: MessageText -> Room -> IO ErrorCode;
 isSentToRoom ms rm = return ();
