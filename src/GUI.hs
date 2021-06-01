@@ -36,6 +36,7 @@ summonTUI = takeMVar >=> simpleMain . toScreen;
 
 -- | For all Winda g, toScreen g converts g into a value of type Screen
 -- and returns this Screen.
+-- toScreen currently just adds a border.
 toScreen :: Winda -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
