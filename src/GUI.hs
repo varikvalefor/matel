@@ -30,7 +30,7 @@ import Metal.Room;
 import Metal.Messages.Standard;
 
 -- | For all MVar Winda k, summonTUI k converts the terminal into a
--- Matel TUI and awaits further data from k.
+-- Matel TUI which receives data from k.
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
