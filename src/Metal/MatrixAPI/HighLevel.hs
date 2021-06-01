@@ -22,19 +22,23 @@ import Metal.MatrixAPI.LowLevel;
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
 -- fetches the n most recent text-based messages from rm, outputting the
 -- unencrypted/decrypted messages.
+-- markRead is currently nonfunctional.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
 
 -- | memberRooms equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
+-- markRead is currently nonfunctional.
 memberRooms :: IO [Room];
 memberRooms = return [];
 
 -- | For all (Room k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
+-- markRead is currently nonfunctional.
 isSentToRoom :: MessageText -> Room -> IO ErrorCode;
 isSentToRoom ms rm = return "isSentToRoom is unimplemented.";
 
 -- | For all messages k, markRead k marks k as having been read.
+-- markRead is currently nonfunctional.
 markRead :: Mess a => a -> IO ErrorCode;
 markRead k = return "markRead is unimplemented.";
