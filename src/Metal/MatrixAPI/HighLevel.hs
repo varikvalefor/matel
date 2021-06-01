@@ -34,3 +34,7 @@ memberRooms = return [];
 -- message whose body is g is sent to Matrix room k.
 isSentToRoom :: MessageText -> Room -> IO ErrorCode;
 isSentToRoom ms rm = return "isSentToRoom is unimplemented.";
+
+-- | For all messages k, markRead k marks k as having been read.
+markRead :: Mess a => a -> IO ErrorCode;
+markRead k = return "markRead is unimplemented.";
