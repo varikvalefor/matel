@@ -36,3 +36,9 @@ encryptWKey text key = pack [];
 -- decryptWKey is currently nonfunctional.
 decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
 decryptWKey crip key = pack [];
+
+-- | For all valid Matrix usernames k, for all valid accompanying
+-- passwords p, login k p fetches an authorisation token for Matrix
+-- account k.
+login :: Identifier -> Stringth -> IO ErrorCode;
+login youshallnot pass = return "login is unimplemented.";
