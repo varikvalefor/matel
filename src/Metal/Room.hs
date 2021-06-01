@@ -22,5 +22,8 @@ data Room = Room {
   roomId :: Identifier,
   -- | For all Room k, roomName k is the "human-readable" name of k,
   -- e.g., "Johnny Kissass's Suck-Up Fest".
-  roomName :: HumanReadableName
+  roomName :: HumanReadableName,
+  -- | For all Room k, members k is the list of the members of k.
+  -- Matel does not sort members according to any particular thing.
+  members :: [User]
 } deriving (Eq, Read, Show);
