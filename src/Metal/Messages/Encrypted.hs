@@ -11,6 +11,8 @@
  - $Header$ contains the source code of the CryptoMess record type.
  - -}
 
+{-# LANGUAGE DeriveAnyClass #-}
+
 module Metal.Messages.Encrypted where
 import Metal.Base;
 
@@ -39,4 +41,4 @@ data CryptoMess = CryptoMess {
   -- | For all CryptoMess k, sender k equals the content of the
   -- "sender" field of k's source.
   sender :: Stringth
-} deriving (Eq, Read, Show);
+} deriving (Eq, Mess, Read, Show);

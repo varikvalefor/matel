@@ -11,6 +11,8 @@
  - $Header$ contains the definition of the StdMess record type.
  - -}
 
+{-# LANGUAGE DeriveAnyClass #-}
+
 module Metal.Messages.Standard where
 import Metal.Base;
 
@@ -37,4 +39,4 @@ data StdMess = StdMess {
   -- | For all StdMess k, timestamp k equals the UNIX time-based
   -- timestamp of k, according to the origin server of k.
   timestamp :: UNIXTime
-} deriving (Eq, Read, Show);
+} deriving (Eq, Mess, Read, Show);
