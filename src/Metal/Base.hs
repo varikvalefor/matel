@@ -54,3 +54,6 @@ type PrivateKey = Stringth;
 -- | Stringth is equivalent to BS.ByteString and added only for the sake
 -- of convenience.
 type Stringth = BS.ByteString;
+-- | ErrorCode is used to contain descriptions of functions' errors,
+-- e.g., "the message cannot be posted; the homeserver is off-line."
+type ErrorCode = Stringth;
