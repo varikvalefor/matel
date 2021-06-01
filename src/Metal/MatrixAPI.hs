@@ -24,10 +24,12 @@ import Data.ByteString (pack);
 -- unencrypted/decrypted messages.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
+
 -- | memberRooms equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
 memberRooms :: IO [Room];
 memberRooms = return [];
+
 -- | For all (Room k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
 isSentToRoom :: MessageText -> Room -> IO ();
@@ -40,11 +42,13 @@ isSentToRoom ms rm = return ();
 -- added to Matel.
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
+
 -- For all (ByteData z, PublicKey k), encryptWKey z k encrypts z with k,
 -- outputting the resulting ciphertext.
 -- encryptWKey is currently nonfunctional.
 encryptWKey :: ByteData -> PublicKey -> CipherByteData;
 encryptWKey text key = pack [];
+
 -- For all (CipherByteData z, PrivateKey k), decryptTextWKey z k
 -- decrypts z with k, outputting the resulting ByteData-based data.
 -- decryptWKey is currently nonfunctional.
