@@ -22,17 +22,17 @@ import Graphics.Vty.Attributes (Attr);
 import Graphics.Vty.Attributes.Color;
 
 -- MESSAGES ------------------------------------------------------------
--- | messHight is the colour of the highlighted message, although
--- the meaning of such highlighting is yet to be determined.
+-- | messHight describes the formatting of the highlighted message,
+-- although the meaning of such highlighting is yet to be determined.
 messHight :: Attr;
 messHight = fg red;
--- | messStd is the default message text colour.
+-- | messStd describes the formatting of the standard message.
 messStd :: Attr;
 messStd = fg black;
 
 -- HOWIE MANDEL... NO, HANDLES -----------------------------------------
--- | usernameClient is the colour in which the username of Matel's user
--- should be written.
+-- | usernameClient describes the formatting of the username of Matel's
+-- user.
 usernameClient :: Attr;
 usernameClient = fg $ rgbColor 0 64 0;
 
