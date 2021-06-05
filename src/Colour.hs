@@ -23,10 +23,10 @@ import Graphics.Vty.Attributes.Color;
 
 -- MESSAGES ------------------------------------------------------------
 
--- | messHight describes the formatting of the highlighted message,
+-- | messHigh describes the formatting of the highlighted message,
 -- although the meaning of such highlighting is yet to be determined.
-messHight :: Attr;
-messHight = fg red;
+messHigh :: Attr;
+messHigh = fg red;
 
 -- | messStd describes the formatting of the default message.
 messStd :: Attr;
