@@ -25,5 +25,7 @@ data Room = Room {
   roomName :: HumanReadableName,
   -- | For all Room k, members k is the list of the members of k.
   -- Matel does not sort members according to any particular thing.
-  members :: [User]
+  members :: [User],
+  -- | For all Room k, topic k contains the topic of k.
+  topic :: String
 } deriving (Eq, Read, Show);
