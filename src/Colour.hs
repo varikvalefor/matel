@@ -1,12 +1,12 @@
 {- |
- - Module      :  $Header$
- - Description :  $Header$ contains the colour-related bits of Matel.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
+ - Module:      $Header$
+ - Description: $Header$ contains the colour-related bits of Matel.
+ - Copyright:   (c) Varik Valefor
+ - License:     BSD-3-Clause
+ -              
+ - Maintainer:  varikvalefor@aol.com
+ - Stability:   unstable
+ - Portability: portable
  -
  - $Header$ contains some predefined colours which Matel uses when Matel
  - draws Matel's TUI.
@@ -22,15 +22,18 @@ import Graphics.Vty.Attributes (Attr);
 import Graphics.Vty.Attributes.Color;
 
 -- MESSAGES ------------------------------------------------------------
+
 -- | messHight describes the formatting of the highlighted message,
 -- although the meaning of such highlighting is yet to be determined.
 messHight :: Attr;
 messHight = fg red;
+
 -- | messStd describes the formatting of the default message.
 messStd :: Attr;
 messStd = fg black;
 
 -- HOWIE MANDEL... NO, HANDLES -----------------------------------------
+
 -- | usernameClient describes the formatting of the username of Matel's
 -- user.
 usernameClient :: Attr;
