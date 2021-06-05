@@ -42,3 +42,13 @@ decryptWKey crip key = pack [];
 -- account k.
 login :: Identifier -> Stringth -> IO ErrorCode;
 login youshallnot pass = return "login is unimplemented.";
+
+-- | sendSync accesses the Matrix "sync" function.
+-- sendSync "" fetches the most recent Matrix messages.
+-- For all other k, sendSync k sends a "sync" query to Matrix such that
+-- the "since" parameter of this query equals k, fetching all messages
+-- which are sent after k.
+sendSync :: String -- ^ The desired value of the query's "since" field
+         -> String -- ^ The domain name of the user's homeserver
+         -> IO [StdMess];
+sendSync since = return [];
