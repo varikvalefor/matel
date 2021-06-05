@@ -35,3 +35,8 @@ messStd = fg black;
 -- should be written.
 usernameClient :: Attr;
 usernameClient = fg $ rgbColor 0 64 0;
+
+-- | usernameMod describes the formatting of the usernames of chatrooms'
+-- moderators.
+usernameMod :: Attr;
+usernameMod = fg $ rgbColor 64 0 0;
