@@ -49,5 +49,8 @@ temporaryMessage = center $ str $
 
 -- | For all ([Room] r, [StdMess] t), dataToWinda r t equals a Winda
 -- which displays r and t.  dataToWinda is currently unimplemented.
-dataToWinda :: [Room] -> [StdMess] -> Winda;
-dataToWinda r t = center $ str "This bit is unimplemented.";
+dataToWinda :: [Room] -- ^ List of joined rooms
+            -> [StdMess] -- ^ List of recent messages in current room
+            -> [User] -- ^ List of members of current room
+            -> Winda;
+dataToWinda r t u = center $ str "This bit is unimplemented.";
