@@ -48,7 +48,8 @@ temporaryMessage = center $ str $
   "Alternatively, contribute to the project!";
 
 -- | For all ([Room] r, [StdMess] t), dataToWinda r t equals a Winda
--- which displays r and t.  dataToWinda is currently unimplemented.
+-- which displays r and t.
+-- dataToWinda is currently unimplemented.
 dataToWinda :: [Room] -- ^ List of joined rooms
             -> [StdMess] -- ^ List of recent messages in current room
             -> [User] -- ^ List of members of current room
