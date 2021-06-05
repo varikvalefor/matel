@@ -1,12 +1,12 @@
 {- |
- - Module      :  $Header$
- - Description :  $Header$ contains the GUI-related bits of Matel.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
+ - Module:      $Header$
+ - Description: $Header$ contains the GUI-related bits of Matel.
+ - Copyright:   (c) Varik Valefor
+ - License:     BSD-3-Clause
+ -              
+ - Maintainer:  varikvalefor@aol.com
+ - Stability:   unstable
+ - Portability: portable
  -
  - $Header$ contains some functions which Matel uses when drawing stuff
  - to the terminal.
