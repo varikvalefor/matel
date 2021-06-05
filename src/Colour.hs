@@ -26,7 +26,7 @@ import Graphics.Vty.Attributes.Color;
 -- although the meaning of such highlighting is yet to be determined.
 messHight :: Attr;
 messHight = fg red;
--- | messStd describes the formatting of the standard message.
+-- | messStd describes the formatting of the default message.
 messStd :: Attr;
 messStd = fg black;
 
