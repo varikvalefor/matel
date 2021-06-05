@@ -40,3 +40,8 @@ usernameClient = fg $ rgbColor 0 64 0;
 -- moderators.
 usernameMod :: Attr;
 usernameMod = fg $ rgbColor 64 0 0;
+
+-- | usernameAdmin describes the formatting of the usernames of
+-- chatrooms' admins.
+usernameAdmin :: Attr;
+usernameAdmin = fg $ rgbColor 128 0 0;
