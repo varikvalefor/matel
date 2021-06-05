@@ -22,7 +22,6 @@ import Metal.MatrixAPI.LowLevel;
 -- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
 -- fetches the n most recent text-based messages from rm, outputting the
 -- unencrypted/decrypted messages.
--- markRead is currently nonfunctional.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
 
