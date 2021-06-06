@@ -51,4 +51,4 @@ login youshallnot pass = return "login is unimplemented.";
 sendSync :: String -- ^ The desired value of the query's "since" field
          -> String -- ^ The domain name of the user's homeserver
          -> IO [StdMess];
-sendSync since = return [];
+sendSync since homsv = return [];
