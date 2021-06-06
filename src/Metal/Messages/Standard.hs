@@ -38,5 +38,15 @@ data StdMess = StdMess {
   sender :: User,
   -- | For all StdMess k, timestamp k equals the UNIX time-based
   -- timestamp of k, according to the origin server of k.
-  timestamp :: UNIXTime
+  timestamp :: UNIXTime,
+  -- | For all StdMess k, fmtBody k is calculated in accordance with the
+  -- "formatted_body" field of the source of k.
+  fmtBody :: Maybe MessageText,
+  -- | For all StdMess k, fmt k equals the content of the "format" field
+  -- of the source of k.
+  -- fmt k == MtCusHTML iff k is formatted as a HTML message.  Per the
+  -- Matrix specification as of 20210605, fmt k may only equal
+  -- MatrixCusHTML.
+  fmt :: MessageFmt
+
 } deriving (Eq, Mess, Read, Show);
