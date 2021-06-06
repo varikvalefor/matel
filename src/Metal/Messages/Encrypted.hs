@@ -33,10 +33,12 @@ data CryptoMess = CryptoMess {
   -- "event_id" field of the "m.relates_to" dingus of k's source.
   relates_to :: Stringth,
   -- | For all CryptoMess k, sender_key k equals the content of the
-  -- "sender_key" field of k's source.
+  -- "sender_key" field of k's source, i.e., the public key of the
+  -- sender of the message.
   sender_key :: Stringth,
   -- | For all CryptoMess k, session_id k equals the content of the
-  -- "session_id" field of k's source.
+  -- "session_id" field of k's source, i.e., the ID of the session which
+  -- sends the message.
   session_id :: Stringth,
   -- | For all CryptoMess k, sender k equals the content of the
   -- "sender" field of k's source.
