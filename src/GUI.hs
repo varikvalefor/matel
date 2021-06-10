@@ -34,8 +34,8 @@ import Metal.Messages.Standard;
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | For all Winda g, toScreen g converts g into a value of type Screen
--- and returns this Screen.
+-- | For all Winda g, toScreen g equals a Screen which accurately
+-- represents the content of g.
 -- toScreen currently just adds a border.
 toScreen :: Winda -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
