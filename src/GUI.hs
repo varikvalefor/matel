@@ -48,7 +48,7 @@ temporaryMessage = center $ str $
   "Matel is unfinished -- check back later.\n" ++
   "Alternatively, contribute to the project!";
 
--- | For all ([Room] r, [StdMess] t, [User] x, ), dataToWinda r t x
+-- | For all ([Room] r, [StdMess] t, [User] x), dataToWinda r t x
 -- equals a Winda which displays r, t, and x.
 -- dataToWinda is currently unimplemented.
 dataToWinda :: [Room] -- ^ List of joined rooms
