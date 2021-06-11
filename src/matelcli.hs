@@ -1,3 +1,4 @@
+import Text.Read;
 import Metal.Base;
 import Control.Concurrent;
 import System.Environment;
@@ -12,6 +13,7 @@ determineAction x
   | x == [] = error "I need a command, jack-ass."
   | com == "list" = list $ tail x
   | com == "send" = send $ tail x
+  | com == "grab" = grab $ tail x
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -54,3 +56,25 @@ send k
   --
   dest :: String
   dest = k !! 3;
+
+-- | grab is used to fetch and output the messages of a room.
+grab :: [String] -> IO ();
+grab k
+  | pn == Nothing = error "I need a number, not garbage."
+  | order == "recent" = error $ "Fetching the most recent messages " ++
+    "is currently unimplemented."
+  | order == "early" = error $ "Fetching the earliest messages is " ++
+    "currently unimplemented."
+  | otherwise = error "No, really, stop inputting garbage."
+  where
+  pn :: Maybe Integer
+  pn = readMaybe $ k !! 0
+  --
+  n :: Integer
+  n = read $ k !! 0
+  --
+  order :: String
+  order = k !! 1
+  --
+  roomId :: String
+  roomId = k !! 3;

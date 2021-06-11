@@ -71,6 +71,38 @@ sends the file which is located at file path
 .Ar target
 to the Matrix room
 .Ar roomId .
+.Sh GRABBING PILLS, IF ``PILLS'' REFERS TO MESSAGES
+.Nm matelcli grab
+.Ar n
+.Op recent | first
+.Nm from
+.Ar roomId
+.Pp
+The
+.Nm grab
+command is used to fetch messages from Matrix rooms.
+.Pp
+.Ar roomId
+is of the format
+.Dq #[roomname]:[homeserver] .
+.Pp
+.Nm matelcli grab
+.Ar n
+.Nm recent
+.Ar roomId
+fetches the
+.Ar n
+messages which are most recently sent to room
+.Ar roomId .
+.Pp
+.Nm matelcli grab
+.Ar n
+.Nm early
+.Ar roomId
+fetches the
+.Ar n
+earliest messages of room
+.Ar roomId .
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
