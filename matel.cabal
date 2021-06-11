@@ -38,7 +38,8 @@ executable matel
   ghc-options:      -haddock -threaded -O2
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, GUI, Colour
+                    Metal.Messages.Encrypted, Metal.Community, GUI,
+                    Colour
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty
   hs-source-dirs:   src
@@ -50,7 +51,8 @@ executable matelcli
   ghc-options:      -haddock -threaded -O2
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, GUI, Colour
+                    Metal.Messages.Encrypted, Metal.Community, GUI,
+                    Colour
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty
   hs-source-dirs:   src

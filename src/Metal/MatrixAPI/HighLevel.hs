@@ -15,6 +15,7 @@
 module Metal.MatrixAPI.HighLevel where
 import Metal.Base;
 import Metal.Room;
+import Metal.Community;
 import Data.ByteString (pack);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
@@ -33,6 +34,7 @@ memberRooms = error "memberRooms is unimplemented.";
 
 -- | memberComms equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
+memberComms :: IO [Community];
 memberComms = error "memberComms is unimplemented.";
 
 -- | For all (Identifier k, MessageText g), g `isSentToRoom` k only if a
