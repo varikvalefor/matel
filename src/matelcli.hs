@@ -33,6 +33,9 @@ list k
     "if you don't stop inputting crap."
   where l = k !! 0;
 
+-- | the "send" command is used to send messages to Matrix rooms.
+-- When complete, the "send" command supports both text-based messages
+-- and file-based messages.
 send :: [String] -> IO ();
 send k
   | k == [] = error "I need some arguments, fat-ass."
