@@ -7,6 +7,33 @@
 .Sh SYNOPSIS
 .Nm matelcli
 .Ar command argument
+.Sh DESCRIPTION
+.Nm matelcli
+is used to perform various Matrix-related tasks via a command-line
+interface, as opposed to the terminal user interface of
+.Xr matel 1 .
+.Sh LISTING STUFF
+.Nm matelcli list
+.Ar target
+.Pp
+The
+.Nm list
+command lists various Matrix entities.
+.Pp
+.Nm matelcli list rooms
+lists the Matrix rooms of which the user of
+.Nm matelcli
+is a member.
+.Pp
+.Nm matelcli list communities
+lists the Matrix communities of which the user of
+.Nm matelcli
+is a member.
+.Pp
+.Nm matelcli list spaces
+lists the Matrix spaces of which the user of
+.Nm matelcli
+is a member.
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
