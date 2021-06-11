@@ -29,7 +29,7 @@ recentMessagesFrom n rm = return [];
 -- Matel's user is a member.
 -- markRead is currently nonfunctional.
 memberRooms :: IO [Room];
-memberRooms = return [];
+memberRooms = error "memberRooms is unimplemented.";
 
 -- | For all (Identifier k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
