@@ -31,10 +31,10 @@ recentMessagesFrom n rm = return [];
 memberRooms :: IO [Room];
 memberRooms = return [];
 
--- | For all (Room k, MessageText g), g `isSentToRoom` k only if a
+-- | For all (Identifier k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
 -- markRead is currently nonfunctional.
-isSentToRoom :: MessageText -> Room -> IO ErrorCode;
+isSentToRoom :: MessageText -> Identifier -> IO ErrorCode;
 isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
 
 -- | For all messages k, markRead k marks k as having been read.
