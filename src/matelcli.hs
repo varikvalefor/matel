@@ -17,6 +17,7 @@ determineAction x
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
+  com :: String
   com = x !! 0
   --
   stuff :: [String]
