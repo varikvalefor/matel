@@ -47,21 +47,21 @@ list k
 send :: [String] -> IO ();
 send k
   | k == [] = error "I need some arguments, fat-ass."
-  | msgType == "text" = error $ "Sending text-based messages is " ++
+  | typeIs "text" = error $ "Sending text-based messages is " ++
     "currently unimplemented."
-  | msgType == "file" = error $ "Sending files is currently " ++
+  | typeIs "file" = error $ "Sending files is currently " ++
     "unimplemented."
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, punk.  Read the fucking manual."
   where
-  msgType :: String
-  msgType = k !! 0
-  --
   target :: String
   target = k !! 1
   --
   dest :: String
-  dest = k !! 3;
+  dest = k !! 3
+  --
+  typeIs :: String -> Bool
+  typeIs = (k !! 0 ==);
 
 -- | grab is used to fetch and output the messages of a room.
 -- grab's argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
