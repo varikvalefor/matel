@@ -50,7 +50,7 @@ list k
 send :: [String] -> IO ();
 send k
   | k == [] = error "I need some arguments, fat-ass."
-  | typeIs "text" = target `isSentToRoom` dest >>= putStrLn
+  | typeIs "text" = target `isSentToRoom` dest >>= dispError
   | typeIs "file" = error $ "Sending files is currently " ++
     "unimplemented."
   | otherwise = error $ "I ought to send you to the garbage " ++
@@ -88,3 +88,10 @@ grab k
   --
   roomId :: String
   roomId = k !! 3;
+
+-- | dispError is used to display error messages without needlessly
+-- feeding lines.
+dispError :: String -> IO ();
+dispError x
+  | x == "" = return ()
+  | otherwise = putStrLn x;
