@@ -35,9 +35,9 @@ memberRooms = return [];
 -- message whose body is g is sent to Matrix room k.
 -- markRead is currently nonfunctional.
 isSentToRoom :: MessageText -> Room -> IO ErrorCode;
-isSentToRoom ms rm = return "isSentToRoom is unimplemented.";
+isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
 
 -- | For all messages k, markRead k marks k as having been read.
 -- markRead is currently nonfunctional.
 markRead :: Mess a => a -> IO ErrorCode;
-markRead k = return "markRead is unimplemented.";
+markRead k = error "markRead is unimplemented.";
