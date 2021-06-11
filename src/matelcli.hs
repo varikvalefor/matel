@@ -2,6 +2,7 @@
 
 import Text.Read;
 import Metal.Base;
+import Metal.Room;
 import Control.Concurrent;
 import System.Environment;
 import Metal.MatrixAPI.HighLevel;
@@ -34,7 +35,7 @@ determineAction x
 list :: [String] -> IO ();
 list k
   | k == [] = error "Come on.  Give me a line."
-  | is "rooms" = error "Listing rooms is currently unimplemented."
+  | is "rooms" = memberRooms >>= mapM_ (putStrLn . roomId)
   | is "communities" = error $ "Listing communities is currently " ++
     "unimplemented."
   | is "spaces" = error "Listing spaces is currently unimplemented."
@@ -60,7 +61,7 @@ send k
   target = read $ k !! 1
   --
   dest :: Identifier
-  dest = read $ k !! 3
+  dest = k !! 3
   --
   typeIs :: String -> Bool
   typeIs = (k !! 0 ==);
