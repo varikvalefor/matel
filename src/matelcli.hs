@@ -86,7 +86,7 @@ grab k
   order :: String
   order = k !! 1
   --
-  roomId :: String
+  roomId :: Identifier
   roomId = k !! 3;
 
 -- | dispError is used to display error messages without needlessly
