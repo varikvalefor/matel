@@ -1,4 +1,5 @@
 # matel
+![Matel's Glorious Logo](matel-sty01.svg)
 Matel is an incomplete Haskell-based Matrix client.
 
 ## Goals
