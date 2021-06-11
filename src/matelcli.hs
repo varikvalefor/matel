@@ -47,4 +47,10 @@ send k
     "disposal, punk.  Read the fucking manual."
   where
   msgType :: String
-  msgType = k !! 0;
+  msgType = k !! 0
+  --
+  target :: String
+  target = k !! 1
+  --
+  dest :: String
+  dest = k !! 3;
