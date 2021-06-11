@@ -1,7 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import Text.Read;
 import Metal.Base;
 import Control.Concurrent;
 import System.Environment;
+import Metal.MatrixAPI.HighLevel;
 
 main :: IO ();
 main = getArgs >>= determineAction;
@@ -47,18 +50,17 @@ list k
 send :: [String] -> IO ();
 send k
   | k == [] = error "I need some arguments, fat-ass."
-  | typeIs "text" = error $ "Sending text-based messages is " ++
-    "currently unimplemented."
+  | typeIs "text" = target `isSentToRoom` dest >>= putStrLn
   | typeIs "file" = error $ "Sending files is currently " ++
     "unimplemented."
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, punk.  Read the fucking manual."
   where
-  target :: String
-  target = k !! 1
+  target :: MessageText
+  target = read $ k !! 1
   --
-  dest :: String
-  dest = k !! 3
+  dest :: Identifier
+  dest = read $ k !! 3
   --
   typeIs :: String -> Bool
   typeIs = (k !! 0 ==);
