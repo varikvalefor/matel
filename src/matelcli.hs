@@ -3,6 +3,7 @@
 import Text.Read;
 import Metal.Base;
 import Metal.Room;
+import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
 import Metal.MatrixAPI.HighLevel;
@@ -35,8 +36,7 @@ list :: [String] -> IO ();
 list k
   | k == [] = error "Come on.  Give me a line."
   | is "rooms" = memberRooms >>= mapM_ (putStrLn . roomId)
-  | is "communities" = error $ "Listing communities is currently " ++
-    "unimplemented."
+  | is "communities" = memberComms >>= mapM_ (putStrLn . commId)
   | is "spaces" = error "Listing spaces is currently unimplemented."
   | otherwise = error $ "The police will be listing your injuries " ++
     "if you don't stop inputting crap."
