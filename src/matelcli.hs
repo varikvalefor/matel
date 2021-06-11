@@ -27,7 +27,6 @@ determineAction x
   stuff :: [String]
   stuff = tail x;
 
-
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
 -- A list of the accepted arguments is visible in the function
