@@ -31,13 +31,15 @@ determineAction x
 list :: [String] -> IO ();
 list k
   | k == [] = error "Come on.  Give me a line."
-  | l == "rooms" = error "Listing rooms is currently unimplemented."
-  | l == "communities" = error $ "Listing communities is currently " ++
+  | is "rooms" = error "Listing rooms is currently unimplemented."
+  | is "communities" = error $ "Listing communities is currently " ++
     "unimplemented."
-  | l == "spaces" = error "Listing spaces is currently unimplemented."
+  | is "spaces" = error "Listing spaces is currently unimplemented."
   | otherwise = error $ "The police will be listing your injuries " ++
     "if you don't stop inputting crap."
-  where l = k !! 0;
+  where
+  is :: String -> Bool
+  is = (k !! 0 ==);
 
 -- | the "send" command is used to send messages to Matrix rooms.
 -- When complete, the "send" command supports both text-based messages
