@@ -31,6 +31,10 @@ recentMessagesFrom n rm = return [];
 memberRooms :: IO [Room];
 memberRooms = error "memberRooms is unimplemented.";
 
+-- | memberComms equals the IO-monadic list of all rooms of which
+-- Matel's user is a member.
+memberComms = error "memberComms is unimplemented.";
+
 -- | For all (Identifier k, MessageText g), g `isSentToRoom` k only if a
 -- message whose body is g is sent to Matrix room k.
 -- markRead is currently nonfunctional.
