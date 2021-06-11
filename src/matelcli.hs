@@ -11,13 +11,16 @@ main = getArgs >>= determineAction;
 determineAction :: [String] -> IO ()
 determineAction x
   | x == [] = error "I need a command, jack-ass."
-  | com == "list" = list $ tail x
-  | com == "send" = send $ tail x
-  | com == "grab" = grab $ tail x
+  | com == "list" = list stuff
+  | com == "send" = send stuff
+  | com == "grab" = grab stuff
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
-  com = x !! 0;
+  com = x !! 0
+  --
+  stuff :: [String]
+  stuff = tail x;
 
 
 -- | The "list" command is used to list stuff, e.g., rooms of which the
