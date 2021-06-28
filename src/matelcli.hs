@@ -7,15 +7,16 @@ import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
 import Metal.MatrixAPI.HighLevel;
+import Network.HTTP.Conduit;
 
 main :: IO ();
 main = getArgs >>= determineAction;
 
--- | determineAction is used to determine the action which should be
+-- | @determineAction@ is used to determine the action which should be
 -- taken by matelcli, e.g., listing stuff or sending a message.
 determineAction :: [String] -> IO ()
 determineAction x
-  | x == [] = error "I need a command, jack-ass."
+  | x == [] = putStrLn $ simpleHttp "https://github.com" -- error "I need a command, jack-ass."
   | com == "list" = list stuff
   | com == "send" = send stuff
   | com == "grab" = grab stuff
@@ -30,8 +31,9 @@ determineAction x
 
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
--- A list of the accepted arguments is visible in the function
--- definition of list.
+--
+-- A list of the accepted arguments of the "list" command is visible in
+-- the function definition of @list@.
 list :: [String] -> IO ();
 list k
   | k == [] = error "Come on.  Give me a line."
@@ -44,7 +46,7 @@ list k
   is :: String -> Bool
   is = (k !! 0 ==);
 
--- | the "send" command is used to send messages to Matrix rooms.
+-- | The "send" command is used to send messages to Matrix rooms.
 -- When complete, the "send" command supports both text-based messages
 -- and file-based messages.
 send :: [String] -> IO ();
@@ -65,8 +67,8 @@ send k
   typeIs :: String -> Bool
   typeIs = (k !! 0 ==);
 
--- | grab is used to fetch and output the messages of a room.
--- grab's argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
+-- | @grab@ is used to fetch and output the messages of a room.
+-- @grab@'s argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
 -- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
 grab :: [String] -> IO ();
 grab k
@@ -89,7 +91,7 @@ grab k
   roomId :: Identifier
   roomId = k !! 3;
 
--- | dispError is used to display error messages without needlessly
+-- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
 dispError :: String -> IO ();
 dispError x
