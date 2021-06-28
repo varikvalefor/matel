@@ -14,9 +14,9 @@
 module Metal.Community where
 import Metal.Base;
 
--- | For all Community k, k is a Matrix community.
+-- | For all @'Community' k@, @k@ is a Matrix community.
 data Community = Community {
-  -- | For all Community k, commId k equals the community ID of k, e.g.,
-  -- +haskell:matrix.org.
+  -- | For all @'Community' k@, @commId k@ equals the community ID of
+  -- @k@, e.g., "+haskell:matrix.org".
   commId :: Identifier
 } deriving (Eq, Read, Show);
