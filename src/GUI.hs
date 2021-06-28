@@ -29,27 +29,31 @@ import Metal.Base;
 import Metal.Room;
 import Metal.Messages.Standard;
 
--- | For all MVar Winda k, summonTUI k converts the terminal into a
--- Matel TUI which receives data from k.
+-- | For all @'MVar' 'Winda' k@, @summonTUI k@ converts the terminal
+-- into a Matel TUI which receives data from @k@.
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | For all Winda g, toScreen g equals a Screen which accurately
--- represents the content of g.
+-- | For all @'Winda' g@, @toScreen g@ equals a 'Screen' which
+-- accurately represents the content of @g@.
+--
 -- toScreen currently just adds a border.
 toScreen :: Winda -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
--- | temporaryMessage is a Winda which is used to state that Matel is
--- currently pretty useless.
--- temporaryMessage is removed only if Matel functions as intended.
+-- | @temporaryMessage@ is a 'Winda' which is used to state that Matel
+-- is currently pretty useless.
+--
+-- @temporaryMessage@ is removed only if Matel functions as intended.
 temporaryMessage :: Winda;
 temporaryMessage = center $ str $
   "Matel is unfinished -- check back later.\n" ++
   "Alternatively, contribute to the project!";
 
--- | For all ([Room] r, [StdMess] t, [User] x), dataToWinda r t x
--- equals a Winda which displays r, t, and x.
+-- | For all @(['Room'] r, ['StdMess'] t, ['User'] x)@,
+-- @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
+-- @x@.
+--
 -- dataToWinda is currently unimplemented.
 dataToWinda :: [Room] -- ^ List of joined rooms
             -> [StdMess] -- ^ List of recent messages in current room
