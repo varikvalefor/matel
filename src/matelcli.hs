@@ -7,7 +7,6 @@ import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
 import Metal.MatrixAPI.HighLevel;
-import Network.HTTP.Conduit;
 
 main :: IO ();
 main = getArgs >>= determineAction;
@@ -16,7 +15,7 @@ main = getArgs >>= determineAction;
 -- taken by matelcli, e.g., listing stuff or sending a message.
 determineAction :: [String] -> IO ()
 determineAction x
-  | x == [] = putStrLn $ simpleHttp "https://github.com" -- error "I need a command, jack-ass."
+  | x == [] = error "I need a command, jack-ass."
   | com == "list" = list stuff
   | com == "send" = send stuff
   | com == "grab" = grab stuff
