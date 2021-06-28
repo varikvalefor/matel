@@ -26,7 +26,7 @@ import Metal.MatrixAPI.LowLevel;
 --
 -- @recentMessagesFrom@ is currently nonfunctional.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
-recentMessagesFrom n rm = return [];
+recentMessagesFrom n rm = error "recentMessages is unimplemented.";
 
 -- | @memberRooms@ equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
