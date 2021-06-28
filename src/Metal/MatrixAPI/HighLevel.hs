@@ -20,30 +20,35 @@ import Data.ByteString (pack);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
 
--- | For all Integer n, for all Room rm, n `recentMessagesFrom` rm
--- fetches the n most recent text-based messages from rm, outputting the
--- unencrypted/decrypted messages.
+-- | For all @'Integer' n@, for all @'Room' rm@,
+-- @n `recentMessagesFrom` rm@ fetches the @n@ most recent text-based
+-- messages from rm, outputting the unencrypted/decrypted messages.
+--
+-- @recentMessagesFrom@ is currently nonfunctional.
 recentMessagesFrom :: Integer -> Room -> IO [StdMess];
 recentMessagesFrom n rm = return [];
 
--- | memberRooms equals the IO-monadic list of all rooms of which
+-- | @memberRooms@ equals the IO-monadic list of all rooms of which
 -- Matel's user is a member.
--- markRead is currently nonfunctional.
+--
+-- @memberRooms@ is currently nonfunctional.
 memberRooms :: IO [Room];
 memberRooms = error "memberRooms is unimplemented.";
 
--- | memberComms equals the IO-monadic list of all rooms of which
--- Matel's user is a member.
+-- | memberComms equals the IO-monadic list of all Matrix communities of
+-- which Matel's user is a member.
 memberComms :: IO [Community];
 memberComms = error "memberComms is unimplemented.";
 
--- | For all (Identifier k, MessageText g), g `isSentToRoom` k only if a
--- message whose body is g is sent to Matrix room k.
--- markRead is currently nonfunctional.
+-- | For all @(Identifier k, MessageText g)@, @g `isSentToRoom` k@ only
+-- if a message whose body is @g@ is sent to Matrix room @k@.
+--
+-- @isSentToRoom@ is currently nonfunctional.
 isSentToRoom :: MessageText -> Identifier -> IO ErrorCode;
 isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
 
--- | For all messages k, markRead k marks k as having been read.
--- markRead is currently nonfunctional.
+-- | For all messages @k@, @markRead k@ marks @k@ as having been read.
+--
+-- @markRead@ is currently nonfunctional.
 markRead :: Mess a => a -> IO ErrorCode;
 markRead k = error "markRead is unimplemented.";
