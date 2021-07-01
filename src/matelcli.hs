@@ -46,9 +46,13 @@ list k
   is :: String -> Bool
   is = (k !! 0 ==);
 
--- | The "send" command is used to send messages to Matrix rooms.
--- When complete, the "send" command supports both text-based messages
--- and file-based messages.
+-- | @send@ implements the "send" command.
+--
+-- @send ["text", k, _, foo]@ sends a message whose body is @k@ to
+-- the chatroom whose internal Matrix ID is @foo@.
+--
+-- @send ["file", k, _, foo]@ sends a message whose attachment is @k@
+-- to the chatroom whose internal Matrix ID is @foo@.
 send :: [String] -> IO ();
 send k
   | k == [] = error "I need some arguments, fat-ass."

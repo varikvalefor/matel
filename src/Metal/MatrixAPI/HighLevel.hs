@@ -51,6 +51,10 @@ memberComms = error "memberComms is unimplemented.";
 -- | For all @(Identifier k, MessageText g)@, @g `isSentToRoom` k@ only
 -- if a message whose body is @g@ is sent to Matrix room @k@.
 --
+-- @g `isSentToRoom` k@ equals an IO-monadic @""@ if no problem is
+-- encountered.  @g `isSentToRoom` k@ otherwise equals an explanation of
+-- the problem.
+--
 -- @isSentToRoom@ is currently nonfunctional.
 isSentToRoom :: MessageText -> Identifier -> IO ErrorCode;
 isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
