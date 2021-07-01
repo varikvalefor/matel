@@ -44,8 +44,13 @@ decryptWKey crip key = pack [];
 -- | For all valid Matrix usernames @k@, for all valid accompanying
 -- passwords @p@, @login k p@ fetches an authorisation token for Matrix
 -- account @k@.
-login :: Identifier -> Stringth -> IO ErrorCode;
-login youshallnot pass = return "login is unimplemented.";
+--
+-- The first element of @login@'s 2-tuple equals @""@ iff an
+-- authorisation token is successfully fetched and stored in the second
+-- element of @login@'s 2-tuple.  This element otherwise equals an
+-- explanation of the failure to fetch the authorisation token.
+login :: Identifier -> Stringth -> IO (ErrorCode, String);
+login youshallnot pass = return ("login is unimplemented.", "JUNK DATA");
 
 -- | @sendSync@ accesses the Matrix "sync" function.
 --
