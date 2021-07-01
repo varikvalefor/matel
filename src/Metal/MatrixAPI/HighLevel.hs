@@ -15,6 +15,7 @@
 module Metal.MatrixAPI.HighLevel where
 import Metal.Base;
 import Metal.Room;
+import Metal.Space;
 import Metal.Community;
 import Data.ByteString (pack);
 import Metal.Messages.Standard;
@@ -34,6 +35,13 @@ recentMessagesFrom n rm = error "recentMessages is unimplemented.";
 -- @memberRooms@ is currently nonfunctional.
 memberRooms :: IO [Room];
 memberRooms = error "memberRooms is unimplemented.";
+
+-- | @memberSpaces@ equals the IO-monadic list of all spaces of which
+-- Matel's user is a member.
+--
+-- @memberSpaces@ is currently nonfunctional.
+memberSpaces :: IO [Space];
+memberSpaces = error "memberSpaces is unimplemented.";
 
 -- | memberComms equals the IO-monadic list of all Matrix communities of
 -- which Matel's user is a member.

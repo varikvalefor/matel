@@ -3,6 +3,7 @@
 import Text.Read;
 import Metal.Base;
 import Metal.Room;
+import Metal.Space;
 import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
@@ -38,7 +39,7 @@ list k
   | k == [] = error "Come on.  Give me a line."
   | is "rooms" = memberRooms >>= mapM_ (putStrLn . roomId)
   | is "communities" = memberComms >>= mapM_ (putStrLn . commId)
-  | is "spaces" = error "Listing spaces is currently unimplemented."
+  | is "spaces" = memberSpaces >>= mapM_ (putStrLn . spaceId)
   | otherwise = error $ "The police will be listing your injuries " ++
     "if you don't stop inputting crap."
   where

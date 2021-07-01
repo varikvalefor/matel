@@ -38,10 +38,11 @@ executable matel
   ghc-options:      -haddock -threaded -O2
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, Metal.Community, GUI,
-                    Colour
+                    Metal.Messages.Encrypted, Metal.Community,
+                    Metal.Space, GUI, Colour, Config
 
-  build-depends:    base ^>=4.14.1.0, brick, bytestring, vty
+  build-depends:    base ^>=4.14.1.0, brick, bytestring, vty,
+                    http-conduit
   hs-source-dirs:   src
   default-language: Haskell2010
 
@@ -51,9 +52,10 @@ executable matelcli
   ghc-options:      -haddock -threaded -O2
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, Metal.Community, GUI,
-                    Colour
+                    Metal.Messages.Encrypted, Metal.Community,
+                    Metal.Space, GUI, Colour, Config
 
-  build-depends:    base ^>=4.14.1.0, brick, bytestring, vty
+  build-depends:    base ^>=4.14.1.0, brick, bytestring, vty,
+                    http-conduit
   hs-source-dirs:   src
   default-language: Haskell2010
