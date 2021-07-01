@@ -29,6 +29,6 @@ data Room = Room {
   -- @k@.  Matel does not sort members according to any particular
   -- thing.
   members :: [User],
-  -- | For all @'Room' k@, @topic k@ contains the topic of @k@.
+  -- | For all @'Room' k@, @topic k@ equals the topic of @k@.
   topic :: String
 } deriving (Eq, Read, Show);
