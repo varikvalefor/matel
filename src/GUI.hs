@@ -29,6 +29,18 @@ import Metal.Base;
 import Metal.Room;
 import Metal.Messages.Standard;
 
+-- | 'Screen' is equivalent to Brick's 'Widget ()'.
+--
+-- For all @'Screen' x@, @x@ is TUI data which should be immediately
+-- drawn.
+type Screen = Widget ();
+-- | 'Winda' is equivalent to Brick's 'Widget ()'.
+--
+-- For all @'Winda' k@, @k@ is a 'Widget' which should NOT be
+-- immediately drawn to the terminal; @k@ requires additional
+-- processing.
+type Winda = Widget ();
+
 -- | For all @'MVar' 'Winda' k@, @summonTUI k@ converts the terminal
 -- into a Matel TUI which receives data from @k@.
 summonTUI :: MVar Winda -> IO ();

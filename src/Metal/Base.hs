@@ -12,7 +12,6 @@
  - -}
  
 module Metal.Base where
-import Brick;
 import qualified Data.ByteString as BS;
 
 -- DATATYPES -----------------------------------------------------------
@@ -26,17 +25,6 @@ type HumanReadableName = Stringth;
 -- | Unencrypted/de-encrypted text-based message data is of type
 -- 'MessageText'.  This comment almost fit on one line.  #SAD!
 type MessageText = Stringth;
--- | 'Screen' is equivalent to Brick's 'Widget ()'.
---
--- For all @'Screen' x@, @x@ is TUI data which should be immediately
--- drawn.
-type Screen = Widget ();
--- | 'Winda' is equivalent to Brick's 'Widget ()'.
---
--- For all @'Winda' k@, @k@ is a 'Widget' which should NOT be
--- immediately drawn to the terminal; @k@ requires additional
--- processing.
-type Winda = Widget ();
 -- | For all users @k@, @k@ is represented as a 2-tuple @'User' l@, with
 -- @fst l@ representing the @username:homeserver.whatevs-based
 -- identifier of @k@ and @snd l@ representing the human-readable name of
