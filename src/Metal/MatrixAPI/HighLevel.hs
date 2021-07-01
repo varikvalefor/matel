@@ -61,6 +61,9 @@ isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
 
 -- | For all messages @k@, @markRead k@ marks @k@ as having been read.
 --
+-- @markRead k@ equals an IO-monadic @""@ if no problem is encountered.
+-- @markRead k@ otherwise equals an explanation of the problem.
+--
 -- @markRead@ is currently nonfunctional.
 markRead :: Mess a => a -> IO ErrorCode;
 markRead k = error "markRead is unimplemented.";
