@@ -22,3 +22,7 @@ For all new bugs, a bug can be mentioned via the GitHub "Issues" feature or by s
 Contributions are welcomed but must be released in accordance with Matel's licence.
 
 For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for the diff of this good change can be submitted to this GitHub repository.
+
+## Getting Started
+### Configuration
+Matel is configured through the modification of `Config.hs`, located at `src/Config.hs`.  Assuming that Matel is actually functional, `username` and `authToken` _must_ be set.
