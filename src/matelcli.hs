@@ -44,7 +44,7 @@ list k
     "if you don't stop inputting crap."
   where
   is :: String -> Bool
-  is = (k !! 0 ==);
+  is = (head k ==);
 
 -- | @send@ implements the "send" command.
 --
@@ -69,7 +69,7 @@ send k
   dest = k !! 3
   --
   typeIs :: String -> Bool
-  typeIs = (k !! 0 ==);
+  typeIs = (head k ==);
 
 -- | @grab@ is used to fetch and output the messages of a room.
 -- @grab@'s argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
