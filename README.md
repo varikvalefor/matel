@@ -25,4 +25,7 @@ For all good changes, the diff of a good change can be pinged to Varik Valefor \
 
 ## Getting Started
 ### Configuration
+#### Required Stuff
 Matel is configured through the modification of `Config.hs`, located at `src/Config.hs`.  Assuming that Matel is actually functional, `username` and `authToken` _must_ be set.
+#### Colour
+The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `src/Colour.hs`.  Like the rest of Matel, `Colour` has decent documentation and can be edited reasonably easily.
