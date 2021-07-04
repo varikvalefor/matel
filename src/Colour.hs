@@ -32,6 +32,12 @@ messHigh = fg red;
 messStd :: Attr;
 messStd = fg black;
 
+-- | @messYcode@ describes the formatting of code blocks, i.e., the
+-- the things what are written between backticks and may or may not
+-- contain source code.
+messYcode :: Attr;
+messYcode = fg $ rgbColor 0 0 64;
+
 -- HOWIE MANDEL... NO, HANDLES -----------------------------------------
 
 -- | @usernameClient@ describes the formatting of the username of
