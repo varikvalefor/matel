@@ -23,28 +23,28 @@ import Graphics.Vty.Attributes.Color;
 
 -- MESSAGES ------------------------------------------------------------
 
--- | messHigh describes the formatting of the highlighted message,
+-- | @messHigh@ describes the formatting of the highlighted message,
 -- although the meaning of such highlighting is yet to be determined.
 messHigh :: Attr;
 messHigh = fg red;
 
--- | messStd describes the formatting of the default message.
+-- | @messStd@ describes the formatting of the default message.
 messStd :: Attr;
 messStd = fg black;
 
 -- HOWIE MANDEL... NO, HANDLES -----------------------------------------
 
--- | usernameClient describes the formatting of the username of Matel's
--- user.
+-- | @usernameClient@ describes the formatting of the username of
+-- Matel's user.
 usernameClient :: Attr;
 usernameClient = fg $ rgbColor 0 64 0;
 
--- | usernameMod describes the formatting of the usernames of chatrooms'
--- moderators.
+-- | @usernameMod@ describes the formatting of the usernames of
+-- chatrooms' moderators.
 usernameMod :: Attr;
 usernameMod = fg $ rgbColor 64 0 0;
 
--- | usernameAdmin describes the formatting of the usernames of
+-- | @usernameAdmin@ describes the formatting of the usernames of
 -- chatrooms' admins.
 usernameAdmin :: Attr;
 usernameAdmin = fg $ rgbColor 128 0 0;
