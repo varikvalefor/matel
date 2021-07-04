@@ -49,7 +49,7 @@ summonTUI = takeMVar >=> simpleMain . toScreen;
 -- | For all @'Winda' g@, @toScreen g@ equals a 'Screen' which
 -- accurately represents the content of @g@.
 --
--- toScreen currently just adds a border.
+-- @toScreen k@ currently just equals a bordered @k@.
 toScreen :: Winda -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
