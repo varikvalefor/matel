@@ -34,6 +34,9 @@ data StdMess = StdMess {
   -- @msgType k == Attach@ iff @k@ contains an attachment of some other
   -- type.
   msgType :: MessageType,
+  -- | For all @'StdMess' k@, @messageId k@ equals the identifier of
+  -- @k@.
+  messageId :: Identifier,
   -- | For all @'StdMess' k@, @body k@ contains the unencrypted body of
   -- @k@.
   body :: MessageText,
