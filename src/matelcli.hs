@@ -3,10 +3,12 @@
 import Text.Read;
 import Metal.Base;
 import Metal.Room;
+import System.Exit;
 import Metal.Space;
 import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
+import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
 
 main :: IO ();
@@ -20,6 +22,7 @@ determineAction x
   | com == "list" = list stuff
   | com == "send" = send stuff
   | com == "grab" = grab stuff
+  | com == "markread" = mkRead stuff
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -95,9 +98,24 @@ grab k
   roomId :: Identifier
   roomId = k !! 3;
 
+-- | @mkRead [identifer]@ marks the message whose identifier is
+-- @identifier@ as having been read if this message exists.
+mkRead :: [String] -> IO ();
+mkRead k
+  | not inputIdentifierExists = error $ "matelcli lacks the ability " ++
+    "to mark nonexistent messages as having been read."
+  | otherwise = markRead melleMel >>= dispError
+  where
+  inputIdentifierExists :: Bool
+  inputIdentifierExists = True
+  identifier :: Identifier
+  identifier = k !! 0
+  melleMel :: StdMess
+  melleMel = StdMess {messageId = identifier};
+
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
 dispError :: String -> IO ();
 dispError x
   | x == "" = return ()
-  | otherwise = putStrLn x;
+  | otherwise = putStrLn x >> exitFailure;
