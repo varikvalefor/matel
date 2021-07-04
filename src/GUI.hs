@@ -66,7 +66,7 @@ temporaryMessage = center $ str $
 -- @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
 -- @x@.
 --
--- dataToWinda is currently unimplemented.
+-- @dataToWinda@ is currently unimplemented.
 dataToWinda :: [Room] -- ^ List of joined rooms
             -> [StdMess] -- ^ List of recent messages in current room
             -> [User] -- ^ List of members of current room
