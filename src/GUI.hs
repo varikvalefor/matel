@@ -71,4 +71,4 @@ dataToWinda :: [Room] -- ^ List of joined rooms
             -> [StdMess] -- ^ List of recent messages in current room
             -> [User] -- ^ List of members of current room
             -> Winda;
-dataToWinda r t u = center $ str "This bit is unimplemented.";
+dataToWinda r t u = center $ str "dataToWinda is unimplemented.";
