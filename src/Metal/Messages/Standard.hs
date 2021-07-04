@@ -16,7 +16,8 @@
 module Metal.Messages.Standard where
 import Metal.Base;
 
-data MessageType = TextInnit | Image | Attach deriving (Eq, Read, Show);
+data MessageType = TextInnit | Image | Attach | Sticker
+  deriving (Eq, Read, Show);
 
 -- | For all @'StdMess' k@, @k@ is an unencrypted or decrypted Matrix
 -- message.  @k@ may be a standard text-based message or a message which
@@ -33,6 +34,8 @@ data StdMess = StdMess {
   --
   -- @msgType k == Attach@ iff @k@ contains an attachment of some other
   -- type.
+  --
+  -- @msgType k == Sticker@ iff @k@ contains a "sticker".
   msgType :: MessageType,
   -- | For all @'StdMess' k@, @messageId k@ equals the identifier of
   -- @k@.
