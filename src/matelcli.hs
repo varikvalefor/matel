@@ -112,7 +112,7 @@ mkRead k
   | otherwise = markRead melleMel >>= dispError
   where
   inputIdentifierExists :: Bool
-  inputIdentifierExists = True
+  inputIdentifierExists = error "inputIdentifierExists is crap."
   identifier :: Identifier
   identifier = k !! 0
   melleMel :: StdMess
