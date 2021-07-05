@@ -114,7 +114,7 @@ mkRead k
   inputIdentifierExists :: Bool
   inputIdentifierExists = error "inputIdentifierExists is crap."
   identifier :: Identifier
-  identifier = k !! 0
+  identifier = head k
   melleMel :: StdMess
   melleMel = StdMess {messageId = identifier};
 
