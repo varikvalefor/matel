@@ -3,7 +3,7 @@
  - Description: $Header$ contains the colour-related bits of Matel.
  - Copyright:   (c) Varik Valefor
  - License:     BSD-3-Clause
- -              
+ -
  - Maintainer:  varikvalefor@aol.com
  - Stability:   unstable
  - Portability: portable
