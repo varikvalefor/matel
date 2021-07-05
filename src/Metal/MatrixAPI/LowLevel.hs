@@ -17,6 +17,7 @@
 module Metal.MatrixAPI.LowLevel where
 import Metal.Base;
 import Metal.Room;
+import Metal.User;
 import Data.Maybe;
 import Data.Text.Encoding;
 import qualified Data.Aeson as A;
@@ -49,21 +50,16 @@ encryptWKey text key = BS.pack [];
 decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
 decryptWKey crip key = BS.pack [];
 
--- | For all valid Matrix usernames @k@, for all valid accompanying
--- passwords @p@, @login k p@ fetches an authorisation token for Matrix
--- account @k@.
---
--- The first element of @login@'s 2-tuple equals @""@ iff an
--- authorisation token is successfully fetched and stored in the second
--- element of @login@'s 2-tuple.  This element otherwise equals an
--- explanation of the failure to fetch the authorisation token.
+-- | For all 'User' @k@, if @username k@ and @password k@ are
+-- set, then @login k@ fetches an authorisation token for Matrix user
+-- @k@.
 --
 -- The 'Right' value of @loginPass k p@ equals the authorisation token
 -- which results from signing in to Matrix.  The 'Left' value of
 -- @loginPass k p@ exists only if an error is present... and equals a
 -- description of such an error.
-loginPass :: Identifier -> Stringth -> IO (Either String String);
-loginPass user pass =
+loginPass :: User -> IO (Either String String);
+loginPass user =
   generateRequest >>= httpBS >>= \serverResponse ->
   if getResponseStatusCode serverResponse == 200
     then return $ Right $ toString $ getResponseBody serverResponse
@@ -72,20 +68,17 @@ loginPass user pass =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("POST https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
+    parseRequest ("POST https://" ++ homeserver user ++ "/_matrix/client/r0/login") >>=
     return . setRequestBodyJSON logreq
-  --
-  homeserver :: String
-  homeserver = drop (fromJust (elemIndex ':' user) + 1) user
   --
   logreq :: LoginRequest
   logreq = LoginRequest {
     lrq_type = "m.login.password",
     lrq_identifier = UserIdentifier {
       usident_type = "m.id.user",
-      usident_user = drop 1 $ take (fromJust (elemIndex ':' user)) user
+      usident_user = username user
     },
-    lrq_password = pass,
+    lrq_password = password user,
     lrq_initdispname = "Matel"
   }
   --

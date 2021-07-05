@@ -13,6 +13,7 @@
 
 module Metal.Room where
 import Metal.Base;
+import Metal.User;
 
 -- | For all @'Room' k@, @k@ is a Matrix chatroom.
 data Room = Room {

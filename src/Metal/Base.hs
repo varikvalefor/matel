@@ -25,11 +25,6 @@ type HumanReadableName = Stringth;
 -- | Unencrypted/de-encrypted text-based message data is of type
 -- 'MessageText'.  This comment almost fit on one line.  #SAD!
 type MessageText = Stringth;
--- | For all users @k@, @k@ is represented as a 2-tuple @'User' l@, with
--- @fst l@ representing the @username:homeserver.whatevs-based
--- identifier of @k@ and @snd l@ representing the human-readable name of
--- @k@, e.g., "Asshat".
-type User = (Identifier, HumanReadableName);
 -- | For all @'UNIXTime' k@, @k@ is a seconds-since-the-UNIX-epoch-based
 -- timestamp.  The time zone is not standardised.
 type UNIXTime = Integer;

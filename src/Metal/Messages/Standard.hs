@@ -15,6 +15,7 @@
 
 module Metal.Messages.Standard where
 import Metal.Base;
+import Metal.User;
 
 data MessageType = TextInnit | Image | Attach | Sticker
   deriving (Eq, Read, Show);
