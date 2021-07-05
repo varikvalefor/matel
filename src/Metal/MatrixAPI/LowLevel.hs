@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 {- |
  - Module      :  $Header$
  - Description :  $Header$ contains "low-level" functions for Matrix.
@@ -15,8 +17,13 @@
 module Metal.MatrixAPI.LowLevel where
 import Metal.Base;
 import Metal.Room;
+import Data.Maybe;
+import qualified Data.Aeson as A;
+import Network.HTTP.Simple;
+import Data.List (elemIndex);
 import Metal.Messages.Standard;
-import Data.ByteString (pack);
+import Metal.MatrixAPI.LowLevel.Types;
+import qualified Data.ByteString as BS;
 
 -- | That @stillUnfinishedStayTuned@ exists implies that Matel is
 -- currently useless as a Matrix client.
@@ -31,7 +38,7 @@ stillUnfinishedStayTuned = ();
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData -> PublicKey -> CipherByteData;
-encryptWKey text key = pack [];
+encryptWKey text key = BS.pack [];
 
 -- For all @('CipherByteData' z, 'PrivateKey' k)@, @decryptTextWKey z k@
 -- decrypts @z@ with @k@, outputting the resulting 'ByteData'-based
@@ -39,7 +46,7 @@ encryptWKey text key = pack [];
 --
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
-decryptWKey crip key = pack [];
+decryptWKey crip key = BS.pack [];
 
 -- | For all valid Matrix usernames @k@, for all valid accompanying
 -- passwords @p@, @login k p@ fetches an authorisation token for Matrix
@@ -49,8 +56,27 @@ decryptWKey crip key = pack [];
 -- authorisation token is successfully fetched and stored in the second
 -- element of @login@'s 2-tuple.  This element otherwise equals an
 -- explanation of the failure to fetch the authorisation token.
-login :: Identifier -> Stringth -> IO (ErrorCode, String);
-login youshallnot pass = return ("login is unimplemented.", "JUNK DATA");
+loginPass :: Identifier -> Stringth -> IO (ErrorCode, String);
+loginPass user pass =
+  generateRequest >>= httpBS >>= BS.putStrLn . getResponseBody >>
+  error "loginPass is still not completely implemented."
+  where
+  generateRequest :: IO Request
+  generateRequest = print (A.encode logreq) >>
+    parseRequest ("https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
+    return . setRequestBodyJSON logreq
+  homeserver :: String
+  homeserver = drop (fromJust (elemIndex ':' user) + 1) user
+  logreq :: LoginRequest
+  logreq = LoginRequest {
+    lrq_type = "m.login.password",
+    lrq_identifier = UserIdentifier {
+      usident_type = "m.id.user",
+      usident_user = drop 1 $ take (fromJust (elemIndex ':' user)) user
+    },
+    lrq_password = pass,
+    lrq_initdispname = "Matel"
+  };
 
 -- | @sendSync@ accesses the Matrix "sync" function.
 --
