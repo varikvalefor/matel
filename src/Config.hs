@@ -5,7 +5,7 @@
  - Description: $Header$ contains Matel's basic configuration crap.
  - Copyright:   (c) Varik Valefor
  - License:     BSD-3-Clause
- -              
+ -
  - Maintainer:  varikvalefor@aol.com
  - Stability:   unstable
  - Portability: portable
