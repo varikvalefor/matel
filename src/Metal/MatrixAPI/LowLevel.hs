@@ -71,7 +71,7 @@ loginPass user pass =
       (show $ getResponseStatusCode serverResponse) ++ "."
   where
   generateRequest :: IO Request
-  generateRequest = print (A.encode logreq) >>
+  generateRequest =
     parseRequest ("POST https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
     return . setRequestBodyJSON logreq
   --
