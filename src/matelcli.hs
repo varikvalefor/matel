@@ -107,6 +107,8 @@ grab k
 -- @identifier@ as having been read if this message exists.
 mkRead :: [String] -> IO ();
 mkRead k
+  | k == [] = error $ "Someone should knock you upside the head a " ++
+    "few times, punk.  Dismissed."
   | not inputIdentifierExists = error $ "matelcli lacks the ability " ++
     "to mark nonexistent messages as having been read."
   | otherwise = markRead melleMel >>= dispError
