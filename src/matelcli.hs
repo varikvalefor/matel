@@ -84,18 +84,16 @@ send k
 -- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
 grab :: [String] -> IO ();
 grab k
-  | pn == Nothing = error "I need a number, not garbage."
+  | n < 0 = error "I need a natural number, not garbage."
+  | n == 0 = error "Why in the hell would you want to take 0 messages?"
   | order == "recent" = error $ "Fetching the most recent messages " ++
     "is currently unimplemented."
   | order == "early" = error $ "Fetching the earliest messages is " ++
     "currently unimplemented."
   | otherwise = error "No, really, stop inputting garbage."
   where
-  pn :: Maybe Integer
-  pn = readMaybe $ k !! 0
-  --
   n :: Integer
-  n = read $ k !! 0
+  n = maybe (-42) (\a -> a) $ readMaybe $ head k
   --
   order :: String
   order = k !! 1
