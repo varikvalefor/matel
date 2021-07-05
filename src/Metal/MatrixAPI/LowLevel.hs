@@ -74,8 +74,10 @@ loginPass user pass =
   generateRequest = print (A.encode logreq) >>
     parseRequest ("POST https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
     return . setRequestBodyJSON logreq
+  --
   homeserver :: String
   homeserver = drop (fromJust (elemIndex ':' user) + 1) user
+  --
   logreq :: LoginRequest
   logreq = LoginRequest {
     lrq_type = "m.login.password",
@@ -86,6 +88,7 @@ loginPass user pass =
     lrq_password = pass,
     lrq_initdispname = "Matel"
   }
+  --
   toString :: BS.ByteString -> String
   toString = map (toEnum . fromEnum) . BS.unpack;
 
