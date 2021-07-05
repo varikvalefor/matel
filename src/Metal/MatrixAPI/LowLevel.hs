@@ -18,6 +18,7 @@ module Metal.MatrixAPI.LowLevel where
 import Metal.Base;
 import Metal.Room;
 import Data.Maybe;
+import Data.Text.Encoding;
 import qualified Data.Aeson as A;
 import Network.HTTP.Simple;
 import Data.List (elemIndex);
@@ -56,14 +57,22 @@ decryptWKey crip key = BS.pack [];
 -- authorisation token is successfully fetched and stored in the second
 -- element of @login@'s 2-tuple.  This element otherwise equals an
 -- explanation of the failure to fetch the authorisation token.
-loginPass :: Identifier -> Stringth -> IO (ErrorCode, String);
+--
+-- The 'Right' value of @loginPass k p@ equals the authorisation token
+-- which results from signing in to Matrix.  The 'Left' value of
+-- @loginPass k p@ exists only if an error is present... and equals a
+-- description of such an error.
+loginPass :: Identifier -> Stringth -> IO (Either String String);
 loginPass user pass =
-  generateRequest >>= httpBS >>= BS.putStrLn . getResponseBody >>
-  error "loginPass is still not completely implemented."
+  generateRequest >>= httpBS >>= \serverResponse ->
+  if getResponseStatusCode serverResponse == 200
+    then return $ Right $ toString $ getResponseBody serverResponse
+    else return $ Left $ "Thus spake the homeserver: " ++
+      (show $ getResponseStatusCode serverResponse) ++ "."
   where
   generateRequest :: IO Request
   generateRequest = print (A.encode logreq) >>
-    parseRequest ("https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
+    parseRequest ("POST https://" ++ (homeserver ++ "/_matrix/client/r0/login")) >>=
     return . setRequestBodyJSON logreq
   homeserver :: String
   homeserver = drop (fromJust (elemIndex ':' user) + 1) user
@@ -76,7 +85,9 @@ loginPass user pass =
     },
     lrq_password = pass,
     lrq_initdispname = "Matel"
-  };
+  }
+  toString :: BS.ByteString -> String
+  toString = map (toEnum . fromEnum) . BS.unpack;
 
 -- | @sendSync@ accesses the Matrix "sync" function.
 --
