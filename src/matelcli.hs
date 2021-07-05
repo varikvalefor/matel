@@ -3,13 +3,17 @@
 import Text.Read;
 import Metal.Base;
 import Metal.Room;
+import Metal.User;
+import Data.Either;
 import System.Exit;
 import Metal.Space;
 import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
+import qualified Config as C;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
+import Metal.MatrixAPI.LowLevel (loginPass);
 
 main :: IO ();
 main = getArgs >>= determineAction;
@@ -22,6 +26,7 @@ determineAction x
   | com == "list" = list stuff
   | com == "send" = send stuff
   | com == "grab" = grab stuff
+  | com == "login" = logIn
   | com == "markread" = mkRead stuff
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
@@ -119,3 +124,9 @@ dispError :: String -> IO ();
 dispError x
   | x == "" = return ()
   | otherwise = putStrLn x >> exitFailure;
+
+logIn :: IO ();
+logIn = loginPass User {username = C.username, password = C.password} >>= \result ->
+  if isLeft result
+    then error $ "loginPass: " ++ fromLeft "" result
+    else putStrLn $ fromRight "" result;

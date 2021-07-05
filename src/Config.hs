@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 {- |
  - Module:      $Header$
  - Description: $Header$ contains Matel's basic configuration crap.
@@ -20,6 +22,8 @@
  - -}
 
 module Config where
+import Metal.Base;
+
 -- | @authToken@ equals the authorisation token which Matel uses to
 -- sign in to Matrix.
 authToken :: String;
@@ -28,4 +32,10 @@ authToken = "";
 -- | @username@ equals the username of Matel's user, e.g.,
 -- "\@varikvalefor:matrix.org".
 username :: String;
-username = "";
+username = "@varikvalefor:matrix.org";
+
+-- | @password@ equals the password of Matel's user, e.g.,
+-- "nice try, jack-ass.  What kind of idiot would actually place a
+-- password here?".
+password :: Stringth;
+password = "QSw1sga5z3kBtj98ULNFplyiybgZhuTFyM3G2X4yhx3E70vUjXu49S7C2Cmtt4sj";
