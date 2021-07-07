@@ -13,6 +13,7 @@
  - -}
 
 module Metal.MatrixAPI.HighLevel where
+import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.Space;
@@ -21,49 +22,55 @@ import Data.ByteString (pack);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
 
--- | For all @'Integer' n@, for all @'Room' rm@,
--- @n `recentMessagesFrom` rm@ fetches the @n@ most recent text-based
+-- | For all @'Integer' n@, for all @'Room' rm@, for all 'Auth' @a@,
+-- @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
 -- @recentMessagesFrom@ is currently nonfunctional.
-recentMessagesFrom :: Integer -> Room -> IO [StdMess];
-recentMessagesFrom n rm = error "recentMessages is unimplemented.";
+recentMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
+recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
--- | @memberRooms@ equals the IO-monadic list of all rooms of which
--- Matel's user is a member.
+-- | @memberRooms x@ equals the IO-monadic list of all rooms of which
+-- Matel's user, whose login information is contained within @x@, is a
+-- member.
 --
 -- @memberRooms@ is currently nonfunctional.
-memberRooms :: IO [Room];
-memberRooms = error "memberRooms is unimplemented.";
+memberRooms :: Auth -> IO [Room];
+memberRooms a = error "memberRooms is unimplemented.";
 
--- | @memberSpaces@ equals the IO-monadic list of all spaces of which
--- Matel's user is a member.
+-- | @memberSpaces x@ equals the IO-monadic list of all spaces of which
+-- Matel's user, whose login information is contained within @x@, is a
+-- member.
 --
 -- @memberSpaces@ is currently nonfunctional.
-memberSpaces :: IO [Space];
-memberSpaces = error "memberSpaces is unimplemented.";
+memberSpaces :: Auth -> IO [Space];
+memberSpaces a = error "memberSpaces is unimplemented.";
 
--- | memberComms equals the IO-monadic list of all Matrix communities of
--- which Matel's user is a member.
-memberComms :: IO [Community];
-memberComms = error "memberComms is unimplemented.";
+-- | @memberComms a@ equals the IO-monadic list of all Matrix
+-- communities of which Matel's user, whose login information is
+-- contained within @a@, is a member.
+memberComms :: Auth -> IO [Community];
+memberComms a = error "memberComms is unimplemented.";
 
--- | For all @(Identifier k, MessageText g)@, @g `isSentToRoom` k@ only
--- if a message whose body is @g@ is sent to Matrix room @k@.
+-- | For all @('Identifier' k, 'MessageText' g, 'Auth' a)@,
+-- @isSentToRoom g k a@ only if a message whose body is @g@ is sent to
+-- Matrix room @k@ from the account which is specified in @a@.
 --
--- @g `isSentToRoom` k@ equals an IO-monadic @""@ if no problem is
--- encountered.  @g `isSentToRoom` k@ otherwise equals an explanation of
+-- @isSentToRoom g k a@ equals an IO-monadic @""@ if no problem is
+-- encountered.  @isSentToRoom g k a@ otherwise equals an explanation of
 -- the problem.
 --
 -- @isSentToRoom@ is currently nonfunctional.
-isSentToRoom :: MessageText -> Identifier -> IO ErrorCode;
-isSentToRoom ms rm = error "isSentToRoom is unimplemented.";
+isSentToRoom :: MessageText -> Identifier -> Auth -> IO ErrorCode;
+isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 
--- | For all messages @k@, @markRead k@ marks @k@ as having been read.
+-- | For all message identifiers @k@, for all authorisation information
+-- @a@, @markRead k a@ marks @k@ as having been read.
 --
--- @markRead k@ equals an IO-monadic @""@ if no problem is encountered.
--- @markRead k@ otherwise equals an explanation of the problem.
+-- @markRead k a@ equals an IO-monadic @""@ if no problem is
+-- encountered.  @markRead k a@ otherwise equals an explanation of the
+-- problem.
 --
 -- @markRead@ is currently nonfunctional.
-markRead :: Mess a => a -> IO ErrorCode;
-markRead k = error "markRead is unimplemented.";
+markRead :: Mess a => a -> Auth -> IO ErrorCode;
+markRead k a = error "markRead is unimplemented.";

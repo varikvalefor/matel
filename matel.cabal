@@ -39,11 +39,11 @@ executable matel
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
-                    Metal.Space, GUI, Colour, Config, Metal.User,
-                    Metal.MatrixAPI.LowLevel.Types
+                    Metal.Space, GUI, Colour, Metal.User,
+                    Metal.MatrixAPI.LowLevel.Types, Metal.Auth
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty, aeson,
-                    http-conduit, text, base64-bytestring
+                    http-conduit, text, base64-bytestring,utf8-string
   hs-source-dirs:   src
   default-language: Haskell2010
 
@@ -54,10 +54,10 @@ executable matelcli
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
-                    Metal.Space, Config, Metal.MatrixAPI.LowLevel.Types,
-                    Metal.User
+                    Metal.Space, Metal.MatrixAPI.LowLevel.Types,
+                    Metal.User, Metal.Auth
 
   build-depends:    base ^>=4.14.1.0, bytestring, http-conduit, aeson,
-                    text, base64-bytestring
+                    text, base64-bytestring, utf8-string
   hs-source-dirs:   src
   default-language: Haskell2010
