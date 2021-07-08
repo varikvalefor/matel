@@ -39,7 +39,7 @@ executable matel
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
-                    Metal.Space, GUI, Colour, Metal.User,
+                    Metal.Space, TUI, Colour, Metal.User,
                     Metal.MatrixAPI.LowLevel.Types, Metal.Auth
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty, aeson,

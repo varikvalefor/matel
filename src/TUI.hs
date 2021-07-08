@@ -1,6 +1,6 @@
 {- |
  - Module:      $Header$
- - Description: $Header$ contains the GUI-related bits of Matel.
+ - Description: $Header$ contains the TUI-related bits of Matel.
  - Copyright:   (c) Varik Valefor
  - License:     BSD-3-Clause
  -
@@ -12,13 +12,9 @@
  - to the terminal.
  - Stuff is placed into $Header$ to ensure that Matel's source code is
  - at least somewhat organised.
- -
- - Despite being called "GUI", GUI is a TUI-based module.  This mistake
- - is explained if VARIK's having first drafted Matel in the middle of
- - the night is considered.
  - -}
 
-module GUI where
+module TUI where
 import Brick;
 import Brick.Widgets.Center;
 import Brick.Widgets.Border;

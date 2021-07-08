@@ -15,7 +15,7 @@
  - information.
  - -}
 
-module Metal.Auth where
+module Metal.Auth (Auth, getAuthorisationDetails) where
 import Metal.User;
 import System.Environment;
 
@@ -30,4 +30,6 @@ type Auth = User;
 
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
-  error "getAuthorisationDetails is unimplemented.";
+  getEnv "HOME" >>= readFile . (++ "/.config/matel") >>= \cfg ->
+  return User {username = usernameOf cfg}
+

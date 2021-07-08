@@ -1,6 +1,6 @@
 import Metal.Base;
 import Control.Concurrent;
-import GUI;
+import TUI;
 
 -- | Tap tap tap
 -- Keyboard tap tap
