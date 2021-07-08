@@ -30,6 +30,14 @@ import Metal.MatrixAPI.LowLevel;
 recentMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
 recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
+-- | For all @'Integer' n@, for all @'Room' rm@, for all 'Auth' @a@,
+-- @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
+-- messages from rm, outputting the unencrypted/decrypted messages.
+--
+-- @earlyMessagesFrom@ is currently nonfunctional.
+earlyMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
+earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
+
 -- | @memberRooms x@ equals the IO-monadic list of all rooms of which
 -- Matel's user, whose login information is contained within @x@, is a
 -- member.
