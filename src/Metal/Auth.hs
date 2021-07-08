@@ -15,9 +15,12 @@
  - information.
  - -}
 
+{-# LANGUAGE OverloadedStrings #-}
+
 module Metal.Auth (Auth, getAuthorisationDetails) where
 import Metal.User;
 import System.Environment;
+import qualified Data.ByteString.Char8 as BS8;
 
 -- | For all 'Auth' @k@, @k@ contains the authorisation information
 -- of Matel's user, i.e., the username and authorisation token of the
@@ -30,6 +33,11 @@ type Auth = User;
 
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
-  getEnv "HOME" >>= readFile . (++ "/.config/matel") >>= \cfg ->
-  return User {username = usernameOf cfg}
+  getEnv "HOME" >>= BS8.readFile . (++ "/.config/matel") >>= \cfg ->
+  return User {username = usernameOf cfg, password = passwordOf cfg};
 
+usernameOf :: BS8.ByteString -> String;
+usernameOf = drop 10 . BS8.unpack . head . filter ((== "username: ") . BS8.take 10) . BS8.lines;
+
+passwordOf :: BS8.ByteString -> BS8.ByteString;
+passwordOf = BS8.drop 10 . head . filter ((== "password: ") . BS8.take 10) . BS8.lines;

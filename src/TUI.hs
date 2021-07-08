@@ -23,6 +23,7 @@ import Control.Concurrent;
 import Control.Monad;
 import Metal.Base;
 import Metal.Room;
+import Metal.User;
 import Metal.Messages.Standard;
 
 -- | 'Screen' is equivalent to Brick's 'Widget ()'.
