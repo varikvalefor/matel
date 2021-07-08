@@ -93,10 +93,8 @@ grab :: [String] -> Auth -> IO ();
 grab k a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
-  | order == "recent" = error $ "Fetching the most recent messages " ++
-    "is currently unimplemented."
-  | order == "early" = error $ "Fetching the earliest messages is " ++
-    "currently unimplemented."
+  | order == "recent" = recentMessagesFrom n desRoom a >>= print
+  | order == "early" = earlyMessagesFrom n desRoom a >>= print
   | otherwise = error "No, really, stop inputting garbage."
   where
   n :: Integer
@@ -105,8 +103,8 @@ grab k a
   order :: String
   order = k !! 1
   --
-  roomId :: Identifier
-  roomId = k !! 3;
+  desRoom :: Room
+  desRoom = Room {roomId = k !! 3};
 
 -- | @mkRead [identifer]@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.
