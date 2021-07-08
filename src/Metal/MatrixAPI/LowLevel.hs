@@ -26,6 +26,7 @@ import Data.List (elemIndex);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.ByteString as BS;
+import qualified Data.ByteString.Lazy as BSL;
 
 -- | That @stillUnfinishedStayTuned@ exists implies that Matel is
 -- currently useless as a Matrix client.
@@ -87,11 +88,39 @@ loginPass user =
 
 -- | @sendSync@ accesses the Matrix "sync" function.
 --
--- @sendSync ""@ fetches the most recent Matrix messages.
--- For all other @k@, @sendSync k@ sends a "sync" query to Matrix such
--- that the "since" parameter of this query equals @k@, fetching all
--- messages which are sent after @k@.
-sendSync :: String -- ^ The desired value of the query's "since" field
-         -> String -- ^ The domain name of the user's homeserver
-         -> IO [StdMess];
-sendSync since homsv = error "sendSync is unimplemented.";
+-- @sendSync Nothing g@ runs a parameterless "sync".
+-- For all other @k@, @sendSync k g@ sends a "sync" query to Matrix such
+-- that the "since" parameter of this query equals @fromJust k@.
+--
+-- The 'Right' value of @sendSync k g@ equals the authorisation token
+-- which results from signing in to Matrix.  The 'Left' value of
+-- @loginPass k g@ exists only if an error is present... and equals a
+-- description of such an error.
+sendSync :: Maybe String -- ^ The desired value of the query's "since" field
+         -> User
+         -> IO (Either String String);
+sendSync since user =
+  generateRequest >>= httpBS >>= \serverResponse ->
+  if getResponseStatusCode serverResponse == 200
+    then return $ Right $ toString $ getResponseBody serverResponse
+    else return $ Left $ "Thus spake the homeserver: " ++
+      (show $ getResponseStatusCode serverResponse) ++ "."
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest ("GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync") >>=
+    return . addRequestHeader "Authorization" authToken' . setRequestBodyLBS syncreq
+  --
+  syncreq :: BSL.ByteString
+  syncreq
+    | isNothing since = ""
+    | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}"
+  --
+  toString :: BS.ByteString -> String
+  toString = map (toEnum . fromEnum) . BS.unpack
+  --
+  authToken' :: BS.ByteString
+  authToken' = BSL.toStrict $ fromString $ "Bearer " ++ authToken user
+  --
+  fromString :: String -> BSL.ByteString
+  fromString = BSL.pack . map (toEnum . fromEnum);
