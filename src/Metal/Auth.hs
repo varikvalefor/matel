@@ -37,7 +37,8 @@ getAuthorisationDetails =
   return User {
     username = BS8.unpack $ xOf "username: " cfg,
     password = xOf "password: " cfg,
-    homeserver = BS8.unpack $ xOf "homeserver: " cfg
+    homeserver = BS8.unpack $ xOf "homeserver: " cfg,
+    authToken = BS8.unpack $ xOf "authtoken: " cfg
   };
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.

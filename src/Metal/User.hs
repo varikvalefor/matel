@@ -13,5 +13,9 @@ data User = User {
   -- of Matel's user.
   password :: Stringth,
   -- | @homeserver k@ equals the FQDN of the homeserver of @k@.
-  homeserver :: String
+  homeserver :: String,
+  -- | @authToken k@ equals the authorisation token of @k@.
+  --
+  -- Like @password@, @authToken@ is used only for the user of Matel.
+  authToken :: String
 } deriving (Eq, Read, Show);
