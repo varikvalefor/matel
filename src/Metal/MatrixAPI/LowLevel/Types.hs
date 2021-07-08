@@ -8,7 +8,6 @@ import Metal.Base;
 import GHC.Generics;
 import Data.ByteString;
 import Data.Text.Encoding;
-import Data.ByteString.Base64 as B64;
 
 -- | 'LoginRequest' is used within 'LowLevel' to hold login requests
 -- which are to be converted to JSON.
@@ -37,4 +36,4 @@ instance ToJSON LoginRequest where
 instance ToJSON UserIdentifier;
 
 instance ToJSON ByteString where
-  toJSON = String . decodeUtf8 . B64.encode;
+  toJSON = String . decodeUtf8;

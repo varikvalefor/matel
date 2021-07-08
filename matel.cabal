@@ -43,7 +43,7 @@ executable matel
                     Metal.MatrixAPI.LowLevel.Types, Metal.Auth
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty, aeson,
-                    http-conduit, text, base64-bytestring,utf8-string
+                    http-conduit, text, utf8-string
   hs-source-dirs:   src
   default-language: Haskell2010
 
@@ -58,6 +58,6 @@ executable matelcli
                     Metal.User, Metal.Auth
 
   build-depends:    base ^>=4.14.1.0, bytestring, http-conduit, aeson,
-                    text, base64-bytestring, utf8-string
+                    text, utf8-string
   hs-source-dirs:   src
   default-language: Haskell2010
