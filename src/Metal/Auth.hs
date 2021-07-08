@@ -37,7 +37,17 @@ getAuthorisationDetails =
   return User {username = usernameOf cfg, password = passwordOf cfg};
 
 usernameOf :: BS8.ByteString -> String;
-usernameOf = drop 10 . BS8.unpack . head . filter ((== "username: ") . BS8.take 10) . BS8.lines;
+usernameOf = BS8.unpack . xOf "username: ";
 
 passwordOf :: BS8.ByteString -> BS8.ByteString;
-passwordOf = BS8.drop 10 . head . filter ((== "password: ") . BS8.take 10) . BS8.lines;
+passwordOf = xOf "password: ";
+
+-- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
+--
+-- @xOf@ is used to reduce the amount of boilerplate stuff.
+xOf :: BS8.ByteString -> BS8.ByteString -> BS8.ByteString;
+xOf query cfg =
+  BS8.drop l $ head $ filter ((== query) . BS8.take l) $ BS8.lines cfg
+  where
+  l :: Int
+  l = BS8.length query;
