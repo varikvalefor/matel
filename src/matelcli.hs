@@ -127,7 +127,7 @@ dispError x
   | otherwise = putStrLn x >> exitFailure;
 
 logIn :: Auth -> IO ();
-logIn a = loginPass User {username = username a, password = password a} >>= \result ->
+logIn a = loginPass a >>= \result ->
   if isLeft result
     then error $ "loginPass: " ++ fromLeft "" result
     else putStrLn $ fromRight "" result;

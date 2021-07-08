@@ -36,7 +36,8 @@ getAuthorisationDetails =
   getEnv "HOME" >>= BS8.readFile . (++ "/.config/matel") >>= \cfg ->
   return User {
     username = BS8.unpack $ xOf "username: " cfg,
-    password = xOf "password: " cfg
+    password = xOf "password: " cfg,
+    homeserver = BS8.unpack $ xOf "homeserver: " cfg
   };
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.

@@ -31,5 +31,7 @@ The basic information of Matel, e.g., the username and password of the user, are
 The username _k_ of the user should be placed onto a line such that the line matches the format `username: `_k_.
 
 The password _l_ of the user should be placed onto a line such that the line matches the format `password: `_l_.
+
+The FQDN _m_ of the user's homeserver should be placed onto a line such that the line matches the format `password: `_m_.
 #### Colour
 The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `src/Colour.hs`.  Like the rest of Matel, `Colour` has decent documentation and can be edited reasonably easily.

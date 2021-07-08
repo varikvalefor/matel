@@ -11,10 +11,7 @@ data User = User {
   -- | @password k@ equals the password of @k@.  For reasons which
   -- should be obvious, @password@ is only used for the user account
   -- of Matel's user.
-  password :: Stringth
+  password :: Stringth,
+  -- | @homeserver k@ equals the FQDN of the homeserver of @k@.
+  homeserver :: String
 } deriving (Eq, Read, Show);
-
--- | For all 'User' @k@, @homeserver k@ equals the FQDN of the
--- homeserver of @k@.
-homeserver :: User -> String;
-homeserver k = drop ((+1) $ fromJust $ elemIndex ':' $ username k) $ username k;
