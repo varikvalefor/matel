@@ -97,7 +97,7 @@ loginPass user =
 -- @loginPass k g@ exists only if an error is present... and equals a
 -- description of such an error.
 sendSync :: Maybe String -- ^ The desired value of the query's "since" field
-         -> User
+         -> User -- ^ The authorisation deets
          -> IO (Either String String);
 sendSync since user =
   generateRequest >>= httpBS >>= \serverResponse ->
