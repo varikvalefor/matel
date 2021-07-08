@@ -34,13 +34,10 @@ type Auth = User;
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
   getEnv "HOME" >>= BS8.readFile . (++ "/.config/matel") >>= \cfg ->
-  return User {username = usernameOf cfg, password = passwordOf cfg};
-
-usernameOf :: BS8.ByteString -> String;
-usernameOf = BS8.unpack . xOf "username: ";
-
-passwordOf :: BS8.ByteString -> BS8.ByteString;
-passwordOf = xOf "password: ";
+  return User {
+    username = BS8.unpack $ xOf "username: " cfg,
+    password = xOf "password: " cfg
+  };
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
 --
