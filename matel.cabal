@@ -7,9 +7,9 @@ Description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
                which is intuitive but well-documented, in addition to
                having some very readable source code.
-							 .
-							 Despite originating as a TUI-based thing, Matel _does_
-							 also offer a command-line interface, called "matelcli".
+               .
+               Despite originating as a TUI-based thing, Matel _does_
+               also offer a command-line interface, called "matelcli".
                .
                Identified bugs and similar nasties can be e-mailed to
                the maintainer such that the resulting message's header
