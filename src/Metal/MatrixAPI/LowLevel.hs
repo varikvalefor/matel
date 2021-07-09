@@ -61,11 +61,7 @@ decryptWKey crip key = BS.pack [];
 -- description of such an error.
 loginPass :: User -> IO (Either String String);
 loginPass user =
-  generateRequest >>= httpBS >>= \serverResponse ->
-  if getResponseStatusCode serverResponse == 200
-    then return $ Right $ toString $ getResponseBody serverResponse
-    else return $ Left $ "Thus spake the homeserver: " ++
-      (show $ getResponseStatusCode serverResponse) ++ "."
+  generateRequest >>= httpBS >>= return . responseToLeftRight
   where
   generateRequest :: IO Request
   generateRequest =
@@ -81,10 +77,7 @@ loginPass user =
     },
     lrq_password = password user,
     lrq_initdispname = "Matel"
-  }
-  --
-  toString :: BS.ByteString -> String
-  toString = map (toEnum . fromEnum) . BS.unpack;
+  };
 
 -- | @sendSync@ accesses the Matrix "sync" function.
 --
@@ -100,11 +93,7 @@ sendSync :: Maybe String -- ^ The desired value of the query's "since" field
          -> User -- ^ The authorisation deets
          -> IO (Either String String);
 sendSync since user =
-  generateRequest >>= httpBS >>= \serverResponse ->
-  if getResponseStatusCode serverResponse == 200
-    then return $ Right $ toString $ getResponseBody serverResponse
-    else return $ Left $ "Thus spake the homeserver: " ++
-      (show $ getResponseStatusCode serverResponse) ++ "."
+  generateRequest >>= httpBS >>= return . responseToLeftRight
   where
   generateRequest :: IO Request
   generateRequest =
@@ -116,11 +105,23 @@ sendSync since user =
     | isNothing since = ""
     | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}"
   --
-  toString :: BS.ByteString -> String
-  toString = map (toEnum . fromEnum) . BS.unpack
-  --
   authToken' :: BS.ByteString
   authToken' = BSL.toStrict $ fromString $ "Bearer " ++ authToken user
   --
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
+
+-- | If the response code of @k@ equals @200@, then
+-- @responseToLeftRight k@ equals the response body of @k@.
+-- @responseToLeftRight k@ otherwise equals a string which contains the
+-- status code of @k@.
+responseToLeftRight :: Response BS.ByteString -> Either String String;
+responseToLeftRight k
+  | getResponseStatusCode k == 200 =
+    Right $ toString $ getResponseBody k
+  | otherwise =
+    Left $ "Thus spake the homeserver: " ++
+    (show $ getResponseStatusCode k) ++ "."
+  where
+  toString :: BS.ByteString -> String
+  toString = map (toEnum .fromEnum) . BS.unpack;
