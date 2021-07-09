@@ -15,6 +15,7 @@
  - -}
 
 module Metal.MatrixAPI.LowLevel where
+import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
@@ -98,15 +99,12 @@ sendSync since user =
   generateRequest :: IO Request
   generateRequest =
     parseRequest ("GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync") >>=
-    return . addRequestHeader "Authorization" authToken' . setRequestBodyLBS syncreq
+    return . addRequestHeader "Authorization" (authToken' user) . setRequestBodyLBS syncreq
   --
   syncreq :: BSL.ByteString
   syncreq
     | isNothing since = ""
     | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}"
-  --
-  authToken' :: BS.ByteString
-  authToken' = BSL.toStrict $ fromString $ "Bearer " ++ authToken user
   --
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
@@ -125,10 +123,7 @@ sendJoinedRooms a =
   generateRequest :: IO Request
   generateRequest =
     parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") >>=
-    return .addRequestHeader "Authorization" authToken'
-  --
-  authToken' :: BS.ByteString
-  authToken' = BSL.toStrict $ fromString $ "Bearer " ++ authToken a
+    return .addRequestHeader "Authorization" (authToken' a)
   --
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
