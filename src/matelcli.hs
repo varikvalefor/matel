@@ -13,6 +13,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
+import qualified Data.ByteString.Char8 as BS8;
 import Metal.MatrixAPI.LowLevel (loginPass, sendSync);
 
 main :: IO ();
@@ -33,7 +34,7 @@ determineAction x a
   | com == "grab" = grab stuff a
   | com == "login" = logIn a
   | com == "markread" = mkRead stuff a
-  | com == "sync" = eddySmith x a >>= putStrLn
+  | com == "sync" = eddySmith x a >>= BS8.putStrLn
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -130,20 +131,20 @@ dispError x
 logIn :: Auth -> IO ();
 logIn a = loginPass a >>= \result ->
   if isLeft result
-    then error $ "loginPass: " ++ fromLeft "" result
-    else putStrLn $ fromRight "" result;
+    then error $ "loginPass: " ++ BS8.unpack (fromLeft "" result)
+    else BS8.putStrLn $ fromRight "" result;
 
 -- | @eddySmith@ is a high-level wrapper for @sendSync@.
 --
 -- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
-eddySmith :: [String] -> Auth -> IO String;
+eddySmith :: [String] -> Auth -> IO Stringth;
 eddySmith t a
   | length t > 1 = sendSync (Just $ t !! 1) a >>= possiblyBreakDown
   | otherwise = sendSync Nothing a >>= possiblyBreakDown
   where
-  possiblyBreakDown :: Either String String -> IO String
+  possiblyBreakDown :: Either Stringth Stringth -> IO Stringth
   possiblyBreakDown k
-    | isLeft k = error $ fromLeft "Something went mad wrong." k
+    | isLeft k = error $ BS8.unpack $ fromLeft "Something went mad wrong." k
     | otherwise = return $ fromRight "Shoutouts to President WASHINGTON." k;

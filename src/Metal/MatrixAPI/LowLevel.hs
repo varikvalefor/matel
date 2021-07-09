@@ -59,7 +59,7 @@ decryptWKey crip key = BS.pack [];
 -- which results from signing in to Matrix.  The 'Left' value of
 -- @loginPass k p@ exists only if an error is present... and equals a
 -- description of such an error.
-loginPass :: User -> IO (Either String String);
+loginPass :: User -> IO (Either Stringth Stringth);
 loginPass user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
@@ -91,7 +91,7 @@ loginPass user =
 -- description of such an error.
 sendSync :: Maybe String -- ^ The desired value of the query's "since" field
          -> User -- ^ The authorisation deets
-         -> IO (Either String String);
+         -> IO (Either Stringth Stringth);
 sendSync since user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
@@ -115,13 +115,13 @@ sendSync since user =
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
 -- status code of @k@.
-responseToLeftRight :: Response BS.ByteString -> Either String String;
+responseToLeftRight :: Response BS.ByteString -> Either BS.ByteString BS.ByteString;
 responseToLeftRight k
   | getResponseStatusCode k == 200 =
-    Right $ toString $ getResponseBody k
+    Right $ getResponseBody k
   | otherwise =
-    Left $ "Thus spake the homeserver: " ++
+    Left $ fromString $ "Thus spake the homeserver: " ++
     (show $ getResponseStatusCode k) ++ "."
   where
-  toString :: BS.ByteString -> String
-  toString = map (toEnum .fromEnum) . BS.unpack;
+  fromString :: String -> Stringth
+  fromString = BS.pack . map (toEnum . fromEnum);
