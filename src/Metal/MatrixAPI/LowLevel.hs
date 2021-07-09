@@ -111,6 +111,28 @@ sendSync since user =
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
 
+-- | @sendJoinedRooms k@ sends the "joined_rooms" query to the
+-- homeserver of @k@, authenticating as @k@.
+--
+-- The 'Right' value of @sendJoinedRooms k g@ equals the authorisation
+-- token which results from signing in to Matrix.  The 'Left' value of
+-- @sendJoinedRooms k@ exists only if an error is present... and equals a
+-- description of such an error.
+sendJoinedRooms :: User -> IO (Either Stringth Stringth);
+sendJoinedRooms a =
+  generateRequest >>= httpBS >>= return . responseToLeftRight
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") >>=
+    return .addRequestHeader "Authorization" authToken'
+  --
+  authToken' :: BS.ByteString
+  authToken' = BSL.toStrict $ fromString $ "Bearer " ++ authToken a
+  --
+  fromString :: String -> BSL.ByteString
+  fromString = BSL.pack . map (toEnum . fromEnum);
+
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
