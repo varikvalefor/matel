@@ -13,7 +13,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import Metal.MatrixAPI.LowLevel (loginPass);
+import Metal.MatrixAPI.LowLevel (loginPass, sendSync);
 
 main :: IO ();
 main =
@@ -33,6 +33,7 @@ determineAction x a
   | com == "grab" = grab stuff a
   | com == "login" = logIn a
   | com == "markread" = mkRead stuff a
+  | com == "sync" = eddySmith x a >>= putStrLn
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -131,3 +132,18 @@ logIn a = loginPass a >>= \result ->
   if isLeft result
     then error $ "loginPass: " ++ fromLeft "" result
     else putStrLn $ fromRight "" result;
+
+-- | @eddySmith@ is a high-level wrapper for @sendSync@.
+--
+-- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
+-- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
+-- "sync" query whose "since" value equals @t !! 1@.
+eddySmith :: [String] -> Auth -> IO String;
+eddySmith t a
+  | length t > 1 = sendSync (Just $ t !! 1) a >>= possiblyBreakDown
+  | otherwise = sendSync Nothing a >>= possiblyBreakDown
+  where
+  possiblyBreakDown :: Either String String -> IO String
+  possiblyBreakDown k
+    | isLeft k = error $ fromLeft "Something went mad wrong." k
+    | otherwise = return $ fromRight "Shoutouts to President WASHINGTON." k;

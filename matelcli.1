@@ -117,6 +117,30 @@ Using the username and password which are specified in Config.hs,
 .Nm matelcli login
 generates a new authorisation token for the user's Matrix account and
 prints this authorisation token to the standard output.
+.Sh SYNC
+.Nm matelcli sync
+.Op Ar since
+.Pp
+The Matrix
+.Dq sync
+command can be sent to the homeserver via the
+.Nm matelcli
+.Nm sync
+command.
+.Pp
+If
+.Ar since
+is specified, then the
+.Dq since
+value of the
+.Dq sync
+request equals
+.Ar since.
+The
+.Dq since
+value is otherwise unmentioned in the
+.Dq sync
+request.
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
