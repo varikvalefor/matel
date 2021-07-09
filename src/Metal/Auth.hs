@@ -17,7 +17,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Metal.Auth (Auth, getAuthorisationDetails) where
+module Metal.Auth (Auth, getAuthorisationDetails, authToken') where
 import Metal.User;
 import System.Environment;
 import qualified Data.ByteString.Char8 as BS8;
@@ -30,6 +30,12 @@ import qualified Data.ByteString.Char8 as BS8;
 -- instances of 'User', generally, only the @username@ and @password@
 -- fields need be filled.
 type Auth = User;
+
+-- @authToken' k@ equals a version of the authorisation token of @k@
+-- which can be used as the content of the "Authorization" header of
+-- client requests.
+authToken' :: User -> BS8.ByteString;
+authToken' = BS8.pack . ("Bearer " ++ ) . authToken;
 
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
