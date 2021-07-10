@@ -69,6 +69,19 @@ memberComms a = error "memberComms is unimplemented.";
 isSentToRoom :: MessageText -> Identifier -> Auth -> IO ErrorCode;
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 
+-- | @isSentToRoom_file g k a@ only if a message to which the file at
+-- @g@ is attached is sent to Matrix room @k@ from the account which is
+-- specified in @a@.
+--
+-- @isSentToRoom_file g k a@ equals an IO-monadic @""@ if no problem is
+-- encountered.  @isSentToRoom_file g k a@ otherwise equals an
+-- explanation of the problem.
+--
+-- @isSentToRoom@ is currently nonfunctional.
+isSentToRoom_file :: FilePath -> Identifier -> Auth -> IO ErrorCode;
+isSentToRoom_file phile romhack a =
+  error "isSentToRoom_file is unimplemented.";
+
 -- | @markRead k a@ marks @k@ as having been read.
 --
 -- @markRead k a@ equals an IO-monadic @""@ if no problem is
