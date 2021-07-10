@@ -116,7 +116,7 @@ sendSync since user =
 -- token which results from signing in to Matrix.  The 'Left' value of
 -- @sendJoinedRooms k@ exists only if an error is present... and equals a
 -- description of such an error.
-sendJoinedRooms :: User -> IO (Either Stringth Stringth);
+sendJoinedRooms :: User -> IO (Either Stringth ListOfRoomIdentifiers);
 sendJoinedRooms a =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
@@ -127,6 +127,16 @@ sendJoinedRooms a =
   --
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
+
+-- | @getRoomInformation room a@ equals a 'Room'-based representation of
+-- the Matrix room whose internal Matrix ID is @room@ if the "yo, what
+-- the hell is this thing" HTTP query works.
+-- @getRoomInformation room a@ otherwise equals a description of the
+-- problem which is encountered when the "describe this shiznit" query
+-- is sent to the Matrix homeserver.
+getRoomInformation :: Identifier -> Auth -> IO (Either Stringth Room);
+getRoomInformation rommel mcdommel =
+  error "getRoomInformation is unimplemented.";
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
