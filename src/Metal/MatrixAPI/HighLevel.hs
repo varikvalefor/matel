@@ -22,14 +22,14 @@ import Data.ByteString (pack);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
 
--- @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
+-- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
 -- @recentMessagesFrom@ is currently nonfunctional.
 recentMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
 recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
--- @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
+-- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
 -- @earlyMessagesFrom@ is currently nonfunctional.
@@ -58,7 +58,7 @@ memberSpaces a = error "memberSpaces is unimplemented.";
 memberComms :: Auth -> IO [Community];
 memberComms a = error "memberComms is unimplemented.";
 
--- @isSentToRoom g k a@ only if a message whose body is @g@ is sent to
+-- | @isSentToRoom g k a@ only if a message whose body is @g@ is sent to
 -- Matrix room @k@ from the account which is specified in @a@.
 --
 -- @isSentToRoom g k a@ equals an IO-monadic @""@ if no problem is
@@ -69,7 +69,7 @@ memberComms a = error "memberComms is unimplemented.";
 isSentToRoom :: MessageText -> Identifier -> Auth -> IO ErrorCode;
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 
--- @markRead k a@ marks @k@ as having been read.
+-- | @markRead k a@ marks @k@ as having been read.
 --
 -- @markRead k a@ equals an IO-monadic @""@ if no problem is
 -- encountered.  @markRead k a@ otherwise equals an explanation of the
