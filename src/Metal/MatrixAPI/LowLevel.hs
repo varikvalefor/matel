@@ -153,6 +153,33 @@ responseToLeftRight k
   fromString :: String -> Stringth
   fromString = BS.pack . map (toEnum . fromEnum);
 
+-- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
+-- Matrix room whose room ID is @b@ via the Matrix account which is
+-- described in @c@.
+sendTextMessage :: Stringth -- ^ Text what should be sent
+                -> Identifier -- ^ Internal Matrix ID of room
+                -> User -- ^ Authorisation junk
+                -> IO (Maybe ErrorCode);
+sendTextMessage body dest user =
+  generateRequest >>= httpBS >>= \theResponse ->
+    if (getResponseStatusCode theResponse) == 200
+      then return Nothing
+      else return $ Just $ "Thus spake the homeserver: " ++
+        (show $ getResponseStatusCode theResponse) ++ "."
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    favoriteNoise >>= \fn ->
+    parseRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) >>=
+    return . addRequestHeader "Authorization" (authToken' user) . setRequestBodyLBS sendreq
+  --
+  sendreq :: BSL.ByteString
+  sendreq =
+    BSL.append (BSL.append "{\"msgtype\": \"m.text\",\n\"body\": " (BSL.fromStrict body)) "}"
+  --
+  favoriteNoise :: IO String
+  favoriteNoise = BSL.readFile "/dev/random" >>= return . ("$" ++) . map toEnum . take 64 . filter (`elem` (map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'])) . map fromEnum . BSL.unpack;
+
 -- | Where @k@ is a JSON response to a "joined_rooms" query,
 -- @stringthToListRoomIdentifier k@ equals a ['String']-based
 -- representation of @k@.
