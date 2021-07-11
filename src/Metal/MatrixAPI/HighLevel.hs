@@ -12,15 +12,18 @@
  - together relatively low-level functions for the Matrix API.
  - -}
 
+ {-# LANGUAGE OverloadedStrings #-}
+
 module Metal.MatrixAPI.HighLevel where
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.Space;
 import Metal.Community;
-import Data.ByteString (pack);
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
+import qualified Data.Either as EE;
+import qualified Data.ByteString as BS;
 
 -- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
@@ -39,10 +42,21 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- | @memberRooms x@ equals the IO-monadic list of all rooms of which
 -- Matel's user, whose login information is contained within @x@, is a
 -- member.
---
--- @memberRooms@ is currently nonfunctional.
 memberRooms :: Auth -> IO [Room];
-memberRooms a = error "memberRooms is unimplemented.";
+memberRooms a =
+  sendJoinedRooms a >>= \jrOut ->
+  if EE.isLeft jrOut
+    then error $ toString $ EE.fromLeft "a" jrOut
+    else listRoomsMentioned jrOut >>= \getRmOut ->
+      if any EE.isLeft getRmOut
+        then error $ toString $ EE.fromLeft "a" (getRmOut !! 0)
+        else return $ map (\(Right k) -> k) getRmOut
+  where
+  listRoomsMentioned :: Either Stringth Stringth -> IO ([Either Stringth Room]);
+  listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) $ stringthToListRoomIdentifier k
+  --
+  toString :: BS.ByteString -> String
+  toString = map (toEnum . fromEnum) . BS.unpack;
 
 -- | @memberSpaces x@ equals the IO-monadic list of all spaces of which
 -- Matel's user, whose login information is contained within @x@, is a
