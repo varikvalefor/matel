@@ -46,17 +46,23 @@ memberRooms :: Auth -> IO [Room];
 memberRooms a =
   sendJoinedRooms a >>= \jrOut ->
   if EE.isLeft jrOut
-    then error $ toString $ EE.fromLeft "a" jrOut
+    then error $ toString $ justLeft jrOut
     else listRoomsMentioned jrOut >>= \getRmOut ->
       if any EE.isLeft getRmOut
-        then error $ toString $ EE.fromLeft "a" (getRmOut !! 0)
+        then error $ toString $ justLeft $ head getRmOut
         else return $ map (\(Right k) -> k) getRmOut
   where
   listRoomsMentioned :: Either Stringth Stringth -> IO ([Either Stringth Room]);
   listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) $ stringthToListRoomIdentifier k
   --
   toString :: BS.ByteString -> String
-  toString = map (toEnum . fromEnum) . BS.unpack;
+  toString = map (toEnum . fromEnum) . BS.unpack
+  --
+  justRight :: Either a0 a1 -> a1
+  justRight (Right a) = a
+  --
+  justLeft :: Either a0 a1 -> a0
+  justLeft (Left a) = a;
 
 -- | @memberSpaces x@ equals the IO-monadic list of all spaces of which
 -- Matel's user, whose login information is contained within @x@, is a
