@@ -23,6 +23,10 @@ data UserIdentifier = UserIdentifier {
   usident_user :: String
 } deriving (Eq, Generic, Read, Show);
 
+data StringListRoomIdentifier = StringListRoomIdentifier {
+  joined_room :: [String]
+} deriving (Eq, Generic, Read, Show);
+
 instance ToJSON LoginRequest where
   toJSON (LoginRequest lrq_type lrq_identifier lrq_password lrq_initdispname) =
     object [
@@ -37,3 +41,5 @@ instance ToJSON UserIdentifier;
 
 instance ToJSON ByteString where
   toJSON = String . decodeUtf8;
+
+instance FromJSON StringListRoomIdentifier;

@@ -116,7 +116,7 @@ sendSync since user =
 -- token which results from signing in to Matrix.  The 'Left' value of
 -- @sendJoinedRooms k@ exists only if an error is present... and equals a
 -- description of such an error.
-sendJoinedRooms :: User -> IO (Either Stringth ListOfRoomIdentifiers);
+sendJoinedRooms :: User -> IO (Either Stringth Stringth);
 sendJoinedRooms a =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
@@ -152,3 +152,9 @@ responseToLeftRight k
   where
   fromString :: String -> Stringth
   fromString = BS.pack . map (toEnum . fromEnum);
+
+-- | Where @k@ is a JSON response to a "joined_rooms" query,
+-- @stringthToListRoomIdentifier k@ equals a ['String']-based
+-- representation of @k@.
+stringthToListRoomIdentifier :: Stringth -> [String];
+stringthToListRoomIdentifier = joined_room . fromJust . A.decode . BSL.fromStrict;
