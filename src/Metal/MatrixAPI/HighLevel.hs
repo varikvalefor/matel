@@ -100,7 +100,7 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 -- encountered.  @isSentToRoom_file g k a@ otherwise equals an
 -- explanation of the problem.
 --
--- @isSentToRoom@ is currently nonfunctional.
+-- @isSentToRoom_file@ is currently nonfunctional.
 isSentToRoom_file :: FilePath -> Identifier -> Auth -> IO ErrorCode;
 isSentToRoom_file phile romhack a =
   error "isSentToRoom_file is unimplemented.";
