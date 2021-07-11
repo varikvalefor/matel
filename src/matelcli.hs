@@ -79,8 +79,8 @@ send k a
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, punk.  Read the fucking manual."
   where
-  target :: MessageText
-  target = read $ k !! 1
+  target :: StdMess
+  target = StdMess {body = read $ k !! 1};
   --
   dest :: Identifier
   dest = k !! 3
