@@ -155,7 +155,7 @@ responseToLeftRight k
     (show $ getResponseStatusCode k) ++ "."
   where
   fromString :: String -> Stringth
-  fromString = T.pack . map (toEnum . fromEnum);
+  fromString = T.pack;
 
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
 -- Matrix room whose room ID is @b@ via the Matrix account which is
