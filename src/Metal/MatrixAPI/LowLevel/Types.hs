@@ -13,15 +13,16 @@
  - -}
 
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Metal.MatrixAPI.LowLevel.Types where
-import Data.Text;
+import Metal.Base;
 import Data.Aeson;
 import Metal.Base;
-import GHC.Generics;
-import Data.ByteString;
+import Data.Aeson.TH;
 import Data.Text.Encoding;
+import qualified Data.Text as DT;
+import qualified Data.ByteString as BS;
 
 -- | 'LoginRequest' is used within 'LowLevel' to hold login requests
 -- which are to be converted to JSON.
@@ -29,28 +30,20 @@ data LoginRequest = LoginRequest {
   lrq_type :: Stringth,
   lrq_identifier :: UserIdentifier,
   lrq_password :: Stringth,
-  lrq_initdispname :: Stringth
-} deriving (Eq, Generic, Read, Show);
+  lrq_initial_device_display_name :: Stringth
+} deriving (Eq, Read, Show);
 
 data UserIdentifier = UserIdentifier {
   usident_type :: Stringth,
   usident_user :: String
-} deriving (Eq, Generic, Read, Show);
+} deriving (Eq, Read, Show);
 
 data StringListRoomIdentifier = StringListRoomIdentifier {
   joined_room :: [String]
-} deriving (Eq, Generic, Read, Show);
+} deriving (Eq, Read, Show);
 
-instance ToJSON LoginRequest where
-  toJSON (LoginRequest lrq_type lrq_identifier lrq_password lrq_initdispname) =
-    object [
-      "initial_device_display_name" .= lrq_initdispname,
-      "password" .= lrq_password,
-      "identifier" .= object [
-        "user" .= usident_user lrq_identifier,
-        "type" .= usident_type lrq_identifier
-      ],
-      "type" .= lrq_type];
-instance ToJSON UserIdentifier;
+deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''LoginRequest;
 
-instance FromJSON StringListRoomIdentifier;
+deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
+
+deriveJSON defaultOptions ''StringListRoomIdentifier;

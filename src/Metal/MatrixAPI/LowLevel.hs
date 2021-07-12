@@ -79,7 +79,7 @@ loginPass user =
       usident_user = username user
     },
     lrq_password = password user,
-    lrq_initdispname = "Matel"
+    lrq_initial_device_display_name = "Matel"
   };
 
 -- | @sendSync@ accesses the Matrix "sync" function.
