@@ -16,23 +16,23 @@ import qualified Data.Text as T;
 
 -- DATATYPES -----------------------------------------------------------
 
--- | For all @'Identifier' k@, @k@ is a "non-human-readable" name, e.g.,
--- "@johnnykissass:matrix.varikose.god", as opposed to "Johnny Kissass".
+-- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
+-- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny Kissass".
 type Identifier = String;
--- | For all @'HumanReadableName' x@, @x@ is a "human-readable" name,
--- e.g., "Asshat", as opposed to "@asshat:matrix.varikose.god".
+-- | For all 'HumanReadableName' @x@, @x@ is a "human-readable" name,
+-- e.g., "Asshat", as opposed to "\@asshat:matrix.varikose.god".
 type HumanReadableName = Stringth;
 -- | Unencrypted/de-encrypted text-based message data is of type
 -- 'MessageText'.  This comment almost fit on one line.  #SAD!
 type MessageText = Stringth;
--- | For all @'UNIXTime' k@, @k@ is a seconds-since-the-UNIX-epoch-based
+-- | For all 'UNIXTime' @k@, @k@ is a seconds-since-the-UNIX-epoch-based
 -- timestamp.  The time zone is not standardised.
 type UNIXTime = Integer;
--- | For all @'ByteData' k@, @k@ is some data which is represented as a
+-- | For all 'ByteData' @k@, @k@ is some data which is represented as a
 -- string of bytes.  @k@ most likely contains text but may contain some
 -- other type of data, e.g., a PNG file.
 type ByteData = Stringth;
--- | For all @'CipherByteData' k@, @k@ is an encrypted sequence of
+-- | For all 'CipherByteData' @k@, @k@ is an encrypted sequence of
 -- bytes.  The decrypted @k@ is of type 'ByteData'.
 type CipherByteData = Stringth;
 -- | For all @'PublicKey' g@, @g@ is a public key.
