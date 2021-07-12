@@ -33,17 +33,17 @@ import Metal.Messages.Standard;
 type Screen = Widget ();
 -- | 'Winda' is equivalent to Brick's 'Widget ()'.
 --
--- For all @'Winda' k@, @k@ is a 'Widget' which should NOT be
+-- For all 'Winda' @k@, @k@ is a 'Widget' which should NOT be
 -- immediately drawn to the terminal; @k@ requires additional
 -- processing.
 type Winda = Widget ();
 
--- | For all @'MVar' 'Winda' k@, @summonTUI k@ converts the terminal
+-- | For all 'MVar' 'Winda' @k@, @summonTUI k@ converts the terminal
 -- into a Matel TUI which receives data from @k@.
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | For all @'Winda' g@, @toScreen g@ equals a 'Screen' which
+-- | For all 'Winda' @g@, @toScreen g@ equals a 'Screen' which
 -- accurately represents the content of @g@.
 --
 -- @toScreen k@ currently just equals a bordered @k@.
