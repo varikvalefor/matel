@@ -28,7 +28,7 @@ import Metal.Messages.Standard;
 
 -- | 'Screen' is equivalent to Brick's 'Widget ()'.
 --
--- For all @'Screen' x@, @x@ is TUI data which should be immediately
+-- For all 'Screen' @x@, @x@ is TUI data which should be immediately
 -- drawn.
 type Screen = Widget ();
 -- | 'Winda' is equivalent to Brick's 'Widget ()'.
