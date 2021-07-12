@@ -40,6 +40,10 @@ type Auth = User;
 authToken' :: User -> BS8.ByteString;
 authToken' = BS8.pack . ("Bearer " ++ ) . authToken;
 
+-- | @getAuthorisationDetails@ equals a 'User' value which contains
+-- authorisation-related information of Matel's user, e.g, the
+-- homeserver to which requests should be sent and the username of
+-- Matel's user.
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
   getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
