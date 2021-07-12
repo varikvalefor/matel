@@ -84,8 +84,8 @@ send k a
   target :: StdMess
   target = StdMess {body = read $ k !! 1};
   --
-  dest :: Identifier
-  dest = k !! 3
+  dest :: Room
+  dest = Room {roomId = k !! 3}
   --
   typeIs :: String -> Bool
   typeIs = (head k ==);

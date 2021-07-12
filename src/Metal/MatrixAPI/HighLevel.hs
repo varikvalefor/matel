@@ -88,7 +88,7 @@ memberComms a = error "memberComms is unimplemented.";
 --
 -- @isSentToRoom@ is currently nonfunctional.
 isSentToRoom :: Mess a => a -- ^ The message which should be sent
-             -> Identifier -- ^ Room ID of destination
+             -> Room -- ^ Destination room
              -> Auth -- ^ Authorisation crap
              -> IO ErrorCode;
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
