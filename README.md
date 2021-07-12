@@ -9,7 +9,7 @@ The goals of the development of Matel are as follows:
 * Matel is damn fast.
 * Matel's source code is readable.
 * Matel runs perfectly on the BSDs, the Linux distros, and Microsoft Windows.
-* The number of Matel's dependencies is minimised.
+* The number of Matel's dependencies is minimised.  (So far, so bad...)
 
 ## Pronunciation
 The official pronunciations of "Matel" include \/məˈtɛl\/, which is VARIK's preferred pronunciation, and \/meɪˌtəl\/.
