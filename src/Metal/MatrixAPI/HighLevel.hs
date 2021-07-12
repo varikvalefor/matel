@@ -52,8 +52,8 @@ memberRooms a =
         then error $ toString $ justLeft $ head getRmOut
         else return $ map (\(Right k) -> k) getRmOut
   where
-  listRoomsMentioned :: Either Stringth Stringth -> IO ([Either Stringth Room]);
-  listRoomsMentioned (Right k) = mapM (\k -> getRoomInformation Room {roomId = k} a) $ stringthToListRoomIdentifier k
+  listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
+  listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) k
   listRoomsMentioned (Left k) = return $ [Left k]
   --
   toString :: Stringth -> String

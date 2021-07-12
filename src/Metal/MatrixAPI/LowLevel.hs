@@ -118,9 +118,17 @@ sendSync since user =
 -- token which results from signing in to Matrix.  The 'Left' value of
 -- @sendJoinedRooms k@ exists only if an error is present... and equals a
 -- description of such an error.
-sendJoinedRooms :: User -> IO (Either Stringth Stringth);
+--
+-- The output 'Room' records are NOT completely filled; only the
+-- @roomId@ bits are actually defined.
+sendJoinedRooms :: User -> IO (Either Stringth [Room]);
 sendJoinedRooms a =
-  generateRequest >>= httpBS >>= return . responseToLeftRight
+  generateRequest >>= httpBS >>= \response ->
+    if getResponseStatusCode response == 200
+      then return $ Right $ toRooms $ joined_room $ fromJust $
+        A.decode $ BSL.fromStrict $ getResponseBody response
+      else return $ Left $ T.pack $ "Thus spake the homeserver: " ++
+        (show $ getResponseStatusCode response) ++ "."
   where
   generateRequest :: IO Request
   generateRequest =
@@ -128,7 +136,11 @@ sendJoinedRooms a =
     return .addRequestHeader "Authorization" (authToken' a)
   --
   fromString :: String -> BSL.ByteString
-  fromString = BSL.pack . map (toEnum . fromEnum);
+  fromString = BSL.pack . map (toEnum . fromEnum)
+  --
+  toRooms :: [String] -> [Room]
+  toRooms = map (\k -> Room {roomId = k});
+
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
@@ -171,12 +183,6 @@ sendTextMessage body dest user =
   --
   favoriteNoise :: IO String
   favoriteNoise = BSL.readFile "/dev/random" >>= return . ("$" ++) . map toEnum . take 64 . filter (`elem` (map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'])) . map fromEnum . BSL.unpack;
-
--- | Where @k@ is a JSON response to a "joined_rooms" query,
--- @stringthToListRoomIdentifier k@ equals a ['String']-based
--- representation of @k@.
-stringthToListRoomIdentifier :: Stringth -> [String];
-stringthToListRoomIdentifier = joined_room . fromJust . A.decode . BSL.fromStrict . encodeUtf8;
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
