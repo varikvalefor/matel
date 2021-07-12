@@ -12,7 +12,7 @@
  - -}
  
 module Metal.Base where
-import qualified Data.ByteString as BS;
+import qualified Data.Text as T;
 
 -- DATATYPES -----------------------------------------------------------
 
@@ -39,9 +39,9 @@ type CipherByteData = Stringth;
 type PublicKey = Stringth;
 -- | For all @'PrivateKey' g@, @g@ is a private key.
 type PrivateKey = Stringth;
--- | 'Stringth' is equivalent to 'BS.ByteString' and added only for the
--- sake of convenience.
-type Stringth = BS.ByteString;
+-- | 'Stringth' is equivalent to 'T.Text' and added only for the sake of
+-- convenience.
+type Stringth = T.Text;
 -- | 'ErrorCode' is used to contain descriptions of functions' errors,
 -- e.g., "the message cannot be posted; the homeserver is off-line."
 type ErrorCode = [Char];

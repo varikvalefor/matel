@@ -26,6 +26,7 @@ import qualified Data.Aeson as A;
 import Network.HTTP.Simple;
 import Data.List (elemIndex);
 import Metal.Messages.Standard;
+import qualified Data.Text as T;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
@@ -43,7 +44,7 @@ stillUnfinishedStayTuned = ();
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData -> PublicKey -> CipherByteData;
-encryptWKey text key = BS.pack [];
+encryptWKey text key = T.pack [];
 
 -- For all @('CipherByteData' z, 'PrivateKey' k)@, @decryptTextWKey z k@
 -- decrypts @z@ with @k@, outputting the resulting 'ByteData'-based
@@ -51,7 +52,7 @@ encryptWKey text key = BS.pack [];
 --
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
-decryptWKey crip key = BS.pack [];
+decryptWKey crip key = T.pack [];
 
 -- | For all 'User' @k@, if @username k@ and @password k@ are
 -- set, then @login k@ fetches an authorisation token for Matrix user
@@ -133,16 +134,16 @@ sendJoinedRooms a =
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
 -- status code of @k@.
-responseToLeftRight :: Response BS.ByteString -> Either BS.ByteString BS.ByteString;
+responseToLeftRight :: Response BS.ByteString -> Either Stringth Stringth;
 responseToLeftRight k
   | getResponseStatusCode k == 200 =
-    Right $ getResponseBody k
+    Right $ decodeUtf8 $ getResponseBody k
   | otherwise =
     Left $ fromString $ "Thus spake the homeserver: " ++
     (show $ getResponseStatusCode k) ++ "."
   where
   fromString :: String -> Stringth
-  fromString = BS.pack . map (toEnum . fromEnum);
+  fromString = T.pack . map (toEnum . fromEnum);
 
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
 -- Matrix room whose room ID is @b@ via the Matrix account which is
@@ -166,7 +167,7 @@ sendTextMessage body dest user =
   --
   sendreq :: BSL.ByteString
   sendreq =
-    BSL.append (BSL.append "{\"msgtype\": \"m.text\",\n\"body\": " (BSL.fromStrict body)) "}"
+    BSL.append (BSL.append "{\"msgtype\": \"m.text\",\n\"body\": " (BSL.fromStrict $ encodeUtf8 body)) "}"
   --
   favoriteNoise :: IO String
   favoriteNoise = BSL.readFile "/dev/random" >>= return . ("$" ++) . map toEnum . take 64 . filter (`elem` (map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'])) . map fromEnum . BSL.unpack;
@@ -175,7 +176,7 @@ sendTextMessage body dest user =
 -- @stringthToListRoomIdentifier k@ equals a ['String']-based
 -- representation of @k@.
 stringthToListRoomIdentifier :: Stringth -> [String];
-stringthToListRoomIdentifier = joined_room . fromJust . A.decode . BSL.fromStrict;
+stringthToListRoomIdentifier = joined_room . fromJust . A.decode . BSL.fromStrict . encodeUtf8;
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@

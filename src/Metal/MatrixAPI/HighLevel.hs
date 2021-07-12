@@ -22,8 +22,8 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
+import qualified Data.Text as T;
 import qualified Data.Either as EE;
-import qualified Data.ByteString as BS;
 
 -- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
@@ -56,8 +56,8 @@ memberRooms a =
   listRoomsMentioned (Right k) = mapM (\k -> getRoomInformation Room {roomId = k} a) $ stringthToListRoomIdentifier k
   listRoomsMentioned (Left k) = return $ [Left k]
   --
-  toString :: BS.ByteString -> String
-  toString = map (toEnum . fromEnum) . BS.unpack
+  toString :: Stringth -> String
+  toString = map (toEnum . fromEnum) . T.unpack
   --
   justRight :: Either a0 a1 -> a1
   justRight (Right a) = a

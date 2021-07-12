@@ -18,8 +18,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Metal.Auth (Auth, getAuthorisationDetails, authToken') where
+import Metal.Base;
 import Metal.User;
 import System.Environment;
+import qualified Data.Text as T;
+import qualified Data.Text.IO as T;
 import qualified Data.ByteString.Char8 as BS8;
 
 -- | For all 'Auth' @k@, @k@ contains the authorisation information
@@ -39,20 +42,20 @@ authToken' = BS8.pack . ("Bearer " ++ ) . authToken;
 
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
-  getEnv "HOME" >>= BS8.readFile . (++ "/.config/matel") >>= \cfg ->
+  getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
   return User {
-    username = BS8.unpack $ xOf "username: " cfg,
+    username = T.unpack $ xOf "username: " cfg,
     password = xOf "password: " cfg,
-    homeserver = BS8.unpack $ xOf "homeserver: " cfg,
-    authToken = BS8.unpack $ xOf "authtoken: " cfg
+    homeserver = T.unpack $ xOf "homeserver: " cfg,
+    authToken = T.unpack $ xOf "authtoken: " cfg
   };
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
 --
 -- @xOf@ is used to reduce the amount of boilerplate stuff.
-xOf :: BS8.ByteString -> BS8.ByteString -> BS8.ByteString;
+xOf :: Stringth -> Stringth-> Stringth;
 xOf query cfg =
-  BS8.drop l $ head $ filter ((== query) . BS8.take l) $ BS8.lines cfg
+  T.drop l $ head $ filter ((== query) . T.take l) $ T.lines cfg
   where
   l :: Int
-  l = BS8.length query;
+  l = T.length query;

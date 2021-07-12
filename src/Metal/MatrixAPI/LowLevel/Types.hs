@@ -44,16 +44,13 @@ data StringListRoomIdentifier = StringListRoomIdentifier {
 instance ToJSON LoginRequest where
   toJSON (LoginRequest lrq_type lrq_identifier lrq_password lrq_initdispname) =
     object [
-      "initial_device_display_name" .= (decodeUtf8 $ lrq_initdispname),
-      "password" .= (decodeUtf8 $ lrq_password),
+      "initial_device_display_name" .= lrq_initdispname,
+      "password" .= lrq_password,
       "identifier" .= object [
         "user" .= usident_user lrq_identifier,
-        "type" .= (decodeUtf8 $ usident_type lrq_identifier)
+        "type" .= usident_type lrq_identifier
       ],
-      "type" .= (decodeUtf8 $ lrq_type)];
+      "type" .= lrq_type];
 instance ToJSON UserIdentifier;
-
-instance ToJSON ByteString where
-  toJSON = String . decodeUtf8;
 
 instance FromJSON StringListRoomIdentifier;

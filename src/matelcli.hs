@@ -13,8 +13,10 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import qualified Data.ByteString.Char8 as BS8;
 import Metal.MatrixAPI.LowLevel (loginPass, sendSync);
+
+import qualified Data.Text as T;
+import qualified Data.Text.IO as T;
 
 main :: IO ();
 main =
@@ -34,7 +36,7 @@ determineAction x a
   | com == "grab" = grab stuff a
   | com == "login" = logIn a
   | com == "markread" = mkRead stuff a
-  | com == "sync" = eddySmith x a >>= BS8.putStrLn
+  | com == "sync" = eddySmith x a >>= T.putStrLn
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -131,8 +133,8 @@ dispError x
 logIn :: Auth -> IO ();
 logIn a = loginPass a >>= \result ->
   if isLeft result
-    then error $ "loginPass: " ++ BS8.unpack (fromLeft "" result)
-    else BS8.putStrLn $ fromRight "" result;
+    then error $ "loginPass: " ++ T.unpack (fromLeft "" result)
+    else T.putStrLn $ fromRight "" result;
 
 -- | @eddySmith@ is a high-level wrapper for @sendSync@.
 --
@@ -146,5 +148,5 @@ eddySmith t a
   where
   possiblyBreakDown :: Either Stringth Stringth -> IO Stringth
   possiblyBreakDown k
-    | isLeft k = error $ BS8.unpack $ fromLeft "Something went mad wrong." k
+    | isLeft k = error $ T.unpack $ fromLeft "Something went mad wrong." k
     | otherwise = return $ fromRight "Shoutouts to President WASHINGTON." k;
