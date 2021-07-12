@@ -103,7 +103,7 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 --
 -- @isSentToRoom_file@ is currently nonfunctional.
 isSentToRoom_file :: FilePath -- ^ Path of file which should be sent
-                  -> Identifier -- ^ Room ID of destination
+                  -> Room -- ^ Destination room
                   -> Auth -- ^ Authorisation crap
                   -> IO ErrorCode;
 isSentToRoom_file phile romhack a =
