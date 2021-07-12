@@ -20,6 +20,7 @@ import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Data.Maybe;
+import Data.Either;
 import Data.Text.Encoding;
 import qualified Data.Aeson as A;
 import Network.HTTP.Simple;
@@ -128,16 +129,6 @@ sendJoinedRooms a =
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
 
--- | @getRoomInformation room a@ equals a 'Room'-based representation of
--- the Matrix room whose internal Matrix ID is @room@ if the "yo, what
--- the hell is this thing" HTTP query works.
--- @getRoomInformation room a@ otherwise equals a description of the
--- problem which is encountered when the "describe this shiznit" query
--- is sent to the Matrix homeserver.
-getRoomInformation :: Identifier -> Auth -> IO (Either Stringth Room);
-getRoomInformation rommel mcdommel =
-  error "getRoomInformation is unimplemented.";
-
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
@@ -185,3 +176,44 @@ sendTextMessage body dest user =
 -- representation of @k@.
 stringthToListRoomIdentifier :: Stringth -> [String];
 stringthToListRoomIdentifier = joined_room . fromJust . A.decode . BSL.fromStrict;
+
+-- | @getRoomInformation room a@ equals a 'Room'-based representation of
+-- the Matrix room whose internal Matrix ID is specified within @room@
+-- if the "members" query works.
+-- @getRoomInformation room a@ otherwise equals a description of the
+-- problem which is encountered when the "members" query is sent to the
+-- Matrix homeserver.
+getRoomInformation :: Room -- ^ The room which should be described
+                   -> User -- ^ The user account which requests stuff
+                   -> IO (Either Stringth Room);
+getRoomInformation room a =
+  getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
+  getMembers >>= \memebears ->
+  if isLeft memebears
+    then return $ Left $ (\(Left k) -> k) memebears
+    else return $ Right $ Room {
+      roomId = roomId room,
+      isEncrypted = cryptoStatus,
+      publicKey = cryptoKey,
+      members = fromRight [] memebears
+    }
+  where
+  iD :: String
+  iD = roomId room
+  --
+  getEncryptionStatus :: IO (Bool, Maybe PublicKey)
+  getEncryptionStatus =
+    rq "/event/m.room.key" >>= \response ->
+    if getResponseStatusCode response == 200
+      then return (True, error "TODO: IMPLEMENT THIS THING!")
+      else return (False, Nothing)
+  --
+  getMembers :: IO (Either Stringth [User])
+  getMembers = error "ass"
+    rq "/members" >>= \response ->
+    if getResponseStatusCode response == 200
+      then error "TODO: Implement this thing."
+      else error $ "Thus spake the homeserver: " ++ (show $ getResponseStatusCode response) ++ "."
+  --
+  rq :: String -> IO (Response BS.ByteString)
+  rq k = parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId room ++ k) >>= httpBS . addRequestHeader "Authorization" (authToken' a);

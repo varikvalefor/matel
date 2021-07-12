@@ -53,7 +53,8 @@ memberRooms a =
         else return $ map (\(Right k) -> k) getRmOut
   where
   listRoomsMentioned :: Either Stringth Stringth -> IO ([Either Stringth Room]);
-  listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) $ stringthToListRoomIdentifier k
+  listRoomsMentioned (Right k) = mapM (\k -> getRoomInformation Room {roomId = k} a) $ stringthToListRoomIdentifier k
+  listRoomsMentioned (Left k) = return $ [Left k]
   --
   toString :: BS.ByteString -> String
   toString = map (toEnum . fromEnum) . BS.unpack
