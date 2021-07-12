@@ -38,7 +38,7 @@ Source-repository head
 executable matel
   main-is:          matel.hs
 
-  ghc-options:      -haddock -threaded -O2
+  ghc-options:      -haddock -threaded -O2 -dynamic
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
@@ -53,7 +53,7 @@ executable matel
 executable matelcli
   main-is:          matelcli.hs
 
-  ghc-options:      -haddock -threaded -O2
+  ghc-options:      -haddock -threaded -O2 -dynamic
   other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
