@@ -27,6 +27,7 @@ import Network.HTTP.Simple;
 import Data.List (elemIndex);
 import Metal.Messages.Standard;
 import qualified Data.Text as T;
+import Metal.OftenUsedFunctions;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
@@ -199,7 +200,7 @@ getRoomInformation room a =
       roomId = roomId room,
       isEncrypted = cryptoStatus,
       publicKey = cryptoKey,
-      members = fromRight [] memebears
+      members = justRight memebears
     }
   where
   iD :: String

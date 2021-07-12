@@ -22,6 +22,7 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
+import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Data.Either as EE;
 
@@ -50,20 +51,14 @@ memberRooms a =
     else listRoomsMentioned jrOut >>= \getRmOut ->
       if any EE.isLeft getRmOut
         then error $ toString $ justLeft $ head getRmOut
-        else return $ map (\(Right k) -> k) getRmOut
+        else return $ map justRight getRmOut
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
   listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) k
   listRoomsMentioned (Left k) = return $ [Left k]
   --
   toString :: Stringth -> String
-  toString = map (toEnum . fromEnum) . T.unpack
-  --
-  justRight :: Either a0 a1 -> a1
-  justRight (Right a) = a
-  --
-  justLeft :: Either a0 a1 -> a0
-  justLeft (Left a) = a;
+  toString = map (toEnum . fromEnum) . T.unpack;
 
 -- | @memberSpaces x@ equals the IO-monadic list of all spaces of which
 -- Matel's user, whose login information is contained within @x@, is a

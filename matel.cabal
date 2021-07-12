@@ -43,7 +43,8 @@ executable matel
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
                     Metal.Space, TUI, Colour, Metal.User,
-                    Metal.MatrixAPI.LowLevel.Types, Metal.Auth
+                    Metal.MatrixAPI.LowLevel.Types, Metal.Auth,
+                    Metal.OftenUsedFunctions
 
   build-depends:    base ^>=4.14.1.0, brick, bytestring, vty, aeson,
                     http-conduit, text, utf8-string
@@ -58,7 +59,7 @@ executable matelcli
                     Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
                     Metal.Messages.Encrypted, Metal.Community,
                     Metal.Space, Metal.MatrixAPI.LowLevel.Types,
-                    Metal.User, Metal.Auth
+                    Metal.User, Metal.Auth, Metal.OftenUsedFunctions
 
   build-depends:    base ^>=4.14.1.0, bytestring, http-conduit, aeson,
                     text, utf8-string
