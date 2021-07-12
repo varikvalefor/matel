@@ -35,9 +35,9 @@ type ByteData = Stringth;
 -- | For all 'CipherByteData' @k@, @k@ is an encrypted sequence of
 -- bytes.  The decrypted @k@ is of type 'ByteData'.
 type CipherByteData = Stringth;
--- | For all @'PublicKey' g@, @g@ is a public key.
+-- | For all 'PublicKey' @g@, @g@ is a public key.
 type PublicKey = Stringth;
--- | For all @'PrivateKey' g@, @g@ is a private key.
+-- | For all 'PrivateKey' @g@, @g@ is a private key.
 type PrivateKey = Stringth;
 -- | 'Stringth' is equivalent to 'T.Text' and added only for the sake of
 -- convenience.
