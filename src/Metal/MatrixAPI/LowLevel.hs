@@ -29,14 +29,14 @@ import qualified Data.ByteString.Lazy as BSL;
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
 
--- For all @('ByteData' z, 'PublicKey' k)@, @encryptWKey z k@ encrypts
+-- | For all @('ByteData' z, 'PublicKey' k)@, @encryptWKey z k@ encrypts
 -- @z@ with @k@, outputting the resulting ciphertext.
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData -> PublicKey -> CipherByteData;
 encryptWKey text key = T.pack [];
 
--- For all @('CipherByteData' z, 'PrivateKey' k)@, @decryptTextWKey z k@
+-- | For all @('CipherByteData' z, 'PrivateKey' k)@, @decryptTextWKey z k@
 -- decrypts @z@ with @k@, outputting the resulting 'ByteData'-based
 -- data.
 --
