@@ -10,8 +10,11 @@ import Control.Concurrent;
 import TUI;
 
 -- | Tap tap tap
+--
 -- Keyboard tap tap
+--
 -- Documentation?
+--
 -- Write your own crap.
 main :: IO ();
 main = newEmptyMVar >>= \comVar ->
