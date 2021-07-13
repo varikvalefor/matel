@@ -1,3 +1,12 @@
+-- | matelcli is a command-line interface for Matrix which uses Matel's
+-- underlying "Metal" infrastructure.
+--
+-- The user-facing documentation/specification of the user interface is
+-- available in matelcli's manual page, which is by default located at
+-- @[MATEL GIT REPOSITORY DIRECTORY]/matelcli.1@.  This documentation is
+-- only of particular interest to men who wish to modify matelcli or
+-- understand the inner workings of matelcli.
+
 {-# LANGUAGE OverloadedStrings #-}
 
 import Text.Read;
