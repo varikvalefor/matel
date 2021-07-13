@@ -1,4 +1,4 @@
--- | 'Metal.Room' contains the 'Room' datatype.
+-- | Metal.Room contains the 'Room' datatype.
 
 module Metal.Room where
 import Metal.Base;

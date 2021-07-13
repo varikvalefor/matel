@@ -1,4 +1,4 @@
--- | 'Metal.Messages.Standard' contains the 'StdMess' record type.
+-- | Metal.Messages.Standard contains the 'StdMess' record type.
 
 {-# LANGUAGE DeriveAnyClass #-}
 

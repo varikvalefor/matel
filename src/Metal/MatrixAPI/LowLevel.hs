@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | 'Metal.MatrixAPI.LowLevel' contains functions which directly access
+-- | Metal.MatrixAPI.LowLevel contains functions which directly access
 -- the Matrix API via HTTP requests, as opposed to being abstracted.
 
 module Metal.MatrixAPI.LowLevel where

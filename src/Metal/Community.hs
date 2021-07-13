@@ -1,4 +1,4 @@
--- | 'Metal.Community' contains the 'Community' datatype.
+-- | Metal.Community contains the 'Community' datatype.
 
 module Metal.Community where
 import Metal.Base;

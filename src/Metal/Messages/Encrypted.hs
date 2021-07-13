@@ -1,4 +1,4 @@
--- | 'Metal.Messages.Encrypted' contains the source code of the
+-- | Metal.Messages.Encrypted contains the source code of the
 -- 'CryptoMess' record type.
 
 {-# LANGUAGE DeriveAnyClass #-}

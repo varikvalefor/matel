@@ -1,5 +1,5 @@
--- 'Metal.MatrixAPI.LowLevel.Types' contains the datatypes which are of
--- use only to 'Metal.MatrixAPI.LowLevel'.
+-- Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
+-- use only within Metal.MatrixAPI.LowLevel.
 
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}

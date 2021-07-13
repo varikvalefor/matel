@@ -1,4 +1,4 @@
--- | 'Metal.Base' contains the core data types of Metal.
+-- | Metal.Base contains the core data types of Metal.
 
 module Metal.Base where
 import qualified Data.Text as T;

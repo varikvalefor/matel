@@ -1,4 +1,4 @@
--- | 'Metal.MatrixAPI.HighLevel' contains functions which use the Matrix
+-- | Metal.MatrixAPI.HighLevel contains functions which use the Matrix
 -- API by chaining together relatively low-level functions for the
 -- Matrix API.
 

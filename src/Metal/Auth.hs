@@ -1,4 +1,4 @@
--- | 'Metal.Auth' contains Matel's 'Auth' datatype, which is used for
+-- | Metal.Auth contains Matel's 'Auth' datatype, which is used for
 -- the authentication of Matel's user, as well as
 -- 'getAuthorisationDetails', which fetches Matel's user's authorisation
 -- information.
