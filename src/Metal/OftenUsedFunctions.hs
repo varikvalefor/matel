@@ -1,16 +1,5 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains some boilerplate functions.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains some functions which are used by numerous modules
- - of Matel.
- - -}
+-- | 'Metal.OftenUsedFunctions' contains some functions which are used
+-- by numerous modules of Matel.
 
 module Metal.OftenUsedFunctions where
 import Data.Either;

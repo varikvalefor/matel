@@ -1,16 +1,6 @@
-{- |
- - Module      :  $Header$
- - Description :  $Header$ contains "high-level" functions for Matrix.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
- -
- - $Header$ contains functions which use the Matrix API by chaining
- - together relatively low-level functions for the Matrix API.
- - -}
+-- | 'Metal.MatrixAPI.HighLevel' contains functions which use the Matrix
+-- API by chaining together relatively low-level functions for the
+-- Matrix API.
 
  {-# LANGUAGE OverloadedStrings #-}
 

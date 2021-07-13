@@ -1,18 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-{- |
- - Module      :  $Header$
- - Description :  $Header$ contains "low-level" functions for Matrix.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
- -
- - $Header$ contains functions which directly access the Matrix API via
- - HTTP requests, as opposed to being abstracted.
- - -}
+-- | 'Metal.MatrixAPI.LowLevel' contains functions which directly access
+-- the Matrix API via HTTP requests, as opposed to being abstracted.
 
 module Metal.MatrixAPI.LowLevel where
 import Metal.Auth;

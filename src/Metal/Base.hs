@@ -1,16 +1,5 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains Metal's core data types.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains the core data types of Metal.
- - -}
- 
+-- | 'Metal.Base' contains the core data types of Metal.
+
 module Metal.Base where
 import qualified Data.Text as T;
 

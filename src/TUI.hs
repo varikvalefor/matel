@@ -1,18 +1,8 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains the TUI-related bits of Matel.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains some functions which Matel uses when drawing stuff
- - to the terminal.
- - Stuff is placed into $Header$ to ensure that Matel's source code is
- - at least somewhat organised.
- - -}
+-- | 'TUI' contains some functions which Matel uses when drawing stuff
+-- to the terminal.
+--
+-- Stuff is placed into 'TUI' to ensure that Matel's source code is at
+-- least somewhat organised.
 
 module TUI where
 import Brick;

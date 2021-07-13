@@ -1,15 +1,5 @@
-{- |
- - Module      :  $Header$
- - Description :  $Header$ describes the CryptoMess record type.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
- -
- - $Header$ contains the source code of the CryptoMess record type.
- - -}
+-- | 'Metal.Messages.Encrypted' contains the source code of the
+-- 'CryptoMess' record type.
 
 {-# LANGUAGE DeriveAnyClass #-}
 

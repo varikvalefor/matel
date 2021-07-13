@@ -1,19 +1,7 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains Metal's "Auth" datatype and
- -              related functions.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains Matel's "Auth" datatype, which is used for
- - the authentication of Matel's user, as well as
- - getAuthorisationDetails, which fetches Matel's user's authorisation
- - information.
- - -}
+-- | 'Metal.Auth' contains Matel's 'Auth' datatype, which is used for
+-- the authentication of Matel's user, as well as
+-- 'getAuthorisationDetails', which fetches Matel's user's authorisation
+-- information.
 
 {-# LANGUAGE OverloadedStrings #-}
 

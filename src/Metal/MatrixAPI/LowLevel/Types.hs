@@ -1,16 +1,5 @@
-{- |
- - Module      :  $Header$
- - Description :  $Header$ contains some types which LowLevel uses.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
- -
- - $Header$ contains the datatypes which are of use only to
- - Metal.MatrixAPI.LowLevel.
- - -}
+-- 'Metal.MatrixAPI.LowLevel.Types' contains the datatypes which are of
+-- use only to 'Metal.MatrixAPI.LowLevel'.
 
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}

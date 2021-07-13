@@ -1,15 +1,4 @@
-{- |
- - Module      :  $Header$
- - Description :  $Header$ defines the StdMess record type.
- - Copyright   :  (c) Varik Valefor
- - License     :  BSD-3-Clause
- -
- - Maintainer  :  varikvalefor@aol.com
- - Stability   :  unstable
- - Portability :  portable
- -
- - $Header$ contains the definition of the StdMess record type.
- - -}
+-- | 'Metal.Messages.Standard' contains the 'StdMess' record type.
 
 {-# LANGUAGE DeriveAnyClass #-}
 

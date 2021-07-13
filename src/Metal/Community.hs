@@ -1,15 +1,4 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains the Community datatype.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains the Community datatype.
- - -}
+-- | 'Metal.Community' contains the 'Community' datatype.
 
 module Metal.Community where
 import Metal.Base;

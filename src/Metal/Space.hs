@@ -1,15 +1,4 @@
-{- |
- - Module:      $Header$
- - Description: $Header$ contains the Space datatype.
- - Copyright:   (c) Varik Valefor
- - License:     BSD-3-Clause
- -
- - Maintainer:  varikvalefor@aol.com
- - Stability:   unstable
- - Portability: portable
- -
- - $Header$ contains the Space datatype.
- - -}
+-- | 'Metal.Space' contains the 'Space' datatype.
 
 module Metal.Space where
 import Metal.Base;
