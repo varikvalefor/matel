@@ -1,3 +1,9 @@
+-- | This module contains the most high-level source code of the Matel
+-- TUI client.
+--
+-- No documentation regarding the user interface is provided; the
+-- layout of the user interface is unknown.
+
 import Metal.Base;
 import Control.Concurrent;
 import TUI;
