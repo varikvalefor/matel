@@ -4,6 +4,7 @@
 -- No documentation regarding the user interface is provided; the
 -- layout of the user interface is unknown.
 
+module Main where
 import Metal.Base;
 import Control.Concurrent;
 import TUI;
