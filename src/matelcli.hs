@@ -138,6 +138,8 @@ dispError x
   | x == "" = return ()
   | otherwise = putStrLn x >> exitFailure;
 
+-- | @logIn k@ generates an authorisation token for the user which is
+-- specified in @k@.
 logIn :: Auth -> IO ();
 logIn a = loginPass a >>= \result ->
   if isLeft result
