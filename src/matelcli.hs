@@ -6,9 +6,9 @@
 -- @[MATEL GIT REPOSITORY DIRECTORY]/matelcli.1@.  This documentation is
 -- only of particular interest to men who wish to modify matelcli or
 -- understand the inner workings of matelcli.
-
 {-# LANGUAGE OverloadedStrings #-}
 
+module Main where
 import Text.Read;
 import Metal.Base;
 import Metal.Room;
