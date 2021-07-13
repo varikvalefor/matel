@@ -1,3 +1,5 @@
+-- | Metal.User contains the 'User' datatype."
+
 module Metal.User where
 import Metal.Base;
 import Data.Maybe (fromJust);
