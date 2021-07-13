@@ -10,6 +10,7 @@ import Metal.Base;
 data CryptoMess = CryptoMess {
   -- | For all 'CryptoMess' @k@, @ciphertext k@ equals the content of
   -- the "ciphertext" field of @k@'s source.
+  --
   -- [SNAKE ROAD SIGN] Remember that the decrypted ciphertext may
   -- actually contain an attachment, as opposed to a text message.
   ciphertext :: Stringth,
