@@ -211,3 +211,60 @@ getRoomInformation room a =
   --
   rq :: String -> IO (Response BS.ByteString)
   rq k = parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId room ++ k) >>= httpBS . addRequestHeader "Authorization" (authToken' a);
+
+-- | Where @a@ is the authorisation information of Matel's user, @i@ is
+-- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
+-- OF INVITE), and @a@ is a 'Room' whose @roomId@ value is appropriately
+-- defined, @sendJoin t i a@ sends the
+-- @POST /_matrix/client/r0/rooms/{roomId}/join@ command to Matel's
+-- user's homeserver, thereby making Matel's user join the specified
+-- room @t@.
+--
+-- If the command is successful, then the output is Nothing.  The output
+-- otherwise equals a terse description of the error.
+sendJoin :: Room -- ^ The 'Room' which should be joined
+         -> Maybe (User, String, String)
+            -- ^ The user which sends the invite, the state key of the
+            -- invite, and the signature of the invite, respectively, if
+            -- the room is not public -- otherwise, Nothing
+         -> User -- ^ The authorisation information of Matel's user
+         -> IO (Maybe String);
+sendJoin r i a =
+  generateRequest >>= httpBS >>= \theResponse ->
+  if getResponseStatusCode theResponse == 200
+    then return Nothing
+    else return $ Just $ "Thus spake the homeserver: " ++
+      (show $ getResponseStatusCode theResponse)
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest ("POST /_matrix/client/r0/rooms/" ++ roomId r ++ "/join") >>=
+    return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS joinReq
+  --
+  joinReq :: BSL.ByteString
+  joinReq
+    | isNothing i = fromString ""
+    | otherwise = fromString $
+      "{\n\t" ++
+        "\"third_party_signed\": {\n\t\t" ++
+          "\"sender\": " ++ show (username inviter) ++ ",\n\t\t" ++
+          "\"mxid\": " ++ show (username a) ++ ",\n\t\t" ++
+          "\"token\": " ++ show inviteStateKey ++ "\n\t\t" ++
+          "\"signatures\": {\n\t\t\t" ++
+            show (homeserver inviter) ++ ": {\n\t\t\t\t" ++
+              "\"ed25519:0\": " ++ signature ++ ",\n\t\t\t" ++
+            "}\n\t\t" ++
+          "}\n\t" ++
+        "}\n" ++
+      "}"
+  inviter :: User
+  inviter = maybe User {} (\(a,b,c) -> a) i
+  --
+  inviteStateKey :: String
+  inviteStateKey = maybe "" (\(a,b,c) -> b) i
+  --
+  signature :: String
+  signature = maybe "" (\(a,b,c) -> c) i
+  --
+  fromString :: String -> BSL.ByteString
+  fromString = BSL.pack . map (toEnum . fromEnum);
