@@ -238,7 +238,7 @@ sendJoin r i a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("POST /_matrix/client/r0/rooms/" ++ roomId r ++ "/join") >>=
+    parseRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join") >>=
     return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS joinReq
   --
   joinReq :: BSL.ByteString
