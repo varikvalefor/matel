@@ -144,6 +144,30 @@ The
 value is otherwise unmentioned in the
 .Dq sync
 request.
+.Sh JOINING ROOMS
+.Nm matelcli join
+.Ar room
+.Op Ar inviter_id token signature
+.Pp
+Matrix rooms are joined via the
+.Nm join
+command.
+.Pp
+If the number of arguments equals 1, then
+.Nm matelcli
+attempts to add the user to the room whose internal Matrix ID is
+.Ar room .
+.Pp
+If the number of arguments equals 4, then
+.Nm matelcli
+attempts to add the user to the room whose internal Matrix ID is
+.Ar room
+such that the Matrix API query mentions the inviter's user ID
+.Ar inviter_id ,
+the token of the invitation
+.Ar token ,
+and the signature of the invitation
+.Ar signature .
 .Sh AUTHOR
 .Nm matelcli
 is maintained by

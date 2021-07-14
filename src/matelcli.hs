@@ -22,7 +22,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import Metal.MatrixAPI.LowLevel (loginPass, sendSync);
+import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin);
 
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
@@ -46,6 +46,7 @@ determineAction x a
   | com == "login" = logIn a
   | com == "markread" = mkRead stuff a
   | com == "sync" = eddySmith x a >>= T.putStrLn
+  | com == "join" = runJoin stuff a
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -160,3 +161,25 @@ eddySmith t a
   possiblyBreakDown k
     | isLeft k = error $ T.unpack $ fromLeft "Something went mad wrong." k
     | otherwise = return $ fromRight "Shoutouts to President WASHINGTON." k;
+
+-- | @runJoin@ is a relatively high-level interface for the Matrix API
+-- "join" command.
+runJoin :: [String] -> Auth -> IO ();
+runJoin t a
+  | length t == 0 = error $ "Idiot!  How am I to join an " ++
+    "unspecified room for you?  My strength is simplicity.  I can't " ++
+    "work with this shit."
+  | otherwise = sendJoin room inviteInfo a >>= maybe (return ()) error
+  where
+  room :: Room
+  room = Room {roomId = t !! 0}
+  --
+  inviteInfo :: Maybe (User, String, String)
+  inviteInfo
+    | length t == 4 = Just (User {username = t !! 1}, t !! 2, t !! 3)
+    | not (length t `elem` [1,4]) = error $ "You have managed to " ++
+      "completely disregard the information which is specified in" ++
+      "my manual page by inputting a weird number of arguments, " ++
+      "which is actually not terribly impressive... but is still a " ++
+      "bit irritating."
+    | otherwise = Nothing;
