@@ -22,7 +22,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin);
+import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin, leave);
 
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
@@ -47,6 +47,7 @@ determineAction x a
   | com == "markread" = mkRead stuff a
   | com == "sync" = eddySmith x a >>= T.putStrLn
   | com == "join" = runJoin stuff a
+  | com == "leave" = runLeave stuff a
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -183,3 +184,15 @@ runJoin t a
       "which is actually not terribly impressive... but is still a " ++
       "bit irritating."
     | otherwise = Nothing;
+
+-- | @runLeave@ is a relatively high-level interface for the @'leave'@
+-- command.
+--
+-- The first element of the first argument is the room ID of the room
+-- which the user should leave.
+runLeave :: [String] -> Auth -> IO ();
+runLeave g a
+  | g == [] = error $ "I seriously doubt that you want to leave all " ++
+    "Matrix rooms or something."
+  | otherwise = leave Room {roomId = head g} a >>=
+    maybe (return ()) error;

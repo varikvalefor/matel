@@ -168,6 +168,21 @@ the token of the invitation
 .Ar token ,
 and the signature of the invitation
 .Ar signature .
+.Sh LEAVING ROOMS
+.Nm matelcli leave
+.Ar roomid
+.Pp
+The
+.Nm leave
+command is used to leave Matrix rooms.
+.Pp
+If command
+.Nm leave Ar roomid
+is entered and all goes well, then Matel's user leaves the Matrix room
+whose internal ID is
+.Ar roomid .
+If something breaks, then a description of the breakage is output to
+the standard error.
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
