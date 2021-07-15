@@ -183,6 +183,19 @@ whose internal ID is
 .Ar roomid .
 If something breaks, then a description of the breakage is output to
 the standard error.
+.Sh KICKING ROOM MEMBERS
+.Nm matelcli kick Ar user roomid
+.Pp
+Assuming that Matel's user has the appropriate permissions and
+everything else goes well
+.Nm matelcli kick Ar user roomid
+kicks the user whose Matrix ID is
+.Ar user
+from the Matrix room whose internal Matrix ID is
+.Ar roomid .
+.Pp
+If some weird error is encountered, then a description of this error is
+written to the standard output.
 .Sh AUTHOR
 .Nm matelcli
 is maintained by

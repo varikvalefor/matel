@@ -22,7 +22,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin, leave);
+import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin, leave, kick);
 
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
@@ -48,6 +48,7 @@ determineAction x a
   | com == "sync" = eddySmith x a >>= T.putStrLn
   | com == "join" = runJoin stuff a
   | com == "leave" = runLeave stuff a
+  | com == "kick" = runKick stuff a
   | otherwise = error $ "An unrecognised command is input.  " ++
     "RTFM, punk."
   where
@@ -196,3 +197,14 @@ runLeave g a
     "Matrix rooms or something."
   | otherwise = leave Room {roomId = head g} a >>=
     maybe (return ()) error;
+
+-- | @runKick@ is a relatively high-level interface for the @'kick'@
+-- command.
+--
+-- @runKick [user, room, reason]@ kicks user @user@ from the Matrix room
+-- @room@, justifying the kicking with @reason@.
+runKick :: [String] -> Auth -> IO ();
+runKick k a
+  | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
+    "giving me some actual directions."
+  | otherwise = kick User {username = k !! 0} Room {roomId = k !! 1} (k !! 2) a >>= maybe (return ()) error;
