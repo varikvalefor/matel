@@ -345,3 +345,29 @@ kick tarjay rome ree a =
       "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
       "\"reason\": " ++ show ree ++ "\n" ++
     "}";
+
+-- | @leave@ implements the Matrix API's
+-- "@POST /_matrix/client/r0/rooms/{roomId}/leave@" command.
+--
+-- The first argument specifies the room which the user leaves.  Only
+-- the @roomId@ value must be defined.
+--
+-- The second argument is the authorisation information which is used to
+-- actually leave the room.
+--
+-- A non-'Nothing' output is given iff an error is encountered.  If such
+-- a thing is output, then this output describes such an error.
+leave :: Room -- ^ The room which should be left
+      -> Auth -- ^ The authorisation information
+      -> IO (Maybe String);
+leave r a =
+  generateRequest >>= httpBS >>= \theResponse ->
+  if getResponseStatusCode theResponse == 200
+    then return Nothing
+    else return $ Just $ "Thus spake the homeserver: " ++
+      (show $ getResponseStatusCode theResponse) ++ "."
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave") >>=
+    return . addRequestHeader "Authorization" (authToken' a);
