@@ -303,3 +303,45 @@ getDisplayName u a =
   generateRequest :: IO Request
   generateRequest =
     parseRequest $ "GET https://" ++ homeserver a ++ "/_matrix/client/r0/profile/" ++ username u ++ "/displayname";
+
+-- | @kick@ implements the Matrix API's
+-- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
+--
+-- The first argument describes the user which is to be kicked.  Only
+-- the @username@ field is used.
+--
+-- The second argument describes the room from which the user should be
+-- removed.  Only the @roomId@ field is used.
+--
+-- The third argument is the reason for the user's removal.
+--
+-- The fourth argument is the authorisation information which is used
+-- to run the command.
+--
+-- An error message is provided iff an error is encountered.
+kick :: User -- ^ A description of the user which should be "kicked"
+     -> Room -- ^ The room from which the user should be removed
+     -> String -- ^ The reason for the removal of the user
+     -> Auth -- ^ The authorisation information
+     -> IO (Maybe String);
+kick tarjay rome ree a =
+  generateRequest >>= httpBS >>= \theResponse ->
+  if getResponseStatusCode theResponse == 200
+    then return Nothing
+    else return $ Just $ "Thus spake the homeserver: " ++
+      (show $ getResponseStatusCode theResponse) ++ "."
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick") >>=
+    return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS kickReq
+  --
+  fromString :: String -> BSL.ByteString
+  fromString = BSL.pack . map (toEnum . fromEnum)
+  --
+  kickReq :: BSL.ByteString
+  kickReq = fromString $
+    "{\n\t" ++
+      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
+      "\"reason\": " ++ show ree ++ "\n" ++
+    "}";
