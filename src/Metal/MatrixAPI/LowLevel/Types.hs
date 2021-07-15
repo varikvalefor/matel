@@ -31,8 +31,14 @@ data StringListRoomIdentifier = StringListRoomIdentifier {
   joined_room :: [String]
 } deriving (Eq, Read, Show);
 
+data DisplayNameResponse = DisplayNameResponse {
+  dnr_displayname :: Stringth
+} deriving (Eq, Read, Show);
+
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''LoginRequest;
 
 deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
 
 deriveJSON defaultOptions ''StringListRoomIdentifier;
+
+deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;

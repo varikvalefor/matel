@@ -268,3 +268,38 @@ sendJoin r i a =
   --
   fromString :: String -> BSL.ByteString
   fromString = BSL.pack . map (toEnum . fromEnum);
+
+-- | @getDisplayName@ implements the Matrix API's
+-- "@GET /_matrix/client/r0/profile/{userId}/displayname@" command.
+--
+-- The first argument describes the user whose display name should be
+-- fetched.  Only the @username@ field is used.
+--
+-- The second argument describes the user of Matel.  This value is used
+-- to determine the FQDN of the server which should be queried.  Because
+-- no actual authorisation information is used, only the @homeserver@
+-- value must be specified.
+--
+-- If the query returns a status code of 200, then the resulting
+-- @displayname@ is added to the input 'User' value and returned.
+--
+-- If the query returns a status code of 404, then @getDisplayName@
+-- assumes that the user has not set a display name and returns the
+-- input thing @k@ such that @displayname k == Nothing@.
+getDisplayName :: User -- ^ The user whose display name is output
+               -> Auth -- ^ The authorisation information of Matel's
+                       -- user, used for determining the server which
+                       -- should be contacted
+               -> IO (Either String User);
+getDisplayName u a =
+  generateRequest >>= httpBS >>= \theResponse ->
+  if getResponseStatusCode theResponse == 200
+    then return $ Right $ u {displayname = Just $ dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
+    else if getResponseStatusCode theResponse == 404
+      then return $ Right $ u {displayname = Nothing}
+      else return $ Left $ "Thus spake the homeserver: " ++
+        (show $ getResponseStatusCode theResponse) ++ "."
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    parseRequest $ "GET https://" ++ homeserver a ++ "/_matrix/client/r0/profile/" ++ username u ++ "/displayname";

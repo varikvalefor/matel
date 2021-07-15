@@ -19,5 +19,12 @@ data User = User {
   -- | @authToken k@ equals the authorisation token of @k@.
   --
   -- Like @password@, @authToken@ is used only for the user of Matel.
-  authToken :: String
+  authToken :: String,
+  -- | @displayname tpForMyBunghole@ equals the "display name" of
+  -- @tpForMyBunghole@, e.g., "Johnny Kissass".
+  --
+  -- This value is a 'Maybe' type because there exists a Matrix user
+  -- account such that this Matrix user account does not have a display
+  -- name.
+  displayname :: Maybe Stringth
 } deriving (Eq, Read, Show);
