@@ -15,14 +15,10 @@ import Metal.Room;
 import Metal.User;
 import Metal.Messages.Standard;
 
--- | 'Screen' is equivalent to Brick's 'Widget ()'.
---
--- For all 'Screen' @x@, @x@ is TUI data which should be immediately
+-- | For all 'Screen' @x@, @x@ is TUI data which should be immediately
 -- drawn.
 type Screen = Widget ();
--- | 'Winda' is equivalent to Brick's 'Widget ()'.
---
--- For all 'Winda' @k@, @k@ is a 'Widget' which should NOT be
+-- | For all 'Winda' @k@, @k@ is a 'Widget' which should NOT be
 -- immediately drawn to the terminal; @k@ requires additional
 -- processing.
 type Winda = Widget ();
