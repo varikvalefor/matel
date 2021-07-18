@@ -5,7 +5,6 @@
 -- default colour scheme may not work well with all terminals.  Luckily,
 -- VARIK, being a cool guy, writes the Colour module such that modifying
 -- Matel's colour scheme should be pretty easy.
-
 module Colour where
 import Brick.Util (fg);
 import Graphics.Vty.Attributes (Attr);
