@@ -3,7 +3,6 @@
 --
 -- Stuff is placed into TUI to ensure that Matel's source code is at
 -- least somewhat organised.
-
 module TUI where
 import Brick;
 import Brick.Widgets.Center;
