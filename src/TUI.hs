@@ -22,13 +22,13 @@ type Screen = Widget ();
 -- processing.
 type Winda = Widget ();
 
--- | For all 'MVar' 'Winda' @k@, @summonTUI k@ converts the terminal
--- into a Matel TUI which receives data from @k@.
+-- | @summonTUI k@ converts the terminal into a Matel TUI which receives
+-- data from @k@.
 summonTUI :: MVar Winda -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | For all 'Winda' @g@, @toScreen g@ equals a 'Screen' which
--- accurately represents the content of @g@.
+-- | @toScreen g@ equals a 'Screen' which accurately represents the
+-- content of @g@.
 --
 -- @toScreen k@ currently just equals a bordered @k@.
 toScreen :: Winda -> Screen;
@@ -43,8 +43,7 @@ temporaryMessage = center $ str $
   "Matel is unfinished -- check back later.\n" ++
   "Alternatively, contribute to the project!";
 
--- | For all @(['Room'] r, ['StdMess'] t, ['User'] x)@,
--- @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
+-- | @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
 -- @x@.
 --
 -- @dataToWinda@ is currently unimplemented.
