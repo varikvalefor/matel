@@ -22,6 +22,7 @@ main = newEmptyMVar >>= \comVar ->
 
 -- | For all 'MVar' 'Winda' @k@, @fetchData k@ collects data from
 -- Matrix, parses this data appropriately, and outputs this data to @k@.
+--
 -- @fetchData@ is currently unimplemented.
 fetchData :: MVar Winda -> IO ();
 fetchData = flip putMVar temporaryMessage;
