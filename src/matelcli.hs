@@ -1,11 +1,11 @@
--- | matelcli is a command-line interface for Matrix which uses Matel's
--- underlying "Metal" infrastructure.
+-- | @matelcli@ is a command-line interface for Matrix which uses
+-- Matel's underlying "Metal" infrastructure.
 --
 -- The user-facing documentation/specification of the user interface is
--- available in matelcli's manual page, which is by default located at
+-- available in @matelcli@'s manual page, which is by default located at
 -- @[MATEL GIT REPOSITORY DIRECTORY]/matelcli.1@.  This documentation is
--- only of particular interest to men who wish to modify matelcli or
--- understand the inner workings of matelcli.
+-- only of particular interest to men who wish to modify @matelcli@ or
+-- understand the inner workings of @matelcli@.
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where
@@ -34,8 +34,8 @@ main =
   determineAction command auth;
 
 -- | @determineAction@ is used to determine the action which should be
--- taken by matelcli, e.g., listing stuff or sending a message.
-determineAction :: [String] -- ^ The input matelcli command
+-- taken by @matelcli@, e.g., listing stuff or sending a message.
+determineAction :: [String] -- ^ The input @matelcli@ command
                 -> Auth -- ^ Matel user's authorisation information
                 -> IO ();
 determineAction x a
