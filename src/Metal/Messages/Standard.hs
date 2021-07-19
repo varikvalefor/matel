@@ -49,5 +49,4 @@ data StdMess = StdMess {
   -- the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
   fmt :: MessageFmt
-
 } deriving (Eq, Mess, Read, Show);
