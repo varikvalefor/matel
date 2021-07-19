@@ -294,9 +294,9 @@ getDisplayName :: User -- ^ The user whose display name is output
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return $ Right $ u {displayname = Just $ dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
+    then return $ Right $ u {displayname = dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
     else if getResponseStatusCode theResponse == 404
-      then return $ Right $ u {displayname = Nothing}
+      then return $ Right $ u {displayname = T.pack $ username u}
       else return $ Left $ "Thus spake the homeserver: " ++
         (show $ getResponseStatusCode theResponse) ++ "."
   where

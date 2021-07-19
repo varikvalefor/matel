@@ -26,5 +26,5 @@ data User = User {
   -- This value is a 'Maybe' type because there exists a Matrix user
   -- account such that this Matrix user account does not have a display
   -- name.
-  displayname :: Maybe Stringth
+  displayname :: Stringth
 } deriving (Eq, Read, Show);
