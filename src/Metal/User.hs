@@ -22,9 +22,5 @@ data User = User {
   authToken :: String,
   -- | @displayname tpForMyBunghole@ equals the "display name" of
   -- @tpForMyBunghole@, e.g., "Johnny Kissass".
-  --
-  -- This value is a 'Maybe' type because there exists a Matrix user
-  -- account such that this Matrix user account does not have a display
-  -- name.
   displayname :: Stringth
 } deriving (Eq, Read, Show);
