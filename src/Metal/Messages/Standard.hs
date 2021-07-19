@@ -13,10 +13,8 @@ data MessageType = TextInnit | Image | Attach | Sticker
 -- message.  @k@ may be a standard text-based message or a message which
 -- contains some sort of attachment.
 data StdMess = StdMess {
-  -- | For all 'StdMess' @k@, @msgType k@ indicates whether @k@ is
-  -- text-based or contains some sort of attachment.
-  --
-  -- For all 'StdMess' @k@...
+  -- | @msgType k@ indicates whether @k@ is text-based or contains some
+  -- sort of attachment.
   --
   -- @msgType k == TextInnit@ iff @k@ is text-based.
   --
@@ -27,23 +25,20 @@ data StdMess = StdMess {
   --
   -- @msgType k == Sticker@ iff @k@ contains a "sticker".
   msgType :: MessageType,
-  -- | For all 'StdMess' @k@, @messageId k@ equals the identifier of
-  -- @k@.
+  -- | @messageId k@ equals the identifier of @k@.
   messageId :: Identifier,
-  -- | For all 'StdMess' @k@, @body k@ contains the unencrypted body of
-  -- @k@.
+  -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
-  -- | For all 'StdMess' @k@, @sender k@ is the 'User'-based description
-  -- of the sender of @k@.
+  -- | @sender k@ is the 'User'-based description of the sender of @k@.
   sender :: User,
-  -- | For all 'StdMess' @k@, @timestamp k@ equals the UNIX time-based
-  -- timestamp of @k@, according to the origin server of @k@.
+  -- | @timestamp k@ equals the UNIX time-based timestamp of @k@,
+  -- according to the origin server of @k@.
   timestamp :: UNIXTime,
-  -- | For all 'StdMess' @k@, @fmtBody k is calculated in accordance
-  -- with the "formatted_body" field of the source of @k@.
+  -- | @fmtBody k@ is calculated in accordance with the "formatted_body"
+  -- field of the source of @k@.
   fmtBody :: Maybe MessageText,
-  -- | For all 'StdMess' @k@, @fmt k@ equals the content of the "format"
-  -- field of the source of 2k@.
+  -- | @fmt k@ equals the content of the "format" field of the source of
+  -- @k@.
   --
   -- @fmt k == MtCusHTML@ iff @k@ is formatted as a HTML message.  Per
   -- the Matrix specification as of 20210605, @fmt k@ may only equal
