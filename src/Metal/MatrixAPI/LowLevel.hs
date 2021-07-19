@@ -252,7 +252,7 @@ sendJoin r i a =
           "\"token\": " ++ show inviteStateKey ++ "\n\t\t" ++
           "\"signatures\": {\n\t\t\t" ++
             show (homeserver inviter) ++ ": {\n\t\t\t\t" ++
-              "\"ed25519:0\": " ++ signature ++ ",\n\t\t\t" ++
+              "\"ed25519:0\": " ++ show signature ++ ",\n\t\t\t" ++
             "}\n\t\t" ++
           "}\n\t" ++
         "}\n" ++
