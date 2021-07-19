@@ -22,5 +22,5 @@ data User = User {
   authToken :: String,
   -- | @displayname tpForMyBunghole@ equals the "display name" of
   -- @tpForMyBunghole@, e.g., "Johnny Kissass".
-  displayname :: Stringth
+  displayname :: HumanReadableName
 } deriving (Eq, Read, Show);
