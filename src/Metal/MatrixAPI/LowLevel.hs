@@ -33,7 +33,12 @@ stillUnfinishedStayTuned = ();
 -- @z@ with @k@, outputting the resulting ciphertext.
 --
 -- @encryptWKey@ is currently nonfunctional.
-encryptWKey :: ByteData -> PublicKey -> CipherByteData;
+encryptWKey :: ByteData
+            -- ^ The plaintext which should be encrypted
+            -> PublicKey
+            -- ^ The public key which should be used to encrypt the
+            -- plaintext
+            -> CipherByteData;
 encryptWKey text key = T.pack [];
 
 -- | @decryptTextWKey z k@ decrypts @z@ with @k@, outputting the
