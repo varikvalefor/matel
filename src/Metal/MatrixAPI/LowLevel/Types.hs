@@ -34,6 +34,8 @@ data StringListRoomIdentifier = StringListRoomIdentifier {
   joined_room :: [String]
 } deriving (Eq, Read, Show);
 
+-- | 'DisplayNameResponse' is used to read the response of the
+-- "displayname" Matrix API request.
 data DisplayNameResponse = DisplayNameResponse {
   dnr_displayname :: Stringth
 } deriving (Eq, Read, Show);
