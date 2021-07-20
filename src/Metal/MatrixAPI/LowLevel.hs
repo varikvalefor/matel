@@ -96,10 +96,7 @@ sendSync since user =
   syncreq :: BSL.ByteString
   syncreq
     | isNothing since = ""
-    | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}"
-  --
-  fromString :: String -> BSL.ByteString
-  fromString = BSL.pack . map (toEnum . fromEnum);
+    | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}";
 
 -- | @sendJoinedRooms k@ sends the "joined_rooms" query to the
 -- homeserver of @k@, authenticating as @k@.
@@ -124,9 +121,6 @@ sendJoinedRooms a =
   generateRequest =
     parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") >>=
     return .addRequestHeader "Authorization" (authToken' a)
-  --
-  fromString :: String -> BSL.ByteString
-  fromString = BSL.pack . map (toEnum . fromEnum)
   --
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Room {roomId = k});
@@ -264,10 +258,7 @@ sendJoin r i a =
   inviteStateKey = maybe "" (\(a,b,c) -> b) i
   --
   signature :: String
-  signature = maybe "" (\(a,b,c) -> c) i
-  --
-  fromString :: String -> BSL.ByteString
-  fromString = BSL.pack . map (toEnum . fromEnum);
+  signature = maybe "" (\(a,b,c) -> c) i;
 
 -- | @getDisplayName@ implements the Matrix API's
 -- "@GET /_matrix/client/r0/profile/{userId}/displayname@" command.
@@ -336,9 +327,6 @@ kick tarjay rome ree a =
     parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick") >>=
     return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS kickReq
   --
-  fromString :: String -> BSL.ByteString
-  fromString = BSL.pack . map (toEnum . fromEnum)
-  --
   kickReq :: BSL.ByteString
   kickReq = fromString $
     "{\n\t" ++
@@ -371,3 +359,10 @@ leave r a =
   generateRequest =
     parseRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave") >>=
     return . addRequestHeader "Authorization" (authToken' a);
+
+-- | @fromString x@ is a 'BSL.ByteString' whose content is the content
+-- of @x@.
+--
+-- @fromString@ should be used only within this module.
+fromString :: String -> BSL.ByteString;
+fromString = BSL.pack . map (toEnum . fromEnum);
