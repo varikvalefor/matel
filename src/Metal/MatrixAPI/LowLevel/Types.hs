@@ -1,9 +1,8 @@
--- Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
--- use only within Metal.MatrixAPI.LowLevel.
-
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
+-- | Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
+-- use only within Metal.MatrixAPI.LowLevel.
 module Metal.MatrixAPI.LowLevel.Types where
 import Metal.Base;
 import Data.Aeson;
