@@ -207,7 +207,7 @@ getRoomInformation room a =
       else return (False, Nothing)
   --
   getMembers :: IO (Either Stringth [User])
-  getMembers = error "ass"
+  getMembers =
     rq "/members" >>= \response ->
     if getResponseStatusCode response == 200
       then error "TODO: Implement this thing."
