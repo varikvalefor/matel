@@ -75,7 +75,7 @@ memberComms a = error "memberComms is unimplemented.";
 isSentToRoom :: Mess a => a -- ^ The message which should be sent
              -> Room -- ^ Destination room
              -> Auth -- ^ Authorisation crap
-             -> IO ErrorCode;
+             -> IO (Maybe ErrorCode);
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 
 -- | @isSentToRoom_file g k a@ only if a message to which the file at
@@ -90,7 +90,7 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 isSentToRoom_file :: FilePath -- ^ Path of file which should be sent
                   -> Room -- ^ Destination room
                   -> Auth -- ^ Authorisation crap
-                  -> IO ErrorCode;
+                  -> IO (Maybe ErrorCode);
 isSentToRoom_file phile romhack a =
   error "isSentToRoom_file is unimplemented.";
 
@@ -101,5 +101,5 @@ isSentToRoom_file phile romhack a =
 -- problem.
 --
 -- @markRead@ is currently nonfunctional.
-markRead :: Mess a => a -> Auth -> IO ErrorCode;
+markRead :: Mess a => a -> Auth -> IO (Maybe ErrorCode);
 markRead k a = error "markRead is unimplemented.";

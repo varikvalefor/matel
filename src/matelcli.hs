@@ -136,10 +136,8 @@ mkRead k a
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
-dispError :: String -> IO ();
-dispError x
-  | x == "" = return ()
-  | otherwise = putStrLn x >> exitFailure;
+dispError :: Maybe ErrorCode -> IO ();
+dispError = maybe (return ()) putStrLn;
 
 -- | @logIn k@ generates an authorisation token for the user which is
 -- specified in @k@.
