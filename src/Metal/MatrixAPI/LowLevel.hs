@@ -170,8 +170,7 @@ sendTextMessage body dest user =
     return . addRequestHeader "Authorization" (authToken' user) . setRequestBodyLBS sendreq
   --
   sendreq :: BSL.ByteString
-  sendreq =
-    BSL.append (BSL.append "{\"msgtype\": \"m.text\",\n\"body\": " (BSL.fromStrict $ encodeUtf8 body)) "}"
+  sendreq = "{\"msgtype\": \"m.text\",\n\"body\": " `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
   --
   favoriteNoise :: IO String
   favoriteNoise = BSL.readFile "/dev/random" >>= return . ("$" ++) . map toEnum . take 64 . filter (`elem` (map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'])) . map fromEnum . BSL.unpack;
