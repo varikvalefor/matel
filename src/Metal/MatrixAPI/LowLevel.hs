@@ -36,9 +36,8 @@ stillUnfinishedStayTuned = ();
 encryptWKey :: ByteData -> PublicKey -> CipherByteData;
 encryptWKey text key = T.pack [];
 
--- | For all @('CipherByteData' z, 'PrivateKey' k)@, @decryptTextWKey z k@
--- decrypts @z@ with @k@, outputting the resulting 'ByteData'-based
--- data.
+-- | @decryptTextWKey z k@ decrypts @z@ with @k@, outputting the
+-- resulting 'ByteData'-based data.
 --
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
