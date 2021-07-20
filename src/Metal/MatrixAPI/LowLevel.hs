@@ -40,7 +40,11 @@ encryptWKey text key = T.pack [];
 -- resulting 'ByteData'-based data.
 --
 -- @decryptWKey@ is currently nonfunctional.
-decryptWKey :: CipherByteData -> PrivateKey -> ByteData;
+decryptWKey :: CipherByteData
+            -- ^ The ciphertext which should be decrypted
+            -> PrivateKey
+            -- ^ The private key which is used to decrypt the ciphertext
+            -> ByteData;
 decryptWKey crip key = T.pack [];
 
 -- | If @username k@ and @password k@ are set, then @login k@ fetches an
