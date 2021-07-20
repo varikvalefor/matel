@@ -21,6 +21,8 @@ data LoginRequest = LoginRequest {
   lrq_initial_device_display_name :: Stringth
 } deriving (Eq, Read, Show);
 
+-- | 'UserIdentifier' holds the "user identifier" record which is used
+-- when a login request is sent.
 data UserIdentifier = UserIdentifier {
   usident_type :: Stringth,
   usident_user :: String
