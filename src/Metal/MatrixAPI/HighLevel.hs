@@ -73,7 +73,7 @@ memberComms a = error "memberComms is unimplemented.";
 --
 -- @isSentToRoom@ is currently nonfunctional.
 isSentToRoom :: Mess a => a -- ^ The message which should be sent
-             -> Room -- ^ Destination room
+             -> Room -- ^ The room to which the message should be sent
              -> Auth -- ^ Authorisation crap
              -> IO (Maybe ErrorCode);
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
@@ -88,7 +88,7 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 --
 -- @isSentToRoom_file@ is currently nonfunctional.
 isSentToRoom_file :: FilePath -- ^ Path of file which should be sent
-                  -> Room -- ^ Destination room
+                  -> Room -- ^ Room to which the file should be send
                   -> Auth -- ^ Authorisation crap
                   -> IO (Maybe ErrorCode);
 isSentToRoom_file phile romhack a =
