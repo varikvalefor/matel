@@ -28,6 +28,8 @@ data UserIdentifier = UserIdentifier {
   usident_user :: String
 } deriving (Eq, Read, Show);
 
+-- | 'StringListRoomIdentifier' is used to read the output of the
+-- "joined rooms" Matrix API query.
 data StringListRoomIdentifier = StringListRoomIdentifier {
   joined_room :: [String]
 } deriving (Eq, Read, Show);
