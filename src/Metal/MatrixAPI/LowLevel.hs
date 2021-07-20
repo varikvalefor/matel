@@ -183,7 +183,7 @@ sendTextMessage body dest user =
 -- problem which is encountered when the "members" query is sent to the
 -- Matrix homeserver.
 getRoomInformation :: Room -- ^ The room which should be described
-                   -> User -- ^ The user account which requests stuff
+                   -> User -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
   getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
