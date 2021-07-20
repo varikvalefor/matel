@@ -101,5 +101,7 @@ isSentToRoom_file phile romhack a =
 -- problem.
 --
 -- @markRead@ is currently nonfunctional.
-markRead :: Mess a => a -> Auth -> IO (Maybe ErrorCode);
+markRead :: Mess a => a -- ^ The message which should become "read"
+         -> Auth -- ^ Authorisation crap
+         -> IO (Maybe ErrorCode);
 markRead k a = error "markRead is unimplemented.";
