@@ -148,9 +148,13 @@ responseToLeftRight k
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
 -- Matrix room whose room ID is @b@ via the Matrix account which is
 -- described in @c@.
-sendTextMessage :: Stringth -- ^ Text what should be sent
-                -> Identifier -- ^ Internal Matrix ID of room
-                -> User -- ^ Authorisation junk
+sendTextMessage :: Stringth
+                -- ^ The body of the message which should be sent
+                -> Identifier
+                -- ^ The internal Matrix ID of the room to which the
+                -- message should be sent
+                -> User
+                -- ^ Authorisation junk
                 -> IO (Maybe ErrorCode);
 sendTextMessage body dest user =
   generateRequest >>= httpBS >>= \theResponse ->
