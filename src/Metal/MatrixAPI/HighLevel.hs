@@ -78,22 +78,6 @@ isSentToRoom :: StdMess -- ^ The message which should be sent
              -> IO (Maybe ErrorCode);
 isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 
--- | @isSentToRoom_file g k a@ only if a message to which the file at
--- @g@ is attached is sent to Matrix room @k@ from the account which is
--- specified in @a@.
---
--- @isSentToRoom_file g k a@ equals an IO-monadic @""@ if no problem is
--- encountered.  @isSentToRoom_file g k a@ otherwise equals an
--- explanation of the problem.
---
--- @isSentToRoom_file@ is currently nonfunctional.
-isSentToRoom_file :: FilePath -- ^ Path of file which should be sent
-                  -> Room -- ^ Room to which the file should be send
-                  -> Auth -- ^ Authorisation crap
-                  -> IO (Maybe ErrorCode);
-isSentToRoom_file phile romhack a =
-  error "isSentToRoom_file is unimplemented.";
-
 -- | @markRead k a@ marks @k@ as having been read.
 --
 -- @markRead k a@ equals an IO-monadic @""@ if no problem is
