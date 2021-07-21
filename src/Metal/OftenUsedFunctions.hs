@@ -1,5 +1,5 @@
 -- | Metal.OftenUsedFunctions contains some functions which are used by
--- numerous modules of Matel.
+-- numerous modules of Metal.
 
 module Metal.OftenUsedFunctions where
 import Data.Either;
