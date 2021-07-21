@@ -34,7 +34,14 @@ recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
 -- @earlyMessagesFrom@ is currently nonfunctional.
-earlyMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
+earlyMessagesFrom :: Integer
+                  -- ^ The number of messages which should be fetched
+                  -> Room
+                  -- ^ The room from which messages should be fetched
+                  -> Auth
+                  -- ^ The authorisation details with which messages are
+                  -- fetched
+                  -> IO [StdMess];
 earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
 -- | @memberRooms x@ equals the IO-monadic list of all rooms of which
