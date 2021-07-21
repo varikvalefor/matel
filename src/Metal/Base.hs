@@ -16,6 +16,9 @@ type HumanReadableName = Stringth;
 type MessageText = Stringth;
 -- | For all 'UNIXTime' @k@, @k@ is a seconds-since-the-UNIX-epoch-based
 -- timestamp.  The time zone is not standardised.
+--
+-- Unlike the clocks of some crappy-ass operating systems, 'UntixTime'
+-- is not subject to the Year 2038 problem.  Ave 'Integer'!
 type UNIXTime = Integer;
 -- | For all 'ByteData' @k@, @k@ is some data which is represented as a
 -- string of bytes.  @k@ most likely contains text but may contain some
