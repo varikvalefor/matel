@@ -210,7 +210,7 @@ getRoomInformation room a =
   getMembers =
     rq "/members" >>= \response ->
     if getResponseStatusCode response == 200
-      then error "TODO: Implement this thing."
+      then return $ Right [] -- TODO: Implement this thing.  This "TODO" thing is added because throwing an error is a bit inconvenient.
       else return $ Left $ T.pack $ "Thus spake the homeserver: " ++ (show $ getResponseStatusCode response) ++ "."
   --
   rq :: String -> IO (Response BS.ByteString)
