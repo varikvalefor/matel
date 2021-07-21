@@ -20,7 +20,14 @@ import qualified Data.Either as EE;
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
 -- @recentMessagesFrom@ is currently nonfunctional.
-recentMessagesFrom :: Integer -> Room -> Auth -> IO [StdMess];
+recentMessagesFrom :: Integer
+                   -- ^ The number of messages which should be fetched
+                   -> Room
+                   -- ^ The room from which the messages should be
+                   -- fetched
+                   -> Auth
+                   -- ^ Authorisation crap
+                   -> IO [StdMess];
 recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
 -- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
