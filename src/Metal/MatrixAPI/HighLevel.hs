@@ -72,7 +72,7 @@ memberComms a = error "memberComms is unimplemented.";
 -- the problem.
 --
 -- @isSentToRoom@ is currently nonfunctional.
-isSentToRoom :: Mess a => a -- ^ The message which should be sent
+isSentToRoom :: StdMess -- ^ The message which should be sent
              -> Room -- ^ The room to which the message should be sent
              -> Auth -- ^ Authorisation crap
              -> IO (Maybe ErrorCode);
@@ -101,7 +101,7 @@ isSentToRoom_file phile romhack a =
 -- problem.
 --
 -- @markRead@ is currently nonfunctional.
-markRead :: Mess a => a -- ^ The message which should become "read"
+markRead :: StdMess -- ^ The message which should become "read"
          -> Auth -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
 markRead k a = error "markRead is unimplemented.";

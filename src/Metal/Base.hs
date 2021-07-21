@@ -38,6 +38,3 @@ type ErrorCode = [Char];
 -- | For all @x@, @x@ is of type 'MessageFmt' iff @x@ is a message type,
 -- as defined by the Matrix client-server specification.
 data MessageFmt = MatrixCusHTML deriving (Eq, Read, Show);
-
--- | The 'Mess' class contains all messages.
-class Mess a;

@@ -34,4 +34,4 @@ data CryptoMess = CryptoMess {
   -- | For all 'CryptoMess' @k@, @sender k@ equals the content of the
   -- "sender" field of @k@'s source.
   sender :: Stringth
-} deriving (Eq, Mess, Read, Show);
+} deriving (Eq, Read, Show);
