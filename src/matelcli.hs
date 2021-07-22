@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | @matelcli@ is a command-line interface for Matrix which uses
 -- Matel's underlying "Metal" infrastructure.
 --
@@ -6,8 +8,6 @@
 -- @[MATEL GIT REPOSITORY DIRECTORY]/matelcli.1@.  This documentation is
 -- only of particular interest to men who wish to modify @matelcli@ or
 -- understand the inner workings of @matelcli@.
-{-# LANGUAGE OverloadedStrings #-}
-
 module Main where
 import Text.Read;
 import Metal.Base;
