@@ -88,7 +88,7 @@ send :: [String] -> Auth -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
   | typeIs "text" = isSentToRoom target dest a >>= dispError
-  | typeIs "file" = isSentToRoom_file (k !! 1) dest a >>= dispError
+  | typeIs "file" = isSentToRoom (error "Sending files is unimplemented.") dest a >>= dispError
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, punk.  Read the fucking manual."
   where
