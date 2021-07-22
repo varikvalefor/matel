@@ -208,7 +208,7 @@ getRoomInformation room a =
   getMembers =
     rq "/members" >>= \response ->
     if getResponseStatusCode response == 200
-      then return $ Right [] -- TODO: Implement this thing.  This "TODO" thing is added because throwing an error is a bit inconvenient.
+      then return $ Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
       else return $ Left $ T.pack $ "Thus spake the homeserver: " ++ (show $ getResponseStatusCode response) ++ "."
   --
   rq :: String -> IO (Response BS.ByteString)
