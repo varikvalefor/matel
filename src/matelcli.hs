@@ -103,6 +103,7 @@ send k a
   typeIs = (head k ==);
 
 -- | @grab@ is used to fetch and output the messages of a room.
+--
 -- @grab@'s argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
 -- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
 grab :: [String] -> Auth -> IO ();
