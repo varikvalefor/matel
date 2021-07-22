@@ -91,7 +91,7 @@ send k a
   | typeIs "text" = isSentToRoom target dest a >>= dispError
   | typeIs "file" = isSentToRoom (error "Sending files is unimplemented.") dest a >>= dispError
   | otherwise = error $ "I ought to send you to the garbage " ++
-    "disposal, punk.  Read the fucking manual."
+    "disposal, shit-tits.  Read the fucking manual."
   where
   target :: StdMess
   target = StdMess {body = read $ k !! 1};
