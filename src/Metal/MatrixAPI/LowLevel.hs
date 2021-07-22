@@ -29,8 +29,8 @@ import qualified Data.ByteString.Lazy as BSL;
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
 
--- | For all @('ByteData' z, 'PublicKey' k)@, @encryptWKey z k@ encrypts
--- @z@ with @k@, outputting the resulting ciphertext.
+-- | @encryptWKey z k@ encrypts @z@ with the public key @k@, outputting
+-- the resulting ciphertext.
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
