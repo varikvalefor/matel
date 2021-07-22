@@ -21,8 +21,8 @@ import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
--- | That @stillUnfinishedStayTuned@ exists implies that Matel is
--- currently useless as a Matrix client.
+-- | @stillUnfinishedStayTuned@ exists only if Matel is currently
+-- useless as a Matrix client.
 --
 -- @stillUnfinishedStayTuned@ is removed when proper Matrix API support
 -- is added to Matel.
