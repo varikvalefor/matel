@@ -65,7 +65,8 @@ determineAction x a
 -- the function definition of @list@.
 list :: [String] -> Auth -> IO ();
 list k a
-  | k == [] = error "Come on.  Give me a line."
+  | k == [] = error $ "Write an argument or be made sufficiently " ++
+    "brain-dead to never write arguments again."
   | is "rooms" = memberRooms a >>= mapM_ (putStrLn . roomId)
   | is "communities" = memberComms a >>= mapM_ (putStrLn . commId)
   | is "spaces" = memberSpaces a >>= mapM_ (putStrLn . spaceId)
