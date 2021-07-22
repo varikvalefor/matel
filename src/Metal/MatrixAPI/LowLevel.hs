@@ -97,8 +97,8 @@ sendSync since user =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync") >>=
-    return . addRequestHeader "Authorization" (authToken' user) . setRequestBodyLBS syncreq
+    generateAuthdRequest ("GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync") user >>=
+    return . setRequestBodyLBS syncreq
   --
   syncreq :: BSL.ByteString
   syncreq
@@ -126,8 +126,7 @@ sendJoinedRooms a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") >>=
-    return .addRequestHeader "Authorization" (authToken' a)
+    generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") a
   --
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Room {roomId = k});
@@ -166,8 +165,8 @@ sendTextMessage body dest user =
   generateRequest :: IO Request
   generateRequest =
     favoriteNoise >>= \fn ->
-    parseRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) >>=
-    return . addRequestHeader "Authorization" (authToken' user) . setRequestBodyLBS sendreq
+    generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user >>=
+    return . setRequestBodyLBS sendreq
   --
   sendreq :: BSL.ByteString
   sendreq = "{\"msgtype\": \"m.text\",\n\"body\": " `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
@@ -212,7 +211,7 @@ getRoomInformation room a =
       else return $ Left $ T.pack $ "Thus spake the homeserver: " ++ (show $ getResponseStatusCode response) ++ "."
   --
   rq :: String -> IO (Response BS.ByteString)
-  rq k = parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId room ++ k) >>= httpBS . addRequestHeader "Authorization" (authToken' a);
+  rq k = generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId room ++ k) a >>= httpBS;
 
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
@@ -240,8 +239,8 @@ sendJoin r i a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join") >>=
-    return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS joinReq
+    generateAuthdRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join") a >>=
+    return . setRequestBodyLBS joinReq
   --
   joinReq :: BSL.ByteString
   joinReq
@@ -332,8 +331,8 @@ kick tarjay rome ree a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick") >>=
-    return . addRequestHeader "Authorization" (authToken' a) . setRequestBodyLBS kickReq
+    generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick") a >>=
+    return . setRequestBodyLBS kickReq
   --
   kickReq :: BSL.ByteString
   kickReq = fromString $
@@ -365,8 +364,7 @@ leave r a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave") >>=
-    return . addRequestHeader "Authorization" (authToken' a);
+    generateAuthdRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave") a;
 
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
@@ -374,3 +372,27 @@ leave r a =
 -- @fromString@ should be used only within this module.
 fromString :: String -> BSL.ByteString;
 fromString = BSL.pack . map (toEnum . fromEnum);
+
+-- | @generateAuthdRequest@ is used to generate authorised requests for
+-- the Matrix API, thereby removing some boilerplate crap.
+--
+-- The first argument consists of the HTTP command which should be sent,
+-- a space, and the URI which is accessed.
+--
+-- The second argument is an 'Auth' whose @authToken@ field must be
+-- defined.
+generateAuthdRequest :: String
+                     -- ^ The URI of the request, including "POST",
+                     -- "GET", or whatever crap is desired
+                     -> Auth
+                     -- ^ The user whose authorisation crap should be
+                     -- added to the request
+                     -> IO Request;
+generateAuthdRequest r a = parseRequest r >>= addHeader
+  where
+  -- This "where" clause is used to avoid having a long line.
+  -- Although long lines appear elsewhere within Metal's source code,
+  -- the author wishes to avoid having long lines of source code iff
+  -- such avoidance is feasible.
+  addHeader :: Request -> IO Request
+  addHeader = return . addRequestHeader "Authorization" (authToken' a);
