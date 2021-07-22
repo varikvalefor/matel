@@ -130,10 +130,8 @@ mkRead k a
     "few times, punk.  Dismissed."
   | otherwise = markRead melleMel a >>= dispError
   where
-  identifier :: Identifier
-  identifier = head k
   melleMel :: StdMess
-  melleMel = StdMess {messageId = identifier};
+  melleMel = StdMess {messageId = head k};
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
