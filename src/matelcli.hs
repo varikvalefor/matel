@@ -113,7 +113,7 @@ grab k a
   | otherwise = error "No, really, stop inputting garbage."
   where
   n :: Integer
-  n = maybe (-42) (\a -> a) $ readMaybe $ head k
+  n = maybe (-42) id $ readMaybe $ head k
   --
   order :: String
   order = k !! 1
