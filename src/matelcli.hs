@@ -122,7 +122,7 @@ grab k a
   desRoom :: Room
   desRoom = Room {roomId = k !! 3};
 
--- | @mkRead [identifer]@ marks the message whose identifier is
+-- | @mkRead [identifier]@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.
 mkRead :: [String] -> Auth -> IO ();
 mkRead k a
