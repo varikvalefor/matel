@@ -197,9 +197,6 @@ getRoomInformation room a =
       members = justRight memebears
     }
   where
-  iD :: String
-  iD = roomId room
-  --
   getEncryptionStatus :: IO (Bool, Maybe PublicKey)
   getEncryptionStatus =
     rq "/event/m.room.key" >>= \response ->
