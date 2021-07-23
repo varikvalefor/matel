@@ -1,15 +1,18 @@
-Cabal-version: 2.4
-
-Name:          matel
-Version:       0.1.0.3
-Synopsis:      TUI client for the Matrix instant messaging service.
-Description:   Matel is a currently incomplete Haskell-based Matrix
+cabal-version: 2.4
+name:          matel
+version:       0.1.0.4
+synopsis:      TUI client for the Matrix instant messaging service.
+description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
                which is intuitive but well-documented, in addition to
                having some very readable source code.
                .
                Despite originating as a TUI-based thing, Matel _does_
                also offer a command-line interface, called "matelcli".
+               .
+               Additionally, as of version 0.1.0.4, Matel's underlying
+               infrastructure can now be used within other projects via
+               the "matel" library.
                .
                Identified bugs and similar nasties can be e-mailed to
                the maintainer such that the resulting message's header
@@ -19,49 +22,70 @@ Description:   Matel is a currently incomplete Haskell-based Matrix
                bugs are encountered can follow the contribution
                guidelines which are described at Matel's GitHub page,
                http:\/\/github.com\/varikvalefor\/matel.
+bug-reports:   http://github.com/varikvalefor/matel/issues
+license:       BSD-3-Clause
+author:        Varik Valefor
+maintainer:    varikvalefor@aol.com
+copyright:     (c) Varik Valefor 2021.
+category:      Chat
+extra-source-files:
+    README.md
 
-License:       BSD-3-Clause
-License-file:  LICENSE
-
-Author:        Varik Valefor
-Maintainer:    varikvalefor@aol.com
-Copyright:     (c) Varik Valefor 2021.
-
-Category:      Chat
-
-Stability:     unstable
-
-Source-repository head
-  type:     git
-  location: https://github.com/varikvalefor/matel
+library
+  ghc-options: -O2 -haddock
+  exposed-modules:
+    Metal.Auth
+    Metal.Space
+    Metal.Room
+    Metal.Community
+    Metal.Base
+    Metal.User
+    Metal.OftenUsedFunctions
+    Metal.MatrixAPI.HighLevel
+    Metal.MatrixAPI.LowLevel
+    Metal.MatrixAPI.LowLevel.Types
+    Metal.Messages.Encrypted
+    Metal.Messages.Standard
+  other-extensions:
+    OverloadedStrings
+    TemplateHaskell
+    DeriveAnyClass
+  build-depends:
+    base ^>=4.14.1.0,
+    bytestring,
+    http-conduit,
+    aeson,
+    text
+  hs-source-dirs:   src
+  default-language: Haskell2010
 
 executable matel
   main-is:          matel.hs
-
   ghc-options:      -haddock -threaded -O2 -dynamic
-  other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
-                    Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, Metal.Community,
-                    Metal.Space, TUI, Colour, Metal.User,
-                    Metal.MatrixAPI.LowLevel.Types, Metal.Auth,
-                    Metal.OftenUsedFunctions
-
-  build-depends:    base ^>=4.14.1.0, brick, bytestring, vty, aeson,
-                    http-conduit, text
-  hs-source-dirs:   src
+  other-modules:
+    TUI,
+    Colour
+  build-depends:
+    base ^>=4.14.1.0,
+    brick,
+    bytestring,
+    vty,
+    aeson,
+    http-conduit,
+    text,
+    matel
+  hs-source-dirs:   app
   default-language: Haskell2010
 
 executable matelcli
   main-is:          matelcli.hs
-
   ghc-options:      -haddock -threaded -O2 -dynamic
-  other-modules:    Metal.Base, Metal.MatrixAPI.HighLevel, Metal.Room,
-                    Metal.MatrixAPI.LowLevel, Metal.Messages.Standard,
-                    Metal.Messages.Encrypted, Metal.Community,
-                    Metal.Space, Metal.MatrixAPI.LowLevel.Types,
-                    Metal.User, Metal.Auth, Metal.OftenUsedFunctions
-
-  build-depends:    base ^>=4.14.1.0, bytestring, http-conduit, aeson,
-                    text
-  hs-source-dirs:   src
+  build-depends:
+    base ^>=4.14.1.0,
+    bytestring,
+    http-conduit,
+    aeson,
+    text,
+    matel
+  hs-source-dirs:   app
   default-language: Haskell2010
