@@ -5,6 +5,7 @@
 -- layout of the user interface is unknown.
 
 module Main where
+import Metal.Auth;
 import Metal.Base;
 import Control.Concurrent;
 import TUI;
@@ -17,12 +18,18 @@ import TUI;
 --
 -- Write your own crap.
 main :: IO ();
-main = newEmptyMVar >>= \comVar ->
-  forkIO (fetchData comVar) >> summonTUI comVar;
+main =
+  getAuthorisationDetails >>= \aufFile ->
+  newEmptyMVar >>= \comVar ->
+  forkIO (fetchData comVar aufFile) >> summonTUI comVar;
 
 -- | For all 'MVar' 'Winda' @k@, @fetchData k@ collects data from
 -- Matrix, parses this data appropriately, and outputs this data to @k@.
 --
 -- @fetchData@ is currently unimplemented.
-fetchData :: MVar Winda -> IO ();
-fetchData = flip putMVar temporaryMessage;
+fetchData :: MVar Winda
+          -- ^ The variable which is used to communicate with the TUI
+          -> Auth
+          -- ^ The authorisation deets
+          -> IO ();
+fetchData v a = putMVar v temporaryMessage;
