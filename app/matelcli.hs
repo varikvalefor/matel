@@ -30,8 +30,8 @@ import qualified Data.Text.IO as T;
 main :: IO ();
 main =
   getArgs >>= \command ->
-  getAuthorisationDetails >>= \auth ->
-  determineAction command auth;
+  getAuthorisationDetails >>= \aufFile ->
+  determineAction command aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
