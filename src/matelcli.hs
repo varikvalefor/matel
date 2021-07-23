@@ -5,9 +5,9 @@
 --
 -- The user-facing documentation/specification of the user interface is
 -- available in @matelcli@'s manual page, which is by default located at
--- @[MATEL GIT REPOSITORY DIRECTORY]/matelcli.1@.  This documentation is
--- only of particular interest to men who wish to modify @matelcli@ or
--- understand the inner workings of @matelcli@.
+-- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
+-- is only of particular interest to men who wish to modify @matelcli@
+-- or understand the inner workings of @matelcli@.
 module Main where
 import Text.Read;
 import Metal.Base;
