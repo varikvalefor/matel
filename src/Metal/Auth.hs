@@ -10,6 +10,7 @@ import Metal.User;
 import System.Environment;
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
+import qualified Metal.Default as Def;
 import qualified Data.ByteString.Char8 as BS8;
 
 -- | For all 'Auth' @k@, @k@ contains the authorisation information
@@ -34,7 +35,7 @@ authToken' = BS8.pack . ("Bearer " ++ ) . authToken;
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
   getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
-  return User {
+  return Def.user {
     username = T.unpack $ xOf "username: " cfg,
     password = xOf "password: " cfg,
     homeserver = T.unpack $ xOf "homeserver: " cfg,

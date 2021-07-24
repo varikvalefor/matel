@@ -46,6 +46,7 @@ library
     Metal.MatrixAPI.LowLevel.Types
     Metal.Messages.Encrypted
     Metal.Messages.Standard
+    Metal.Default
   other-extensions:
     OverloadedStrings
     TemplateHaskell

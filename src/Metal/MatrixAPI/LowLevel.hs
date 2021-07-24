@@ -18,6 +18,7 @@ import Metal.Messages.Standard;
 import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import Metal.MatrixAPI.LowLevel.Types;
+import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
@@ -129,7 +130,7 @@ sendJoinedRooms a =
     generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") a
   --
   toRooms :: [String] -> [Room]
-  toRooms = map (\k -> Room {roomId = k});
+  toRooms = map (\k -> Def.room {roomId = k});
 
 
 -- | If the response code of @k@ equals @200@, then
@@ -189,7 +190,7 @@ getRoomInformation room a =
   getMembers >>= \memebears ->
   if isLeft memebears
     then return $ Left $ (\(Left k) -> k) memebears
-    else return $ Right $ Room {
+    else return $ Right $ Def.room {
       roomId = roomId room,
       isEncrypted = cryptoStatus,
       publicKey = cryptoKey,
@@ -259,7 +260,7 @@ sendJoin r i a =
         "}\n" ++
       "}"
   inviter :: User
-  inviter = maybe User {} (\(a,b,c) -> a) i
+  inviter = maybe Def.user (\(a,b,c) -> a) i
   --
   inviteStateKey :: String
   inviteStateKey = maybe "" (\(a,b,c) -> b) i
@@ -292,9 +293,9 @@ getDisplayName :: User -- ^ The user whose display name is output
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return $ Right $ u {displayname = dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
+    then return $ Right $ Def.user {displayname = dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
     else if getResponseStatusCode theResponse == 404
-      then return $ Right $ u {displayname = T.pack $ username u}
+      then return $ Right $ Def.user {displayname = T.pack $ username u}
       else return $ Left $ "Thus spake the homeserver: " ++
         (show $ getResponseStatusCode theResponse) ++ "."
   where
