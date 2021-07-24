@@ -328,7 +328,7 @@ kick tarjay rome ree a =
   if getResponseStatusCode theResponse == 200
     then return Nothing
     else return $ Just $ "Thus spake the homeserver: " ++
-      (show $ getResponseStatusCode theResponse) ++ "."
+      show (getResponseStatusCode theResponse) ++ "."
   where
   generateRequest :: IO Request
   generateRequest =
