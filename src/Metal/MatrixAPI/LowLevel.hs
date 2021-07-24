@@ -60,7 +60,7 @@ decryptWKey crip key = T.pack [];
 -- which results from signing in to Matrix.  The 'Left' value of
 -- @loginPass k p@ exists only if an error is present... and equals a
 -- description of such an error.
-loginPass :: User -> IO (Either Stringth Stringth);
+loginPass :: Auth -> IO (Either Stringth Stringth);
 loginPass user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
@@ -91,7 +91,7 @@ loginPass user =
 -- @loginPass k g@ exists only if an error is present... and equals a
 -- description of such an error.
 sendSync :: Maybe String -- ^ The desired value of the query's "since" field
-         -> User -- ^ The authorisation deets
+         -> Auth -- ^ The authorisation deets
          -> IO (Either Stringth Stringth);
 sendSync since user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
@@ -116,7 +116,7 @@ sendSync since user =
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
-sendJoinedRooms :: User -> IO (Either Stringth [Room]);
+sendJoinedRooms :: Auth -> IO (Either Stringth [Room]);
 sendJoinedRooms a =
   generateRequest >>= httpBS >>= \response ->
     if getResponseStatusCode response == 200
@@ -153,7 +153,7 @@ sendTextMessage :: Stringth
                 -> Identifier
                 -- ^ The internal Matrix ID of the room to which the
                 -- message should be sent
-                -> User
+                -> Auth
                 -- ^ Authorisation junk
                 -> IO (Maybe ErrorCode);
 sendTextMessage body dest user =
@@ -183,7 +183,7 @@ sendTextMessage body dest user =
 -- problem which is encountered when the "members" query is sent to the
 -- Matrix homeserver.
 getRoomInformation :: Room -- ^ The room which should be described
-                   -> User -- ^ The authorisation information
+                   -> Auth -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
   getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
@@ -229,7 +229,7 @@ sendJoin :: Room -- ^ The 'Room' which should be joined
             -- ^ The user which sends the invite, the state key of the
             -- invite, and the signature of the invite, respectively, if
             -- the room is not public -- otherwise, Nothing
-         -> User -- ^ The authorisation information of Matel's user
+         -> Auth -- ^ The authorisation information of Matel's user
          -> IO (Maybe String);
 sendJoin r i a =
   generateRequest >>= httpBS >>= \theResponse ->
