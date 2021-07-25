@@ -95,7 +95,7 @@ send k a
     "disposal, shit-tits.  Read the fucking manual."
   where
   target :: StdMess
-  target = StdMess {body = read $ k !! 1};
+  target = Def.stdMess {body = read $ k !! 1};
   --
   dest :: Room
   dest = Def.room {roomId = k !! 3}
@@ -133,7 +133,7 @@ mkRead k a
   | otherwise = markRead melleMel a >>= dispError
   where
   melleMel :: StdMess
-  melleMel = StdMess {messageId = head k};
+  melleMel = Def.stdMess {messageId = head k};
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
