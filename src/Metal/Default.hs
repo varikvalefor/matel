@@ -4,10 +4,12 @@
 -- instead of having empty spaces because Haskell compilers generally
 -- disapprove of having undefined fields in records.
 module Metal.Default where
+import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Metal.Space;
 import Metal.Community;
+import Metal.Messages.Standard;
 
 -- | @user@ is a default-valued 'User' record.
 user :: User;
@@ -42,4 +44,16 @@ room = Room {
   topic = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   isEncrypted = False,
   publicKey = Nothing
+};
+
+-- | @stdMess@ is a default-valued 'StdMess' record.
+stdMess :: StdMess;
+stdMess = StdMess {
+  msgType = TextInnit,
+  messageId = "Some dummy forgot to set this value.",
+  body = "I am using incomplete software.",
+  sender = user,
+  timestamp = (-8675309),
+  fmtBody = Nothing,
+  fmt = MatrixCusHTML
 };
