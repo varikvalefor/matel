@@ -22,6 +22,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
+import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 
 import qualified Data.Text as T;
@@ -97,7 +98,7 @@ send k a
   target = StdMess {body = read $ k !! 1};
   --
   dest :: Room
-  dest = Room {roomId = k !! 3}
+  dest = Def.room {roomId = k !! 3}
   --
   typeIs :: String -> Bool
   typeIs = (head k ==);
@@ -121,7 +122,7 @@ grab k a
   order = k !! 1
   --
   desRoom :: Room
-  desRoom = Room {roomId = k !! 3};
+  desRoom = Def.room {roomId = k !! 3};
 
 -- | @mkRead [identifier]@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.
@@ -172,11 +173,11 @@ runJoin t a
   | otherwise = join room inviteInfo a >>= maybe (return ()) error
   where
   room :: Room
-  room = Room {roomId = t !! 0}
+  room = Def.room {roomId = t !! 0}
   --
   inviteInfo :: Maybe (User, String, String)
   inviteInfo
-    | length t == 4 = Just (User {username = t !! 1}, t !! 2, t !! 3)
+    | length t == 4 = Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
     | not (length t `elem` [1,4]) = error $ "You have managed to " ++
       "completely disregard the information which is specified in" ++
       "my manual page by inputting a weird number of arguments, " ++
@@ -193,7 +194,7 @@ runLeave :: [String] -> Auth -> IO ();
 runLeave g a
   | g == [] = error $ "I seriously doubt that you want to leave all " ++
     "Matrix rooms or something."
-  | otherwise = leave Room {roomId = head g} a >>=
+  | otherwise = leave Def.room {roomId = head g} a >>=
     maybe (return ()) error;
 
 -- | @runKick@ is a relatively high-level interface for the @'kick'@
@@ -205,4 +206,4 @@ runKick :: [String] -> Auth -> IO ();
 runKick k a
   | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
     "giving me some actual directions."
-  | otherwise = kick User {username = k !! 0} Room {roomId = k !! 1} (k !! 2) a >>= maybe (return ()) error;
+  | otherwise = kick Def.user {username = k !! 0} Def.room {roomId = k !! 1} (k !! 2) a >>= maybe (return ()) error;
