@@ -22,7 +22,7 @@ import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.HighLevel;
-import Metal.MatrixAPI.LowLevel (loginPass, sendSync, sendJoin, leave, kick);
+import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
@@ -154,8 +154,8 @@ logIn a = loginPass a >>= \result ->
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String] -> Auth -> IO Stringth;
 eddySmith t a
-  | length t > 1 = sendSync (Just $ t !! 1) a >>= possiblyBreakDown
-  | otherwise = sendSync Nothing a >>= possiblyBreakDown
+  | length t > 1 = sync (Just $ t !! 1) a >>= possiblyBreakDown
+  | otherwise = sync Nothing a >>= possiblyBreakDown
   where
   possiblyBreakDown :: Either Stringth Stringth -> IO Stringth
   possiblyBreakDown k
@@ -169,7 +169,7 @@ runJoin t a
   | length t == 0 = error $ "Idiot!  How am I to join an " ++
     "unspecified room for you?  My strength is simplicity.  I can't " ++
     "work with this shit."
-  | otherwise = sendJoin room inviteInfo a >>= maybe (return ()) error
+  | otherwise = join room inviteInfo a >>= maybe (return ()) error
   where
   room :: Room
   room = Room {roomId = t !! 0}

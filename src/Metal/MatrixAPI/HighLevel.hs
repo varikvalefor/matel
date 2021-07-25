@@ -49,7 +49,7 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- member.
 memberRooms :: Auth -> IO [Room];
 memberRooms a =
-  sendJoinedRooms a >>= \jrOut ->
+  joinedRooms a >>= \jrOut ->
   if EE.isLeft jrOut
     then error $ toString $ justLeft jrOut
     else listRoomsMentioned jrOut >>= \getRmOut ->

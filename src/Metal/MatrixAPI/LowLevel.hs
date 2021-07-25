@@ -80,20 +80,20 @@ loginPass user =
     lrq_initial_device_display_name = "Matel"
   };
 
--- | @sendSync@ accesses the Matrix "sync" function.
+-- | @sync@ accesses the Matrix "sync" function.
 --
--- @sendSync Nothing g@ runs a parameterless "sync".
--- For all other @k@, @sendSync k g@ sends a "sync" query to Matrix such
+-- @sync Nothing g@ runs a parameterless "sync".
+-- For all other @k@, @sync k g@ sends a "sync" query to Matrix such
 -- that the "since" parameter of this query equals @fromJust k@.
 --
--- The 'Right' value of @sendSync k g@ equals the authorisation token
+-- The 'Right' value of @sync k g@ equals the authorisation token
 -- which results from signing in to Matrix.  The 'Left' value of
--- @loginPass k g@ exists only if an error is present... and equals a
+-- @sync k g@ exists only if an error is present... and equals a
 -- description of such an error.
-sendSync :: Maybe String -- ^ The desired value of the query's "since" field
-         -> Auth -- ^ The authorisation deets
-         -> IO (Either Stringth Stringth);
-sendSync since user =
+sync :: Maybe String -- ^ The desired value of the query's "since" field
+    -> Auth -- ^ The authorisation deets
+    -> IO (Either Stringth Stringth);
+sync since user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
   generateRequest :: IO Request
@@ -106,18 +106,18 @@ sendSync since user =
     | isNothing since = ""
     | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}";
 
--- | @sendJoinedRooms k@ sends the "joined_rooms" query to the
+-- | @joinedRooms k@ sends the "joined_rooms" query to the
 -- homeserver of @k@, authenticating as @k@.
 --
--- The 'Right' value of @sendJoinedRooms k g@ equals the authorisation
+-- The 'Right' value of @joinedRooms k g@ equals the authorisation
 -- token which results from signing in to Matrix.  The 'Left' value of
--- @sendJoinedRooms k@ exists only if an error is present... and equals a
+-- @joinedRooms k@ exists only if an error is present... and equals a
 -- description of such an error.
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
-sendJoinedRooms :: Auth -> IO (Either Stringth [Room]);
-sendJoinedRooms a =
+joinedRooms :: Auth -> IO (Either Stringth [Room]);
+joinedRooms a =
   generateRequest >>= httpBS >>= \response ->
     if getResponseStatusCode response == 200
       then return $ Right $ toRooms $ joined_room $ fromJust $
@@ -217,21 +217,21 @@ getRoomInformation room a =
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
 -- OF INVITE), and @a@ is a 'Room' whose @roomId@ value is appropriately
--- defined, @sendJoin t i a@ sends the
+-- defined, @join t i a@ sends the
 -- @POST /_matrix/client/r0/rooms/{roomId}/join@ command to Matel's
 -- user's homeserver, thereby making Matel's user join the specified
 -- room @t@.
 --
 -- If the command is successful, then the output is Nothing.  The output
 -- otherwise equals a terse description of the error.
-sendJoin :: Room -- ^ The 'Room' which should be joined
-         -> Maybe (User, String, String)
-            -- ^ The user which sends the invite, the state key of the
-            -- invite, and the signature of the invite, respectively, if
-            -- the room is not public -- otherwise, Nothing
-         -> Auth -- ^ The authorisation information of Matel's user
-         -> IO (Maybe String);
-sendJoin r i a =
+join :: Room -- ^ The 'Room' which should be joined
+     -> Maybe (User, String, String)
+        -- ^ The user which sends the invite, the state key of the
+        -- invite, and the signature of the invite, respectively, if
+        -- the room is not public -- otherwise, Nothing
+     -> Auth -- ^ The authorisation information of Matel's user
+     -> IO (Maybe String);
+join r i a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
     then return Nothing
