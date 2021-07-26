@@ -9,6 +9,7 @@
 -- is only of particular interest to men who wish to modify @matelcli@
 -- or understand the inner workings of @matelcli@.
 module Main where
+import GetAuth;
 import Text.Read;
 import Metal.Base;
 import Metal.Room;

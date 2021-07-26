@@ -4,13 +4,8 @@
 -- the authentication of Matel's user, as well as
 -- 'getAuthorisationDetails', which fetches Matel's user's authorisation
 -- information.
-module Metal.Auth (Auth, getAuthorisationDetails, authToken') where
-import Metal.Base;
+module Metal.Auth (Auth, authToken') where
 import Metal.User;
-import System.Environment;
-import qualified Data.Text as T;
-import qualified Data.Text.IO as T;
-import qualified Metal.Default as Def;
 import qualified Data.ByteString.Char8 as BS8;
 
 -- | For all 'Auth' @k@, @k@ contains the authorisation information
@@ -27,27 +22,3 @@ type Auth = User;
 -- client requests.
 authToken' :: User -> BS8.ByteString;
 authToken' = BS8.pack . ("Bearer " ++ ) . authToken;
-
--- | @getAuthorisationDetails@ equals a 'User' value which contains
--- authorisation-related information of Matel's user, e.g, the
--- homeserver to which requests should be sent, as well as the username
--- of Matel's user.
-getAuthorisationDetails :: IO Auth;
-getAuthorisationDetails =
-  getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
-  return Def.user {
-    username = T.unpack $ xOf "username: " cfg,
-    password = xOf "password: " cfg,
-    homeserver = T.unpack $ xOf "homeserver: " cfg,
-    authToken = T.unpack $ xOf "authtoken: " cfg
-  };
-
--- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
---
--- @xOf@ is used to reduce the amount of boilerplate stuff.
-xOf :: Stringth -> Stringth-> Stringth;
-xOf query cfg =
-  T.drop l $ head $ filter ((== query) . T.take l) $ T.lines cfg
-  where
-  l :: Int
-  l = T.length query;

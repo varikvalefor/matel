@@ -65,7 +65,8 @@ executable matel
   ghc-options:      -haddock -threaded -O2 -dynamic
   other-modules:
     TUI,
-    Colour
+    Colour,
+    GetAuth
   build-depends:
     base ^>=4.14.1.0,
     brick,
@@ -81,6 +82,8 @@ executable matel
 executable matelcli
   main-is:          matelcli.hs
   ghc-options:      -haddock -threaded -O2 -dynamic
+  other-modules:
+    GetAuth
   build-depends:
     base ^>=4.14.1.0,
     bytestring,

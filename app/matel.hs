@@ -5,6 +5,7 @@
 -- layout of the user interface is unknown.
 
 module Main where
+import GetAuth;
 import Metal.Auth;
 import Metal.Base;
 import Control.Concurrent;
