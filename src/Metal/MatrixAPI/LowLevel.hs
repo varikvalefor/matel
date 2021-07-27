@@ -132,7 +132,6 @@ joinedRooms a =
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Def.room {roomId = k});
 
-
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
