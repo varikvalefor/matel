@@ -22,6 +22,7 @@ import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
 import Metal.Messages.Standard;
+import Metal.OftenUsedFunctions;
 import Metal.MatrixAPI.HighLevel;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
@@ -146,7 +147,7 @@ dispError = maybe (return ()) putStrLn;
 logIn :: Auth -> IO ();
 logIn a = loginPass a >>= \result ->
   if isLeft result
-    then error $ "loginPass: " ++ T.unpack (fromLeft "" result)
+    then error $ "loginPass: " ++ T.unpack (justLeft result)
     else T.putStrLn $ fromRight "" result;
 
 -- | @eddySmith@ is a high-level wrapper for @sendSync@.
