@@ -343,7 +343,7 @@ kick tarjay rome ree a =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest uri a >>= return . setRequestBodyLBS kickReq
+    setRequestBodyLBS kickReq <$> generateAuthdRequest uri a
   --
   uri :: String
   uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
