@@ -207,4 +207,8 @@ runKick :: [String] -> Auth -> IO ();
 runKick k a
   | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
     "giving me some actual directions."
-  | otherwise = kick Def.user {username = k !! 0} Def.room {roomId = k !! 1} (k !! 2) a >>= maybe (return ()) error;
+  | otherwise = kick Def.user {username = k !! 0}
+                     Def.room {roomId = k !! 1}
+                     (k !! 2)
+                     a >>=
+                maybe (return ()) error;
