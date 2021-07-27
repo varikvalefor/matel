@@ -368,15 +368,15 @@ leave :: Room -- ^ The room which should be left
       -> Auth -- ^ The authorisation information
       -> IO (Maybe String);
 leave r a =
-  generateRequest >>= httpBS >>= \theResponse ->
+  generateAuthdRequest uri a >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
     then return Nothing
     else return $ Just $ "Thus spake the homeserver: " ++
       (show $ getResponseStatusCode theResponse) ++ "."
   where
-  generateRequest :: IO Request
-  generateRequest =
-    generateAuthdRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave") a;
+  uri :: String
+  uri = "POST https://" ++ homeserver a ++
+    "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
 
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
