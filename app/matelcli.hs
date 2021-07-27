@@ -64,8 +64,14 @@ determineAction x a
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
 --
--- A list of the accepted arguments of the "list" command is visible in
--- the function definition of @list@.
+-- @list ["rooms"] a@ lists the Matrix rooms of which the user who is
+-- specified in @a@ is a member.
+--
+-- @list ["communities"] a@ lists the Matrix communities of which the
+-- user who is specified in @a@ is a member.
+--
+-- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
+-- specified in @a@ is a member.
 list :: [String] -> Auth -> IO ();
 list k a
   | k == [] = error $ "Write an argument or be made sufficiently " ++
