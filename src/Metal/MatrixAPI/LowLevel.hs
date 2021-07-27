@@ -343,8 +343,11 @@ kick tarjay rome ree a =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick") a >>=
-    return . setRequestBodyLBS kickReq
+    generateAuthdRequest uri a >>= return . setRequestBodyLBS kickReq
+  --
+  uri :: String
+  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
+    roomId rome ++ "/kick"
   --
   kickReq :: BSL.ByteString
   kickReq = fromString $
