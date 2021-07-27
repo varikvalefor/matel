@@ -139,6 +139,9 @@ mkRead k a
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
+--
+-- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
+-- otherwise runs @error k@.
 dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) error;
 
