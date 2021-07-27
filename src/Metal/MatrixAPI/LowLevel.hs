@@ -300,7 +300,7 @@ getDisplayName :: User -- ^ The user whose display name is output
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return $ Right $ Def.user {displayname = dnr_displayname $ fromJust $ A.decode $ BSL.fromStrict $ getResponseBody theResponse}
+    then return $ Right $ Def.user {displayname = toDisplayname theResponse}
     else if getResponseStatusCode theResponse == 404
       then return $ Right $ Def.user {displayname = T.pack $ username u}
       else return $ Left $ "Thus spake the homeserver: " ++
@@ -308,7 +308,10 @@ getDisplayName u a =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest $ "GET https://" ++ homeserver a ++ "/_matrix/client/r0/profile/" ++ username u ++ "/displayname";
+    parseRequest $ "GET https://" ++ homeserver a ++ "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  toDisplayname :: Response BS.ByteString -> Stringth
+  toDisplayname = dnr_displayname . fromJust . A.decode .
+                  BSL.fromStrict . getResponseBody;
 
 -- | @kick@ implements the Matrix API's
 -- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
