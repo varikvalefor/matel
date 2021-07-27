@@ -15,6 +15,10 @@ import qualified Metal.Default as Def;
 -- authorisation-related information of Matel's user, e.g, the
 -- homeserver to which requests should be sent, as well as the username
 -- of Matel's user.
+--
+-- This authorisation-related information is read from
+-- @$PATH/.config/matel@, whose formatting is described in Matel's
+-- "README" file.
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
   getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
