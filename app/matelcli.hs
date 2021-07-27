@@ -150,7 +150,7 @@ logIn a = loginPass a >>= \result ->
     then error $ "loginPass: " ++ T.unpack (justLeft result)
     else T.putStrLn $ fromRight "" result;
 
--- | @eddySmith@ is a high-level wrapper for @sendSync@.
+-- | @eddySmith@ is a high-level wrapper for @sync@.
 --
 -- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
