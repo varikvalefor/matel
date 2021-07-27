@@ -13,7 +13,7 @@ import qualified Data.ByteString.Char8 as BS8;
 -- user of Matel.
 --
 -- 'Auth' is really just a synonym of 'User'. However, unlike most
--- instances of 'User', generally, only the @username@ and @password@
+-- instances of 'User', generally, only the @username@ and @authToken@
 -- fields need be filled.
 type Auth = User;
 
