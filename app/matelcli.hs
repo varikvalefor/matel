@@ -172,7 +172,7 @@ runJoin t a
   | length t == 0 = error $ "Idiot!  How am I to join an " ++
     "unspecified room for you?  My strength is simplicity.  I can't " ++
     "work with this shit."
-  | otherwise = join room inviteInfo a >>= maybe (return ()) error
+  | otherwise = join room inviteInfo a >>= dispError
   where
   room :: Room
   room = Def.room {roomId = t !! 0}
@@ -197,7 +197,7 @@ runLeave g a
   | g == [] = error $ "I seriously doubt that you want to leave all " ++
     "Matrix rooms or something."
   | otherwise = leave Def.room {roomId = head g} a >>=
-    maybe (return ()) error;
+    dispError
 
 -- | @runKick@ is a relatively high-level interface for the @'kick'@
 -- command.
@@ -212,4 +212,4 @@ runKick k a
                      Def.room {roomId = k !! 1}
                      (k !! 2)
                      a >>=
-                maybe (return ()) error;
+                dispError
