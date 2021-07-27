@@ -171,7 +171,14 @@ sendTextMessage body dest user =
   sendreq = "{\"msgtype\": \"m.text\",\n\"body\": " `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
   --
   favoriteNoise :: IO String
-  favoriteNoise = BSL.readFile "/dev/random" >>= return . ("$" ++) . map toEnum . take 64 . filter (`elem` (map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'])) . map fromEnum . BSL.unpack;
+  favoriteNoise = toDesiredBits <$> BSL.readFile "/dev/random"
+    where
+    toDesiredBits :: BSL.ByteString -> String
+    toDesiredBits = ("$" ++) . map toEnum . take 64 .
+      filter (`elem` allowedV) . map fromEnum . BSL.unpack
+    --
+    allowedV :: [Int]
+    allowedV = map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'];
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
