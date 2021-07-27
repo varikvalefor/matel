@@ -211,5 +211,4 @@ runKick k a
   | otherwise = kick Def.user {username = k !! 0}
                      Def.room {roomId = k !! 1}
                      (k !! 2)
-                     a >>=
-                dispError
+                     a >>= dispError
