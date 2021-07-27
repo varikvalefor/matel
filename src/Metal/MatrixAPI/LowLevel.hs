@@ -310,8 +310,8 @@ getDisplayName u a =
         (show $ getResponseStatusCode theResponse) ++ "."
   where
   generateRequest :: IO Request
-  generateRequest =
-    parseRequest $ "GET https://" ++ homeserver a ++ "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
+    "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   toDisplayname :: Response BS.ByteString -> Stringth
   toDisplayname = dnr_displayname . fromJust . A.decode .
                   BSL.fromStrict . getResponseBody;
