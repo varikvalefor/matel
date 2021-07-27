@@ -27,7 +27,8 @@ main =
 -- | For all 'MVar' 'Winda' @k@, @fetchData k@ collects data from
 -- Matrix, parses this data appropriately, and outputs this data to @k@.
 --
--- @fetchData@ is currently unimplemented.
+-- @fetchData@ is currently unimplemented.  @fetchData k@ just sends a
+-- placeholder message to @k@.
 fetchData :: MVar Winda
           -- ^ The variable which is used to communicate with the TUI
           -> Auth
