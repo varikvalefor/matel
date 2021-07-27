@@ -187,19 +187,20 @@ getRoomInformation :: Room -- ^ The room which should be described
                    -> Auth -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
-  getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
   getMembers >>= \memebears ->
   if isLeft memebears
     then return $ Left $ justLeft memebears
     -- This seemingly meaningless "@Left . justLeft@" statement is used
     -- because GHC otherwise complains that the type of @memebears@ does
     -- not equal the range of @getRoomInformation@.
-    else return $ Right $ Def.room {
-      roomId = roomId room,
-      isEncrypted = cryptoStatus,
-      publicKey = cryptoKey,
-      members = justRight memebears
-    }
+    else
+      getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
+      return $ Right $ Def.room {
+        roomId = roomId room,
+        isEncrypted = cryptoStatus,
+        publicKey = cryptoKey,
+        members = justRight memebears
+      }
   where
   getEncryptionStatus :: IO (Bool, Maybe PublicKey)
   getEncryptionStatus =
