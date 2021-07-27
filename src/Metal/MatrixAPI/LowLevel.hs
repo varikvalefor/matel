@@ -193,6 +193,9 @@ getRoomInformation room a =
   getMembers >>= \memebears ->
   if isLeft memebears
     then return $ Left $ justLeft memebears
+    -- This seemingly meaningless "@Left . justLeft@" statement is used
+    -- because GHC otherwise complains that the type of @memebears@ does
+    -- not equal the range of @getRoomInformation@.
     else return $ Right $ Def.room {
       roomId = roomId room,
       isEncrypted = cryptoStatus,
