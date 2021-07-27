@@ -303,6 +303,8 @@ getDisplayName u a =
   if getResponseStatusCode theResponse == 200
     then return $ Right $ Def.user {displayname = toDisplayname theResponse}
     else if getResponseStatusCode theResponse == 404
+      -- This "404" thing accounts for users whose display names are
+      -- undefined.
       then return $ Right $ Def.user {displayname = T.pack $ username u}
       else return $ Left $ "Thus spake the homeserver: " ++
         (show $ getResponseStatusCode theResponse) ++ "."
