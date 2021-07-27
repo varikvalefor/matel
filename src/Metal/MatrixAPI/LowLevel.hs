@@ -192,7 +192,7 @@ getRoomInformation room a =
   getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
   getMembers >>= \memebears ->
   if isLeft memebears
-    then return $ Left $ (\(Left k) -> k) memebears
+    then return $ Left $ justLeft memebears
     else return $ Right $ Def.room {
       roomId = roomId room,
       isEncrypted = cryptoStatus,
