@@ -161,9 +161,7 @@ eddySmith t a
   | otherwise = sync Nothing a >>= possiblyBreakDown
   where
   possiblyBreakDown :: Either Stringth Stringth -> IO Stringth
-  possiblyBreakDown k
-    | isLeft k = error $ T.unpack $ fromLeft "Something went mad wrong." k
-    | otherwise = return $ fromRight "Shoutouts to President WASHINGTON." k;
+  possiblyBreakDown = either (error . T.unpack) return;
 
 -- | @runJoin@ is a relatively high-level interface for the Matrix API
 -- "join" command.
