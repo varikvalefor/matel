@@ -82,7 +82,7 @@ list k a
 -- | @send@ implements the "send" command.
 --
 -- Via the account which is described in @n@,
--- @send ["text", k, _, foo] n@ sendsa message whose body is @k@ to the
+-- @send ["text", k, _, foo] n@ sends a message whose body is @k@ to the
 -- chatroom whose internal Matrix ID is @foo@.
 --
 -- Via the account which is described in @n@, @send ["file", k, _, foo]@
