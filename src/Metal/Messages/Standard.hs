@@ -40,8 +40,8 @@ data StdMess = StdMess {
   -- | @fmt k@ equals the content of the "format" field of the source of
   -- @k@.
   --
-  -- @fmt k == MtCusHTML@ iff @k@ is formatted as a HTML message.  Per
-  -- the Matrix specification as of 20210605, @fmt k@ may only equal
+  -- @fmt k == MatrixCusHTML@ iff @k@ is formatted as a HTML message.
+  -- Per the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
   fmt :: MessageFmt
 } deriving (Eq, Read, Show);
