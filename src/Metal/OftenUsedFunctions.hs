@@ -2,8 +2,6 @@
 -- numerous modules of Metal.
 
 module Metal.OftenUsedFunctions where
-import Data.Either;
-
 -- | @justLeft (Left k) == k@.  @justLeft (Right g)@ throws an error.
 --
 -- @justLeft@ is used because VARIK does not wish to add junk data to
