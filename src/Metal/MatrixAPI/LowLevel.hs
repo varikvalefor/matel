@@ -275,13 +275,13 @@ join r i a =
       -- the speed of this thing is greater than the speed of the Aeson
       -- equivalent.
   inviter :: User
-  inviter = maybe Def.user (\(a,b,c) -> a) i
+  inviter = maybe Def.user (\(a,_,_) -> a) i
   --
   inviteStateKey :: String
-  inviteStateKey = maybe "" (\(a,b,c) -> b) i
+  inviteStateKey = maybe "" (\(_,b,_) -> b) i
   --
   signature :: String
-  signature = maybe "" (\(a,b,c) -> c) i;
+  signature = maybe "" (\(_,_,c) -> c) i;
 
 -- | @getDisplayName@ implements the Matrix API's
 -- "@GET /_matrix/client/r0/profile/{userId}/displayname@" command.
