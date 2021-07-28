@@ -13,7 +13,7 @@ import Data.Either;
 -- Compare with @justRight@.
 justLeft :: Either a b -> a;
 justLeft (Left a) = a;
-justLeft (Right b) = error "justLeft is applied to a value of type 'Right'!";
+justLeft (Right _) = error "justLeft is applied to a value of type 'Right'!";
 
 -- | @justRight (Right k) == k@.  @justRight (Left g)@ throws an error.
 --
@@ -24,4 +24,4 @@ justLeft (Right b) = error "justLeft is applied to a value of type 'Right'!";
 -- Compare with @justLeft@.
 justRight :: Either a b -> b;
 justRight (Right b) = b;
-justRight (Left a) = error "justRight is applied to a value of type 'Left'!";
+justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
