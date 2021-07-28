@@ -15,7 +15,7 @@ import Metal.Room;
 import Metal.User;
 import Metal.Messages.Standard;
 
--- | 'Screen's are TUI data which should be immediately drawn.:
+-- | 'Screen's are TUI data which should be immediately drawn.
 type Screen = Widget ();
 -- | For all 'Winda' @k@, @k@ is a 'Widget' which should NOT be
 -- immediately drawn to the terminal; @k@ requires additional
