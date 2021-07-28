@@ -4,13 +4,9 @@
 -- | Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
 -- use only within Metal.MatrixAPI.LowLevel.
 module Metal.MatrixAPI.LowLevel.Types where
-import Metal.Base;
 import Data.Aeson;
 import Metal.Base;
 import Data.Aeson.TH;
-import Data.Text.Encoding;
-import qualified Data.Text as DT;
-import qualified Data.ByteString as BS;
 
 -- | 'LoginRequest' is used within 'LowLevel' to hold login requests
 -- which are to be converted to JSON.
