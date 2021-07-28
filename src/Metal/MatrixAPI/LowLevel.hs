@@ -11,8 +11,6 @@ import Data.Maybe;
 import Data.Either;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
-import Data.List (elemIndex);
-import Metal.Messages.Standard;
 import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Data.Aeson as A;
