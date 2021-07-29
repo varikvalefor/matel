@@ -372,7 +372,7 @@ kick tarjay rome ree a =
 -- The second argument is the authorisation information which is used to
 -- actually leave the room.
 --
--- A non-'Nothing' output is given iff an error is encountered.  If such
+-- A non-'Nothing' value is output iff an error is encountered.  If such
 -- a thing is output, then this output describes such an error.
 leave :: Room -- ^ The room which should be left
       -> Auth -- ^ The authorisation information
