@@ -264,8 +264,12 @@ join r i a =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest ("POST https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join") a >>=
+    generateAuthdRequest uri a >>=
     return . setRequestBodyLBS joinReq
+  --
+  uri :: String
+  uri = "POST https://" ++ homeserver a ++
+    "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
   --
   joinReq :: BSL.ByteString
   joinReq
