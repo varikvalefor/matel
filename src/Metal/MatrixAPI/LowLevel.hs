@@ -264,8 +264,7 @@ join r i a =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest uri a >>=
-    return . setRequestBodyLBS joinReq
+    setRequestBodyLBS joinReq <$> generateAuthdRequest uri a
   --
   uri :: String
   uri = "POST https://" ++ homeserver a ++
