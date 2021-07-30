@@ -166,7 +166,8 @@ sendTextMessage body dest user =
     return . setRequestBodyLBS sendreq
   --
   sendreq :: BSL.ByteString
-  sendreq = "{\"msgtype\": \"m.text\",\n\"body\": " `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
+  sendreq = "{\"msgtype\": \"m.text\",\n\"body\": "
+    `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
   --
   favoriteNoise :: IO String
   favoriteNoise = toDesiredBits <$> BSL.readFile "/dev/random"
