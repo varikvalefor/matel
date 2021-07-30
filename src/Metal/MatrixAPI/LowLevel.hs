@@ -95,8 +95,11 @@ sync since user =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest ("GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync") user >>=
+    generateAuthdRequest uri user >>=
     return . setRequestBodyLBS syncreq
+  --
+  uri :: String
+  uri = "GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync"
   --
   syncreq :: BSL.ByteString
   syncreq
