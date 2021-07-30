@@ -7,6 +7,7 @@ module GetAuth (getAuthorisationDetails) where
 import Metal.Auth;
 import Metal.Base;
 import Metal.User;
+import System.Directory;
 import System.Environment;
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
@@ -21,7 +22,7 @@ import qualified Metal.Default as Def;
 -- "README" file.
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
-  getEnv "HOME" >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
+  getHomeDirectory >>= T.readFile . (++ "/.config/matel") >>= \cfg ->
   return Def.user {
     username = T.unpack $ xOf "username: " cfg,
     password = xOf "password: " cfg,
