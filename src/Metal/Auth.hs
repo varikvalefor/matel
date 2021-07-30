@@ -14,7 +14,7 @@ import qualified Data.ByteString.Char8 as BS8;
 --
 -- 'Auth' is really just a synonym of 'User'. However, unlike most
 -- instances of 'User', generally, only the @username@ and @authToken@
--- fields need be filled.
+-- fields must be defined.
 type Auth = User;
 
 -- | @authToken' k@ equals a version of the authorisation token of @k@
