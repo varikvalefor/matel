@@ -89,8 +89,8 @@ loginPass user =
 -- @sync k g@ exists only if an error is present... and equals a
 -- description of such an error.
 sync :: Maybe String -- ^ The desired value of the query's "since" field
-    -> Auth -- ^ The authorisation deets
-    -> IO (Either Stringth Stringth);
+     -> Auth -- ^ The authorisation deets
+     -> IO (Either Stringth Stringth);
 sync since user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
