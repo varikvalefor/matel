@@ -208,7 +208,7 @@ getRoomInformation room a =
     -- not equal the range of @getRoomInformation@.
     else
       getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
-      return $ Right $ Def.room {
+      return $ Right Def.room {
         roomId = roomId room,
         isEncrypted = cryptoStatus,
         publicKey = cryptoKey,
