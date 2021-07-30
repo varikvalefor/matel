@@ -19,7 +19,7 @@ data Room = Room {
   -- thing.
   members :: [User],
   -- | For all 'Room' @k@, @topic k@ equals the topic of @k@.
-  topic :: String,
+  topic :: Stringth,
   -- | @isEncrypted k@ iff encryption is enabled within @k@.
   isEncrypted :: Bool,
   -- | @publicKey k@ equals the public key of @k@.  If @k@ is
