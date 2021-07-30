@@ -247,12 +247,14 @@ getRoomInformation room a =
 --
 -- If the command is successful, then the output is Nothing.  The output
 -- otherwise equals a terse description of the error.
-join :: Room -- ^ The 'Room' which should be joined
+join :: Room
+     -- ^ The 'Room' which should be joined
      -> Maybe (User, String, String)
      -- ^ The user which sends the invite, the state key of the invite,
      -- and the signature of the invite, respectively, if the room is
      -- not public -- otherwise, Nothing
-     -> Auth -- ^ The authorisation information of Matel's user
+     -> Auth
+     -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
 join r i a =
   generateRequest >>= httpBS >>= \theResponse ->
