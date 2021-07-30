@@ -101,7 +101,9 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 -- problem.
 --
 -- @markRead@ is currently nonfunctional.
-markRead :: StdMess -- ^ The message which should become "read"
-         -> Auth -- ^ Authorisation crap
+markRead :: StdMess
+         -- ^ The message which should become "read"
+         -> Auth
+         -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
 markRead k a = error "markRead is unimplemented.";
