@@ -168,8 +168,7 @@ sendTextMessage body dest user =
   generateRequest :: IO Request
   generateRequest =
     favoriteNoise >>= \fn ->
-    generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user >>=
-    return . setRequestBodyLBS sendreq
+    setRequestBodyLBS sendreq <$> generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user
   --
   sendreq :: BSL.ByteString
   sendreq = "{\"msgtype\": \"m.text\",\n\"body\": "
