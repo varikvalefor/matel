@@ -62,9 +62,7 @@ loginPass user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
   generateRequest :: IO Request
-  generateRequest =
-    parseRequest uri >>=
-    return . setRequestBodyJSON logreq
+  generateRequest = setRequestBodyJSON logreq <$> parseRequest uri
   --
   uri :: String
   uri = "POST https://" ++ homeserver user ++ "/_matrix/client/r0/login"
