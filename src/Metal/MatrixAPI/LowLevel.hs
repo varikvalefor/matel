@@ -336,10 +336,14 @@ getDisplayName u a =
 -- to run the command.
 --
 -- An error message is provided iff an error is encountered.
-kick :: User -- ^ A description of the user which should be "kicked"
-     -> Room -- ^ The room from which the user should be removed
-     -> String -- ^ The reason for the removal of the user
-     -> Auth -- ^ The authorisation information
+kick :: User
+     -- ^ A description of the user which should be "kicked"
+     -> Room
+     -- ^ The room from which the user should be removed
+     -> String
+     -- ^ The reason for the removal of the user
+     -> Auth
+     -- ^ The authorisation information
      -> IO (Maybe String);
 kick tarjay rome ree a =
   generateRequest >>= httpBS >>= \theResponse ->
