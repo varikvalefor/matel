@@ -88,8 +88,10 @@ loginPass user =
 -- which results from signing in to Matrix.  The 'Left' value of
 -- @sync k g@ exists only if an error is present... and equals a
 -- description of such an error.
-sync :: Maybe String -- ^ The desired value of the query's "since" field
-     -> Auth -- ^ The authorisation deets
+sync :: Maybe String
+     -- ^ The desired value of the query's "since" field
+     -> Auth
+     -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
 sync since user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
