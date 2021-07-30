@@ -322,7 +322,7 @@ getDisplayName :: User -- ^ The user whose display name is output
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return $ Right Def.user {displayname = toDisplayname theResponse}
+    then return $ Right Def.user {displayname = toDispName theResponse}
     else if getResponseStatusCode theResponse == 404
       -- This "404" thing accounts for users whose display names are
       -- undefined.
@@ -333,9 +333,9 @@ getDisplayName u a =
   generateRequest :: IO Request
   generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
     "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
-  toDisplayname :: Response BS.ByteString -> Stringth
-  toDisplayname = dnr_displayname . fromJust . A.decode .
-                  BSL.fromStrict . getResponseBody;
+  toDispName :: Response BS.ByteString -> Stringth
+  toDispName = dnr_displayname . fromJust . A.decode .
+               BSL.fromStrict . getResponseBody;
 
 -- | @kick@ implements the Matrix API's
 -- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
