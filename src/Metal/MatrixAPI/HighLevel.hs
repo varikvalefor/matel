@@ -58,8 +58,7 @@ memberRooms a =
         else return $ map justRight getRmOut
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
-  listRoomsMentioned (Right k) = mapM (flip getRoomInformation a) k
-  listRoomsMentioned (Left k) = return $ [Left k]
+  listRoomsMentioned = either (\k -> return [Left k]) (mapM (flip getRoomInformation a))
   --
   toString :: Stringth -> String
   toString = map (toEnum . fromEnum) . T.unpack;
