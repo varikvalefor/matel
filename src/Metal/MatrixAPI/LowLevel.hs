@@ -322,7 +322,7 @@ getDisplayName :: User -- ^ The user whose display name is output
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return $ Right $ Def.user {displayname = toDisplayname theResponse}
+    then return $ Right Def.user {displayname = toDisplayname theResponse}
     else if getResponseStatusCode theResponse == 404
       -- This "404" thing accounts for users whose display names are
       -- undefined.
