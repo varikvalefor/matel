@@ -26,7 +26,7 @@ For all good changes, the diff of a good change can be pinged to Varik Valefor \
 ## Getting Started
 ### Configuration
 #### Required Stuff
-The basic information of Matel, e.g., the username and password of the user, are contained within the file `$PATH/.config/matel`.
+The basic information of Matel, e.g., the username and password of the user, are contained within the file `[HOME DIRECTORY]/.config/matel`.
 
 The username _k_ of the user should be placed onto a line such that the line matches the format `username: `_k_.
 
