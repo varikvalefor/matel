@@ -188,8 +188,10 @@ sendTextMessage body dest user =
 --
 -- The "fetch the room members" portion of @getRoomInformation@ is
 -- currently unimplemented and always returns @[]@ for existent rooms.
-getRoomInformation :: Room -- ^ The room which should be described
-                   -> Auth -- ^ The authorisation information
+getRoomInformation :: Room
+                   -- ^ The room which should be described
+                   -> Auth
+                   -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
   getMembers >>= \memebears ->
