@@ -63,8 +63,11 @@ loginPass user =
   where
   generateRequest :: IO Request
   generateRequest =
-    parseRequest ("POST https://" ++ homeserver user ++ "/_matrix/client/r0/login") >>=
+    parseRequest uri >>=
     return . setRequestBodyJSON logreq
+  --
+  uri :: String
+  uri = "POST https://" ++ homeserver user ++ "/_matrix/client/r0/login"
   --
   logreq :: LoginRequest
   logreq = LoginRequest {
