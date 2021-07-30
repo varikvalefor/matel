@@ -127,7 +127,11 @@ joinedRooms a =
   where
   generateRequest :: IO Request
   generateRequest =
-    generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/joined_rooms") a
+    generateAuthdRequest uri a
+  --
+  uri :: String
+  uri = "GET https://" ++ homeserver a ++
+    "/_matrix/client/r0/joined_rooms"
   --
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Def.room {roomId = k});
