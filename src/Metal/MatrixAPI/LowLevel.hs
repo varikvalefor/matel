@@ -225,7 +225,11 @@ getRoomInformation room a =
            (show $ getResponseStatusCode response) ++ "."
   --
   rq :: String -> IO (Response BS.ByteString)
-  rq k = generateAuthdRequest ("GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++ roomId room ++ k) a >>= httpBS;
+  rq k = generateAuthdRequest uri a >>= httpBS
+    where
+    uri :: String
+    uri = "GET https://" ++ homeserver a ++
+      "/matrix/_client/r0/rooms" ++ roomId room ++ k;
 
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
