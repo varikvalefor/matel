@@ -313,7 +313,7 @@ join r i a =
 --
 -- If the query returns a status code of 404, then @getDisplayName@
 -- assumes that the user has not set a display name and returns the
--- input thing @k@ such that @displayname k == Nothing@.
+-- input thing @k@ such that @displayname k == username k@.
 getDisplayName :: User -- ^ The user whose display name is output
                -> Auth -- ^ The authorisation information of Matel's
                        -- user, used for determining the server which
