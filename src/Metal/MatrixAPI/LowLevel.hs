@@ -160,7 +160,7 @@ sendTextMessage :: Stringth
                 -> IO (Maybe ErrorCode);
 sendTextMessage body dest user =
   generateRequest >>= httpBS >>= \theResponse ->
-    if (getResponseStatusCode theResponse) == 200
+    if getResponseStatusCode theResponse == 200
       then return Nothing
       else return $ Just $ "Thus spake the homeserver: " ++
         (show $ getResponseStatusCode theResponse) ++ "."
@@ -172,7 +172,7 @@ sendTextMessage body dest user =
   --
   sendreq :: BSL.ByteString
   sendreq = "{\"msgtype\": \"m.text\",\n\"body\": "
-    `BSL.append` (BSL.fromStrict $ encodeUtf8 body) `BSL.append` "}"
+    `BSL.append` BSL.fromStrict (encodeUtf8 body) `BSL.append` "}"
   --
   favoriteNoise :: IO String
   favoriteNoise = toDesiredBits <$> BSL.readFile "/dev/random"
