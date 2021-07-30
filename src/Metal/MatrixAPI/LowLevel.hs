@@ -126,8 +126,7 @@ joinedRooms a =
         (show $ getResponseStatusCode response) ++ "."
   where
   generateRequest :: IO Request
-  generateRequest =
-    generateAuthdRequest uri a
+  generateRequest = generateAuthdRequest uri a
   --
   uri :: String
   uri = "GET https://" ++ homeserver a ++
