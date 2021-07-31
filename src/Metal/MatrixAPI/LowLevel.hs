@@ -364,9 +364,11 @@ getDisplayName u a =
   generateRequest :: IO Request
   generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
     "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  --
   toDispName :: Response BS.ByteString -> Stringth
   toDispName = dnr_displayname . fromJust . A.decode .
                BSL.fromStrict . getResponseBody
+  --
   processResponse :: Response BS.ByteString -> Either String User
   processResponse r
     | getResponseStatusCode r == 200 =
