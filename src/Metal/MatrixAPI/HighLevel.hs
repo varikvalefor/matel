@@ -51,7 +51,10 @@ memberRooms :: Auth -> IO [Room];
 memberRooms a = joinedRooms a >>= maybeShowRms
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
-  listRoomsMentioned = either (\k -> return [Left k]) (mapM (flip getRoomInformation a))
+  listRoomsMentioned = either convS (mapM (flip getRoomInformation a))
+    where
+    convS :: Stringth -> IO [Either Stringth Room]
+    convS = return . return . Left
   --
   maybeShowRms :: Either Stringth [Room] -> IO [Room]
   maybeShowRms = listRoomsMentioned >=> \t ->
