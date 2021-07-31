@@ -152,6 +152,19 @@ joinedRooms a =
 joinedSpaces :: Auth -> IO (Either Stringth [Space]);
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
+-- | @joinedComms k@ sends the "not yet implemented" query to the
+-- homeserver of @k@, authenticating as @k@.
+--
+-- The 'Right' value of @joinedComms k g@ equals a list of the Matrix
+-- communities which Matel's user has joined. The 'Left' value of
+-- @joinedComms k@ exists only if an error is present... and equals a
+-- description of this error.
+--
+-- The output 'Community' records are NOT completely filled; only the
+-- @spaceId@ bits are non-default.
+joinedComms :: Auth -> IO (Either Stringth [Space]);
+joinedComms a = error "joinedComms is unimplemented.";
+
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a string which contains the
