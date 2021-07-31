@@ -8,6 +8,7 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.Space;
+import Control.Monad;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
@@ -47,13 +48,16 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- Matel's user, whose login information is contained within @x@, is a
 -- member.
 memberRooms :: Auth -> IO [Room];
-memberRooms a = joinedRooms a >>= either (error . toString) maybeShowRms
+memberRooms a = joinedRooms a >>= maybeShowRms
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
   listRoomsMentioned = either (\k -> return [Left k]) (mapM (flip getRoomInformation a))
   --
   maybeShowRms :: Either Stringth [Room] -> IO [Room]
-  maybeShowRms = listRoomsMentioned >=> either (error . toString) (return . map justRight)
+  maybeShowRms = listRoomsMentioned >=> \t ->
+    if any EE.isLeft t
+      then error $ toString $ justLeft $ head t
+      else return $ map justRight t
   --
   toString :: Stringth -> String
   toString = map (toEnum . fromEnum) . T.unpack;
