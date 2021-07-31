@@ -359,7 +359,7 @@ getDisplayName :: User
                -- to determine the server which should be contacted
                -> IO (Either String User);
 getDisplayName u a =
-  generateRequest >>= httpBS >>= processResponse
+  generateRequest >>= httpBS >>= return . processResponse
   where
   generateRequest :: IO Request
   generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
@@ -367,15 +367,15 @@ getDisplayName u a =
   toDispName :: Response BS.ByteString -> Stringth
   toDispName = dnr_displayname . fromJust . A.decode .
                BSL.fromStrict . getResponseBody
-  processResponse :: Response BS.ByteString -> IO (Either String User)
+  processResponse :: Response BS.ByteString -> Either String User
   processResponse r
     | getResponseStatusCode r == 200 =
-      return $ Right Def.user {displayname = toDispName r}
+      Right Def.user {displayname = toDispName r}
     | getResponseStatusCode r == 404 =
-      return $ Right Def.user {displayname = T.pack $ username u}
+      Right Def.user {displayname = T.pack $ username u}
       -- This "404" thing accounts for users whose display names are
       -- undefined.
-    | otherwise = return $ Left $ "Thus spake the homeserver: " ++
+    | otherwise = Left $ "Thus spake the homeserver: " ++
       show (getResponseStatusCode r) ++ ".";
 
 -- | @kick@ implements the Matrix API's
