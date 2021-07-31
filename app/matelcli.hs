@@ -39,8 +39,10 @@ main =
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
-determineAction :: [String] -- ^ The input @matelcli@ command
-                -> Auth -- ^ Matel user's authorisation information
+determineAction :: [String]
+                -- ^ The input @matelcli@ command
+                -> Auth
+                -- ^ Matel user's authorisation information
                 -> IO ();
 determineAction x a
   | x == [] = error "I need a command, jack-ass."
