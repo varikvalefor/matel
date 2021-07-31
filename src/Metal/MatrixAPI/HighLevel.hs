@@ -3,6 +3,12 @@
 -- | Metal.MatrixAPI.HighLevel contains functions which use the Matrix
 -- API by chaining together relatively low-level functions for the
 -- Matrix API.
+--
+-- This module differs from Metal.MatrixAPI.LowLevel because the
+-- functions within this module transparently support encryption and do
+-- not explicitly use HTTP queries, whereas the functions of
+-- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
+-- support only explicit encryption.
 module Metal.MatrixAPI.HighLevel where
 import Metal.Auth;
 import Metal.Base;
