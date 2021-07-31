@@ -445,7 +445,7 @@ leave r a =
   if getResponseStatusCode theResponse == 200
     then Nothing
     else Just $ "Thus spake the homeserver: " ++
-      (show $ getResponseStatusCode theResponse) ++ "."
+      show (getResponseStatusCode theResponse) ++ "."
   where
   uri :: String
   uri = "POST https://" ++ homeserver a ++
