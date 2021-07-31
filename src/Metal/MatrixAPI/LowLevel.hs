@@ -358,22 +358,24 @@ getDisplayName :: User
                -- to determine the server which should be contacted
                -> IO (Either String User);
 getDisplayName u a =
-  generateRequest >>= httpBS >>= \theResponse ->
-  if getResponseStatusCode theResponse == 200
-    then return $ Right Def.user {displayname = toDispName theResponse}
-    else if getResponseStatusCode theResponse == 404
-      -- This "404" thing accounts for users whose display names are
-      -- undefined.
-      then return $ Right $ Def.user {displayname = T.pack $ username u}
-      else return $ Left $ "Thus spake the homeserver: " ++
-        (show $ getResponseStatusCode theResponse) ++ "."
+  generateRequest >>= httpBS >>= processResponse
   where
   generateRequest :: IO Request
   generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
     "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   toDispName :: Response BS.ByteString -> Stringth
   toDispName = dnr_displayname . fromJust . A.decode .
-               BSL.fromStrict . getResponseBody;
+               BSL.fromStrict . getResponseBody
+  processResponse :: Response BS.ByteString -> IO (Either String User)
+  processResponse r
+    | getResponseStatusCode r == 200 =
+      return $ Right Def.user {displayname = toDispName r}
+    | getResponseStatusCode r == 404 =
+      return $ Right Def.user {displayname = T.pack $ username u}
+      -- This "404" thing accounts for users whose display names are
+      -- undefined.
+    | otherwise = return $ Left $ "Thus spake the homeserver: " ++
+      show (getResponseStatusCode r) ++ ".";
 
 -- | @kick@ implements the Matrix API's
 -- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
