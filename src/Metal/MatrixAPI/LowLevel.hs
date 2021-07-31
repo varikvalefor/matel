@@ -455,6 +455,12 @@ leave r a =
   uri = "POST https://" ++ homeserver a ++
     "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
 
+-- | @responseToStringth k@ equals a 'Stringth' which describes the
+-- status code of @k@.
+responseToStringth :: Response a -> Stringth;
+responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
+  show (getResponseStatusCode r) ++ ".";
+
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
 --
