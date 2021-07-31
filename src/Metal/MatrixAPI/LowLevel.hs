@@ -265,8 +265,7 @@ getRoomInformation room a =
     rq "/members" >>= return . \response ->
     if getResponseStatusCode response == 200
       then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-      else Left $ T.pack $ "Thus spake the homeserver: " ++
-           show (getResponseStatusCode response) ++ "."
+      else Left $ responseToStringth response
   --
   rq :: String -> IO (Response BS.ByteString)
   rq k = generateAuthdRequest uri a >>= httpBS
