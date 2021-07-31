@@ -8,6 +8,12 @@
 -- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
 -- is only of particular interest to men who wish to modify @matelcli@
 -- or understand the inner workings of @matelcli@.
+--
+-- This module differs from Metal.MatrixAPI.LowLevel because the
+-- functions within this module transparently support encryption and do
+-- not explicitly use HTTP queries, whereas the functions of
+-- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
+-- support only explicit encryption.
 module Main where
 import GetAuth;
 import Text.Read;
