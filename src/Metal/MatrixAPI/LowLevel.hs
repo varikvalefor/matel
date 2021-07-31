@@ -106,7 +106,8 @@ sync since user =
   syncreq :: BSL.ByteString
   syncreq
     | isNothing since = ""
-    | otherwise = fromString $ "{\"since\": \"" ++ fromJust since ++ "\"}";
+    | otherwise = fromString $
+      "{\"since\": \"" ++ fromJust since ++ "\"}";
 
 -- | @joinedRooms k@ sends the "joined_rooms" query to the
 -- homeserver of @k@, authenticating as @k@.
