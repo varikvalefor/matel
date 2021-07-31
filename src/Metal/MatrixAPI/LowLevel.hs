@@ -322,7 +322,7 @@ getDisplayName :: User
                -- ^ The user whose display name is output
                -> Auth
                -- ^ The authorisation information of Matel's user, used
-               -- for determining the server which should be contacted
+               -- to determine the server which should be contacted
                -> IO (Either String User);
 getDisplayName u a =
   generateRequest >>= httpBS >>= \theResponse ->
