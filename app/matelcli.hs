@@ -204,7 +204,7 @@ runLeave :: [String] -> Auth -> IO ();
 runLeave g a
   | g == [] = error $ "I seriously doubt that you want to leave all " ++
     "Matrix rooms or something."
-  | otherwise = leave Def.room {roomId = head g} a >>= dispError
+  | otherwise = leave Def.room {roomId = head g} a >>= dispError;
 
 -- | @runKick@ is a relatively high-level interface for the @'kick'@
 -- command.
