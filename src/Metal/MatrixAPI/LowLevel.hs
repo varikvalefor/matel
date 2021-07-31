@@ -297,7 +297,7 @@ join r i a =
   if getResponseStatusCode theResponse == 200
     then Nothing
     else Just $ "Thus spake the homeserver: " ++
-      (show $ getResponseStatusCode theResponse)
+      show (getResponseStatusCode theResponse)
   where
   generateRequest :: IO Request
   generateRequest =
