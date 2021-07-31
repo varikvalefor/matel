@@ -171,11 +171,8 @@ logIn = loginPass >=> either busticate T.putStrLn
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String] -> Auth -> IO Stringth;
-eddySmith t a = possiblyBreakDown <$> sync since a
+eddySmith t a = either (error . T.unpack) id <$> sync since a
   where
-  possiblyBreakDown :: Either Stringth Stringth -> Stringth
-  possiblyBreakDown = either (error . T.unpack) id
-  --
   since :: Maybe String
   since
     | t == [] = Nothing
