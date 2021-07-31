@@ -94,9 +94,9 @@ list k a
 -- @send ["text", k, _, foo] n@ sends a message whose body is @k@ to the
 -- chatroom whose internal Matrix ID is @foo@.
 --
--- Via the account which is described in @n@, @send ["file", k, _, foo]@
--- sends a message whose attachment is @k@ to the chatroom whose
--- internal Matrix ID is @foo@.
+-- Via the account which is described in @n@,
+-- @send ["file", k, _, foo] n@ sends a message whose attachment is
+-- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String] -> Auth -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
