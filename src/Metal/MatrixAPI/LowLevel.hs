@@ -405,10 +405,10 @@ kick :: User
      -- ^ The authorisation information
      -> IO (Maybe String);
 kick tarjay rome ree a =
-  generateRequest >>= httpBS >>= \theResponse ->
+  generateRequest >>= httpBS >>= return . \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return Nothing
-    else return $ Just $ "Thus spake the homeserver: " ++
+    then Nothing
+    else Just $ "Thus spake the homeserver: " ++
       show (getResponseStatusCode theResponse) ++ "."
   where
   generateRequest :: IO Request
