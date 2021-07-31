@@ -49,16 +49,13 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- member.
 memberRooms :: Auth -> IO [Room];
 memberRooms a =
-  joinedRooms a >>= \jrOut ->
-  if EE.isLeft jrOut
-    then error $ toString $ justLeft jrOut
-    else listRoomsMentioned jrOut >>= \getRmOut ->
-      if any EE.isLeft getRmOut
-        then error $ toString $ justLeft $ head getRmOut
-        else return $ map justRight getRmOut
+  joinedRooms a >>= either (error . toString) maybeOutputRoomList
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
   listRoomsMentioned = either (\k -> return [Left k]) (mapM (flip getRoomInformation a))
+  --
+  maybeOutputRoomList :: Either Stringth [Room] -> IO [Room]
+  maybeOutputRoomList = listRoomsMentioned >=> either (error . toString) (return . map justRight)
   --
   toString :: Stringth -> String
   toString = map (toEnum . fromEnum) . T.unpack;
