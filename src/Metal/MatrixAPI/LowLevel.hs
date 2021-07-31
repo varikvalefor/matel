@@ -129,8 +129,7 @@ joinedRooms a =
     if getResponseStatusCode response == 200
       then Right $ toRooms $ joined_room $ fromJust $
         A.decode $ BSL.fromStrict $ getResponseBody response
-      else Left $ T.pack $ "Thus spake the homeserver: " ++
-        (show $ getResponseStatusCode response) ++ "."
+      else Left $ responseToStringth response
   where
   generateRequest :: IO Request
   generateRequest = generateAuthdRequest uri a
