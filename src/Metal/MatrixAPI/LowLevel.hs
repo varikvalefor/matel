@@ -200,8 +200,14 @@ sendTextMessage body dest user =
     setRequestBodyLBS sendreq <$> generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user
   --
   sendreq :: BSL.ByteString
-  sendreq = "{\"msgtype\": \"m.text\",\n\"body\": "
-    `BSL.append` BSL.fromStrict (encodeUtf8 body) `BSL.append` "}"
+  sendreq =
+    "{\n\t" ++
+      "\"msgtype\": \"m.text\",\n\t" ++
+      "\"body\": \"" ++ BSL.fromStrict (encodeUtf8 body) ++ "\"\n" ++
+    "}"
+    where
+    (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString
+    (++) = BSL.append
   --
   favoriteNoise :: IO String
   favoriteNoise = toDesiredBits <$> BSL.readFile "/dev/random"
