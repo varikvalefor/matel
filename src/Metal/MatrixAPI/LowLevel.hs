@@ -293,10 +293,10 @@ join :: Room
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
 join r i a =
-  generateRequest >>= httpBS >>= \theResponse ->
+  generateRequest >>= httpBS >>= return . \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return Nothing
-    else return $ Just $ "Thus spake the homeserver: " ++
+    then Nothing
+    else Just $ "Thus spake the homeserver: " ++
       (show $ getResponseStatusCode theResponse)
   where
   generateRequest :: IO Request
