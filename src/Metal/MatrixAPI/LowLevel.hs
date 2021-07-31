@@ -410,8 +410,7 @@ kick tarjay rome ree a =
   generateRequest >>= httpBS >>= return . \theResponse ->
   if getResponseStatusCode theResponse == 200
     then Nothing
-    else Just $ "Thus spake the homeserver: " ++
-      show (getResponseStatusCode theResponse) ++ "."
+    else Just $ T.unpack $ responseToStringth theResponse
   where
   generateRequest :: IO Request
   generateRequest =
