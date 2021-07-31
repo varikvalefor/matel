@@ -189,10 +189,10 @@ sendTextMessage :: Stringth
                 -- ^ Authorisation junk
                 -> IO (Maybe ErrorCode);
 sendTextMessage body dest user =
-  generateRequest >>= httpBS >>= \theResponse ->
+  generateRequest >>= httpBS >>= return . \theResponse ->
     if getResponseStatusCode theResponse == 200
-      then return Nothing
-      else return $ Just $ "Thus spake the homeserver: " ++
+      then Nothing
+      else Just $ "Thus spake the homeserver: " ++
         show (getResponseStatusCode theResponse) ++ "."
   where
   generateRequest :: IO Request
