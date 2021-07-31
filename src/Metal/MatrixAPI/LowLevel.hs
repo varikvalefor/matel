@@ -253,17 +253,17 @@ getRoomInformation room a =
   where
   getEncryptionStatus :: IO (Bool, Maybe PublicKey)
   getEncryptionStatus =
-    rq "/event/m.room.key" >>= \response ->
+    rq "/event/m.room.key" >>= return . \response ->
     if getResponseStatusCode response == 200
-      then return (True, error "TODO: IMPLEMENT THIS THING!")
-      else return (False, Nothing)
+      then (True, error "TODO: IMPLEMENT THIS THING!")
+      else (False, Nothing)
   --
   getMembers :: IO (Either Stringth [User])
   getMembers =
-    rq "/members" >>= \response ->
+    rq "/members" >>= retur . \response ->
     if getResponseStatusCode response == 200
-      then return $ Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-      else return $ Left $ T.pack $ "Thus spake the homeserver: " ++
+      then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
+      else Left $ T.pack $ "Thus spake the homeserver: " ++
            show (getResponseStatusCode response) ++ "."
   --
   rq :: String -> IO (Response BS.ByteString)
