@@ -39,7 +39,7 @@ encryptWKey :: ByteData
             -> CipherByteData;
 encryptWKey text key = T.pack [];
 
--- | @decryptTextWKey z k@ decrypts @z@ with @k@, outputting the
+-- | @decryptWKey z k@ decrypts @z@ with @k@, outputting the
 -- resulting 'ByteData'-based data.
 --
 -- @decryptWKey@ is currently nonfunctional.
