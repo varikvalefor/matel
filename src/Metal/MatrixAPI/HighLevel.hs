@@ -48,14 +48,13 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 -- Matel's user, whose login information is contained within @x@, is a
 -- member.
 memberRooms :: Auth -> IO [Room];
-memberRooms a =
-  joinedRooms a >>= either (error . toString) maybeOutputRoomList
+memberRooms a = joinedRooms a >>= either (error . toString) maybeShowRms
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
   listRoomsMentioned = either (\k -> return [Left k]) (mapM (flip getRoomInformation a))
   --
-  maybeOutputRoomList :: Either Stringth [Room] -> IO [Room]
-  maybeOutputRoomList = listRoomsMentioned >=> either (error . toString) (return . map justRight)
+  maybeShowRms :: Either Stringth [Room] -> IO [Room]
+  maybeShowRms = listRoomsMentioned >=> either (error . toString) (return . map justRight)
   --
   toString :: Stringth -> String
   toString = map (toEnum . fromEnum) . T.unpack;
