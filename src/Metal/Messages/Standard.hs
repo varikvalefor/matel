@@ -39,7 +39,7 @@ data StdMess = StdMess {
   -- | @fmt k@ equals the content of the "format" field of the source of
   -- @k@.
   --
-  -- @fmt k == MatrixCusHTML@ iff @k@ is formatted as a HTML message.
+  -- @fmt k == MatrixCusHTML@ iff @k@ is formatted using HTML.
   -- Per the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
   fmt :: MessageFmt
