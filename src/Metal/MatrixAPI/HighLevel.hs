@@ -65,7 +65,7 @@ memberRooms a = joinedRooms a >>= maybeShowRms
   maybeShowRms :: Either Stringth [Room] -> IO [Room]
   maybeShowRms = listRoomsMentioned >=> \t ->
     if any EE.isLeft t
-      then error $ toString $ justLeft $ head t
+      then error $ toString $ justLeft $ head $ filter EE.isLeft t
       else return $ map justRight t
   --
   toString :: Stringth -> String
