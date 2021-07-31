@@ -155,10 +155,10 @@ dispError = maybe (return ()) error;
 -- | @logIn k@ generates an authorisation token for the user which is
 -- specified in @k@.
 logIn :: Auth -> IO ();
-logIn = loginPass >=> \result ->
-  if isLeft result
-    then error $ "loginPass: " ++ T.unpack (justLeft result)
-    else T.putStrLn $ justRight result;
+logIn = loginPass >=> either busticate T.putStrLn
+  where
+  busticate :: T.Text -> IO ()
+  busticate = error . ("loginPass: " ++) . T.unpack;
 
 -- | @eddySmith@ is a high-level wrapper for @sync@.
 --
