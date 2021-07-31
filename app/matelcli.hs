@@ -188,7 +188,7 @@ runJoin t a
   inviteInfo :: Maybe (User, String, String)
   inviteInfo
     | length t == 4 = Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
-    | not (length t `elem` [1,4]) = error $ "You have managed to " ++
+    | not $ length t `elem` [1,4] = error $ "You have managed to " ++
       "completely disregard the information which is specified in " ++
       "my manual page by inputting a weird number of arguments, " ++
       "which is actually not terribly impressive... but is still a " ++
