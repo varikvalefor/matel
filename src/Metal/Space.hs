@@ -1,5 +1,4 @@
 -- | Metal.Space contains the 'Space' datatype.
-
 module Metal.Space where
 import Metal.Base;
 import Metal.Room;
