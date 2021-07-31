@@ -433,11 +433,11 @@ generateAuthdRequest :: String
                      -- ^ The user whose authorisation crap should be
                      -- added to the request
                      -> IO Request;
-generateAuthdRequest r a = parseRequest r >>= addHeader
+generateAuthdRequest r a = addHeader <$> parseRequest r
   where
   -- This "where" clause is used to avoid having a long line.
   -- Although long lines appear elsewhere within Metal's source code,
   -- the author wishes to avoid having long lines of source code iff
   -- such avoidance is feasible.
-  addHeader :: Request -> IO Request
-  addHeader = return . addRequestHeader "Authorization" (authToken' a);
+  addHeader :: Request -> Request
+  addHeader = addRequestHeader "Authorization" (authToken' a);
