@@ -448,8 +448,7 @@ leave r a =
   generateAuthdRequest uri a >>= httpBS >>= return . \theResponse ->
   if getResponseStatusCode theResponse == 200
     then Nothing
-    else Just $ "Thus spake the homeserver: " ++
-      show (getResponseStatusCode theResponse) ++ "."
+    else Just $ T.unpack $ responseToStringth theResponse
   where
   uri :: String
   uri = "POST https://" ++ homeserver a ++
