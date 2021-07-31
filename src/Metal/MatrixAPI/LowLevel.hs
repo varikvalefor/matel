@@ -123,11 +123,11 @@ sync since user =
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
 joinedRooms a =
-  generateRequest >>= httpBS >>= \response ->
+  generateRequest >>= httpBS >>= return . \response ->
     if getResponseStatusCode response == 200
-      then return $ Right $ toRooms $ joined_room $ fromJust $
+      then Right $ toRooms $ joined_room $ fromJust $
         A.decode $ BSL.fromStrict $ getResponseBody response
-      else return $ Left $ T.pack $ "Thus spake the homeserver: " ++
+      else Left $ T.pack $ "Thus spake the homeserver: " ++
         (show $ getResponseStatusCode response) ++ "."
   where
   generateRequest :: IO Request
