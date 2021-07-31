@@ -437,8 +437,10 @@ kick tarjay rome ree a =
 --
 -- A non-'Nothing' value is output iff an error is encountered.  If such
 -- a thing is output, then this output describes such an error.
-leave :: Room -- ^ The room which should be left
-      -> Auth -- ^ The authorisation information
+leave :: Room
+      -- ^ The room which should be left
+      -> Auth
+      -- ^ The authorisation information
       -> IO (Maybe String);
 leave r a =
   generateAuthdRequest uri a >>= httpBS >>= return . \theResponse ->
