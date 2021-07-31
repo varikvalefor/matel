@@ -169,8 +169,8 @@ joinedComms a = error "joinedComms is unimplemented.";
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
--- @responseToLeftRight k@ otherwise equals a string which contains the
--- status code of @k@.
+-- @responseToLeftRight k@ otherwise equals a 'Stringth' which contains
+-- the status code of @k@.
 responseToLeftRight :: Response BS.ByteString -> Either Stringth Stringth;
 responseToLeftRight k
   | getResponseStatusCode k == 200 =
