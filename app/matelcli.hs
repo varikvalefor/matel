@@ -177,9 +177,9 @@ eddySmith t a
 -- "join" command.
 runJoin :: [String] -> Auth -> IO ();
 runJoin t a
-  | length t == 0 = error $ "Idiot!  How am I to join an " ++
-    "unspecified room for you?  My strength is simplicity.  I can't " ++
-    "work with this shit."
+  | t == [] = error $ "Idiot!  How am I to join an unspecified " ++
+    "room for you?  My strength is simplicity.  I can't work with " ++
+    "this shit."
   | otherwise = join room inviteInfo a >>= dispError
   where
   room :: Room
