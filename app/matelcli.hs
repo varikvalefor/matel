@@ -169,11 +169,11 @@ logIn = loginPass >=> either busticate T.putStrLn
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String] -> Auth -> IO Stringth;
 eddySmith t a
-  | length t > 1 = sync (Just $ t !! 1) a >>= possiblyBreakDown
-  | otherwise = sync Nothing a >>= possiblyBreakDown
+  | length t > 1 = possiblyBreakDown <$> sync (Just $ t !! 1) a
+  | otherwise = possiblyBreakDown <$> sync Nothing a
   where
-  possiblyBreakDown :: Either Stringth Stringth -> IO Stringth
-  possiblyBreakDown = either (error . T.unpack) return;
+  possiblyBreakDown :: Either Stringth Stringth -> Stringth
+  possiblyBreakDown = either (error . T.unpack) id;
 
 -- | @runJoin@ is a relatively high-level interface for the Matrix API
 -- "join" command.
