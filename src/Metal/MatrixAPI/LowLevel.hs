@@ -9,6 +9,7 @@ import Metal.Room;
 import Metal.User;
 import Data.Maybe;
 import Data.Either;
+import Metal.Space;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
@@ -137,6 +138,19 @@ joinedRooms a =
   --
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Def.room {roomId = k});
+
+-- | @joinedSpaces k@ sends the "not yet implemented" query to the
+-- homeserver of @k@, authenticating as @k@.
+--
+-- The 'Right' value of @joinedRooms k g@ equals a list of the 'Space's
+-- which Matel's user has joined. The 'Left' value of @joinedRooms k@
+-- exists only if an error is present... and equals a description of
+-- this error.
+--
+-- The output 'Space' records are NOT completely filled; only the
+-- @spaceId@ bits are non-default.
+joinedSpaces :: Auth -> IO (Either Stringth [Space]);
+joinedSpaces a = error "joinedSpaces is unimplemented.";
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
