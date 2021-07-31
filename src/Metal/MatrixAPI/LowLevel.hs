@@ -426,8 +426,8 @@ fromString = BSL.pack . map (toEnum . fromEnum);
 -- The first argument consists of the HTTP command which should be sent,
 -- a space, and the URI which is accessed.
 --
--- The second argument is an 'Auth' whose @authToken@ field must be
--- defined.
+-- The second argument is an 'Auth' record whose @authToken@ field must
+-- be defined.
 generateAuthdRequest :: String
                      -- ^ The URI of the request, including "POST",
                      -- "GET", or whatever crap is desired
