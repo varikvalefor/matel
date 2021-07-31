@@ -374,8 +374,7 @@ getDisplayName u a =
       Right Def.user {displayname = T.pack $ username u}
       -- This "404" thing accounts for users whose display names are
       -- undefined.
-    | otherwise = Left $ "Thus spake the homeserver: " ++
-      show (getResponseStatusCode r) ++ ".";
+    | otherwise = Left $ T.unpack $ responseToStringth r;
 
 -- | @kick@ implements the Matrix API's
 -- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
