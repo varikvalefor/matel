@@ -158,7 +158,7 @@ logIn :: Auth -> IO ();
 logIn = loginPass >=> \result ->
   if isLeft result
     then error $ "loginPass: " ++ T.unpack (justLeft result)
-    else T.putStrLn $ fromRight "" result;
+    else T.putStrLn $ justRight result;
 
 -- | @eddySmith@ is a high-level wrapper for @sync@.
 --
