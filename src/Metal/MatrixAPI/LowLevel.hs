@@ -10,6 +10,7 @@ import Metal.User;
 import Data.Maybe;
 import Data.Either;
 import Metal.Space;
+import Metal.Community;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
