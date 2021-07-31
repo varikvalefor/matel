@@ -100,13 +100,14 @@ list k a
 send :: [String] -> Auth -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
-  | typeIs "text" = isSentToRoom target dest a >>= dispError
-  | typeIs "file" = isSentToRoom (error "Sending files is unimplemented.") dest a >>= dispError
+  | typeIs "text" || typeIs "file" = isSentToRoom target dest a >>= dispError
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, shit-tits.  Read the fucking manual."
   where
   target :: StdMess
-  target = Def.stdMess {body = read $ k !! 1};
+  target
+    | typeIs "text" = Def.stdMess {body = read $ k !! 1}
+    | typeIs "file" = error "Sending files is unimplemented."
   --
   dest :: Room
   dest = Def.room {roomId = k !! 3}
