@@ -286,7 +286,7 @@ join :: Room
      -> Maybe (User, String, String)
      -- ^ The user which sends the invite, the state key of the invite,
      -- and the signature of the invite, respectively, if the room is
-     -- not public -- otherwise, Nothing
+     -- not public -- otherwise, 'Nothing'
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
