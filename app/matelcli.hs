@@ -67,7 +67,7 @@ determineAction x a
     "RTFM, punk."
   where
   com :: String
-  com = x !! 0
+  com = head x
   --
   stuff :: [String]
   stuff = tail x;
