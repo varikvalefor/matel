@@ -275,7 +275,7 @@ getRoomInformation room a =
 
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
--- OF INVITE), and @a@ is a 'Room' whose @roomId@ value is appropriately
+-- OF INVITE), and @t@ is a 'Room' whose @roomId@ value is appropriately
 -- defined, @join t i a@ sends the
 -- @POST /_matrix/client/r0/rooms/{roomId}/join@ command to Matel's
 -- user's homeserver, thereby making Matel's user join the specified
