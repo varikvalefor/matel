@@ -1,9 +1,8 @@
+ {-# LANGUAGE OverloadedStrings #-}
+
 -- | Metal.MatrixAPI.HighLevel contains functions which use the Matrix
 -- API by chaining together relatively low-level functions for the
 -- Matrix API.
-
- {-# LANGUAGE OverloadedStrings #-}
-
 module Metal.MatrixAPI.HighLevel where
 import Metal.Auth;
 import Metal.Base;
