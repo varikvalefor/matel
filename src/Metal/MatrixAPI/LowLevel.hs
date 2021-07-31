@@ -441,10 +441,10 @@ leave :: Room -- ^ The room which should be left
       -> Auth -- ^ The authorisation information
       -> IO (Maybe String);
 leave r a =
-  generateAuthdRequest uri a >>= httpBS >>= \theResponse ->
+  generateAuthdRequest uri a >>= httpBS >>= return . \theResponse ->
   if getResponseStatusCode theResponse == 200
-    then return Nothing
-    else return $ Just $ "Thus spake the homeserver: " ++
+    then Nothing
+    else Just $ "Thus spake the homeserver: " ++
       (show $ getResponseStatusCode theResponse) ++ "."
   where
   uri :: String
