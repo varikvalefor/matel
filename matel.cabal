@@ -29,7 +29,7 @@ maintainer:    varikvalefor@aol.com
 copyright:     (c) Varik Valefor 2021.
 category:      Chat
 extra-source-files:
-    README.md
+  README.md
 
 library
   ghc-options: -O2 -haddock
