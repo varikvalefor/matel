@@ -21,6 +21,7 @@ import Metal.Space;
 import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
+import Control.Monad ((>=>));
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import Metal.MatrixAPI.HighLevel;
@@ -154,7 +155,7 @@ dispError = maybe (return ()) error;
 -- | @logIn k@ generates an authorisation token for the user which is
 -- specified in @k@.
 logIn :: Auth -> IO ();
-logIn a = loginPass a >>= \result ->
+logIn = loginPass >=> \result ->
   if isLeft result
     then error $ "loginPass: " ++ T.unpack (justLeft result)
     else T.putStrLn $ fromRight "" result;
