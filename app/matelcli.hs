@@ -102,7 +102,7 @@ list k a
 send :: [String] -> Auth -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
-  | typeIs "text" || typeIs "file" = isSentToRoom target dest a >>= dispError
+  | any typeIs ["text", "file"] = isSentToRoom target dest a >>= dispError
   | otherwise = error $ "I ought to send you to the garbage " ++
     "disposal, shit-tits.  Read the fucking manual."
   where
