@@ -2,6 +2,9 @@
 
 -- | Metal.MatrixAPI.LowLevel contains functions which directly access
 -- the Matrix API via HTTP requests, as opposed to being abstracted.
+--
+-- Additionally, the functions of this module do NOT transparently
+-- support encryption.
 module Metal.MatrixAPI.LowLevel where
 import Metal.Auth;
 import Metal.Base;
