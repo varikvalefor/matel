@@ -375,6 +375,11 @@ getDisplayName u a =
       -- This "404" thing accounts for users whose display names are
       -- undefined.
     | otherwise = Left $ T.unpack $ responseToStringth r;
+      -- This case accounts for all other situations, e.g., "this
+      -- user does not exist" and "yo, the server done broke".  Such
+      -- responses should raise "red flags"; something has gone wrong
+      -- within this module, or the program which uses this module is
+      -- implemented badly.
 
 -- | @kick@ implements the Matrix API's
 -- "@POST /_matrix/client/r0/rooms/{roomId}/kick@" command.
