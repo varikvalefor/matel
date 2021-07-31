@@ -65,7 +65,7 @@ memberRooms a = joinedRooms a >>= maybeShowRms
   toString :: Stringth -> String
   toString = map (toEnum . fromEnum) . T.unpack;
 
--- | @memberSpaces x@ equals the IO-monadic list of all spaces of which
+-- | @memberSpaces x@ equals an IO-monadic list of all spaces of which
 -- Matel's user, whose login information is contained within @x@, is a
 -- member.
 --
