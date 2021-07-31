@@ -175,8 +175,7 @@ responseToLeftRight :: Response BS.ByteString -> Either Stringth Stringth;
 responseToLeftRight k
   | getResponseStatusCode k == 200 =
     Right $ decodeUtf8 $ getResponseBody k
-  | otherwise = Left $ T.pack $ "Thus spake the homeserver: " ++
-    show (getResponseStatusCode k) ++ ".";
+  | otherwise = Left $ responseToStringth k;
 
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
 -- Matrix room whose room ID is @b@ via the Matrix account which is
