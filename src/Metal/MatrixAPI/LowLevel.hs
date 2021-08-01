@@ -62,7 +62,9 @@ decryptWKey crip key = T.pack [];
 -- which results from signing in to Matrix.  The 'Left' value of
 -- @loginPass k p@ exists only if an error is present... and equals a
 -- description of such an error.
-loginPass :: Auth -> IO (Either Stringth Stringth);
+loginPass :: Auth
+          -- ^ The authorisation information of Matel's user
+          -> IO (Either Stringth Stringth);
 loginPass user =
   generateRequest >>= httpBS >>= return . responseToLeftRight
   where
