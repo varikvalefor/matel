@@ -25,7 +25,8 @@ type Winda = Widget ();
 -- | @summonTUI k@ converts the terminal into a Matel TUI which receives
 -- data from @k@.
 summonTUI :: MVar Winda
-          -- ^ The 'Winda' to which the collected data should be drawn
+          -- ^ The 'MVar' which describes the 'Winda' to which the
+          -- collected data should be drawn
           -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
