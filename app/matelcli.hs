@@ -225,7 +225,11 @@ runJoin t a
 --
 -- The first element of the first argument is the room ID of the room
 -- which the user should leave.
-runLeave :: [String] -> Auth -> IO ();
+runLeave :: [String]
+         -- ^ [ROOM ID OF THE ROOM WHAT SHOULD BE LEFT]
+         -> Auth
+         -- ^ Matel user's authorisation information
+         -> IO ();
 runLeave g a
   | g == [] = error $ "I seriously doubt that you want to leave all " ++
     "Matrix rooms or something."
