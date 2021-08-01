@@ -100,7 +100,13 @@ list k a
 -- Via the account which is described in @n@,
 -- @send ["file", k, _, foo] n@ sends a message whose attachment is
 -- @k@ to the chatroom whose internal Matrix ID is @foo@.
-send :: [String] -> Auth -> IO ();
+send :: [String]
+     -- ^ The ['String']-based @matelcli@ command, e.g., @["send",
+     -- "text", "Man, fuck you.  I'll see you at work.",
+     -- "!hskonBonfjiIefqLUV:matrix.org"]@
+     -> Auth
+     -- The information which is used to authenticate Matel's user
+     -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
   | any typeIs ["text", "file"] = isSentToRoom target dest a >>= dispError
