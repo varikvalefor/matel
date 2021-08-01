@@ -54,7 +54,7 @@ determineAction x a
   | com == "grab" = grab stuff a
   | com == "login" = logIn a
   | com == "markread" = mkRead stuff a
-  | com == "sync" = eddySmith x a >>= T.putStrLn
+  | com == "sync" = eddySmith stuff a >>= T.putStrLn
   | com == "join" = runJoin stuff a
   | com == "leave" = runLeave stuff a
   | com == "kick" = runKick stuff a
@@ -186,8 +186,8 @@ eddySmith t a = either (error . T.unpack) id <$> sync since a
   where
   since :: Maybe String
   since
-    | length t == 1 = Nothing
-    | otherwise = Just $ t !! 1;
+    | t == [] = Nothing
+    | otherwise = Just $ head t;
 
 -- | @runJoin@ is a relatively high-level interface for the Matrix API
 -- "join" command.
