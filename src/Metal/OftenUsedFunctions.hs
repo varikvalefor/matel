@@ -1,6 +1,5 @@
 -- | Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
-
 module Metal.OftenUsedFunctions where
 -- | @justLeft (Left k) == k@.  @justLeft (Right g)@ throws an error.
 --
