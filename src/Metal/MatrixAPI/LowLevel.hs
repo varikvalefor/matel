@@ -153,7 +153,9 @@ joinedRooms a =
 --
 -- The output 'Space' records are NOT completely filled; only the
 -- @spaceId@ bits are non-default.
-joinedSpaces :: Auth -> IO (Either Stringth [Space]);
+joinedSpaces :: Auth
+             -- ^ The authorisation information of Matel's user
+             -> IO (Either Stringth [Space]);
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
 -- | @joinedComms k@ sends the "not yet implemented" query to the
