@@ -171,7 +171,11 @@ logIn = loginPass >=> either busticate T.putStrLn
 -- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
-eddySmith :: [String] -> Auth -> IO Stringth;
+eddySmith :: [String]
+          -- ^ The @matelcli@ command, e.g., "@sync bullshit@"
+          -> Auth
+          -- ^ The authorisation information of Matel's user
+          -> IO Stringth;
 eddySmith t a = either (error . T.unpack) id <$> sync since a
   where
   since :: Maybe String
