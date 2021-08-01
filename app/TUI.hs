@@ -52,8 +52,11 @@ temporaryMessage = center $ str $
 -- @x@.
 --
 -- @dataToWinda@ is currently unimplemented.
-dataToWinda :: [Room] -- ^ List of joined rooms
-            -> [StdMess] -- ^ List of recent messages in current room
-            -> [User] -- ^ List of members of current room
+dataToWinda :: [Room]
+            -- ^ List of joined rooms
+            -> [StdMess]
+            -- ^ List of recent messages in current room
+            -> [User]
+            -- ^ List of members of current room
             -> Winda;
 dataToWinda r t u = center $ str "dataToWinda is unimplemented.";
