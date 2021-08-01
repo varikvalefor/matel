@@ -18,7 +18,7 @@ import qualified Metal.Default as Def;
 -- of Matel's user.
 --
 -- This authorisation-related information is read from
--- @$PATH/.config/matel@, whose formatting is described in Matel's
+-- @$HOME/.config/matel@, whose formatting is described in Matel's
 -- "README" file.
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails =
