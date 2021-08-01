@@ -180,7 +180,7 @@ eddySmith t a = either (error . T.unpack) id <$> sync since a
   where
   since :: Maybe String
   since
-    | t == [] = Nothing
+    | length t == 1 = Nothing
     | otherwise = Just $ t !! 1;
 
 -- | @runJoin@ is a relatively high-level interface for the Matrix API
