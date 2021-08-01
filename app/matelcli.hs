@@ -31,6 +31,7 @@ import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
 
+-- | Chicken chow mein main...
 main :: IO ();
 main =
   getArgs >>= \command ->
