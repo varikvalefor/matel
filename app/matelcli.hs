@@ -195,6 +195,10 @@ runJoin t a
   | t == [] = error $ "Idiot!  How am I to join an unspecified " ++
     "room for you?  My strength is simplicity.  I can't work with " ++
     "this shit."
+    -- The "t == []" case is placed here because inputting the null list
+    -- would otherwise break the definition of @room@.  But moving this
+    -- thing to the definition of @inviteInfo@ would certainly look
+    -- relatively nice.
   | otherwise = join room inviteInfo a >>= dispError
   where
   room :: Room
