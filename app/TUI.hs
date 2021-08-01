@@ -33,7 +33,9 @@ summonTUI = takeMVar >=> simpleMain . toScreen;
 -- content of @g@.
 --
 -- @toScreen k@ currently just equals a bordered @k@.
-toScreen :: Winda -> Screen;
+toScreen :: Winda
+         -- ^ The 'Winda' which should be converted into a 'Screen'
+         -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
 -- | @temporaryMessage@ is a 'Winda' which is used to state that Matel
