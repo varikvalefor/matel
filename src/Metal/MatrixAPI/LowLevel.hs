@@ -168,7 +168,9 @@ joinedSpaces a = error "joinedSpaces is unimplemented.";
 --
 -- The output 'Community' records are NOT completely filled; only the
 -- @spaceId@ bits are non-default.
-joinedComms :: Auth -> IO (Either Stringth [Community]);
+joinedComms :: Auth
+            -- ^ The authorisation information of Matel's user
+            -> IO (Either Stringth [Community]);
 joinedComms a = error "joinedComms is unimplemented.";
 
 -- | If the response code of @k@ equals @200@, then
