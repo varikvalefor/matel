@@ -50,9 +50,8 @@ earlyMessagesFrom :: Integer
                   -> IO [StdMess];
 earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
--- | @memberRooms x@ equals the IO-monadic list of all rooms of which
--- Matel's user, whose login information is contained within @x@, is a
--- member.
+-- | @memberRooms x@ equals a list of all rooms of which Matel's user,
+-- whose login information is contained within @x@, is a member.
 memberRooms :: Auth -> IO [Room];
 memberRooms a = joinedRooms a >>= maybeShowRms
   where
