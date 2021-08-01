@@ -132,8 +132,8 @@ grab :: [String] -> Auth -> IO ();
 grab k a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
-  | order == "recent" = recentMessagesFrom n desRoom a >>= print
-  | order == "early" = earlyMessagesFrom n desRoom a >>= print
+  | order == "recent" = recentMessagesFrom n desRoom a >>= mapM_ print
+  | order == "early" = earlyMessagesFrom n desRoom a >>= mapM_ print
   | otherwise = error "I'll grab you if you don't grab some sense."
   where
   n :: Integer
