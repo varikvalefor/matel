@@ -330,8 +330,8 @@ join r i a =
         "}\n" ++
       "}"
       -- Manually creating a JSON query is a bit cheesy.  But at least
-      -- the speed of this thing is greater than the speed of the Aeson
-      -- equivalent.
+      -- the speed of the compilation of this thing is greater than the
+      -- speed of the compilation of the Aeson equivalent.
   inviter :: User
   inviter = maybe Def.user (\(a,_,_) -> a) i
   --
