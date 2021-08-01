@@ -193,7 +193,7 @@ eddySmith t a = either (error . T.unpack) id <$> sync since a
 -- "join" command.
 runJoin :: [String]
         -- ^ The arguments of the @matelcli@ command, e.g.,
-        -- "@!UxQFGskJBlUowxdIxQ:tapenet.org"@
+        -- @["!UxQFGskJBlUowxdIxQ:tapenet.org"]@
         -> Auth
         -- ^ The authorisation information of Matel's user
         -> IO ();
