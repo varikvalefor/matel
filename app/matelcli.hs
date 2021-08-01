@@ -128,7 +128,7 @@ grab k a
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
   | order == "recent" = recentMessagesFrom n desRoom a >>= print
   | order == "early" = earlyMessagesFrom n desRoom a >>= print
-  | otherwise = error "I'll grab you if you don't get some sense."
+  | otherwise = error "I'll grab you if you don't grab some sense."
   where
   n :: Integer
   n = maybe (-42) id $ readMaybe $ head k
