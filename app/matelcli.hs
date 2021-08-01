@@ -109,14 +109,14 @@ send :: [String]
      -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
-  | any typeIs ["text", "file"] = isSentToRoom target dest a >>= dispError
-  | otherwise = error $ "I ought to send you to the garbage " ++
-    "disposal, shit-tits.  Read the fucking manual."
+  | otherwise = isSentToRoom target dest a >>= dispError
   where
   target :: StdMess
   target
     | typeIs "text" = Def.stdMess {body = read $ k !! 1}
     | typeIs "file" = error "Sending files is unimplemented."
+    | otherwise = error $ "I ought to send you to the garbage " ++
+      "disposal, shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! 3}
