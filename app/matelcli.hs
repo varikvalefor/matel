@@ -192,8 +192,8 @@ eddySmith t a = either (error . T.unpack) id <$> sync since a
 -- | @runJoin@ is a relatively high-level interface for the Matrix API
 -- "join" command.
 runJoin :: [String]
-        -- ^ The @matelcli@ command, e.g.,
-        -- "@join !UxQFGskJBlUowxdIxQ:tapenet.org"@
+        -- ^ The arguments of the @matelcli@ command, e.g.,
+        -- "@!UxQFGskJBlUowxdIxQ:tapenet.org"@
         -> Auth
         -- ^ The authorisation information of Matel's user
         -> IO ();
