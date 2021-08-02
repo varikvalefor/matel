@@ -28,7 +28,7 @@ data CryptoMess = CryptoMess {
   -- | @session_id k@ equals the content of the "session_id" field of
   -- @k@'s source, i.e., the ID of the session which sends the message.
   session_id :: Stringth,
-  -- | @sender k@ equals the content of the
-  -- "sender" field of @k@'s source.
+  -- | @sender k@ equals the content of the "sender" field of @k@'s
+  -- source.
   sender :: Stringth
 } deriving (Eq, Read, Show);
