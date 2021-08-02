@@ -11,8 +11,8 @@ data Room = Room {
   -- | @roomHid k@ is the "human-readable" identifier of @k@, e.g.,
   -- "#johnnykissassSuckupfest:matrix.org".
   roomHumanId :: Identifier,
-  -- | @roomName k@ is the "human-readable" name of @k@, e.g., "Johnny
-  -- Kissass's Suck-Up Fest".
+  -- | @roomName k@ is the display name of @k@, e.g., "Johnny Kissass's
+  -- Suck-Up Fest".
   roomName :: HumanReadableName,
   -- | @members k@ is the list of the members of @k@.  Matel does not
   -- sort members according to any particular thing.
