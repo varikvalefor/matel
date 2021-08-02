@@ -52,7 +52,10 @@ earlyMessagesFrom n rm a = error "recentMessages is unimplemented.";
 
 -- | @memberRooms x@ equals a list of all rooms of which Matel's user,
 -- whose login information is contained within @x@, is a member.
-memberRooms :: Auth -> IO [Room];
+memberRooms :: Auth
+            -- ^ The information which is used to authenticate Matel's
+            -- user
+            -> IO [Room];
 memberRooms a = joinedRooms a >>= maybeShowRms
   where
   listRoomsMentioned :: Either Stringth [Room] -> IO ([Either Stringth Room])
