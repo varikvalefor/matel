@@ -52,6 +52,8 @@ stdMess = StdMess {
   msgType = TextInnit,
   messageId = "Some dummy forgot to set this value.",
   body = "I am using incomplete software.",
+  -- Insults and lame jokes are the lifeblood of Matel... and VARIK's
+  -- other projects.
   sender = user,
   timestamp = (-8675309),
   fmtBody = Nothing,
