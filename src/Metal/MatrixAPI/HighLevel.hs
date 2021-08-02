@@ -66,10 +66,10 @@ memberRooms a = joinedRooms a >>= maybeShowRms
     if any EE.isLeft t
       then error $ toString $ justLeft $ head $ filter EE.isLeft t
       -- An error is tossed because something has probably gone horribly
-      -- wrong if any 'Left' values are present.  VARIK is willing to
-      -- modify @memberRooms@ such that @memberRooms@ does not break at
-      -- this point if any users of this module would benefit from this
-      -- change.
+      -- wrong if any 'Left' values are present.
+      -- VARIK is willing to modify @memberRooms@ such that
+      -- @memberRooms@ does not break at this point if any users of this
+      -- module would benefit from this change.
       else return $ map justRight t
   --
   toString :: Stringth -> String
