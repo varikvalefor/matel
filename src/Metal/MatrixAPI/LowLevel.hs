@@ -98,8 +98,7 @@ sync :: Maybe String
      -> Auth
      -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
-sync since user =
-  generateRequest >>= httpBS >>= return . responseToLeftRight
+sync since user = responseToLeftRight <$> (generateRequest >>= httpBS)
   where
   generateRequest :: IO Request
   generateRequest =
