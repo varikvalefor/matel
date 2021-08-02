@@ -2,6 +2,7 @@
 module Metal.Space where
 import Metal.Base;
 import Metal.Room;
+import Metal.User;
 
 -- | For all 'Space' @k@, @k@ is a Matrix space.
 data Space = Space {
@@ -9,5 +10,7 @@ data Space = Space {
   spaceId :: Identifier,
   -- | @spaceRooms k@ equals a list of all rooms which are contained
   -- within @k@.
-  spaceRooms :: [Room]
+  spaceRooms :: [Room],
+  -- | @spaceMembers k@ equals a list of the members of @k@.
+  spaceMembers :: [User]
 } deriving (Eq, Read, Show);

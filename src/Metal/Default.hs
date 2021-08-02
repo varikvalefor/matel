@@ -31,7 +31,8 @@ community = Community {
 space :: Space;
 space = Space {
   spaceId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  spaceRooms = [room]
+  spaceRooms = [room],
+  spaceMembers = [user]
 };
 
 -- | @room@ is a default-valued 'Room' record.
