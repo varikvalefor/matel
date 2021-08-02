@@ -235,8 +235,8 @@ runLeave g a
     "Matrix rooms or something."
   | otherwise = leave Def.room {roomId = head g} a >>= dispError;
 
--- | @runKick@ is a relatively high-level interface for the @'kick'@
--- command.
+-- | @runKick@ is a relatively command-line-friendly interface for the
+-- @'kick'@ command.
 --
 -- @runKick [user, room, reason]@ kicks user @user@ from the Matrix room
 -- @room@, justifying the kicking with @reason@.
