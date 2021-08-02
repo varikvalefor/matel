@@ -189,8 +189,8 @@ eddySmith t a = either (error . T.unpack) id <$> sync since a
     | t == [] = Nothing
     | otherwise = Just $ head t;
 
--- | @runJoin@ is a relatively high-level interface for the Matrix API
--- "join" command.
+-- | @runJoin@ is a relatively command-line-friendly interface for the
+-- Matrix API "join" command.
 runJoin :: [String]
         -- ^ The arguments of the @matelcli@ command, e.g.,
         -- @["!UxQFGskJBlUowxdIxQ:tapenet.org"]@
