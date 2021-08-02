@@ -115,6 +115,8 @@ isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
 -- encountered.  @markRead k a@ otherwise equals an explanation of the
 -- problem.
 --
+-- The @messageId@ field of @k@ must be defined and valid.
+--
 -- @markRead@ is currently nonfunctional.
 markRead :: StdMess
          -- ^ The message which should become "read"
