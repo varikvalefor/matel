@@ -434,7 +434,7 @@ kick tarjay rome ree a =
     "}";
 
 -- | @leave@ implements the Matrix API's
--- "@POST /_matrix/client/r0/rooms/{roomId}/leave@" command.
+-- "@POST \/_matrix\/client\/r0/rooms\/{roomId}\/leave@" command.
 --
 -- The first argument specifies the room which the user leaves.  Only
 -- the @roomId@ value must be defined.
