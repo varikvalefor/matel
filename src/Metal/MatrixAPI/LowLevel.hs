@@ -65,8 +65,7 @@ decryptWKey crip key = T.pack [];
 loginPass :: Auth
           -- ^ The authorisation information of Matel's user
           -> IO (Either Stringth Stringth);
-loginPass user =
-  generateRequest >>= httpBS >>= return . responseToLeftRight
+loginPass user = responseToLeftRight <$> (generateRequest >>= httpBS)
   where
   generateRequest :: IO Request
   generateRequest = setRequestBodyJSON logreq <$> parseRequest uri
