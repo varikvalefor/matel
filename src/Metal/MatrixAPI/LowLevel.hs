@@ -340,7 +340,8 @@ join r i a =
   signature = maybe "" (\(_,_,c) -> c) i;
 
 -- | @getDisplayName@ implements the Matrix API's
--- "@GET /_matrix/client/r0/profile/{userId}/displayname@" command.
+-- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
+-- command.
 --
 -- The first argument describes the user whose display name should be
 -- fetched.  Only the @username@ field is used.
