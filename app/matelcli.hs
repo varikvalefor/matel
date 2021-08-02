@@ -172,7 +172,7 @@ logIn = loginPass >=> either busticate T.putStrLn
   busticate :: T.Text -> IO ()
   busticate = error . ("loginPass: " ++) . T.unpack;
 
--- | @eddySmith@ is a high-level wrapper for @sync@.
+-- | @eddySmith@ is a command-line-friendly wrapper for @sync@.
 --
 -- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
