@@ -362,8 +362,7 @@ getDisplayName :: User
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
                -> IO (Either String User);
-getDisplayName u a =
-  generateRequest >>= httpBS >>= return . processResponse
+getDisplayName u a = processResponse <$> (generateRequest >>= httpBS)
   where
   generateRequest :: IO Request
   generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
