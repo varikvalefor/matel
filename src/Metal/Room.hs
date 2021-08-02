@@ -14,7 +14,7 @@ data Room = Room {
   -- | @roomName k@ is the display name of @k@, e.g., "Johnny Kissass's
   -- Suck-Up Fest".
   roomName :: HumanReadableName,
-  -- | @members k@ is the list of the members of @k@.  Matel does not
+  -- | @members k@ is a list of the members of @k@.  Matel does not
   -- sort members according to any particular thing.
   members :: [User],
   -- | @topic k@ equals the topic of @k@.
