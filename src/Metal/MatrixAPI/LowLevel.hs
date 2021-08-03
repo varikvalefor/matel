@@ -5,7 +5,21 @@
 --
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
-module Metal.MatrixAPI.LowLevel where
+module Metal.MatrixAPI.LowLevel (
+  encryptWKey,
+  decryptWKey,
+  loginPass,
+  sync,
+  joinedRooms,
+  joinedSpaces,
+  joinedComms,
+  sendTextMessage,
+  getRoomInformation,
+  join,
+  getDisplayName,
+  kick,
+  leave
+) where
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
