@@ -98,7 +98,8 @@ loginPass user = responseToLeftRight <$> (generateRequest >>= httpBS)
     lrq_initial_device_display_name = "Matel"
   };
 
--- | @sync@ accesses the Matrix "sync" function.
+-- | @sync@ accesses the Matrix "sync" function, returning the result
+-- of this synchronisation.
 --
 -- @sync Nothing g@ runs a parameterless "sync".
 -- For all other @k@, @sync k g@ sends a "sync" query to Matrix such
