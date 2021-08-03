@@ -96,7 +96,9 @@ memberSpaces a = error "memberSpaces is unimplemented.";
 -- | @memberComms a@ equals the IO-monadic list of all Matrix
 -- communities of which Matel's user, whose login information is
 -- contained within @a@, is a member.
-memberComms :: Auth -> IO [Community];
+memberComms :: Auth
+            -- ^ The authorisation information of Matel's user
+            -> IO [Community];
 memberComms a = error "memberComms is unimplemented.";
 
 -- | @isSentToRoom g k a@ only if @g@ is sent to Matrix room @k@ from
