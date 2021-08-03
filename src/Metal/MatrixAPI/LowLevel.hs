@@ -185,8 +185,8 @@ responseToLeftRight k
   | otherwise = Left $ responseToStringth k;
 
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
--- Matrix room whose room ID is @b@ via the Matrix account which is
--- described in @c@.
+-- Matrix room whose room ID is @b@.  This message is sent from the
+-- Matrix account which is described in @c@.
 sendTextMessage :: Stringth
                 -- ^ The body of the message which should be sent
                 -> Identifier
