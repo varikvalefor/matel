@@ -92,9 +92,9 @@ memberRooms a = joinedRooms a >>= maybeShowRms
 memberSpaces :: Auth -> IO [Space];
 memberSpaces a = error "memberSpaces is unimplemented.";
 
--- | @memberComms a@ equals the IO-monadic list of all Matrix
--- communities of which Matel's user, whose login information is
--- contained within @a@, is a member.
+-- | @memberComms a@ equals a list of all Matrix communities of which
+-- Matel's user, whose login information is contained within @a@, is a
+-- member.
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
