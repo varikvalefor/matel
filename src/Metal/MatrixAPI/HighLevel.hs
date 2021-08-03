@@ -9,7 +9,14 @@
 -- not explicitly use HTTP queries, whereas the functions of
 -- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
 -- support only explicit encryption.
-module Metal.MatrixAPI.HighLevel where
+module Metal.MatrixAPI.HighLevel (
+  recentMessagesFrom,
+  earlyMessagesFrom,
+  memberRooms,
+  memberSpaces,
+  isSentToRoom,
+  markRead
+) where
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
