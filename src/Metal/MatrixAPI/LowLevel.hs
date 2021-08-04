@@ -467,12 +467,13 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r a =
-  generateAuthdRequest uri a >>= httpBS >>= return . \theResponse ->
-  if getResponseStatusCode theResponse == 200
-    then Nothing
-    else Just $ T.unpack $ responseToStringth theResponse
+leave r a = generateAuthdRequest uri a >>= httpBS >>= return . toMaybe
   where
+  toMaybe :: Response BS.ByteString -> Maybe String
+  toMaybe theResponse
+    | getResponseStatusCode theResponse == 200 = Nothing
+    | otherwise = Just $ T.unpack $ responseToStringth theResponse
+  --
   uri :: String
   uri = "POST https://" ++ homeserver a ++
     "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
