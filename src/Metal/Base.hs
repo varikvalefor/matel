@@ -40,4 +40,7 @@ type ErrorCode = [Char];
 
 -- | For all 'MessageFmt' @x@, @x@ is a message type, as defined by the
 -- Matrix client-server specification.
-data MessageFmt = MatrixCusHTML deriving (Eq, Read, Show);
+data MessageFmt = MatrixCusHTML
+                  -- ^ This value corresponds to the client-server
+                  -- specification's "@org.matrix.custom.html@" format.
+  deriving (Eq, Read, Show);
