@@ -314,12 +314,13 @@ join :: Room
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
-join r i a =
-  generateRequest >>= httpBS >>= return . \theResponse ->
-  if getResponseStatusCode theResponse == 200
-    then Nothing
-    else Just $ T.unpack $ responseToStringth theResponse
+join r i a = generateRequest >>= httpBS >>= return . toMaybe
   where
+  toMaybe :: Response BS.ByteString -> Maybe String
+  toMaybe theResponse
+    | getResponseStatusCode theResponse == 200 = Nothing
+    | otherwise = Just $ T.unpack $ responseToStringth theResponse
+  --
   generateRequest :: IO Request
   generateRequest =
     setRequestBodyLBS joinReq <$> generateAuthdRequest uri a
