@@ -139,13 +139,15 @@ sync since user = responseToLeftRight <$> (generateRequest >>= httpBS)
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
-joinedRooms a =
-  generateRequest >>= httpBS >>= return . \response ->
-    if getResponseStatusCode response == 200
-      then Right $ toRooms $ joined_room $ fromJust $
-        A.decode $ BSL.fromStrict $ getResponseBody response
-      else Left $ responseToStringth response
+joinedRooms a = generateRequest >>= httpBS >>= return . processResponse
   where
+  processResponse :: Response BS.ByteString -> Either Stringth [Room]
+  processResponse response
+    | getResponseStatusCode response == 200 = Right $ toRooms $
+      joined_room $ fromJust $ A.decode $ BSL.fromStrict $
+      getResponseBody response
+    | otherwise = Left $ responseToStringth response 
+  --
   generateRequest :: IO Request
   generateRequest = generateAuthdRequest uri a
   --
