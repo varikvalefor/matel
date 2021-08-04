@@ -487,7 +487,7 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
 --
--- @fromString@ should be used only within this module.
+-- @fromString@ is used only within this module.
 fromString :: String -> BSL.ByteString;
 fromString = BSL.pack . map (toEnum . fromEnum);
 
