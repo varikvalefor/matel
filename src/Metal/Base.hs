@@ -5,7 +5,8 @@ import qualified Data.Text as T;
 -- DATATYPES -----------------------------------------------------------
 
 -- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
--- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny Kissass".
+-- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny
+-- Kissass".
 type Identifier = String;
 -- | For all 'HumanReadableName' @x@, @x@ is a "human-readable" name,
 -- e.g., "Asshat", as opposed to "\@asshat:matrix.varikose.god".
