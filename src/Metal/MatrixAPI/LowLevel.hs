@@ -212,12 +212,13 @@ sendTextMessage :: Stringth
                 -> Auth
                 -- ^ Authorisation junk
                 -> IO (Maybe ErrorCode);
-sendTextMessage body dest user =
-  generateRequest >>= httpBS >>= return . \theResponse ->
-    if getResponseStatusCode theResponse == 200
-      then Nothing
-      else Just $ T.unpack $ responseToStringth theResponse
+sendTextMessage body dest user = generateRequest >>= httpBS >>= tIOMaybe
   where
+  tIOMaybe :: Response BS.ByteString -> IO (Maybe ErrorCode)
+  tIOMaybe theResp
+    | getResponseStatusCode theResp== 200 = return Nothing
+    | otherwise = return $ Just $ T.unpack $ responseToStringth theResp
+  --
   generateRequest :: IO Request
   generateRequest =
     favoriteNoise >>= \fn ->
