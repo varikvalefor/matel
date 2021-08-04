@@ -146,7 +146,7 @@ joinedRooms a = generateRequest >>= httpBS >>= return . processResponse
     | getResponseStatusCode response == 200 = Right $ toRooms $
       joined_room $ fromJust $ A.decode $ BSL.fromStrict $
       getResponseBody response
-    | otherwise = Left $ responseToStringth response 
+    | otherwise = Left $ responseToStringth response
   --
   generateRequest :: IO Request
   generateRequest = generateAuthdRequest uri a
