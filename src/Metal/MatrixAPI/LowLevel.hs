@@ -218,6 +218,10 @@ sendTextMessage body dest user = generateRequest >>= httpBS >>= tIOMaybe
   tIOMaybe theResp
     | getResponseStatusCode theResp== 200 = return Nothing
     | otherwise = return $ Just $ T.unpack $ responseToStringth theResp
+    -- @return@ is used within @tIOMaybe@ because the alternative
+    -- implies having a long line within @sendTextMessage@'s most
+    -- high-level definition or wrapping a line; VARIK finds that both
+    -- such outcomes are undesirable.
   --
   generateRequest :: IO Request
   generateRequest =
