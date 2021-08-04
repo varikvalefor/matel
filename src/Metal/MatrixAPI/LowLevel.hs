@@ -128,8 +128,8 @@ sync since user = responseToLeftRight <$> (generateRequest >>= httpBS)
     | otherwise = fromString $
       "{\"since\": \"" ++ fromJust since ++ "\"}";
 
--- | @joinedRooms k@ sends the "joined_rooms" query to the
--- homeserver of @k@, authenticating as @k@.
+-- | @joinedRooms k@ sends the "joined_rooms" query to the homeserver of
+-- @k@, authenticating as @k@.
 --
 -- The 'Right' value of @joinedRooms k g@ equals the authorisation
 -- token which results from signing in to Matrix.  The 'Left' value of
