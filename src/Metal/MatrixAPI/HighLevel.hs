@@ -14,6 +14,7 @@ module Metal.MatrixAPI.HighLevel (
   earlyMessagesFrom,
   memberRooms,
   memberSpaces,
+  memberComms,
   isSentToRoom,
   markRead
 ) where
