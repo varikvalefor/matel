@@ -38,6 +38,6 @@ type Stringth = T.Text;
 -- e.g., "the message cannot be posted; the homeserver is off-line."
 type ErrorCode = [Char];
 
--- | For all @x@, @x@ is of type 'MessageFmt' iff @x@ is a message type,
--- as defined by the Matrix client-server specification.
+-- | For all 'MessageFmt' @x@, @x@ is a message type, as defined by the
+-- Matrix client-server specification.
 data MessageFmt = MatrixCusHTML deriving (Eq, Read, Show);
