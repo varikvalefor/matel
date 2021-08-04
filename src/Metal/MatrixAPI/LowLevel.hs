@@ -431,12 +431,13 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome ree a =
-  generateRequest >>= httpBS >>= return . \theResponse ->
-  if getResponseStatusCode theResponse == 200
-    then Nothing
-    else Just $ T.unpack $ responseToStringth theResponse
+kick tarjay rome ree a = generateRequest >>= httpBS >>= return . toMaybe
   where
+  toMaybe :: Response BS.ByteString -> Maybe String
+  toMaybe theResponse
+    | getResponseStatusCode theResponse == 200 = Nothing
+    | otherwise = Just $ T.unpack $ responseToStringth theResponse
+  --
   generateRequest :: IO Request
   generateRequest =
     setRequestBodyLBS kickReq <$> generateAuthdRequest uri a
