@@ -28,6 +28,7 @@ import Data.Maybe;
 import Data.Either;
 import Metal.Space;
 import Metal.Community;
+import Text.StringRandom;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
@@ -239,14 +240,7 @@ sendTextMessage body dest user = generateRequest >>= httpBS >>= tIOMaybe
     (++) = BSL.append
   --
   favoriteNoise :: IO String
-  favoriteNoise = toDesiredBits <$> BSL.readFile "/dev/random"
-    where
-    toDesiredBits :: BSL.ByteString -> String
-    toDesiredBits = ("$" ++) . map toEnum . take 64 .
-      filter (`elem` allowedV) . map fromEnum . BSL.unpack
-    --
-    allowedV :: [Int]
-    allowedV = map fromEnum $ ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'];
+  favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
