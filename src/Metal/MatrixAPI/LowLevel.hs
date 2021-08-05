@@ -471,7 +471,7 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r a = generateAuthdRequest uri a >>= httpBS >>= return . toMaybe
+leave r a = toMaybe <$> (generateAuthdRequest uri a >>= httpBS)
   where
   toMaybe :: Response BS.ByteString -> Maybe String
   toMaybe theResponse
