@@ -316,7 +316,7 @@ join :: Room
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
-join r i a = generateRequest >>= httpBS >>= return . toMaybe
+join r i a = toMaybe <$> (generateRequest >>= httpBS)
   where
   toMaybe :: Response BS.ByteString -> Maybe String
   toMaybe theResponse
