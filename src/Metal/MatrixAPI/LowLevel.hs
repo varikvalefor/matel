@@ -433,7 +433,7 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome ree a = generateRequest >>= httpBS >>= return . toMaybe
+kick tarjay rome ree a = toMaybe <$> (generateRequest >>= httpBS)
   where
   toMaybe :: Response BS.ByteString -> Maybe String
   toMaybe theResponse
