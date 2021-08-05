@@ -162,7 +162,7 @@ joinedRooms a = generateRequest >>= httpBS >>= return . processResponse
 -- homeserver of @k@, authenticating as @k@.
 --
 -- The 'Right' value of @joinedRooms k g@ equals a list of the 'Space's
--- which Matel's user has joined. The 'Left' value of @joinedRooms k@
+-- which Matel's user has joined.  The 'Left' value of @joinedRooms k@
 -- exists only if an error is present... and equals a description of
 -- this error.
 --
