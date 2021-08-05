@@ -241,6 +241,9 @@ sendTextMessage body dest user = generateRequest >>= httpBS >>= tIOMaybe
   --
   favoriteNoise :: IO String
   favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
+  -- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
+  -- approximately equal to 10^43, pseudorandom sequences.  10^43
+  -- pseudorandom sequences should be sufficient.
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
