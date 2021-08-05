@@ -140,7 +140,7 @@ sync since user = responseToLeftRight <$> (generateRequest >>= httpBS)
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
-joinedRooms a = generateRequest >>= httpBS >>= return . processResponse
+joinedRooms a = processResponse <$> (generateRequest >>= httpBS)
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
