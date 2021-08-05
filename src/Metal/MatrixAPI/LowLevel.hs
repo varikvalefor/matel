@@ -316,13 +316,8 @@ join :: Room
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
-join r i a = toMaybe <$> (generateRequest >>= httpBS)
+join r i a = responseToMaybe <$> (generateRequest >>= httpBS)
   where
-  toMaybe :: Response BS.ByteString -> Maybe String
-  toMaybe theResponse
-    | getResponseStatusCode theResponse == 200 = Nothing
-    | otherwise = Just $ T.unpack $ responseToStringth theResponse
-  --
   generateRequest :: IO Request
   generateRequest =
     setRequestBodyLBS joinReq <$> generateAuthdRequest uri a
@@ -433,13 +428,8 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome ree a = toMaybe <$> (generateRequest >>= httpBS)
+kick tarjay rome ree a = responseToMaybe <$> (generateRequest >>= httpBS)
   where
-  toMaybe :: Response BS.ByteString -> Maybe String
-  toMaybe theResponse
-    | getResponseStatusCode theResponse == 200 = Nothing
-    | otherwise = Just $ T.unpack $ responseToStringth theResponse
-  --
   generateRequest :: IO Request
   generateRequest =
     setRequestBodyLBS kickReq <$> generateAuthdRequest uri a
@@ -471,13 +461,8 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r a = toMaybe <$> (generateAuthdRequest uri a >>= httpBS)
+leave r a = responseToMaybe <$> (generateAuthdRequest uri a >>= httpBS)
   where
-  toMaybe :: Response BS.ByteString -> Maybe String
-  toMaybe theResponse
-    | getResponseStatusCode theResponse == 200 = Nothing
-    | otherwise = Just $ T.unpack $ responseToStringth theResponse
-  --
   uri :: String
   uri = "POST https://" ++ homeserver a ++
     "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
@@ -518,3 +503,14 @@ generateAuthdRequest r a = addHeader <$> parseRequest r
   -- such avoidance is feasible.
   addHeader :: Request -> Request
   addHeader = addRequestHeader "Authorization" (authToken' a);
+
+-- | If the status code of @k@ equals @200@, then @responseToMaybe k@
+-- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
+-- equivalent of @'responseToStringth' k@.
+--
+-- This function is added to decrease the amount of boilerplate stuff
+-- within this module.
+responseToMaybe :: Response BS.ByteString -> Maybe String;
+responseToMaybe theResponse
+  | getResponseStatusCode theResponse == 200 = Nothing
+  | otherwise = Just $ T.unpack $ responseToStringth theResponse;
