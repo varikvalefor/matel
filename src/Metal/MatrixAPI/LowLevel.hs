@@ -70,8 +70,8 @@ decryptWKey :: CipherByteData
             -> ByteData;
 decryptWKey crip key = T.pack [];
 
--- | If @username k@ and @password k@ are defined, then @login k@ fetches an
--- authorisation token for Matrix user @k@.
+-- | If @username k@ and @password k@ are defined, then @login k@
+-- fetches an authorisation token for Matrix user @k@.
 --
 -- The 'Right' value of @loginPass k p@ equals the authorisation token
 -- which results from signing in to Matrix.  The 'Left' value of
