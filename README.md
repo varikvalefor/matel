@@ -39,4 +39,5 @@ The authorisation token _n_ of Matel should be placed onto a line such that the 
 The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `app/Colour.hs`.  Like most other modules of Matel, `Colour` has decent documentation and can be edited reasonably easily.
 
 ## Commit Labels
+### Untested Commits and "(U)"
 For all untested commits, the commit message of an untested commit should begin with "(U)".
