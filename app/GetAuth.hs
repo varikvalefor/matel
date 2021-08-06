@@ -35,8 +35,10 @@ getAuthorisationDetails =
 --
 -- @xOf@ is used to reduce the amount of boilerplate stuff.
 xOf :: Stringth -> Stringth-> Stringth;
-xOf query cfg =
-  T.drop n $ head $ filter ((== query) . T.take n) $ T.lines cfg
+xOf query cfg = T.drop n $ head $ filter isMatch $ T.lines cfg
   where
+  isMatch :: T.Text -> Bool
+  isMatch = (== query) . T.take n
+  --
   n :: Int
   n = T.length query;
