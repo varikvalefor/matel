@@ -24,6 +24,10 @@ Contributions are welcomed but must be released in accordance with Matel's licen
 For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for the diff of this good change can be submitted to this GitHub repository.
 
 ## Getting Started
+### Warning
+Because Matel is currently in the pre-alpha stage, some updates may break backwards compatibility.
+
+The use of Matel in production environments is not recommended.
 ### Configuration
 #### Required Stuff
 The basic information of Matel, e.g., the username and password of the user, are contained within the file `[HOME DIRECTORY]/.config/matel`.
