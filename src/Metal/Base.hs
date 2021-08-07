@@ -11,7 +11,7 @@ type Identifier = String;
 -- | For all 'HumanReadableName' @x@, @x@ is a "human-readable" name,
 -- e.g., "Asshat", as opposed to "\@asshat:matrix.varikose.god".
 type HumanReadableName = Stringth;
--- | Unencrypted/de-encrypted text-based message data is of type
+-- | Unencrypted\/de-encrypted text-based message data is of type
 -- 'MessageText'.  This comment almost fit on one line.  #SAD!
 type MessageText = Stringth;
 -- | For all 'UNIXTime' @k@, @k@ is a seconds-since-the-UNIX-epoch-based
