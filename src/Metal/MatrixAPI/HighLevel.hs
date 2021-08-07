@@ -116,7 +116,10 @@ isSentToRoom :: StdMess
              -> Auth
              -- ^ Authorisation crap
              -> IO (Maybe ErrorCode);
-isSentToRoom ms rm a = error "isSentToRoom is unimplemented.";
+isSentToRoom ms rm a
+  | msgType ms == TextInnit = sendTextMessage (body ms) (roomId rm) a
+  | otherwise = error $ "isSentToRoom: Sending messages of type " ++
+    show (msgType ms) ++ " is unimplemented.";
 
 -- | @markRead k a@ marks @k@ as having been read.
 --
