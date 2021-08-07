@@ -405,7 +405,7 @@ getDisplayName u a = processResponse <$> (generateRequest >>= httpBS)
       -- might just be a piece of crap.
 
 -- | @kick@ implements the Matrix API's
--- "@POST \/_matrix\/client\/r0/rooms\/{roomId}\/kick@" command.
+-- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/kick@" command.
 --
 -- The first argument describes the user which is to be kicked.  Only
 -- the @username@ field is used.
