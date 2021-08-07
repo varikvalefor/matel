@@ -44,6 +44,20 @@ is a member.
 sends the text which is fetched from the standard input to the Matrix
 room whose internal Matrix ID is
 .Ar room .
+.Pp
+One advantage of using this standard input-based approach is being able
+to send the contents of files as text-based messages.  Assuming that
+.Pa methage
+contains printable text and
+.Ar dummies
+is a valid internal Matrix room ID, a command which sends the content of
+.Pa methage
+to Matrix room
+.Ar dummies
+is as follows:
+.Bd -literal -offset indent
+matelcli send text dummies < methage
+.Ed
 .Ss SENDING FILES
 .Nm matelcli send file
 .Ar path
