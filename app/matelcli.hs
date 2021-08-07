@@ -170,7 +170,7 @@ logIn :: Auth -> IO ();
 logIn = loginPass >=> either busticate T.putStrLn
   where
   busticate :: T.Text -> IO ()
-  busticate = error . ("loginPass: " ++) . T.unpack;
+  busticate = error . ("logIn: " ++) . T.unpack;
 
 -- | @eddySmith@ is a command-line-friendly wrapper for @sync@.
 --
