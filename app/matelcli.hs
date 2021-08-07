@@ -230,8 +230,8 @@ runLeave :: [String]
          -- ^ Matel user's authorisation information
          -> IO ();
 runLeave g a
-  | g == [] = error $ "I seriously doubt that you want to leave all " ++
-    "Matrix rooms or something."
+  | g == [] = error $ "You'd best leave... or stop giving me " ++
+    "nothing but bullshit."
   | otherwise = leave Def.room {roomId = head g} a >>= dispError;
 
 -- | @runKick@ is a relatively command-line-friendly interface for the
