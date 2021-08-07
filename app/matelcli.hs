@@ -94,11 +94,11 @@ list k a
 -- | @send@ implements the "send" command.
 --
 -- Via the account which is described in @n@,
--- @send ["text", k, _, foo] n@ sends a message whose body is @k@ to the
--- chatroom whose internal Matrix ID is @foo@.
+-- @send ["text", foo] n@ sends a message whose body is the standard
+-- input to the chatroom whose internal Matrix ID is @foo@.
 --
 -- Via the account which is described in @n@,
--- @send ["file", k, _, foo] n@ sends a message whose attachment is
+-- @send ["file", k, foo] n@ sends a message whose attachment is
 -- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String]
      -- ^ The ['String']-based @matelcli@ command, e.g., @["send",
@@ -109,17 +109,26 @@ send :: [String]
      -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
-  | otherwise = isSentToRoom target dest a >>= dispError
+  | otherwise = target >>= \t -> isSentToRoom t dest a >>= dispError
   where
-  target :: StdMess
+  target :: IO StdMess
   target
-    | typeIs "text" = Def.stdMess {body = read $ k !! 1}
+    | typeIs "text" =
+      T.getContents >>= \input ->
+      return Def.stdMess {
+        msgType = TextInnit,
+        body = input
+      }
     | typeIs "file" = error "Sending files is unimplemented."
     | otherwise = error $ "I ought to send you to the garbage " ++
       "disposal, shit-tits.  Read the fucking manual."
   --
   dest :: Room
-  dest = Def.room {roomId = k !! 3}
+  dest = Def.room {roomId = k !! n}
+    where
+    n :: Int
+    n | head k == "file" = 2
+      | otherwise = 1
   --
   typeIs :: String -> Bool
   typeIs = (head k ==);

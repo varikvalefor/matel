@@ -38,42 +38,20 @@ lists the Matrix spaces of which the user of
 .Nm matelcli
 is a member.
 .Sh SENDING MESSAGES
-.Nm matelcli send
-.Op text | file
-.Ar target
-.Nm to
-.Ar roomid
-.Pp
-The
-.Nm send
-command is used to send messages to the Matrix room whose ID is
-specified as
-.Ar roomId .
-.Pp
-.Ar roomId
-is of the format
-.Dq #[roomname]:[homeserver] ,
-e.g.,
-.Dq #furrytech:matrix.org ,
-which VARIK finds to be a damn fine chatroom.
-.Pp
+.Ss SENDING TEXT
 .Nm matelcli send text
-.Ar target
-.Nm to
-.Ar roomId
-sends the string
-.Ar target
-to the Matrix room
-.Ar roomId .
-.Pp
+.Ar room
+sends the text which is fetched from the standard input to the Matrix
+room whose internal Matrix ID is
+.Ar room .
+.Ss SENDING FILES
 .Nm matelcli send file
-.Ar target
-.Nm to
-.Ar roomId
-sends the file which is located at file path
-.Ar target
-to the Matrix room
-.Ar roomId .
+.Ar path
+.Ar room
+sends the file whose path is
+.Ar path
+to the Matrix room whose internal Matrix ID is
+.Ar room .
 .Sh GRABBING PILLS, IF ``PILLS'' REFERS TO MESSAGES
 .Nm matelcli grab
 .Ar n
