@@ -8,7 +8,7 @@ import Data.Aeson;
 import Metal.Base;
 import Data.Aeson.TH;
 
--- | 'LoginRequest' is used within 'LowLevel' to hold login requests
+-- | 'LoginRequest' is used within Metal.MatrixAPI.LowLevel to hold login requests
 -- which are to be converted to JSON.
 data LoginRequest = LoginRequest {
   lrq_type :: Stringth,
