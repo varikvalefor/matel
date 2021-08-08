@@ -265,11 +265,13 @@ getRoomInformation room a =
     -- not equal the range of @getRoomInformation@.
     else
       getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
+      getTopic >>= \theTopic ->
       return $ Right Def.room {
         roomId = roomId room,
         isEncrypted = cryptoStatus,
         publicKey = cryptoKey,
-        members = justRight memebears
+        members = justRight memebears,
+        topic = theTopic
       }
   where
   getEncryptionStatus :: IO (Bool, Maybe PublicKey)
@@ -285,6 +287,10 @@ getRoomInformation room a =
     if getResponseStatusCode response == 200
       then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
       else Left $ responseToStringth response
+  --
+  getTopic :: IO Stringth
+  getTopic = return "THIS THING IS UNIMPLEMENTED!!!"
+  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
   --
   rq :: String -> IO (Response BS.ByteString)
   rq k = generateAuthdRequest uri a >>= httpBS
