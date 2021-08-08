@@ -13,6 +13,10 @@ data User = User {
   -- authentication of Matel's user.
   password :: Stringth,
   -- | @homeserver k@ equals the FQDN of the homeserver of @k@.
+  --
+  -- This value should only be used to determine the FQDN of the server
+  -- to which API requests should be sent; Metal does _not_ guarantee
+  -- that for all 'User' @k@, @homeserver k@ is a non-default value.
   homeserver :: String,
   -- | @authToken k@ equals the authorisation token of @k@.
   --
