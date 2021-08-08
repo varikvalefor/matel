@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | This module contains some default records.  These records are used
--- instead of having empty spaces because Haskell compilers generally
+-- instead of having undefined fields because Haskell compilers generally
 -- disapprove of having undefined fields in records.
 module Metal.Default where
 import Metal.Base;
