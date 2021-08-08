@@ -7,7 +7,7 @@ module Metal.OftenUsedFunctions where
 -- @fromLeft@ statements, for VARIK finds that such junk data looks a
 -- bit inelegant, unlike this perfectly-wrapped paragraph.
 --
--- Compare with @justRight@.
+-- Compare with @'justRight'@.
 justLeft :: Either a b -> a;
 justLeft (Left a) = a;
 justLeft (Right _) = error "justLeft is applied to a value of type 'Right'!";
@@ -18,7 +18,7 @@ justLeft (Right _) = error "justLeft is applied to a value of type 'Right'!";
 -- @fromRight@ statements, for VARIK finds that such junk data looks a
 -- bit inelegant, unlike this perfectly-wrapped paragraph.
 --
--- Compare with @justLeft@.
+-- Compare with @'justLeft'@.
 justRight :: Either a b -> b;
 justRight (Right b) = b;
 justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
