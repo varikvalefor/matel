@@ -24,7 +24,7 @@ type Screen = Widget ();
 type Winda = Widget ();
 
 -- | @summonTUI k@ converts the terminal into a Matel TUI which receives
--- data from @k@.
+-- and prints data which is fetched from @k@.
 summonTUI :: MVar Winda
           -- ^ The 'MVar' which describes the 'Winda' to which the
           -- collected data should be drawn
