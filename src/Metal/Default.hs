@@ -52,6 +52,9 @@ stdMess :: StdMess;
 stdMess = StdMess {
   msgType = TextInnit,
   messageId = "Some dummy forgot to set this value.",
+  -- Above this comment is a rare instance of Matel insulting Matel's
+  -- author, as opposed to Matel's user.  Observe the behaviour of this
+  -- specimen... and be sure to take notes.
   body = "I am using incomplete software.",
   -- Insults and lame jokes are the lifeblood of Matel... and VARIK's
   -- other projects.
