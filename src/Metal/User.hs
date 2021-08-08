@@ -16,7 +16,7 @@ data User = User {
   homeserver :: String,
   -- | @authToken k@ equals the authorisation token of @k@.
   --
-  -- Like @password@, @authToken@ is used only for the user of Matel.
+  -- Like @'password'@, @authToken@ is used only for the user of Matel.
   authToken :: String,
   -- | @displayname tpForMyBunghole@ equals the "display name" of
   -- @tpForMyBunghole@, e.g., "Johnny Kissass".
