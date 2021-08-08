@@ -2,7 +2,7 @@
 module Metal.Community where
 import Metal.Base;
 
--- | For all 'Community' @k@, @k@ is a Matrix community.
+-- | For all 'Community' @k@, @k@ represents a Matrix community.
 --
 -- Note that communities are essentially deprecated and are largely
 -- replaced by 'Space's.
