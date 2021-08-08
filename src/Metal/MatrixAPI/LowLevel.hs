@@ -266,11 +266,13 @@ getRoomInformation room a =
     else
       getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
       getTopic >>= \theTopic ->
+      getRoomName >>= \roomName' ->
       return $ Right Def.room {
         roomId = roomId room,
         isEncrypted = cryptoStatus,
         publicKey = cryptoKey,
         members = justRight memebears,
+        roomName = roomName',
         topic = theTopic
       }
   where
@@ -290,6 +292,10 @@ getRoomInformation room a =
   --
   getTopic :: IO Stringth
   getTopic = return "THIS THING IS UNIMPLEMENTED!!!"
+  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
+  --
+  getRoomName :: IO HumanReadableName
+  getRoomName = return "THIS THING IS UNIMPLEMENTED!!!"
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
   --
   rq :: String -> IO (Response BS.ByteString)
