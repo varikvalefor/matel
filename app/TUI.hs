@@ -60,4 +60,4 @@ dataToWinda :: [Room]
             -> [User]
             -- ^ List of members of current room
             -> Winda;
-dataToWinda r t u = center $ str "dataToWinda is unimplemented.";
+dataToWinda r m u = center $ str "dataToWinda is unimplemented.";
