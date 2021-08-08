@@ -5,11 +5,11 @@
 -- layout of Matel's user interface is unknown.
 
 module Main where
+import TUI;
 import GetAuth;
 import Metal.Auth;
 import Metal.Base;
 import Control.Concurrent;
-import TUI;
 
 -- | Tap tap tap
 --
