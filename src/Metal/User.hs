@@ -9,8 +9,8 @@ data User = User {
   -- | @username k@ equals the Matrix username of @k@.
   username :: Identifier,
   -- | @password k@ equals the password of @k@.  For reasons which
-  -- should be obvious, @password@ is only used for the user account of
-  -- Matel's user.
+  -- should be obvious, @password@ is only officially used for the
+  -- authentication of Matel's user.
   password :: Stringth,
   -- | @homeserver k@ equals the FQDN of the homeserver of @k@.
   homeserver :: String,
