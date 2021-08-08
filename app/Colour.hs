@@ -1,4 +1,4 @@
--- | Colour contains some predefined colours which Matel uses when
+-- | This module contains some predefined colours which Matel uses when
 -- Matel draws Matel's TUI.
 --
 -- Matel is designed to work best with light themes; as such, the
