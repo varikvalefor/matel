@@ -3,7 +3,7 @@
 --
 -- Matel is designed to work best with light themes; as such, the
 -- default colour scheme may not work well with all terminals.  Luckily,
--- VARIK, being a cool guy, writes the Colour module such that modifying
+-- VARIK, being a cool guy, writes this module such that modifying
 -- Matel's colour scheme should be pretty easy.
 module Colour where
 import Brick.Util (fg);
