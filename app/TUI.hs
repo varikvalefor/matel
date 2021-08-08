@@ -34,7 +34,7 @@ summonTUI = takeMVar >=> simpleMain . toScreen;
 -- | @toScreen g@ equals a 'Screen' which accurately represents the
 -- content of @g@.
 --
--- @toScreen k@ currently just equals a bordered @k@.
+-- @toScreen k@ is currently just a bordered @k@.
 toScreen :: Winda
          -- ^ The 'Winda' which should be converted into a 'Screen'
          -> Screen;
