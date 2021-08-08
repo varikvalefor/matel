@@ -2,7 +2,7 @@
 -- TUI client.
 --
 -- No documentation regarding the user interface is provided; the
--- layout of the user interface is unknown.
+-- layout of Matel's user interface is unknown.
 
 module Main where
 import GetAuth;
