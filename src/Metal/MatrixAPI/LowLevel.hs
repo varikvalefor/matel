@@ -436,7 +436,7 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome ree a = responseToMaybe <$> (generateRequest >>= httpBS)
+kick tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
   where
   generateRequest :: IO Request
   generateRequest =
@@ -450,7 +450,7 @@ kick tarjay rome ree a = responseToMaybe <$> (generateRequest >>= httpBS)
   kickReq = fromString $
     "{\n\t" ++
       "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show ree ++ "\n" ++
+      "\"reason\": " ++ show m ++ "\n" ++
     "}";
 
 -- | @leave@ implements the Matrix API's
