@@ -1,5 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- | As a result of Metal.MatrixAPI.LowLevel's hugeness,
+-- @'generateAuthdRequest'@ is moved from Metal.MatrixAPI.LowLevel to
+-- Metal.MatrixAPI.LowLevel.GenerateAuth.
 module Metal.MatrixAPI.LowLevel.GenerateAuth (
   generateAuthdRequest
 ) where
