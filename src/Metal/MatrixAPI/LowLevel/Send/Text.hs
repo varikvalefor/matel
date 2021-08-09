@@ -48,11 +48,14 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
     where
     (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString
     (++) = BSL.append
-  favoriteNoise :: IO String
-  favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
-  -- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
-  -- approximately equal to 10^43, pseudorandom sequences.  10^43
-  -- pseudorandom sequences should be sufficient.
+
+-- | @favoriteNoise@ is a pseudorandom 'String'.
+--
+-- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
+-- approximately equal to 10^43, pseudorandom sequences.  10^43
+-- pseudorandom sequences should be sufficient.
+favoriteNoise :: IO String
+favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
