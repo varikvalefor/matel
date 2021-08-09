@@ -43,7 +43,7 @@ getRoomInformation room a =
     else
       getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
       getTopic >>= \theTopic ->
-      getRoomName >>= \roomName' ->
+      getRoomName room a >>= \roomName' ->
       return $ Right Def.room {
         roomId = roomId room,
         isEncrypted = cryptoStatus,
@@ -71,16 +71,22 @@ getRoomInformation room a =
   getTopic = return "THIS THING IS UNIMPLEMENTED!!!"
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
   --
-  getRoomName :: IO HumanReadableName
-  getRoomName = return "THIS THING IS UNIMPLEMENTED!!!"
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
-  --
   rq :: String -> IO (Response BS.ByteString)
   rq k = generateAuthdRequest uri a >>= httpBS
     where
     uri :: String
     uri = "GET https://" ++ homeserver a ++
       "/matrix/_client/r0/rooms" ++ roomId room ++ k;
+
+-- | @getRoomName r a@ fetches the display name of the Matrix room whose
+-- room ID is @roomId r@.
+getRoomName :: Room
+            -- ^ The room whose display name is nabbed
+            -> Auth
+            -- ^ The authorisation information
+            -> IO HumanReadableName;
+getRoomName _ _ = return "THIS THING IS UNIMPLEMENTED!!!";
+-- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
