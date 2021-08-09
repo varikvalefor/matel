@@ -74,6 +74,9 @@ getRoomInformation room a =
     uri = "GET https://" ++ homeserver a ++
       "/matrix/_client/r0/rooms" ++ roomId room ++ k;
 
+-- | Where @a@ is the authorisation information of the client,
+-- @getTopic r a@ fetches the topic message of the Matrix room whose
+-- internal Matrix room ID is @roomId r@.
 getTopic :: Room
          -- ^ The room whose topic message is hopefully fetched
          -> Auth
