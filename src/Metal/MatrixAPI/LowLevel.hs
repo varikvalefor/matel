@@ -13,12 +13,12 @@ module Metal.MatrixAPI.LowLevel (
   joinedRooms,
   joinedSpaces,
   joinedComms,
-  getRoomInformation,
   join,
   getDisplayName,
   kick,
   leave,
-  module Metal.MatrixAPI.LowLevel.Send.Text
+  module Metal.MatrixAPI.LowLevel.Send.Text,
+  module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
 import Metal.Auth;
 import Metal.Base;
@@ -40,6 +40,7 @@ import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.Send.Text;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
+import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 
 -- | @stillUnfinishedStayTuned@ exists only if Matel is useless as a
 -- Matrix client.
@@ -203,70 +204,6 @@ responseToLeftRight k
   | getResponseStatusCode k == 200 =
     Right $ decodeUtf8 $ getResponseBody k
   | otherwise = Left $ responseToStringth k;
-
--- | @getRoomInformation room a@ equals a 'Room'-based representation of
--- the Matrix room whose internal Matrix ID is specified within @room@
--- if the "members" API query works.
---
--- @getRoomInformation room a@ otherwise equals a description of the
--- problem which is encountered when the "members" query is sent to the
--- Matrix homeserver.
---
--- The "fetch the room members" portion of @getRoomInformation@ is
--- currently unimplemented and always returns @[]@ for existent rooms.
-getRoomInformation :: Room
-                   -- ^ The room which should be described
-                   -> Auth
-                   -- ^ The authorisation information
-                   -> IO (Either Stringth Room);
-getRoomInformation room a =
-  getMembers >>= \memebears ->
-  if isLeft memebears
-    then return $ Left $ justLeft memebears
-    -- This seemingly meaningless "@Left . justLeft@" statement is used
-    -- because GHC otherwise complains that the type of @memebears@ does
-    -- not equal the range of @getRoomInformation@.
-    else
-      getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
-      getTopic >>= \theTopic ->
-      getRoomName >>= \roomName' ->
-      return $ Right Def.room {
-        roomId = roomId room,
-        isEncrypted = cryptoStatus,
-        publicKey = cryptoKey,
-        members = justRight memebears,
-        roomName = roomName',
-        topic = theTopic
-      }
-  where
-  getEncryptionStatus :: IO (Bool, Maybe PublicKey)
-  getEncryptionStatus =
-    rq "/event/m.room.key" >>= return . \response ->
-    if getResponseStatusCode response == 200
-      then (True, error "TODO: IMPLEMENT THIS THING!")
-      else (False, Nothing)
-  --
-  getMembers :: IO (Either Stringth [User])
-  getMembers =
-    rq "/members" >>= return . \response ->
-    if getResponseStatusCode response == 200
-      then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-      else Left $ responseToStringth response
-  --
-  getTopic :: IO Stringth
-  getTopic = return "THIS THING IS UNIMPLEMENTED!!!"
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
-  --
-  getRoomName :: IO HumanReadableName
-  getRoomName = return "THIS THING IS UNIMPLEMENTED!!!"
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
-  --
-  rq :: String -> IO (Response BS.ByteString)
-  rq k = generateAuthdRequest uri a >>= httpBS
-    where
-    uri :: String
-    uri = "GET https://" ++ homeserver a ++
-      "/matrix/_client/r0/rooms" ++ roomId room ++ k;
 
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
