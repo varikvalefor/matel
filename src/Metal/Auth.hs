@@ -9,7 +9,7 @@ import Metal.User;
 import qualified Data.ByteString.Char8 as BS8;
 
 -- | For all 'Auth' @k@, @k@ contains the authorisation information
--- of Matel's user, i.e., the username and authorisation token of the
+-- of Matel's user, e.g., the username and authorisation token of the
 -- user of Matel.
 --
 -- 'Auth' is really just a synonym of 'User'.  However, unlike most
