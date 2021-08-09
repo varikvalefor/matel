@@ -421,7 +421,8 @@ getDisplayName u a = processResponse <$> (generateRequest >>= httpBS)
 -- The second argument describes the room from which the user should be
 -- removed.  Only the @roomId@ field is used.
 --
--- The third argument is the reason for the user's removal.
+-- The third argument is the reason for the user's removal, e.g., "Your
+-- e-mail addresses offend me."
 --
 -- The fourth argument is the authorisation information which is used
 -- to run the command.
