@@ -13,12 +13,12 @@ module Metal.MatrixAPI.LowLevel (
   joinedRooms,
   joinedSpaces,
   joinedComms,
-  sendTextMessage,
   getRoomInformation,
   join,
   getDisplayName,
   kick,
-  leave
+  leave,
+  module Metal.MatrixAPI.LowLevel.Send.Text
 ) where
 import Metal.Auth;
 import Metal.Base;
@@ -37,6 +37,7 @@ import qualified Data.Aeson as A;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
+import Metal.MatrixAPI.LowLevel.Send.Text;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 
@@ -202,45 +203,6 @@ responseToLeftRight k
   | getResponseStatusCode k == 200 =
     Right $ decodeUtf8 $ getResponseBody k
   | otherwise = Left $ responseToStringth k;
-
--- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
--- Matrix room whose room ID is @b@.  This message is sent from the
--- Matrix account which is described in @c@.
-sendTextMessage :: Stringth
-                -- ^ The body of the message which should be sent
-                -> Identifier
-                -- ^ The internal Matrix ID of the room to which the
-                -- message should be sent
-                -> Auth
-                -- ^ Authorisation junk
-                -> IO (Maybe ErrorCode);
-sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
-  where
-  toMay' :: Response BS.ByteString -> Maybe ErrorCode
-  toMay' theResp
-    | getResponseStatusCode theResp == 200 = Nothing
-    | otherwise = Just $ T.unpack $ responseToStringth theResp
-  --
-  generateRequest :: IO Request
-  generateRequest =
-    favoriteNoise >>= \fn ->
-    setRequestBodyLBS sendreq <$> generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user
-  --
-  sendreq :: BSL.ByteString
-  sendreq =
-    "{\n\t" ++
-      "\"msgtype\": \"m.text\",\n\t" ++
-      "\"body\": \"" ++ BSL.fromStrict (encodeUtf8 body) ++ "\"\n" ++
-    "}"
-    where
-    (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString
-    (++) = BSL.append
-  --
-  favoriteNoise :: IO String
-  favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
-  -- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
-  -- approximately equal to 10^43, pseudorandom sequences.  10^43
-  -- pseudorandom sequences should be sufficient.
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@

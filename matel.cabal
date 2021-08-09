@@ -55,6 +55,7 @@ library
     -- Metal.MatrixAPI.LowLevel; as such, Metal.MatrixAPI.LowLevel.Types
     -- is classified as an "other module".
     Metal.MatrixAPI.LowLevel.GenerateAuth
+    Metal.MatrixAPI.LowLevel.Send.Text
   other-extensions:
     OverloadedStrings
     TemplateHaskell
