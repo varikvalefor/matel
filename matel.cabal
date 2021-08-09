@@ -81,7 +81,6 @@ executable matel
     brick,
     bytestring,
     vty,
-    aeson,
     http-conduit,
     text,
     directory,
