@@ -11,9 +11,17 @@ import Data.Aeson.TH;
 -- | For all 'LoginRequest' @k@, @k@ is a login request which is to be
 -- converted to JSON.
 data LoginRequest = LoginRequest {
+  -- | @lrq_type k@ becomes the value of the "type" field of the
+  -- generated JSON.
   lrq_type :: Stringth,
+  -- | @lrq_identifier k@ becomes the value of the "identifier" field of
+  -- the generated JSON.
   lrq_identifier :: UserIdentifier,
+  -- | @lrq_password k@ becomes the value of the "password" field of the
+  -- generated JSON.
   lrq_password :: Stringth,
+  -- | @lrq_initial_device_display_name k@ becomes the value of the
+  -- "initial_device_display_name" field of the generated JSON.
   lrq_initial_device_display_name :: Stringth
 } deriving (Eq, Read, Show);
 
