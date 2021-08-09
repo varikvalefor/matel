@@ -45,10 +45,15 @@ library
     Metal.OftenUsedFunctions
     Metal.MatrixAPI.HighLevel
     Metal.MatrixAPI.LowLevel
-    Metal.MatrixAPI.LowLevel.Types
     Metal.Messages.Encrypted
     Metal.Messages.Standard
     Metal.Default
+  other-modules:
+    Metal.MatrixAPI.LowLevel.Types
+    -- Metal.MatrixAPI.LowLevel.Types is a VERY low-level function which
+    -- is not of DIRECT use to things which exist "outside of"
+    -- Metal.MatrixAPI.LowLevel; as such, Metal.MatrixAPI.LowLevel.Types
+    -- is classified as an "other module".
   other-extensions:
     OverloadedStrings
     TemplateHaskell
