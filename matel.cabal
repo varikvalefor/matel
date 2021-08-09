@@ -50,7 +50,7 @@ library
     Metal.Default
   other-modules:
     Metal.MatrixAPI.LowLevel.Types
-    -- Metal.MatrixAPI.LowLevel.Types is a VERY low-level function which
+    -- Metal.MatrixAPI.LowLevel.Types is a VERY low-level module which
     -- is not of DIRECT use to things which exist "outside of"
     -- Metal.MatrixAPI.LowLevel; as such, Metal.MatrixAPI.LowLevel.Types
     -- is classified as an "other module".
