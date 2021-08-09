@@ -381,7 +381,7 @@ join r i a = responseToMaybe <$> (generateRequest >>= httpBS)
 -- assumes that the user has not set a display name and returns the
 -- input thing @k@ such that @displayname k == username k@.
 getDisplayName :: User
-               -- ^ The user whose display name is output
+               -- ^ The user whose display name is fetched
                -> Auth
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
