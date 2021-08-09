@@ -42,7 +42,7 @@ getRoomInformation room a =
     -- not equal the range of @getRoomInformation@.
     else
       getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
-      getTopic >>= \theTopic ->
+      getTopic room a >>= \theTopic ->
       getRoomName room a >>= \roomName' ->
       return $ Right Def.room {
         roomId = roomId room,
@@ -67,16 +67,20 @@ getRoomInformation room a =
       then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
       else Left $ responseToStringth response
   --
-  getTopic :: IO Stringth
-  getTopic = return "THIS THING IS UNIMPLEMENTED!!!"
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
-  --
   rq :: String -> IO (Response BS.ByteString)
   rq k = generateAuthdRequest uri a >>= httpBS
     where
     uri :: String
     uri = "GET https://" ++ homeserver a ++
       "/matrix/_client/r0/rooms" ++ roomId room ++ k;
+
+getTopic :: Room
+         -- ^ The room whose topic message is hopefully fetched
+         -> Auth
+         -- ^ The authorisation information of the user
+         -> IO Stringth;
+getTopic _ _ = return "THIS THING IS UNIMPLEMENTED!!!"
+-- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
 -- room ID is @roomId r@.
