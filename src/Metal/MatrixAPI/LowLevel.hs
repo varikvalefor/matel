@@ -218,7 +218,7 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
   where
   toMay' :: Response BS.ByteString -> Maybe ErrorCode
   toMay' theResp
-    | getResponseStatusCode theResp== 200 = Nothing
+    | getResponseStatusCode theResp == 200 = Nothing
     | otherwise = Just $ T.unpack $ responseToStringth theResp
   --
   generateRequest :: IO Request
