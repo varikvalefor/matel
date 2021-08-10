@@ -242,7 +242,7 @@ join r i a = responseToMaybe <$> (generateRequest >>= httpBS)
       -- the speed of the compilation of this thing is greater than the
       -- speed of the compilation of the Aeson equivalent.
   inviter :: User
-  inviter = maybe Def.user (\(a,_,_) -> a) i
+  inviter = maybe Def.user (\(a',_,_) -> a') i
   --
   inviteStateKey :: String
   inviteStateKey = maybe "" (\(_,b,_) -> b) i
