@@ -351,8 +351,9 @@ kick tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
 -- The second argument is the authorisation information which is used to
 -- actually leave the room.
 --
--- A non-'Nothing' value is output iff an error is encountered.  If such
--- a thing is output, then this output describes such an error.
+-- If an error is encountered, then a 'Just' 'String' which describes
+-- this error is output.  If no error is encountered, then 'Nothing' is
+-- returned.
 leave :: Room
       -- ^ The room which should be left
       -> Auth
