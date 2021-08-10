@@ -65,8 +65,7 @@ getRoomInformation room a =
     rq room "/members" a >>= return . \response ->
     if getResponseStatusCode response == 200
       then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-      else Left $ responseToStringth response
-  --
+      else Left $ responseToStringth response;
 
 -- | Where @a@ is the authorisation information of the client,
 -- @getTopic r a@ fetches the topic message of the Matrix room whose
