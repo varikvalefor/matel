@@ -12,6 +12,7 @@ import Text.StringRandom;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
+import qualified BasicPrelude as SPILL;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
@@ -43,7 +44,7 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
   sendreq =
     "{\n\t" ++
       "\"msgtype\": \"m.text\",\n\t" ++
-      "\"body\": \"" ++ BSL.fromStrict (encodeUtf8 body) ++ "\"\n" ++
+      "\"body\": " ++ (BSL.fromStrict $ encodeUtf8 $ SPILL.tshow body) ++ "\n" ++
     "}"
     where
     (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString

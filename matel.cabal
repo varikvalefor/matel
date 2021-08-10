@@ -65,6 +65,7 @@ library
   build-depends:
     base ^>=4.14.1.0,
     bytestring,
+    basic-prelude,
     http-conduit,
     aeson,
     string-random,
