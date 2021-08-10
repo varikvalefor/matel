@@ -101,7 +101,7 @@ memberComms :: Auth
             -> IO [Community];
 memberComms a = error "memberComms is unimplemented.";
 
--- | @isSentToRoom g k a@ only if @g@ is sent to Matrix room @k@ from
+-- | @isSentToRoom g k a@ sends @g@ to Matrix room @k@ from
 -- the account which is specified in @a@.
 --
 -- @isSentToRoom g k a@ equals an IO-monadic @""@ if no problem is
