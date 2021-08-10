@@ -54,6 +54,7 @@ library
     -- is not of DIRECT use to things which exist "outside of"
     -- Metal.MatrixAPI.LowLevel; as such, Metal.MatrixAPI.LowLevel.Types
     -- is classified as an "other module".
+    Metal.MatrixAPI.LowLevel.ResponseToWhatever
     Metal.MatrixAPI.LowLevel.GetRoomInformation
     Metal.MatrixAPI.LowLevel.GenerateAuth
     Metal.MatrixAPI.LowLevel.Send.Text
