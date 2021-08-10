@@ -41,6 +41,8 @@ getRoomInformation room a =
     -- because GHC otherwise complains that the type of @memebears@ does
     -- not equal the range of @getRoomInformation@.
     else
+      -- To avoid using unnecessarily large amounts of bandwidth, these
+      -- functions are executed only if @getMembers@ works.
       getEncryptionStatus room a >>= \(cryptoStatus, cryptoKey) ->
       getTopic room a >>= \theTopic ->
       getRoomName room a >>= \roomName' ->
