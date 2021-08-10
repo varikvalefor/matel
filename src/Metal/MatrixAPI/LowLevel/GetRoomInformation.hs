@@ -34,7 +34,7 @@ getRoomInformation :: Room
                    -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
-  getMembers >>= \memebears ->
+  getMembers room a >>= \memebears ->
   if isLeft memebears
     then return $ Left $ justLeft memebears
     -- This seemingly meaningless "@Left . justLeft@" statement is used
@@ -58,14 +58,25 @@ getRoomInformation room a =
     rq room "/event/m.room.key" a >>= return . \response ->
     if getResponseStatusCode response == 200
       then (True, error "TODO: IMPLEMENT THIS THING!")
-      else (False, Nothing)
-  --
-  getMembers :: IO (Either Stringth [User])
-  getMembers =
-    rq room "/members" a >>= return . \response ->
-    if getResponseStatusCode response == 200
-      then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-      else Left $ responseToStringth response;
+      else (False, Nothing);
+
+-- | Assuming that everything goes according to plan, @getMembers r a@
+-- is a 'Right'-based list of ['User']-based members of @r@.  If
+-- something breaks, then a 'Left'-based description of the error is
+-- returned.
+--
+-- Only the @username@ bits of the output list are certainly defined.
+getMembers :: Room
+           -- ^ The room whose members should be fetched
+           -> Auth
+           -- ^ The authorisation information which is used to fetch
+           -- the list of members
+           -> IO (Either Stringth [User]);
+getMembers room a =
+  rq room "/members" a >>= return . \response ->
+  if getResponseStatusCode response == 200
+    then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
+    else Left $ responseToStringth response;
 
 -- | Where @a@ is the authorisation information of the client,
 -- @getTopic r a@ fetches the topic message of the Matrix room whose
