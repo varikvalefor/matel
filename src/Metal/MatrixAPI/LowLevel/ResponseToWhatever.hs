@@ -7,27 +7,11 @@
 -- This module is used only within Metal.MatrixAPI.LowLevel and the
 -- submodules of Metal.MatrixAPI.LowLevel.
 module Metal.MatrixAPI.LowLevel.ResponseToWhatever where
-import Metal.Auth;
 import Metal.Base;
-import Metal.Room;
-import Metal.User;
-import Data.Maybe;
-import Data.Either;
-import Metal.Space;
-import Metal.Community;
-import Text.StringRandom;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
-import Metal.OftenUsedFunctions;
-import qualified Data.Aeson as A;
-import Metal.MatrixAPI.LowLevel.Types;
-import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
-import Metal.MatrixAPI.LowLevel.Send.Text;
-import qualified Data.ByteString.Lazy as BSL;
-import Metal.MatrixAPI.LowLevel.GenerateAuth;
-import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
