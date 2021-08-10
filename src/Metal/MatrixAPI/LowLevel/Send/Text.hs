@@ -48,6 +48,10 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
     where
     (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString
     (++) = BSL.append;
+    -- When @-Wall@ is used, locally redefining @(++)@ makes GHC have a
+    -- bit of a shit fit.  Bah.  This thing is safe.  The alternative to
+    -- locally redefining @(++)@ is directly calling @BSL.append@... or,
+    -- worse, creating some janky-looking alias, e.g., @(++')@.
 
 -- | @favoriteNoise@ is a pseudorandom 'String'.
 --
