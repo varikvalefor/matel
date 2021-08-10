@@ -55,24 +55,18 @@ getRoomInformation room a =
   where
   getEncryptionStatus :: IO (Bool, Maybe PublicKey)
   getEncryptionStatus =
-    rq "/event/m.room.key" >>= return . \response ->
+    rq room "/event/m.room.key" a >>= return . \response ->
     if getResponseStatusCode response == 200
       then (True, error "TODO: IMPLEMENT THIS THING!")
       else (False, Nothing)
   --
   getMembers :: IO (Either Stringth [User])
   getMembers =
-    rq "/members" >>= return . \response ->
+    rq room "/members" a >>= return . \response ->
     if getResponseStatusCode response == 200
       then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
       else Left $ responseToStringth response
   --
-  rq :: String -> IO (Response BS.ByteString)
-  rq k = generateAuthdRequest uri a >>= httpBS
-    where
-    uri :: String
-    uri = "GET https://" ++ homeserver a ++
-      "/matrix/_client/r0/rooms" ++ roomId room ++ k;
 
 -- | Where @a@ is the authorisation information of the client,
 -- @getTopic r a@ fetches the topic message of the Matrix room whose
@@ -100,3 +94,19 @@ getRoomName _ _ = return "THIS THING IS UNIMPLEMENTED!!!";
 responseToStringth :: Response a -> Stringth;
 responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
   show (getResponseStatusCode r) ++ ".";
+
+-- | @rq room k a@ is the response to the authorised HTTP request
+-- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
+-- [@roomId room@]\/[@k@]".
+rq :: Room
+   -- ^ The room which is the subject of the request
+   -> String
+   -- ^ The "\/whatever" addition to the query
+   -> Auth
+   -- The user whose authorisation details/homeserver FQDN are used
+   -> IO (Response BS.ByteString)
+rq room k a = generateAuthdRequest uri a >>= httpBS
+  where
+  uri :: String
+  uri = "GET https://" ++ homeserver a ++
+    "/matrix/_client/r0/rooms" ++ roomId room ++ k;
