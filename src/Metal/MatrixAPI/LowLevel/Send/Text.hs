@@ -38,6 +38,11 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
   generateRequest =
     favoriteNoise >>= \fn ->
     setRequestBodyLBS sendreq <$> generateAuthdRequest ("PUT https://" ++ homeserver user ++ "/_matrix/client/r0/rooms/" ++ dest ++ "/send/m.room.message/" ++ fn) user
+    -- The preceding line is long -- very long.  But shortening the
+    -- above line implies adding jank to the rest of this source code...
+    -- and VARIK does not find that reading the line in question is
+    -- particularly difficult.  As such, VARIK does not mind this line.
+    -- Stet.
   --
   sendreq :: BSL.ByteString
   sendreq =
