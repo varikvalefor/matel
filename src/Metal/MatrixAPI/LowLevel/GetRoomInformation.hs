@@ -41,7 +41,7 @@ getRoomInformation room a =
     -- because GHC otherwise complains that the type of @memebears@ does
     -- not equal the range of @getRoomInformation@.
     else
-      getEncryptionStatus >>= \(cryptoStatus, cryptoKey) ->
+      getEncryptionStatus room a >>= \(cryptoStatus, cryptoKey) ->
       getTopic room a >>= \theTopic ->
       getRoomName room a >>= \roomName' ->
       return $ Right Def.room {
@@ -51,14 +51,28 @@ getRoomInformation room a =
         members = justRight memebears,
         roomName = roomName',
         topic = theTopic
-      }
-  where
-  getEncryptionStatus :: IO (Bool, Maybe PublicKey)
-  getEncryptionStatus =
-    rq room "/event/m.room.key" a >>= return . \response ->
-    if getResponseStatusCode response == 200
-      then (True, error "TODO: IMPLEMENT THIS THING!")
-      else (False, Nothing);
+      };
+
+-- | @getEncryptionStatus r a@ describes the encryption status of @r@.
+--
+-- If @r@ describes an unencrypted room, then
+-- @r == return ('False', 'Nothing')@.
+--
+-- If @r@ describes an encrypted room, then the first value of the
+-- output is @'True'@, and the second value contains the public key of
+-- the room.
+getEncryptionStatus :: Room
+                    -- ^ The room whose encryption status should be
+                    -- fetched
+                    -> Auth
+                    -- ^ The authorisation information which is used to
+                    -- fetch the encryption status
+                    -> IO (Bool, Maybe PublicKey);
+getEncryptionStatus room a =
+  rq room "/event/m.room.key" a >>= return . \response ->
+  if getResponseStatusCode response == 200
+    then (True, error "TODO: IMPLEMENT THIS THING!")
+    else (False, Nothing);
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- is a 'Right'-based list of ['User']-based members of @r@.  If
