@@ -6,7 +6,6 @@ module Metal.MatrixAPI.LowLevel.Send.Text (
 ) where
 import Metal.Auth;
 import Metal.Base;
-import Metal.Room;
 import Metal.User;
 import Text.StringRandom;
 import Data.Text.Encoding;
