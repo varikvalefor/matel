@@ -117,7 +117,7 @@ getRoomName r a = process <$> rq r "/m.room.name" a
   where
   process :: BS.ByteString -> Room
   process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
--- TODO: IMPLEMENT THIS BIT CORRECTLY.
+  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
