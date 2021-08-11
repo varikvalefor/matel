@@ -12,11 +12,13 @@ import Metal.Room;
 import Metal.User;
 import Data.Either;
 import Network.HTTP.Simple;
+import Control.Concurrent.Async;
 import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
+import Metal.MatrixAPI.LowLevel.RecordCombination;
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
@@ -43,17 +45,13 @@ getRoomInformation room a =
     else
       -- To avoid using unnecessarily large amounts of bandwidth, these
       -- functions are executed only if @getMembers@ works.
-      getEncryptionStatus room a >>= \(cryptoStatus, cryptoKey) ->
-      getTopic room a >>= \theTopic ->
-      getRoomName room a >>= \roomName' ->
-      return $ Right Def.room {
-        roomId = roomId room,
-        isEncrypted = cryptoStatus,
-        publicKey = cryptoKey,
-        members = justRight memebears,
-        roomName = roomName',
-        topic = theTopic
-      };
+      Right . foldr combine Def.room <$> fetchDiscreteRoomValues
+  where
+  fetchDiscreteRoomValues :: IO [Room]
+  fetchDiscreteRoomValues = mapConcurrently id [
+    getEncryptionStatus room a,
+    getTopic room a,
+    getRoomName room a];
 
 -- | @getEncryptionStatus r a@ describes the encryption status of @r@.
 --
@@ -69,12 +67,12 @@ getEncryptionStatus :: Room
                     -> Auth
                     -- ^ The authorisation information which is used to
                     -- fetch the encryption status
-                    -> IO (Bool, Maybe PublicKey);
+                    -> IO Room;
 getEncryptionStatus room a =
   rq room "/event/m.room.key" a >>= return . \response ->
   if getResponseStatusCode response == 200
-    then (True, error "TODO: IMPLEMENT THIS THING!")
-    else (False, Nothing);
+    then error "TODO: IMPLEMENT THIS THING!"
+    else Def.room;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- is a 'Right'-based list of ['User']-based members of @r@.  If
@@ -101,8 +99,8 @@ getTopic :: Room
          -- ^ The room whose topic message is hopefully fetched
          -> Auth
          -- ^ The authorisation information of the user
-         -> IO Stringth;
-getTopic _ _ = return "THIS THING IS UNIMPLEMENTED!!!"
+         -> IO Room;
+getTopic _ _ = return Def.room {topic = "THIS THING IS UNIMPLEMENTED!!!"};
 -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
@@ -111,8 +109,8 @@ getRoomName :: Room
             -- ^ The room whose display name is nabbed
             -> Auth
             -- ^ The authorisation information
-            -> IO HumanReadableName;
-getRoomName _ _ = return "THIS THING IS UNIMPLEMENTED!!!";
+            -> IO Room;
+getRoomName _ _ = return Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
 -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
