@@ -49,10 +49,10 @@ getRoomInformation room a =
       Right . foldr combine Def.room <$> fetchDiscreteRoomValues
   where
   fetchDiscreteRoomValues :: IO [Room]
-  fetchDiscreteRoomValues = mapConcurrently id [
-    getEncryptionStatus room a,
-    getTopic room a,
-    getRoomName room a];
+  fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) [
+    getEncryptionStatus,
+    getTopic,
+    getRoomName];
 
 -- | @getEncryptionStatus r a@ describes the encryption status of @r@.
 --
