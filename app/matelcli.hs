@@ -134,6 +134,7 @@ send k a
 -- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
 grab :: [String] -> Auth -> IO ();
 grab k a
+  | k == [] = error "Repent, motherfucker."
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
   | order == "recent" = recentMessagesFrom n desRoom a >>= mapM_ print
