@@ -54,14 +54,8 @@ getRoomInformation room a =
   functions :: [(Room -> Auth -> IO Room)]
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
--- | @getEncryptionStatus r a@ describes the encryption status of @r@.
---
--- If @r@ describes an unencrypted room, then
--- @r == return ('False', 'Nothing')@.
---
--- If @r@ describes an encrypted room, then the first value of the
--- output is @'True'@, and the second value contains the public key of
--- the room.
+-- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
+-- to represent the encryption status of the room which @r@ represents.
 getEncryptionStatus :: Room
                     -- ^ The room whose encryption status should be
                     -- fetched
