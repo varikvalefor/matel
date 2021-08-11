@@ -106,7 +106,8 @@ getTopic r a = process <$> rq r "/m.room.topic" a
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
--- room ID is @roomId r@.
+-- room ID is @roomId r@.  The @'roomName'@ value of the output 'Room'
+-- record is used contains the desired information.
 getRoomName :: Room
             -- ^ The room whose display name is nabbed
             -> Auth
