@@ -107,7 +107,7 @@ getTopic r a = process <$> rq r "/m.room.topic" a
   where
   process :: BS.ByteString -> Room
   process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
--- TODO: IMPLEMENT THIS BIT CORRECTLY.
+  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
 -- room ID is @roomId r@.
