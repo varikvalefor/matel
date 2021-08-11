@@ -113,7 +113,10 @@ getRoomName :: Room
             -> Auth
             -- ^ The authorisation information
             -> IO Room;
-getRoomName _ _ = return Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
+getRoomName r a = process <$> rq r "/m.room.name" a
+  where
+  process :: BS.ByteString -> Room
+  process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
 -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
