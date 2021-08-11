@@ -19,6 +19,7 @@ import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.RecordCombination;
+import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
@@ -121,12 +122,6 @@ getRoomName r a = process <$> rq r "/m.room.name" a
   process :: Response BS.ByteString -> Room
   process _ = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
-
--- | @responseToStringth k@ equals a 'Stringth' which describes the
--- status code of @k@.
-responseToStringth :: Response a -> Stringth;
-responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
-  show (getResponseStatusCode r) ++ ".";
 
 -- | @rq room k a@ is the response to the authorised HTTP request
 -- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
