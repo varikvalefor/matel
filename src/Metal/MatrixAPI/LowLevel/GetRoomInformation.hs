@@ -68,11 +68,13 @@ getEncryptionStatus :: Room
                     -- ^ The authorisation information which is used to
                     -- fetch the encryption status
                     -> IO Room;
-getEncryptionStatus room a =
-  rq room "/event/m.room.key" a >>= return . \response ->
-  if getResponseStatusCode response == 200
-    then error "TODO: IMPLEMENT THIS THING!"
-    else Def.room;
+getEncryptionStatus room a = process <$> rq room "/event/m.room.key" a
+  where
+  process :: Response BS.ByteString -> Room
+  process response
+    | getResponseStatusCode response == 200 = error $ "TODO: " ++
+      "IMPLEMENT THIS THING!"
+    | otherwise = Def.room;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- is a 'Right'-based list of ['User']-based members of @r@.  If
