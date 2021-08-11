@@ -102,8 +102,7 @@ list k a
 -- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String]
      -- ^ The ['String']-based @matelcli@ command, e.g., @["send",
-     -- "text", "Man, fuck you.  I'll see you at work.",
-     -- "!hskonBonfjiIefqLUV:matrix.org"]@
+     -- "text", "!hskonBonfjiIefqLUV:matrix.org"]@
      -> Auth
      -- The information which is used to authenticate Matel's user
      -> IO ();
