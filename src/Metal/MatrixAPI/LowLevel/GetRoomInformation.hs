@@ -88,11 +88,12 @@ getMembers :: Room
            -- ^ The authorisation information which is used to fetch
            -- the list of members
            -> IO (Either Stringth [User]);
-getMembers room a =
-  rq room "/members" a >>= return . \response ->
-  if getResponseStatusCode response == 200
-    then Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
-    else Left $ responseToStringth response;
+getMembers room a = process <$> rq room "/members" a
+  where
+  process :: Response BS.ByteString -> Either Stringth [User]
+  process response
+    | getResponseStatusCode response == 200 = Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
+    | otherwise = Left $ responseToStringth response;
 
 -- | Where @a@ is the authorisation information of the client,
 -- @getTopic r a@ fetches the topic message of the Matrix room whose
