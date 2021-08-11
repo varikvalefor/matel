@@ -75,8 +75,8 @@ instance Combinable Room where
     g :: Eq b => (Room -> b) -> b
     g c = t c a b Def.room;
 
-t :: Eq b =>
-  (a -> b)
+t :: Eq b
+  => (a -> b)
   -- ^ The field constructor
   -> a
   -- ^ The first record whose value might be used
