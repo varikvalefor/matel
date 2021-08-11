@@ -113,10 +113,7 @@ send k a
   target :: IO StdMess
   target
     | typeIs "text" =
-      T.getContents >>= \input ->
-      return Def.stdMess {
-        body = input
-      }
+      T.getContents >>= \input -> return Def.stdMess {body = input}
     | typeIs "file" = error "Sending files is unimplemented."
     | otherwise = error $ "I ought to send you to the garbage " ++
       "disposal, shit-tits.  Read the fucking manual."
