@@ -87,12 +87,12 @@ getMembers :: Room
            -> Auth
            -- ^ The authorisation information which is used to fetch
            -- the list of members
-           -> IO (Either Stringth [User]);
+           -> IO (Either Stringth Room);
 getMembers room a = process <$> rq room "/members" a
   where
-  process :: Response BS.ByteString -> Either Stringth [User]
+  process :: Response BS.ByteString -> Either Stringth Room
   process response
-    | getResponseStatusCode response == 200 = Right [] -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
+    | getResponseStatusCode response == 200 = Right Def.room -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
     | otherwise = Left $ responseToStringth response;
 
 -- | Where @a@ is the authorisation information of the client,
