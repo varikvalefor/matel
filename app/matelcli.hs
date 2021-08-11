@@ -115,7 +115,6 @@ send k a
     | typeIs "text" =
       T.getContents >>= \input ->
       return Def.stdMess {
-        msgType = TextInnit,
         body = input
       }
     | typeIs "file" = error "Sending files is unimplemented."
