@@ -71,6 +71,7 @@ library
     -- Metal.MatrixAPI.LowLevel.Send.Text.sendTextMessage is of use to
     -- external things... but is exported by Metal.MatrixAPI.LowLevel.
     -- As such, exposing Send.Text would be redundant and pointless.
+    Metal.MatrixAPI.LowLevel.RecordCombination
   other-extensions:
     OverloadedStrings
     TemplateHaskell
