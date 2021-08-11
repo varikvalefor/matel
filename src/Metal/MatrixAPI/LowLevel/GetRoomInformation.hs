@@ -103,7 +103,10 @@ getTopic :: Room
          -> Auth
          -- ^ The authorisation information of the user
          -> IO Room;
-getTopic _ _ = return Def.room {topic = "THIS THING IS UNIMPLEMENTED!!!"};
+getTopic r a = process <$> rq r "/m.room.topic" a
+  where
+  process :: BS.ByteString -> Room
+  process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
 -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
