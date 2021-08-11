@@ -72,11 +72,11 @@ getEncryptionStatus room a = process <$> rq room "/event/m.room.key" a
     | otherwise = Def.room;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
--- is a 'Right'-based list of ['User']-based members of @r@.  If
--- something breaks, then a 'Left'-based description of the error is
--- returned.
+-- equals a 'Room' record whose @members@ field is a list of the members
+-- of the Matrix room which @r@ represents.
 --
--- Only the @username@ bits of the output list are certainly defined.
+-- If something breaks, then a 'Stringth' which describes this breakage
+-- is output.
 getMembers :: Room
            -- ^ The room whose members should be fetched
            -> Auth
