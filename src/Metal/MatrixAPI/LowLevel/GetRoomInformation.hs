@@ -105,8 +105,8 @@ getTopic :: Room
          -> IO Room;
 getTopic r a = process <$> rq r "/m.room.topic" a
   where
-  process :: BS.ByteString -> Room
-  process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
+  process :: Response BS.ByteString -> Room
+  process _ = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
@@ -118,8 +118,8 @@ getRoomName :: Room
             -> IO Room;
 getRoomName r a = process <$> rq r "/m.room.name" a
   where
-  process :: BS.ByteString -> Room
-  process = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
+  process :: Response BS.ByteString -> Room
+  process _ = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
   -- TODO: IMPLEMENT THIS BIT CORRECTLY.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
