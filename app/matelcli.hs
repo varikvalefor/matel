@@ -234,7 +234,14 @@ runJoin t a
 -- command.
 --
 -- The first element of the first argument is the room ID of the room
--- which the user should leave.
+-- which the user should leave.  This element is the only element which
+-- must be contained within this argument -- this argument is only of
+-- type ['String'] and not 'String' because just making this thing use
+-- a ['String'] facilitates writing a _somewhat_ clean
+-- @'determineAction'@.
+--
+-- The second argument is the authorisation information which is used to
+-- actually leave the specified room.
 runLeave :: [String]
          -- ^ [ROOM ID OF THE ROOM WHAT SHOULD BE LEFT]
          -> Auth
