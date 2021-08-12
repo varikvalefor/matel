@@ -45,10 +45,10 @@ determineAction :: [String]
                 -> Auth
                 -- ^ Matel user's authorisation information
                 -> IO ();
+determineAction [] a = error $ "I never thought that I would have a " ++
+  "stress-induced heart attack by the age of forty, but " ++
+  "you're making me rethink some things.";
 determineAction x a
-  | x == [] = error $ "I never thought that I would have a " ++
-    "stress-induced heart attack by the age of forty, but " ++
-    "you're making me rethink some things."
   | com == "list" = list stuff a
   | com == "send" = send stuff a
   | com == "grab" = grab stuff a
