@@ -228,7 +228,7 @@ runJoin t a
       "the information which is specified in my manual page by " ++
       "inputting a weird number of arguments, which is actually not " ++
       "terribly impressive... but is still a bit irritating."
-    where user = Def.user {usermane = t !! 1}
+    where user = Def.user {username = t !! 1}
 
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.
