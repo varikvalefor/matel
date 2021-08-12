@@ -61,7 +61,7 @@ determineAction (command:stuff) a =
     "leave"    -> runLeave stuff a
     "kick"     -> runKick stuff a
     _          -> error $ "An unrecognised command is input.  " ++
-      "RTFM, punk.";
+                  "RTFM, punk.";
 
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
