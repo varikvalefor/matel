@@ -184,7 +184,7 @@ logIn = loginPass >=> either busticate T.putStrLn
 
 -- | @eddySmith@ is a command-line-friendly wrapper for @'sync'@.
 --
--- If @length t < 1@, then @eddySmith t a@ sends a "since"-less "sync"
+-- If @t == []@, then @eddySmith t a@ sends a "since"-less "sync"
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String]
