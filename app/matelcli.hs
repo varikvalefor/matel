@@ -248,10 +248,9 @@ runLeave :: [String]
          -> Auth
          -- ^ Matel user's authorisation information
          -> IO ();
-runLeave g a
-  | g == [] = error $ "You'd best leave... or stop giving me " ++
-    "nothing but bullshit."
-  | otherwise = leave Def.room {roomId = head g} a >>= dispError;
+runLeave [] _ = error $ "You'd best leave... or stop giving me " ++
+  "nothing but bullshit.";
+runLeave (x:_) a = leave Def.room {roomId = x} a >>= dispError;
 
 -- | @runKick@ is a relatively command-line-friendly interface for the
 -- @'kick'@ command.
