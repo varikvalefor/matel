@@ -48,24 +48,19 @@ determineAction :: [String]
 determineAction [] a = error $ "I never thought that I would have a " ++
   "stress-induced heart attack by the age of forty, but " ++
   "you're making me rethink some things.";
-determineAction x a
-  | com == "list" = list stuff a
-  | com == "send" = send stuff a
-  | com == "grab" = grab stuff a
-  | com == "login" = logIn a
-  | com == "markread" = mkRead stuff a
-  | com == "sync" = eddySmith stuff a >>= T.putStrLn
-  | com == "join" = runJoin stuff a
-  | com == "leave" = runLeave stuff a
-  | com == "kick" = runKick stuff a
-  | otherwise = error $ "An unrecognised command is input.  " ++
-    "RTFM, punk."
-  where
-  com :: String
-  com = head x
-  --
-  stuff :: [String]
-  stuff = tail x;
+determineAction (command:stuff) a =
+  case command of
+    "list"     -> list stuff a
+    "send"     -> send stuff a
+    "grab"     -> grab stuff a
+    "login"    -> logIn a
+    "markread" -> mkRead stuff a
+    "sync"     -> eddySmith stuff a >>= T.putStrLn
+    "join"     -> runJoin stuff a
+    "leave"    -> runLeave stuff a
+    "kick"     -> runKick stuff a
+    _          -> error $ "An unrecognised command is input.  " ++
+      "RTFM, punk.";
 
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
