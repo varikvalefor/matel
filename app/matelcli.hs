@@ -158,7 +158,12 @@ grab k a
 
 -- | @mkRead [identifier]@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.
-mkRead :: [String] -> Auth -> IO ();
+mkRead :: [String]
+       -- ^ [MESSAGE ID OF MESSAGE WHAT SHOULD DONE BE READ]
+       -> Auth
+       -- ^ The authorisation information which is used to mark the
+       -- message as having been read.
+       -> IO ();
 mkRead k a
   | k == [] = error $ "Someone should knock you upside the head a " ++
     "few times, punk.  Dismissed."
