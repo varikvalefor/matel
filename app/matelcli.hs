@@ -127,6 +127,9 @@ send k a
     n :: Int
     n | head k == "file" = 2
       | otherwise = 1
+      -- This bit is necessary because the number of arguments of the
+      -- "send file" command is not equals to the number of arguments
+      -- of the "send text" command.
   --
   typeIs :: String -> Bool
   typeIs = (head k ==);
