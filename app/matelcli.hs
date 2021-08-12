@@ -219,8 +219,9 @@ runJoin t a = join room inviteInfo a >>= dispError
       1 -> Nothing
       _ -> error $ "You have managed to completely disregard the " ++
            "information which is specified in my manual page by " ++
-           "inputting a weird number of arguments, which is actually " ++
-           "not terribly impressive... but is still a bit irritating.";
+           "inputting a weird number of arguments, which is " ++
+           "actually not terribly impressive... but is still a bit " ++
+           "irritating.";
 
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.
