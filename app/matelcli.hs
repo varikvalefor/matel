@@ -11,6 +11,7 @@
 module Main where
 import GetAuth;
 import Text.Read;
+import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
@@ -141,7 +142,7 @@ grab k a
   | otherwise = error "I'll grab you if you don't grab some sense."
   where
   n :: Integer
-  n = maybe (-42) id $ readMaybe $ head k
+  n = fromMaybe (-42) $ readMaybe $ head k
   --
   order :: String
   order = k !! 1
