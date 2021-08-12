@@ -140,8 +140,8 @@ grab k a
   | k == [] = error "Repent, motherfucker."
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
-  | order == "recent" = recentMessagesFrom n desRoom a >>= mapM_ print
-  | order == "early" = earlyMessagesFrom n desRoom a >>= mapM_ print
+  | order == "recent" = recentMessagesFrom n room a >>= mapM_ print
+  | order == "early" = earlyMessagesFrom n room a >>= mapM_ print
   | otherwise = error "I'll grab you if you don't grab some sense."
   where
   n :: Integer
@@ -150,8 +150,8 @@ grab k a
   order :: String
   order = k !! 1
   --
-  desRoom :: Room
-  desRoom = Def.room {roomId = k !! 3};
+  room :: Room
+  room = Def.room {roomId = k !! 3};
 
 -- | @mkRead [identifier]@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.
