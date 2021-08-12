@@ -108,11 +108,12 @@ send k a
   | otherwise = target >>= \t -> isSentToRoom t dest a >>= dispError
   where
   target :: IO StdMess
-  target
-    | typeIs "text" =
-      T.getContents >>= \input -> return Def.stdMess {body = input}
-    | typeIs "file" = error "Sending files is unimplemented."
-    | otherwise = error $ "I ought to send you to the garbage " ++
+  target =
+    case head k of
+    "text" -> T.getContents >>= \input ->
+      return Def.stdMess {body = input}
+    "file" -> error "Sending files is unimplemented."
+    _      -> error $ "I ought to send you to the garbage " ++
       "disposal, shit-tits.  Read the fucking manual."
   --
   dest :: Room
@@ -120,13 +121,10 @@ send k a
     where
     n :: Int
     n | head k == "file" = 2
-      | otherwise = 1
+      | otherwise = 1;
       -- This bit is necessary because the number of arguments of the
       -- "send file" command is not equals to the number of arguments
       -- of the "send text" command.
-  --
-  typeIs :: String -> Bool
-  typeIs = (head k ==);
 
 -- | @grab@ is used to fetch and output the messages of a room.
 --
