@@ -218,13 +218,12 @@ runJoin t a = join room inviteInfo a >>= dispError
   inviteInfo :: Maybe (User, String, String)
   inviteInfo =
     case (length t) of
-      4 -> Just (user, t !! 2, t !! 3)
+      4 -> Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
       1 -> Nothing
       _ -> error $ "You have managed to completely disregard " ++
         "the information which is specified in my manual page by " ++
         "inputting a weird number of arguments, which is actually not " ++
-        "terribly impressive... but is still a bit irritating."
-    where user = Def.user {username = t !! 1};
+        "terribly impressive... but is still a bit irritating.";
 
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.
