@@ -222,7 +222,8 @@ runJoin t a
   --
   inviteInfo :: Maybe (User, String, String)
   inviteInfo
-    | length t == 4 = Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
+    | length t == 4 = Just (user, t !! 2, t !! 3)
+      where user = Def.user {usermane = t !! 1}
     | length t == 1 = Nothing
     | otherwise = error $ "You have managed to completely disregard " ++
       "the information which is specified in my manual page by " ++
