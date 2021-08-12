@@ -79,17 +79,15 @@ determineAction x a
 -- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
 -- specified in @a@ is a member.
 list :: [String] -> Auth -> IO ();
-list k a
-  | k == [] = error $ "Write an argument or be made sufficiently " ++
-    "brain-dead to never write arguments again."
-  | is "rooms" = memberRooms a >>= mapM_ (putStrLn . roomId)
-  | is "communities" = memberComms a >>= mapM_ (putStrLn . commId)
-  | is "spaces" = memberSpaces a >>= mapM_ (putStrLn . spaceId)
-  | otherwise = error $ "The police will be listing your injuries " ++
-    "if you don't stop inputting crap."
-  where
-  is :: String -> Bool
-  is = (head k ==);
+list [] _ = error $ "Write an argument or be made sufficiently " ++
+    "brain-dead to never write arguments again.";
+list (k:_) a =
+  case k of
+    "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
+    "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
+    "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
+    _             -> error $ "The police will be listing your " ++
+      "injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 --
