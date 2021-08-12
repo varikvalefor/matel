@@ -156,8 +156,9 @@ grab k a
   room :: Room
   room = Def.room {roomId = k !! 3};
 
--- | @mkRead [identifier]@ marks the message whose identifier is
--- @identifier@ as having been read if this message exists.
+-- | @mkRead [identifier] a@ marks the message whose identifier is
+-- @identifier@ as having been read if this message exists.  @a@ is used
+-- to authorise the request.
 mkRead :: [String]
        -- ^ [MESSAGE ID OF MESSAGE WHAT SHOULD DONE BE READ]
        -> Auth
