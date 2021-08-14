@@ -42,5 +42,16 @@ data StdMess = StdMess {
   -- @fmt k == MatrixCusHTML@ iff @k@ is formatted using HTML.
   -- Per the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
-  fmt :: MessageFmt
+  fmt :: MessageFmt,
+  -- | @attachment_client k@, if present, describes the file which
+  -- should be uploaded to the Matrix homeserver.  As implied by the
+  -- use of the term "uploaded", @attachment_client@ should _not_ be
+  -- used when fetching attachments... yet.
+  --
+  -- @fst $ attachment_client k@ is the filename of the file which
+  -- should be uploaded.
+  --
+  -- @snd $ attachment_client k@ is the actual content of the file which
+  -- should be uploaded.
+  attachment_client :: Maybe (Stringth, Stringth)
 } deriving (Eq, Read, Show);

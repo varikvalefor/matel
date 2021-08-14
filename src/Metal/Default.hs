@@ -61,5 +61,6 @@ stdMess = StdMess {
   sender = user,
   timestamp = (-8675309),
   fmtBody = Nothing,
-  fmt = MatrixCusHTML
+  fmt = MatrixCusHTML,
+  attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen")
 };

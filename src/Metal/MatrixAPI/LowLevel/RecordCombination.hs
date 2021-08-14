@@ -25,7 +25,8 @@ instance Combinable StdMess where
     sender = g sender,
     timestamp = g timestamp,
     fmtBody = g fmtBody,
-    fmt = g fmt
+    fmt = g fmt,
+    attachment_client = g attachment_client
   } where
     g :: Eq b => (StdMess -> b) -> b
     g c = t c a b Def.stdMess;
