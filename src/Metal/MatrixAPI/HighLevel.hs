@@ -90,7 +90,11 @@ memberRooms a = joinedRooms a >>= maybeShowRms
 -- whose login information is contained within @x@, is a member.
 --
 -- @memberSpaces@ is currently nonfunctional.
-memberSpaces :: Auth -> IO [Space];
+memberSpaces :: Auth
+             -- ^ The authorisation information of the Matrix user,
+             -- probably Matel's user, whose joined spaces should be
+             -- fetched
+             -> IO [Space];
 memberSpaces a = error "memberSpaces is unimplemented.";
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
