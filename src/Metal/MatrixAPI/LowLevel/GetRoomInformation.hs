@@ -43,10 +43,9 @@ getRoomInformation room a =
     -- This seemingly meaningless "@Left . justLeft@" statement is used
     -- because GHC otherwise complains that the type of @memebears@ does
     -- not equal the range of @getRoomInformation@.
-    else
+    else Right . foldr combine Def.room <$> fetchDiscreteRoomValues
       -- To avoid using unnecessarily large amounts of bandwidth, these
       -- functions are executed only if @getMembers@ works.
-      Right . foldr combine Def.room <$> fetchDiscreteRoomValues
   where
   fetchDiscreteRoomValues :: IO [Room]
   fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) functions
