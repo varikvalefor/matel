@@ -94,6 +94,10 @@ getMembers room a = process <$> rq room "/members" a
 -- @getTopic r a@ fetches the topic message of the Matrix room whose
 -- internal Matrix room ID is @roomId r@.  This information is returned
 -- as a 'Room' record whose @'topic'@ field is non-default.
+--
+-- The authorisation information is demanded because for all private
+-- rooms, the topic of a private room can be fetched only if this
+-- authorisation information is provided.
 getTopic :: Room
          -- ^ The room whose topic message is hopefully fetched
          -> Auth
