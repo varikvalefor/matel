@@ -117,8 +117,7 @@ sync :: Maybe String
 sync since user = responseToLeftRight <$> (geneReq >>= httpBS)
   where
   geneReq :: IO Request
-  geneReq =
-    setRequestBodyLBS syncreq <$> generateAuthdRequest uri user
+  geneReq = setRequestBodyLBS syncreq <$> generateAuthdRequest uri user
   --
   uri :: String
   uri = "GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync"
