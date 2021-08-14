@@ -51,7 +51,7 @@ getRoomInformation room a =
   fetchDiscreteRoomValues :: IO [Room]
   fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) functions
   --
-  functions :: [(Room -> Auth -> IO Room)]
+  functions :: [Room -> Auth -> IO Room]
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
 -- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
