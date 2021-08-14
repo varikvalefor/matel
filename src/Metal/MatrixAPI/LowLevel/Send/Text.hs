@@ -19,6 +19,9 @@ import Metal.MatrixAPI.LowLevel.GenerateAuth;
 -- | @sendTextMessage a b c@ sends a message whose body is @a@ to the
 -- Matrix room whose room ID is @b@.  This message is sent from the
 -- Matrix account which is described in @c@.
+--
+-- An error is encountered iff a description of such an error is
+-- returned.
 sendTextMessage :: Stringth
                 -- ^ The body of the message which should be sent
                 -> Identifier
