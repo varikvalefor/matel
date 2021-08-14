@@ -280,14 +280,13 @@ getDisplayName u a = processResponse <$> (generateRequest >>= httpBS)
                BSL.fromStrict . getResponseBody
   --
   processResponse :: Response BS.ByteString -> Either String User
-  processResponse r
-    | getResponseStatusCode r == 200 =
-      Right Def.user {displayname = toDispName r}
-    | getResponseStatusCode r == 404 =
-      Right Def.user {displayname = T.pack $ username u}
+  processResponse r =
+    case getResponseStatusCode r of
+      200 -> Right Def.user {displayname = toDispName r}
+      404 -> Right Def.user {displayname = T.pack $ username u}
       -- This "404" thing accounts for users whose display names are
       -- undefined.
-    | otherwise = Left $ T.unpack $ responseToStringth r;
+      _   -> Left $ T.unpack $ responseToStringth r;
       -- This case accounts for all situations which should not occur,
       -- e.g., "this user does not exist" and "yo, the server done
       -- broke".  Such responses should raise "red flags"; something has
