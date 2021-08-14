@@ -44,8 +44,8 @@ getRoomInformation room a =
     -- because GHC otherwise complains that the type of @memebears@ does
     -- not equal the range of @getRoomInformation@.
     else Right . foldr combine Def.room <$> fetchDiscreteRoomValues
-      -- To avoid using unnecessarily large amounts of bandwidth, these
-      -- functions are executed only if @getMembers@ works.
+    -- To avoid using unnecessarily large amounts of bandwidth, these
+    -- functions are executed only if @getMembers@ works.
   where
   fetchDiscreteRoomValues :: IO [Room]
   fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) functions
