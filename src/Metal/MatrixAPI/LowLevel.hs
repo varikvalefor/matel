@@ -114,10 +114,10 @@ sync :: Maybe String
      -> Auth
      -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
-sync since user = responseToLeftRight <$> (generateRequest >>= httpBS)
+sync since user = responseToLeftRight <$> (geneReq >>= httpBS)
   where
-  generateRequest :: IO Request
-  generateRequest =
+  geneReq :: IO Request
+  geneReq =
     setRequestBodyLBS syncreq <$> generateAuthdRequest uri user
   --
   uri :: String
