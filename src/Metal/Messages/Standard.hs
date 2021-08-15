@@ -5,6 +5,10 @@ module Metal.Messages.Standard where
 import Metal.Base;
 import Metal.User;
 
+-- | 'MessageType' is used to describe the types of the messages which
+-- 'StdMess' records represent.  Documentation of this thing is visible
+-- in the documentation of @'msgType'@; 'MessageType' is actually pretty
+-- useless alone.
 data MessageType = TextInnit | Image | Attach | Sticker
   deriving (Eq, Read, Show);
 
