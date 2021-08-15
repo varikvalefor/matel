@@ -51,9 +51,12 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
   sendreq =
     "{\n\t" ++
       "\"msgtype\": \"m.text\",\n\t" ++
-      "\"body\": " ++ (BSL.fromStrict $ encodeUtf8 $ SPILL.tshow body) ++ "\n" ++
+      "\"body\": " ++ show' body ++ "\n" ++
     "}"
     where
+    show' :: Stringth -> BSL.ByteString
+    show' = BSL.fromStrict . encodeUtf8 . SPILL.tshow
+    --
     (++) :: BSL.ByteString -> BSL.ByteString -> BSL.ByteString
     (++) = BSL.append;
     -- When @-Wall@ is used, locally redefining @(++)@ makes GHC have a
