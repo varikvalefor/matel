@@ -32,13 +32,11 @@ The use of Matel in production environments is not recommended.
 #### Required Stuff
 The basic information of Matel, e.g., the username and password of the user, are contained within the file `[HOME DIRECTORY]/.config/matel`.
 
-The username _k_ of the user should be placed onto a line such that the line matches the format `username: `_k_.
-
-The password _l_ of the user should be placed onto a line such that the line matches the format `password: `_l_.
-
-The FQDN _m_ of the user's homeserver should be placed onto a line such that the line matches the format `homeserver: `_m_.
-
-The authorisation token _n_ of Matel should be placed onto a line such that the line matches the format `authtoken: `_n_.
+For all lines of this file _g_, _g_ follows the format "[LABEL]: [CONTENT]".  The elements of {\<LABEL NAME, DESCRIPTION OF CONTENT AT LABEL\> : MATEL ACCEPTS LABEL} are as follows:
+* \<`username`, the username of the Matrix account which should be used, not including ":foo.bar"\>
+* \<`password`, the password of the Matrix account which should be used\>
+* \<`homeserver`, the FQDN of the homeserver of the Matrix account which should be used\>
+* \<`authtoken`, the authorisation token which Matel uses to act on behalf of the user\>
 #### Colour
 The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `app/Colour.hs`.  Like most other modules of Matel, `Colour` has decent documentation and can be edited reasonably easily.
 
