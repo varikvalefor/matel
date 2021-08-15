@@ -22,10 +22,10 @@ import qualified Metal.Default as Def;
 -- @[HOME DIRECTORY]\/.config\/matel@, whose formatting is described in
 -- Matel's "README" file.
 getAuthorisationDetails :: IO Auth;
-getAuthorisationDetails = configToUser <$> getConfig
+getAuthorisationDetails = configToUser <$> configFile
   where
-  getConfig :: IO Stringth
-  getConfig = getHomeDirectory >>= T.readFile . (++ "/.config/matel")
+  configFile :: IO Stringth
+  configFile = getHomeDirectory >>= T.readFile . (++ "/.config/matel")
   --
   configToUser :: Stringth -> User
   configToUser cfg = Def.user {
