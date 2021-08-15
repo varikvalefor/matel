@@ -8,6 +8,7 @@ The goals of the development of Matel are as follows:
 * Matel fully supports Matrix's text-based communication.
 * Matel is damn fast.
 * Matel's source code is readable.
+* Matel is extensible.
 * Matel runs perfectly on the BSDs, the Linux distros, and Microsoft Windows.
 * The number of Matel's dependencies is minimised.  (So far, so bad...)
 
