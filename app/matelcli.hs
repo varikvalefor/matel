@@ -233,7 +233,7 @@ runJoin t a = join room inviteInfo a >>= dispError
 -- which the user should leave.  This element is the only element which
 -- must be contained within this argument -- this argument is only of
 -- type ['String'] and not 'String' because just making this thing use
--- a ['String'] facilitates writing a _somewhat_ clean
+-- a ['String'] facilitates writing a clean
 -- @'determineAction'@.
 --
 -- The second argument is the authorisation information which is used to
