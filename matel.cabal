@@ -48,6 +48,7 @@ library
     Metal.Messages.Encrypted
     Metal.Messages.Standard
     Metal.Default
+    Metal.FavoriteNoise
   other-modules:
     Metal.MatrixAPI.LowLevel.Types
     -- Metal.MatrixAPI.LowLevel.Types is a VERY low-level module which

@@ -10,6 +10,7 @@ import Metal.User;
 import Text.StringRandom;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
+import Metal.FavoriteNoise;
 import qualified Data.Text as T;
 import qualified BasicPrelude as SPILL;
 import qualified Data.ByteString as BS;
@@ -63,14 +64,6 @@ sendTextMessage body dest user = toMay' <$> (generateRequest >>= httpBS)
     -- bit of a shit fit.  Bah.  This thing is safe.  The alternative to
     -- locally redefining @(++)@ is directly calling @BSL.append@... or,
     -- worse, creating a relatively janky-looking alias, e.g., @(++>)@.
-
--- | @favoriteNoise@ is a pseudorandom 'String'.
---
--- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
--- approximately equal to 10^43, pseudorandom sequences.  10^43
--- pseudorandom sequences should be sufficient.
-favoriteNoise :: IO String;
-favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
