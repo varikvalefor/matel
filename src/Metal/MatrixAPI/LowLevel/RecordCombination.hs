@@ -29,7 +29,7 @@ instance Combinable StdMess where
     attachment_client = g attachment_client
   } where
     g :: Eq b => (StdMess -> b) -> b
-    g c = t c a b Def.stdMess;
+    g c = combineSingleValue c a b Def.stdMess;
 
 instance Combinable User where
   combine a b = User {
@@ -40,14 +40,14 @@ instance Combinable User where
     displayname = g displayname
   } where
     g :: Eq b => (User -> b) -> b
-    g c = t c a b Def.user;
+    g c = combineSingleValue c a b Def.user;
 
 instance Combinable Community where
   combine a b = Community {
     commId = g commId
   } where
     g :: Eq b => (Community -> b) -> b
-    g c = t c a b Def.community;
+    g c = combineSingleValue c a b Def.community;
 
 instance Combinable Space where
   combine a b = Space {
@@ -56,7 +56,7 @@ instance Combinable Space where
     spaceMembers = g spaceMembers
   } where
     g :: Eq b => (Space -> b) -> b
-    g c = t c a b Def.space;
+    g c = combineSingleValue c a b Def.space;
 
 instance Combinable Room where
   combine a b = Room {
@@ -69,9 +69,9 @@ instance Combinable Room where
     publicKey = g publicKey
   } where
     g :: Eq b => (Room -> b) -> b
-    g c = t c a b Def.room;
+    g c = combineSingleValue c a b Def.room;
 
-t :: Eq b
+combineSingleValue :: Eq b
   => (a -> b)
   -- ^ The field constructor
   -> a
@@ -81,7 +81,7 @@ t :: Eq b
   -> a
   -- ^ The default record
   -> b;
-t c a b d
+combineSingleValue c a b d
   | c a == c b = c a
     -- Randomly determining whether the value of @c a@ or @c b@ should
     -- be used was determined.  But VARIK realised that doing such a
