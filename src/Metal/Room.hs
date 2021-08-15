@@ -13,7 +13,7 @@ data Room = Room {
   roomHumanId :: Identifier,
   -- | @roomName k@ is the display name of @k@, e.g., "Johnny Kissass's
   -- Suck-Up Fest".
-  roomName :: HumanReadableName,
+  roomName :: Stringth,
   -- | @members k@ is a list of the members of @k@.  Matel does not
   -- sort members according to any particular thing.
   members :: [User],
