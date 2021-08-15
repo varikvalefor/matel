@@ -217,7 +217,7 @@ runJoin t a = join room inviteInfo a >>= dispError
   --
   inviteInfo :: Maybe (User, String, String)
   inviteInfo =
-    case (length t) of
+    case length t of
       4 -> Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
       1 -> Nothing
       _ -> error $ "You have managed to completely disregard the " ++
