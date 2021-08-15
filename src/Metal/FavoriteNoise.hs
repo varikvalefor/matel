@@ -8,7 +8,8 @@ import Metal.Base;
 import Text.StringRandom;
 import qualified Data.Text as T;
 
--- | @favoriteNoise@ is a pseudorandom 'String'.
+-- | @favoriteNoise@ is a pseudorandom 'String' which matches the
+-- regular expression @[A-Za-z0-9]{24}@.
 --
 -- @favoriteNoise@ generates a maximum of (26+26+10)^24, which is
 -- approximately equal to 10^43, pseudorandom sequences.  10^43
