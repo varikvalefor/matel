@@ -7,7 +7,6 @@ module Metal.MatrixAPI.LowLevel.Send.Text (
 import Metal.Auth;
 import Metal.Base;
 import Metal.User;
-import Text.StringRandom;
 import Data.Text.Encoding;
 import Network.HTTP.Simple;
 import Metal.FavoriteNoise;
