@@ -29,20 +29,26 @@ getAuthorisationDetails = configToUser <$> configFile
   --
   configToUser :: Stringth -> User
   configToUser cfg = Def.user {
-    username = T.unpack $ xOf "username: " cfg,
-    password = xOf "password: " cfg,
-    homeserver = T.unpack $ xOf "homeserver: " cfg,
-    authToken = T.unpack $ xOf "authtoken: " cfg
+    username = T.unpack $ xOf "username" cfg,
+    password = xOf "password" cfg,
+    homeserver = T.unpack $ xOf "homeserver" cfg,
+    authToken = T.unpack $ xOf "authtoken" cfg
   };
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
 --
 -- @xOf@ is used to reduce the amount of boilerplate stuff.
 xOf :: Stringth -> Stringth -> Stringth;
-xOf query cfg = T.drop n $ head $ filter isMatch $ T.lines cfg
+xOf query' cfg = T.drop n $ head $ filter isMatch $ T.lines cfg
   where
   isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take n
   --
   n :: Int
-  n = T.length query;
+  n = T.length query
+  --
+  query :: Stringth
+  query = T.append query' fieldSeparator
+  --
+  fieldSeparator :: Stringth
+  fieldSeparator = ": ";
