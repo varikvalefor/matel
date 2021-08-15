@@ -51,7 +51,7 @@ data StdMess = StdMess {
   -- @fst <$> attachment_client k@ is the filename of the file which
   -- should be uploaded.
   --
-  -- @snd <$> attachment_client k@ is the actual content of the file which
-  -- should be uploaded.
+  -- @snd <$> attachment_client k@ is the actual content of the file
+  -- which should be uploaded.
   attachment_client :: Maybe (Stringth, Stringth)
 } deriving (Eq, Read, Show);
