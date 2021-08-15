@@ -38,7 +38,11 @@ getAuthorisationDetails = configToUser <$> configFile
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
 --
 -- @xOf@ is used to reduce the amount of boilerplate stuff.
-xOf :: Stringth -> Stringth -> Stringth;
+xOf :: Stringth
+    -- ^ The name of the field whose value is returned
+    -> Stringth
+    -- ^ The text whose fields are searched
+    -> Stringth;
 xOf query' cfg = T.drop n $ head $ filter isMatch $ T.lines cfg
   where
   isMatch :: T.Text -> Bool
