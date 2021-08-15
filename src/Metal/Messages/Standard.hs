@@ -33,8 +33,8 @@ data StdMess = StdMess {
   -- | @timestamp k@ equals the UNIX time-based timestamp of @k@,
   -- according to the origin server of @k@.
   timestamp :: UNIXTime,
-  -- | @fmtBody k@ is calculated in accordance with the "formatted_body"
-  -- field of the source of @k@.
+  -- | @fmtBody k@ is the value of the "formatted_body" field of the
+  -- JSON equivalent of @k@.
   fmtBody :: Maybe MessageText,
   -- | @fmt k@ equals the content of the "format" field of the source of
   -- @k@.
