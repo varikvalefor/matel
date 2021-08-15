@@ -3,6 +3,9 @@
 -- | @matelcli@ is a command-line interface for Matrix which uses
 -- Matel's underlying "Metal" infrastructure.
 --
+-- @matelcli@ is written such that for all text-based features of Matel
+-- @k@, @matelcli@ is capable of doing @k@.
+--
 -- The user-facing documentation/specification of the user interface is
 -- available in @matelcli@'s manual page, which is by default located at
 -- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
