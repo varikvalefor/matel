@@ -131,7 +131,8 @@ memberComms a = joinedComms a >>= maybeShowComms
   maybeShowComms = listCommsMentioned >=> \t ->
     if any EE.isLeft t
       then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
-      -- @EE.isLeft@ is used to ensure that the fetched "@justLeft@"
+      -- @EE.isLeft@ is used to ensure that the fetched 'Left' value
+      -- actually exists; some values may be 'Right'-valued.
       -- This error is thrown because if any 'Left' values are present,
       -- then something has probably gone horribly wrong and should be
       -- fixed.
