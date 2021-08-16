@@ -75,7 +75,7 @@ memberRooms a = joinedRooms a >>= maybeShowRms
   maybeShowRms :: Either Stringth [Room] -> IO [Room]
   maybeShowRms = listRoomsMentioned >=> \t ->
     if any EE.isLeft t
-      then error $ toString $ justLeft $ head $ filter EE.isLeft t
+      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
       -- @EE.isLeft@ is used to ensure that the fetched 'Left' value
       -- actually exists; some values may be 'Right'-valued.
       -- An error is tossed because something has probably gone horribly
@@ -84,9 +84,6 @@ memberRooms a = joinedRooms a >>= maybeShowRms
       -- @memberRooms@ does not break at this point if any users of this
       -- module would benefit from this change.
       else return $ map justRight t
-  --
-  toString :: Stringth -> String
-  toString = map (toEnum . fromEnum) . T.unpack;
 
 -- | @memberSpaces x@ equals a list of all spaces of which Matel's user,
 -- whose login information is contained within @x@, is a member.
