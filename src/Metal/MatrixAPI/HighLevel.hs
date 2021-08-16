@@ -83,7 +83,7 @@ memberRooms a = joinedRooms a >>= maybeShowRms
       -- VARIK is willing to modify @memberRooms@ such that
       -- @memberRooms@ does not break at this point if any users of this
       -- module would benefit from this change.
-      else return $ map justRight t
+      else return $ map justRight t;
 
 -- | @memberSpaces x@ equals a list of all spaces of which Matel's user,
 -- whose login information is contained within @x@, is a member.
