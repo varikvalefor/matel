@@ -119,7 +119,26 @@ memberSpaces a = joinedSpaces a >>= maybeShowSpaces
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
-memberComms a = error "memberComms is unimplemented.";
+memberComms a = joinedComms a >>= maybeShowComms
+  where
+  listCommsMentioned :: Either Stringth [Community] -> IO ([Either Stringth Community])
+  listCommsMentioned = either convS (return . map Right)
+    where
+    convS :: Stringth -> IO [Either Stringth Community]
+    convS = return . return . Left
+  --
+  maybeShowComms :: Either Stringth [Community] -> IO [Community]
+  maybeShowComms = listCommsMentioned >=> \t ->
+    if any EE.isLeft t
+      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
+      -- @EE.isLeft@ is used to ensure that the fetched "@justLeft@"
+      -- This error is thrown because if any 'Left' values are present,
+      -- then something has probably gone horribly wrong and should be
+      -- fixed.
+      -- Like @'memberRooms'@, @memberComms@ can be modified such that
+      -- @memberRooms@ does not use @error@ if such modification can be
+      -- justified.
+      else return $ map justRight t;
 
 -- | @isSentToRoom g k a@ sends @g@ to Matrix room @k@ from the account
 -- which is specified in @a@.
