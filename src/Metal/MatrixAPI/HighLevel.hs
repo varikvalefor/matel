@@ -88,14 +88,30 @@ memberRooms a = joinedRooms a >>= maybeShowRms
 
 -- | @memberSpaces x@ equals a list of all spaces of which Matel's user,
 -- whose login information is contained within @x@, is a member.
---
--- @memberSpaces@ is currently nonfunctional.
 memberSpaces :: Auth
              -- ^ The authorisation information of the Matrix user,
              -- probably Matel's user, whose joined spaces should be
              -- fetched
              -> IO [Space];
-memberSpaces a = error "memberSpaces is unimplemented.";
+memberSpaces a = joinedSpaces a >>= maybeShowSpaces
+  where
+  listSpacesMentioned :: Either Stringth [Space] -> IO ([Either Stringth Space])
+  listSpacesMentioned = either convS (return . map Right)
+    where
+    convS :: Stringth -> IO [Either Stringth Space]
+    convS = return . return . Left
+  --
+  maybeShowSpaces :: Either Stringth [Space] -> IO [Space]
+  maybeShowSpaces = listSpacesMentioned >=> \t ->
+    if any EE.isLeft t
+      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
+      -- This error is thrown because if any 'Left' values are present,
+      -- then something has probably gone horribly wrong and should be
+      -- fixed.
+      -- Like @'memberRooms'@, @memberComms@ can be modified such that
+      -- @memberRooms@ does not use @error@ if such modification can be
+      -- justified.
+      else return $ map justRight t;
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
