@@ -100,7 +100,7 @@ memberSpaces = joinedSpaces >=> return . either (error . T.unpack) id;
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
-memberComms a = joinedComms a >>= maybeShowComms
+memberComms = joinedComms >=> maybeShowComms
   where
   listCommsMentioned :: Either Stringth [Community] -> IO ([Either Stringth Community])
   listCommsMentioned = either convS (return . map Right)
