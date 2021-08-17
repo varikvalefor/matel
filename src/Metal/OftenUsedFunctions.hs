@@ -22,3 +22,7 @@ justLeft (Right _) = error "justLeft is applied to a value of type 'Right'!";
 justRight :: Either a b -> b;
 justRight (Right b) = b;
 justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
+
+-- | @(a <.> b) k@ is equivalent to @a <$> b k@.
+(<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
+(<.>) a b c = a <$> b c;
