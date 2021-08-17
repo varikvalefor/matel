@@ -92,7 +92,7 @@ memberSpaces :: Auth
              -- probably Matel's user, whose joined spaces should be
              -- fetched
              -> IO [Space];
-memberSpaces = joinedSpaces >=> return . idOrError;
+memberSpaces = idOrError <.> joinedSpaces;
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
