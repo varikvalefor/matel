@@ -169,7 +169,10 @@ isSentToRoom ms rm a =
 -- encountered.  @markRead k a@ otherwise equals an explanation of the
 -- problem.
 --
--- The @messageId@ field of @k@ must be defined and valid.
+-- The @messageId@ field of @k@ must be defined and valid; if this field
+-- is not defined and valid, then Metal.MatrixAPI.HighLevel may become a
+-- small pile of leaf-rolling weevils.  But such behaviour is not
+-- guaranteed.
 --
 -- @markRead@ is currently nonfunctional.
 markRead :: StdMess
