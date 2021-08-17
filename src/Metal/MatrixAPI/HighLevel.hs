@@ -92,7 +92,7 @@ memberSpaces :: Auth
              -- probably Matel's user, whose joined spaces should be
              -- fetched
              -> IO [Space];
-memberSpaces = joinedSpaces >=> return . either (error . T.unpack) id;
+memberSpaces = joinedSpaces >=> return . idOrError;
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
@@ -100,7 +100,12 @@ memberSpaces = joinedSpaces >=> return . either (error . T.unpack) id;
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
-memberComms = joinedComms >=> return . either (error . T.unpack) id;
+memberComms = joinedComms >=> return . idOrError;
+
+-- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
+-- whose message is @k@.
+idOrError :: Either Stringth a -> a;
+idOrError = either (error . T.unpack) id;
 
 -- | @isSentToRoom g k a@ sends @g@ to Matrix room @k@ from the account
 -- which is specified in @a@.
