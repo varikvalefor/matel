@@ -103,10 +103,7 @@ memberComms :: Auth
 memberComms = joinedComms >=> maybeShowComms
   where
   listCommsMentioned :: Either Stringth [Community] -> IO ([Either Stringth Community])
-  listCommsMentioned = either convS (return . map Right)
-    where
-    convS :: Stringth -> IO [Either Stringth Community]
-    convS = return . return . Left
+  listCommsMentioned = return . either (return . Left) (map Right)
   --
   maybeShowComms :: Either Stringth [Community] -> IO [Community]
   maybeShowComms = listCommsMentioned >=> \t ->
