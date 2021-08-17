@@ -100,24 +100,7 @@ memberSpaces = joinedSpaces >=> return . either (error . T.unpack) id;
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
-memberComms = joinedComms >=> maybeShowComms
-  where
-  listCommsMentioned :: Either Stringth [Community] -> IO ([Either Stringth Community])
-  listCommsMentioned = return . either (return . Left) (map Right)
-  --
-  maybeShowComms :: Either Stringth [Community] -> IO [Community]
-  maybeShowComms = listCommsMentioned >=> \t ->
-    if any EE.isLeft t
-      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
-      -- @EE.isLeft@ is used to ensure that the fetched 'Left' value
-      -- actually exists; some values may be 'Right'-valued.
-      -- This error is thrown because if any 'Left' values are present,
-      -- then something has probably gone horribly wrong and should be
-      -- fixed.
-      -- Like @'memberRooms'@, @memberComms@ can be modified such that
-      -- @memberRooms@ does not use @error@ if such modification can be
-      -- justified.
-      else return $ map justRight t;
+memberComms = joinedComms >=> return . either (error . T.unpack) id;
 
 -- | @isSentToRoom g k a@ sends @g@ to Matrix room @k@ from the account
 -- which is specified in @a@.
