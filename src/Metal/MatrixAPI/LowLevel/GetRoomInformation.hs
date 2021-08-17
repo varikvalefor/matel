@@ -113,7 +113,7 @@ getTopic :: Room
 getTopic r a = process <$> rq r "/state/m.room.topic" a
   where
   process :: Response BS.ByteString -> Room
-  process k = Def.room {roomName = fromMaybe detroit $ extractName k}
+  process k = Def.room {topic = fromMaybe detroit $ extractName k}
   --
   extractName :: Response BS.ByteString -> Maybe T.Text
   extractName k = getResponseBody k ^? A.key "name" . A._String
