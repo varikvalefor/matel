@@ -92,7 +92,7 @@ memberSpaces :: Auth
              -- probably Matel's user, whose joined spaces should be
              -- fetched
              -> IO [Space];
-memberSpaces a = maybeShowSpaces <$> joinedSpaces a
+memberSpaces = joinedSpaces >=> return . maybeShowSpaces
   where
   maybeShowSpaces :: Either Stringth [Space] -> [Space]
   maybeShowSpaces = either (error . T.unpack) id;
