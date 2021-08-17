@@ -135,7 +135,7 @@ getRoomName :: Room
             -> Auth
             -- ^ The authorisation information
             -> IO Room;
-getRoomName r a = process <$> rq r "/state/m.room.name" a
+getRoomName r a = process <$> rq r "/state/m.room.name/" a
   where
   process :: Response BS.ByteString -> Room
   process k = Def.room {roomName = fromMaybe detroit $ extractName k}
