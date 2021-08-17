@@ -161,7 +161,7 @@ isSentToRoom ms rm a =
   case msgType ms of
     TextInnit -> sendTextMessage (body ms) (roomId rm) a
     _         -> error $ "isSentToRoom: Sending messages of type " ++
-      show (msgType ms) ++ " is unimplemented.";
+                 show (msgType ms) ++ " is unimplemented.";
 
 -- | @markRead k a@ marks @k@ as having been read.
 --
