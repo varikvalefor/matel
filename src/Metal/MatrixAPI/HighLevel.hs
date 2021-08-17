@@ -98,18 +98,7 @@ memberSpaces a = joinedSpaces a >>= maybeShowSpaces
   listSpacesMentioned = return . either (return . Left) (map Right)
   --
   maybeShowSpaces :: Either Stringth [Space] -> IO [Space]
-  maybeShowSpaces = listSpacesMentioned >=> \t ->
-    if any EE.isLeft t
-      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
-      -- @EE.isLeft@ is used to ensure that the fetched 'Left' value
-      -- actually exists; some values may be 'Right'-valued.
-      -- This error is thrown because if any 'Left' values are present,
-      -- then something has probably gone horribly wrong and should be
-      -- fixed.
-      -- Like @'memberRooms'@, @memberComms@ can be modified such that
-      -- @memberRooms@ does not use @error@ if such modification can be
-      -- justified.
-      else return $ map justRight t;
+  maybeShowSpaces = either (error . T.unpack) (return);
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
