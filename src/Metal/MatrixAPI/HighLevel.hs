@@ -95,7 +95,7 @@ memberSpaces :: Auth
 memberSpaces a = joinedSpaces a >>= maybeShowSpaces
   where
   maybeShowSpaces :: Either Stringth [Space] -> IO [Space]
-  maybeShowSpaces = either (error . T.unpack) (return);
+  maybeShowSpaces = either (error . T.unpack) return;
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
