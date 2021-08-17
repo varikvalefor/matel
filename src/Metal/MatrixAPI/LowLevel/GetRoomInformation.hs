@@ -6,16 +6,19 @@
 module Metal.MatrixAPI.LowLevel.GetRoomInformation (
   getRoomInformation
 ) where
-import Metal.Auth;
+import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
+import Metal.Auth;
 import Data.Either;
+import Control.Lens;
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
 import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
+import qualified Data.Aeson.Lens as A;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.RecordCombination;
@@ -107,11 +110,18 @@ getTopic :: Room
          -> Auth
          -- ^ The authorisation information of the user
          -> IO Room;
-getTopic r a = process <$> rq r "/m.room.topic" a
+getTopic r a = process <$> rq r "/state/m.room.topic" a
   where
   process :: Response BS.ByteString -> Room
-  process _ = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
+  process k = Def.room {roomName = fromMaybe detroit $ extractName k}
+  --
+  extractName :: Response BS.ByteString -> Maybe T.Text
+  extractName k = getResponseBody k ^? A.key "name" . A._String
+  --
+  detroit :: T.Text
+  detroit = error $ "A fairly goofy error is encountered.  The JSON " ++
+            "value which the \"m.room.topic\" request returns does " ++
+            "NOT contain a \"name\" field.";
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
 -- room ID is @roomId r@.  The @'roomName'@ value of the output 'Room'
