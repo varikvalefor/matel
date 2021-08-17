@@ -95,10 +95,7 @@ memberSpaces :: Auth
 memberSpaces a = joinedSpaces a >>= maybeShowSpaces
   where
   listSpacesMentioned :: Either Stringth [Space] -> IO ([Either Stringth Space])
-  listSpacesMentioned = return . either convS (map Right)
-    where
-    convS :: Stringth -> [Either Stringth Space]
-    convS = return . Left
+  listSpacesMentioned = return . either (return . Left) (map Right)
   --
   maybeShowSpaces :: Either Stringth [Space] -> IO [Space]
   maybeShowSpaces = listSpacesMentioned >=> \t ->
