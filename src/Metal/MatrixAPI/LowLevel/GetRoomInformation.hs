@@ -113,10 +113,10 @@ getTopic :: Room
 getTopic r a = process <$> rq r "/state/m.room.topic" a
   where
   process :: Response BS.ByteString -> Room
-  process k = Def.room {topic = fromMaybe detroit $ extractName k}
+  process k = Def.room {topic = fromMaybe detroit $ extractTopic k}
   --
-  extractName :: Response BS.ByteString -> Maybe T.Text
-  extractName k = getResponseBody k ^? A.key "name" . A._String
+  extractTopic :: Response BS.ByteString -> Maybe T.Text
+  extractTopic k = getResponseBody k ^? A.key "name" . A._String
   --
   detroit :: T.Text
   detroit = error $ "A fairly goofy error is encountered.  The JSON " ++
@@ -135,11 +135,18 @@ getRoomName :: Room
             -> Auth
             -- ^ The authorisation information
             -> IO Room;
-getRoomName r a = process <$> rq r "/m.room.name" a
+getRoomName r a = process <$> rq r "/state/m.room.name" a
   where
   process :: Response BS.ByteString -> Room
-  process _ = Def.room {roomName = "THIS THING IS UNIMPLEMENTED!!!"};
-  -- TODO: IMPLEMENT THIS BIT CORRECTLY.
+  process k = Def.room {roomName = fromMaybe detroit $ extractName k}
+  --
+  extractName :: Response BS.ByteString -> Maybe T.Text
+  extractName k = getResponseBody k ^? A.key "name" . A._String
+  --
+  detroit :: T.Text
+  detroit = error $ "A fairly goofy error is encountered.  The JSON " ++
+            "value which the \"m.room.name\" request returns does " ++
+            "NOT contain a \"name\" field.";
 
 -- | @rq room k a@ is the response to the authorised HTTP request
 -- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
