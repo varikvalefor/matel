@@ -92,10 +92,10 @@ memberSpaces :: Auth
              -- probably Matel's user, whose joined spaces should be
              -- fetched
              -> IO [Space];
-memberSpaces a = joinedSpaces a >>= maybeShowSpaces
+memberSpaces a = maybeShowSpaces <$> joinedSpaces a
   where
-  maybeShowSpaces :: Either Stringth [Space] -> IO [Space]
-  maybeShowSpaces = either (error . T.unpack) return;
+  maybeShowSpaces :: Either Stringth [Space] -> [Space]
+  maybeShowSpaces = either (error . T.unpack) id;
 
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
