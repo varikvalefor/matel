@@ -100,7 +100,7 @@ memberSpaces = idOrError <.> joinedSpaces;
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
-memberComms = joinedComms >=> return . idOrError;
+memberComms = idOrError <.> joinedComms;
 
 -- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
 -- whose message is @k@.
