@@ -258,4 +258,4 @@ runKick k a
   user = Def.user {username = k !! 0}
   --
   room :: Room
-  room = Def.room {roomId = k !! 1}
+  room = Def.room {roomId = k !! 1};
