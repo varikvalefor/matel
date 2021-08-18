@@ -133,7 +133,14 @@ send k a
 --
 -- @grab@'s argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
 -- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
-grab :: [String] -> Auth -> IO ();
+grab :: [String]
+     -- ^ The first 3 elements of this list are the decimal number of
+     -- messages which should be nabbed, "early" or "recent", some junk
+     -- data, and the internal Matrix ID of the room from which messages
+     -- should be nabbed.
+     -> Auth
+     -- ^ The authorisation information
+     -> IO ();
 grab k a
   | k == [] = error "Repent, motherfucker."
   | n < 0 = error "I need a natural number, not garbage."
