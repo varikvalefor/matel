@@ -144,9 +144,10 @@ grab k a
   | k == [] = error "Repent, motherfucker."
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?"
-  | order == "recent" = recentMessagesFrom n room a >>= mapM_ print
-  | order == "early" = earlyMessagesFrom n room a >>= mapM_ print
-  | otherwise = error "I'll grab you if you don't grab some sense."
+  | otherwise = case k !! 1 of
+    "recent" -> recentMessagesFrom n room a >>= mapM_ print
+    "early"  -> earlyMessagesFrom n room a >>= mapM_ print
+    _        -> error "I'll grab you if you don't grab some sense."
   where
   n :: Integer
   n = fromMaybe (-42) $ readMaybe $ head k
