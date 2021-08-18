@@ -38,9 +38,8 @@ import qualified Data.Text.IO as T;
 -- | Chicken chow mein main...
 main :: IO ();
 main =
-  getArgs >>= \command ->
   getAuthorisationDetails >>= \aufFile ->
-  determineAction command aufFile;
+  getArgs >>= (`determineAction` aufFile);
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
