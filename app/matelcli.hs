@@ -39,7 +39,7 @@ import qualified Data.Text.IO as T;
 main :: IO ();
 main =
   getAuthorisationDetails >>= \aufFile ->
-  getArgs >>= (`determineAction` aufFile);
+  getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
