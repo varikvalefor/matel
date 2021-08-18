@@ -98,8 +98,8 @@ list (k:_) a =
 -- @send ["file", k, foo] n@ sends a message whose attachment is
 -- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String]
-     -- ^ The ['String']-based @matelcli@ command, e.g., @["send",
-     -- "text", "!hskonBonfjiIefqLUV:matrix.org"]@
+     -- ^ The ['String']-based command-line arguments, e.g.,
+     -- @["text", "!hskonBonfjiIefqLUV:matrix.org"]@
      -> Auth
      -- The information which is used to authenticate Matel's user
      -> IO ();
