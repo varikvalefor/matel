@@ -248,7 +248,16 @@ runLeave (x:_) a = leave Def.room {roomId = x} a >>= dispError;
 --
 -- @runKick [user, room, reason]@ kicks user @user@ from the Matrix room
 -- @room@, justifying the kicking with @reason@.
-runKick :: [String] -> Auth -> IO ();
+runKick :: [String]
+        -- ^ The first 3 elements of this list are the room ID of the
+        -- room from which the user should be removed, the reason for
+        -- the removal of this user, and the reason for the removal of
+        -- this user.  If the third element equals @""@, then no reason
+        -- is supplied.
+        -> Auth
+        -- The information which is used to authorise the kicking of the
+        -- user
+        -> IO ();
 runKick k a
   | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
     "giving me some actual directions."
