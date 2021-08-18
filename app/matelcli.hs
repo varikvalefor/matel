@@ -152,9 +152,6 @@ grab k a
   n :: Integer
   n = fromMaybe (-42) $ readMaybe $ head k
   --
-  order :: String
-  order = k !! 1
-  --
   room :: Room
   room = Def.room {roomId = k !! 3};
 
