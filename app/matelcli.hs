@@ -252,13 +252,10 @@ runKick :: [String] -> Auth -> IO ();
 runKick k a
   | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
     "giving me some actual directions."
-  | otherwise = kick user room reason a >>= dispError
+  | otherwise = kick user room (k !! 2) a >>= dispError
   where
   user :: User
   user = Def.user {username = k !! 0}
   --
   room :: Room
   room = Def.room {roomId = k !! 1}
-  --
-  reason :: String
-  reason = k !! 2;
