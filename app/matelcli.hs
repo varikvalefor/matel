@@ -162,10 +162,7 @@ mkRead :: [String]
        -> IO ();
 mkRead [] a = error $ "Someone should knock you upside the head a " ++
   "few times, punk.  Dismissed.";
-mkRead k a = markRead melleMel a >>= dispError
-  where
-  melleMel :: StdMess
-  melleMel = Def.stdMess {messageId = head k};
+mkRead k a = markRead Def.stdMess {messageId = head k} a >>= dispError;
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
