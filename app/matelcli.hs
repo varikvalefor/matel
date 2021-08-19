@@ -28,12 +28,12 @@ import System.Environment;
 import Control.Monad ((>=>));
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
+import qualified Data.Text as T;
 import Metal.MatrixAPI.HighLevel;
+import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 
-import qualified Data.Text as T;
-import qualified Data.Text.IO as T;
 
 -- | Chicken chow mein main...
 main :: IO ();
