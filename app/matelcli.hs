@@ -34,7 +34,6 @@ import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 
-
 -- | Chicken chow mein main...
 main :: IO ();
 main =
