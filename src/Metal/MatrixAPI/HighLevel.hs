@@ -17,8 +17,8 @@ module Metal.MatrixAPI.HighLevel (
   memberComms,
   isSentToRoom,
   markRead,
-  -- The following things are just imported
-  -- from Metal.MatrixAPI.LowLevel and exported exactly as these
+  -- The following things are just imported from
+  -- Metal.MatrixAPI.LowLevel and exported exactly as these
   -- functions appear in Metal.MatrixAPI.LowLevel because writing
   -- wrappers for these functions would be a fairly pointless process;
   -- these functions are already reasonably high-level.
