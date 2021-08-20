@@ -18,6 +18,7 @@ module Metal.MatrixAPI.LowLevel (
   kick,
   leave,
   ban,
+  unban,
   module Metal.MatrixAPI.LowLevel.Send.Text,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
@@ -377,6 +378,42 @@ ban tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
     "{\n\t" ++
       "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
       "\"reason\": " ++ show m ++ "\n" ++
+    "}";
+
+-- | @unban@ implements the Matrix API's
+-- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/unban@" command.
+--
+-- The first argument describes the user which should be unbanned.  Only
+-- the @username@ field is used.
+--
+-- The second argument describes the room from which the user should be
+-- unbanned.  Only the @roomId@ field is used.
+--
+-- The third argument is the authorisation information which is used
+-- to run the command.
+--
+-- An error message is provided iff an error is encountered.
+unban :: User
+     -- ^ A description of the user which should be banned
+     -> Room
+     -- ^ The room from which the user should be banned
+     -> Auth
+     -- ^ The authorisation information
+     -> IO (Maybe String);
+unban tarjay rome a = responseToMaybe <$> (generateRequest >>= httpBS)
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    setRequestBodyLBS unbanReq <$> generateAuthdRequest uri a
+  --
+  uri :: String
+  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
+    roomId rome ++ "/unban"
+  --
+  unbanReq :: BSL.ByteString
+  unbanReq = fromString $
+    "{\n\t" ++
+      "\"user_id\": " ++ show (username tarjay) ++ "\n" ++
     "}";
 
 -- | @leave@ implements the Matrix API's
