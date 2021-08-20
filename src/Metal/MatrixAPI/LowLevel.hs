@@ -17,6 +17,7 @@ module Metal.MatrixAPI.LowLevel (
   getDisplayName,
   kick,
   leave,
+  ban,
   module Metal.MatrixAPI.LowLevel.Send.Text,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
@@ -331,6 +332,48 @@ kick tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
   --
   kickReq :: BSL.ByteString
   kickReq = fromString $
+    "{\n\t" ++
+      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
+      "\"reason\": " ++ show m ++ "\n" ++
+    "}";
+
+-- | @ban@ implements the Matrix API's
+-- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/ban@" command.
+--
+-- The first argument describes the user which should be banned.  Only
+-- the @username@ field is used.
+--
+-- The second argument describes the room from which the user should be
+-- banned.  Only the @roomId@ field is used.
+--
+-- The third argument is the reason for the banning of the user, e.g.,
+-- "Your e-mail addresses offend me."
+--
+-- The fourth argument is the authorisation information which is used
+-- to run the command.
+--
+-- An error message is provided iff an error is encountered.
+ban :: User
+     -- ^ A description of the user which should be banned
+     -> Room
+     -- ^ The room from which the user should be banned
+     -> String
+     -- ^ The reason for the banning of the user
+     -> Auth
+     -- ^ The authorisation information
+     -> IO (Maybe String);
+ban tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
+  where
+  generateRequest :: IO Request
+  generateRequest =
+    setRequestBodyLBS banReq <$> generateAuthdRequest uri a
+  --
+  uri :: String
+  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
+    roomId rome ++ "/ban"
+  --
+  banReq :: BSL.ByteString
+  banReq = fromString $
     "{\n\t" ++
       "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
       "\"reason\": " ++ show m ++ "\n" ++
