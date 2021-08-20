@@ -16,7 +16,15 @@ module Metal.MatrixAPI.HighLevel (
   memberSpaces,
   memberComms,
   isSentToRoom,
-  markRead
+  markRead,
+  -- The following things are just imported
+  -- from Metal.MatrixAPI.LowLevel and exported exactly as these
+  -- functions appear in Metal.MatrixAPI.LowLevel because writing
+  -- wrappers for these functions would be a fairly pointless process;
+  -- these functions are already reasonably high-level.
+  ban,
+  unban,
+  kick
 ) where
 import Metal.Auth;
 import Metal.Base;
