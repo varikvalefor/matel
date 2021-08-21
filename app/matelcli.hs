@@ -251,7 +251,8 @@ runLeave (x:_) a = leave Def.room {roomId = x} a >>= dispError;
 -- @'kick'@ command.
 --
 -- @runKick [user, room, reason]@ kicks user @user@ from the Matrix room
--- @room@, justifying the kicking with @reason@.
+-- whose internal Matrix ID is @room@, justifying the kicking with
+-- @reason@.
 runKick :: [String]
         -- ^ The first 3 elements of this list are the room ID of the
         -- room from which the user should be removed, the reason for
