@@ -176,7 +176,8 @@ dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) error;
 
 -- | @logIn k@ generates an authorisation token for the user which is
--- specified in @k@.
+-- specified in @k@ and writes this authorisation token to the standard
+-- output.
 logIn :: Auth -> IO ();
 logIn = loginPass >=> either busticate T.putStrLn
   where
