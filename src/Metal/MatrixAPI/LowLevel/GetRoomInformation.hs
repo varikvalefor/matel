@@ -40,17 +40,11 @@ getRoomInformation :: Room
                    -- ^ The authorisation information
                    -> IO (Either Stringth Room);
 getRoomInformation room a =
-  getMembers room a >>= \memebears ->
-  if isLeft memebears
-    then return $ Left $ justLeft memebears
-    -- This seemingly meaningless "@Left . justLeft@" statement is used
-    -- because GHC otherwise complains that the type of @memebears@ does
-    -- not equal the range of @getRoomInformation@.
-    else Right . foldr combine Def.room <$> fetchDiscreteRoomValues
-    -- To avoid using unnecessarily large amounts of bandwidth,
-    -- @fetchDiscreteRoomValues@ is evaluated only if @getMembers@
-    -- works.
+  getMembers room a >>= either (return . Left) evaluate
   where
+  evaluate :: Room -> IO (Either Stringth Room)
+  evaluate g = Right . foldr combine Def.room . (g:) <$> fetchDiscreteRoomValues
+  --
   fetchDiscreteRoomValues :: IO [Room]
   fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) functions
   -- The term "fetch", as opposed to "get", is used to indicate that
