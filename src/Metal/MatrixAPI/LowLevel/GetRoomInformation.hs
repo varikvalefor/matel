@@ -43,12 +43,12 @@ getRoomInformation room a =
   getMembers room a >>= either (return . Left) evaluate
   where
   evaluate :: Room -> IO (Either Stringth Room)
-  evaluate g = Right . foldr combine Def.room . (g:) <$> fetchDiscreteRoomValues
+  evaluate g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
   --
-  fetchDiscreteRoomValues :: IO [Room]
-  fetchDiscreteRoomValues = mapConcurrently (\f -> f room a) functions
+  fetchRoomValues :: IO [Room]
+  fetchRoomValues = mapConcurrently (\f -> f room a) functions
   -- The term "fetch", as opposed to "get", is used to indicate that
-  -- @fetchDiscreteRoomValues@ just concatenates the outputs of various
+  -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
   -- directly access the Matrix API.
   --
