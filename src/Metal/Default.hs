@@ -59,7 +59,7 @@ stdMess = StdMess {
   -- Insults and lame jokes are the lifeblood of Matel... and VARIK's
   -- other projects.
   sender = user,
-  timestamp = (-8675309),
+  timestamp = -8675309,
   fmtBody = Nothing,
   fmt = MatrixCusHTML,
   attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen")
