@@ -9,6 +9,7 @@ import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
 import Network.HTTP.Simple;
+import Metal.Messages.Standard;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import qualified Metal.Default as Def;
@@ -28,3 +29,6 @@ class Event a where
               -- ^ The authorisation information which is used to
               -- authenticate the query
               -> [a];
+
+instance Event StdMess where
+  fetchEvents _ _ _ = error "This fetchEvents is unimplemented.";
