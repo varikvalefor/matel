@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveAnyClass #-}
-
 -- | Metal.Messages.Standard contains the 'StdMess' record type.
 module Metal.Messages.Standard where
 import Metal.Base;
