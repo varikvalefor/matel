@@ -71,6 +71,7 @@ library
     -- external things... but is exported by Metal.MatrixAPI.LowLevel.
     -- As such, exposing Send.Text would be redundant and pointless.
     Metal.MatrixAPI.LowLevel.RecordCombination
+    Metal.MatrixAPI.LowLevel.FetchEvents
   other-extensions:
     OverloadedStrings
     TemplateHaskell
@@ -98,13 +99,13 @@ executable matel
     GetAuth
   build-depends:
     base ^>=4.14.1.0,
-    brick,
-    bytestring,
-    vty,
     http-conduit,
-    text,
+    bytestring,
     directory,
-    matel
+    brick,
+    matel,
+    text,
+    vty
   hs-source-dirs: app
   default-language: Haskell2010
 
