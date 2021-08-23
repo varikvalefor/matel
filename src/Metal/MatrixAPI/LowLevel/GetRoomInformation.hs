@@ -68,7 +68,7 @@ getEncryptionStatus room a = process <$> rq room "/event/m.room.key" a
   where
   process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
-    200 -> error $ "TODO: IMPLEMENT THIS THING!"
+    200 -> error "TODO: IMPLEMENT THIS THING!"
     _   -> Def.room;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
