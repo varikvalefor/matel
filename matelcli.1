@@ -192,6 +192,14 @@ from the Matrix room whose internal Matrix ID is
 .Pp
 If some weird error is encountered, then a description of this error is
 written to the standard output.
+.Sh EXAMPLES
+.Ss Sending a Text-Based Message
+The following command sends a message whose body is
+.Dq yo, you suck
+to the Matrix room whose internal Matrix ID is
+.Sy !junkers:matrix.org :
+.Pp
+.Dl  echo -n 'yo, you suck' | matelcli send text !junkers:matrix.org
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
