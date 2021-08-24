@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveAnyClass #-}
-
 -- | Metal.Messages.Encrypted contains the source code of the
 -- 'CryptoMess' record type.
 module Metal.Messages.Encrypted where
