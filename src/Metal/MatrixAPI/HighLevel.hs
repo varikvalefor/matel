@@ -50,7 +50,7 @@ recentMessagesFrom :: Integer
                    -> Auth
                    -- ^ Authorisation crap
                    -> IO [StdMess];
-recentMessagesFrom n rm a = error "recentMessages is unimplemented.";
+recentMessagesFrom _ _ _ = error "recentMessages is unimplemented.";
 
 -- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
@@ -64,7 +64,7 @@ earlyMessagesFrom :: Integer
                   -- ^ The authorisation details with which messages are
                   -- fetched
                   -> IO [StdMess];
-earlyMessagesFrom n rm a = error "earlyMessagesFrom is unimplemented.";
+earlyMessagesFrom _ _ _ = error "earlyMessagesFrom is unimplemented.";
 
 -- | @memberRooms x@ equals a list of all rooms of which Matel's user,
 -- whose login information is contained within @x@, is a member.
@@ -154,4 +154,4 @@ markRead :: StdMess
          -> Auth
          -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
-markRead k a = error "markRead is unimplemented.";
+markRead _ _ = error "markRead is unimplemented.";
