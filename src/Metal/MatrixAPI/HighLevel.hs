@@ -85,7 +85,7 @@ memberRooms a = joinedRooms a >>= maybeShowRms
   maybeShowRms = listRoomsMentioned >=> \t ->
     if any EE.isLeft t
       then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
-      -- @EE.isLeft@ is used to ensure that the fetched 'Left' value
+      -- @filter EE.isLeft@ is used to ensure that the fetched 'Left' value
       -- actually exists; some values may be 'Right'-valued.
       -- An error is tossed because something has probably gone horribly
       -- wrong if any 'Left' values are present.
