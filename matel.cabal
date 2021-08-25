@@ -103,7 +103,6 @@ executable matelcli
   build-depends:
     base ^>=4.14.1.0,
     directory,
-    aeson,
     matel,
     text
   hs-source-dirs: app
