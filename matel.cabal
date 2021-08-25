@@ -99,7 +99,6 @@ executable matel
     GetAuth
   build-depends:
     base ^>=4.14.1.0,
-    http-conduit,
     directory,
     brick,
     matel,
