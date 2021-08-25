@@ -52,18 +52,18 @@ determineAction [] a = error $ "I never thought that I would have a " ++
   "you're making me rethink some things.";
 determineAction (command:stuff) a =
   case command of
-    "list"     -> list stuff a
-    "send"     -> send stuff a
-    "grab"     -> grab stuff a
-    "login"    -> logIn a
-    "markread" -> mkRead stuff a
-    "sync"     -> eddySmith stuff a >>= T.putStrLn
-    "join"     -> runJoin stuff a
-    "leave"    -> runLeave stuff a
-    "kick"     -> runKick stuff a
+    "list"       -> list stuff a
+    "send"       -> send stuff a
+    "grab"       -> grab stuff a
+    "login"      -> logIn a
+    "markread"   -> mkRead stuff a
+    "sync"       -> eddySmith stuff a >>= T.putStrLn
+    "join"       -> runJoin stuff a
+    "leave"      -> runLeave stuff a
+    "kick"       -> runKick stuff a
     "createroom" -> createRoom' stuff a
-    _          -> error $ "An unrecognised command is input.  " ++
-                  "RTFM, punk.";
+    _            -> error $ "An unrecognised command is input.  " ++
+                    "RTFM, punk.";
 
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
