@@ -19,6 +19,7 @@ module Metal.MatrixAPI.LowLevel (
   leave,
   ban,
   unban,
+  createRoom,
   module Metal.MatrixAPI.LowLevel.Send.Text,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
@@ -28,11 +29,13 @@ import Metal.Room;
 import Metal.User;
 import Data.Maybe;
 import Metal.Space;
+import Control.Lens;
 import Metal.Community;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import Metal.MatrixAPI.LowLevel.Types;
+import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.Send.Text;
@@ -445,3 +448,50 @@ leave r a = responseToMaybe <$> (generateAuthdRequest uri a >>= httpBS)
 -- @fromString@ is used only within this module.
 fromString :: String -> BSL.ByteString;
 fromString = BSL.pack . map (toEnum . fromEnum);
+
+-- | @createRoom r a@ attempts to create a Matrix room whose information
+-- matches the information of @a@.  If this attempt fails, then a
+-- 'Stringth' which describes the failure is returned.  If all goes
+-- according to plan, then returned is a 'Room' whose @roomId@ value
+-- is the room ID of the newly-created room.
+createRoom :: Room
+           -- ^ This bit describes the room which should be created.
+           -- However, this value is currently unused.
+           -> String
+           -- ^ This bit is describes whether the room should be private
+           -- or public.
+           --
+           -- This value equals "private" iff the room should be
+           -- private.  This value equals "public" iff the room should
+           -- be a public room.
+           -> Auth
+           -- ^ The information which is used to authorise the request
+           -> IO (Either String Room);
+createRoom r pOrP a = responseToEither <$> (genReq >>= httpBS)
+  where
+  genReq :: IO Request
+  genReq = setRequestBodyLBS createReq <$> generateAuthdRequest uri a
+  --
+  createReq :: BSL.ByteString
+  createReq = fromString $
+    "{\n\t" ++
+      "\"visibility\": " ++ show pOrP ++ ",\n" ++
+      "\"name\": " ++ show (roomName r) ++ ",\n" ++
+      "\"topic\": " ++ show (topic r) ++ "\n" ++
+    "}"
+  --
+  uri :: String
+  uri = "POST https://" ++ homeserver a ++ "/_matrix/client/r0/createRoom"
+  --
+  responseToEither :: Response BS.ByteString -> Either String Room
+  responseToEither resp = case getResponseStatusCode resp of
+    200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
+    _   -> Left $ fromMaybe (error "") $ responseToMaybe resp
+  --
+  roomIdOf :: BS.ByteString -> Identifier
+  roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
+  --
+  err :: Stringth
+  err = error $ "An unexpected error occurs!  The response code " ++
+        "indicates success... but the response STRING lacks a " ++
+        "\"room_id\" field.";
