@@ -285,6 +285,10 @@ createRoom' :: [String]
             -- ^ The information which is used to authorise the request
             -> IO ();
 createRoom' [] = error "";
+-- The above error message is a particularly smart-ass error message.
+--
+-- The error message in question might not be particularly enlightening,
+-- but reading the manual page should yield the desired enlightenment.
 createRoom' [_] = error $ "Your one-word demands are starting to " ++
   "piss me off.";
 createRoom' [_,_] = error $ "Should I just assume that you want to " ++
