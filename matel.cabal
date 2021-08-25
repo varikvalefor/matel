@@ -23,6 +23,10 @@ maintainer:    varikvalefor@aol.com
 copyright:     (c) Varik Valefor 2021.
 category:      Chat
 
+source-repository-package
+  type: git
+  location: https://github.com/varikvalefor/matel.git
+
 library
   ghc-options: -O2 -haddock
   exposed-modules:
