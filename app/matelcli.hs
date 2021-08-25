@@ -61,6 +61,7 @@ determineAction (command:stuff) a =
     "join"     -> runJoin stuff a
     "leave"    -> runLeave stuff a
     "kick"     -> runKick stuff a
+    "createroom" -> createRoom' stuff a
     _          -> error $ "An unrecognised command is input.  " ++
                   "RTFM, punk.";
 
@@ -273,3 +274,17 @@ runKick k a
   --
   room :: Room
   room = Def.room {roomId = k !! 1};
+
+-- | @createRoom [name_, topic_, permission_]@ should create a Matrix
+-- room @k@ such that @roomName k == name_@ and @topic k == topic_@.  If
+-- @permission_ == "private"@, then a private room should be created.
+-- If @permission_ == "public"@, then a public room should be created.
+createRoom' :: [String]
+            -- ^ The command-line arguments
+            -> Auth
+            -- ^ The information which is used to authorise the request
+            -> IO ();
+createRoom' xs = createRoom rm (xs !! 2)
+  where
+  rm :: Room
+  rm = Def.room {roomName = xs !! 0, topic = xs !! 1};

@@ -195,6 +195,28 @@ from the Matrix room whose internal Matrix ID is
 .Pp
 If some weird error is encountered, then a description of this error is
 written to the standard output.
+.Sh CREATING ROOMS
+.Nm matelcli
+.Ar roomname topic permission ,
+creates a Matrix room whose display name and topic are
+.Ar roomname
+and
+.Ar topic ,
+respectively.  If
+.Ar permission
+equals
+.Dq private ,
+then a private room is created.  If
+.Ar permission
+equals
+.Dq public ,
+then a public room is created.
+.Pp
+If the desired room is actually created, then the internal Matrix ID of
+the created room is written to the standard output.
+.Pp
+If something breaks, then a description of the breakage is written to
+the standard error.
 .Sh EXAMPLES
 .Ss Sending a Text-Based Message
 The following command sends a message whose body is
