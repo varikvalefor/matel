@@ -24,7 +24,8 @@ module Metal.MatrixAPI.HighLevel (
   -- these functions are already reasonably high-level.
   ban,
   unban,
-  kick
+  kick,
+  createRoom
 ) where
 import Metal.Auth;
 import Metal.Base;
