@@ -48,30 +48,18 @@ library
     Metal.Default
     Metal.FavoriteNoise
   other-modules:
+    -- The following modules export stuff which is of real use only
+    -- within Metal.MatrixAPI.LowLevel.
     Metal.MatrixAPI.LowLevel.Types
-    -- Metal.MatrixAPI.LowLevel.Types is a VERY low-level module which
-    -- is not of DIRECT use to things which exist "outside of"
-    -- Metal.MatrixAPI.LowLevel; as such, Metal.MatrixAPI.LowLevel.Types
-    -- is classified as an "other module".
     Metal.MatrixAPI.LowLevel.ResponseToWhatever
-    -- The functions of Metal.MatrixAPI.LowLevel.ResponseToWhatever are
-    -- of use only within Metal.MatrixAPI.LowLevel; as such,
-    -- Metal.MatrixAPI.LowLevel.ResponseToWhatever is not exposed.
     Metal.MatrixAPI.LowLevel.GetRoomInformation
-    -- Metal.MatrixAPI.LowLevel.GetRoomInformation.getRoomInformation is
-    -- of use to external things... but is exported by
-    -- Metal.MatrixAPI.LowLevel.  As such, exposing GetRoomInformation
-    -- would be redundant and pointless.
-    Metal.MatrixAPI.LowLevel.GenerateAuth
-    -- Metal.MatrixAPI.LowLevel.ResponseToWhatever.generateAuthdRequest
-    -- is of use only within Metal.MatrixAPI.LowLevel; as such,
-    -- Metal.MatrixAPI.LowLevel.GenerateAuth is not exposed.
-    Metal.MatrixAPI.LowLevel.Send.Text
-    -- Metal.MatrixAPI.LowLevel.Send.Text.sendTextMessage is of use to
-    -- external things... but is exported by Metal.MatrixAPI.LowLevel.
-    -- As such, exposing Send.Text would be redundant and pointless.
     Metal.MatrixAPI.LowLevel.RecordCombination
     Metal.MatrixAPI.LowLevel.FetchEvents
+    -- The following modules export stuff which is re-exported by
+    -- Metal.MatrixAPI.HighLevel.  These modules are hidden because the
+    -- exposure of these modules would be largely redundant.
+    Metal.MatrixAPI.LowLevel.Send.Text
+    Metal.MatrixAPI.LowLevel.GenerateAuth
   other-extensions:
     OverloadedStrings
     TemplateHaskell
