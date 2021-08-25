@@ -284,7 +284,10 @@ createRoom' :: [String]
             -> Auth
             -- ^ The information which is used to authorise the request
             -> IO ();
-createRoom' xs = createRoom rm (xs !! 2) >=> either error (putStrLn . roomId)
+createRoom' xs = createRoom rm (xs !! 2) >=> display
   where
   rm :: Room
-  rm = Def.room {roomName = T.pack $ xs !! 0, topic = T.pack $ xs !! 1};
+  rm = Def.room {roomName = T.pack $ xs !! 0, topic = T.pack $ xs !! 1}
+  --
+  display :: Either String Room -> IO ()
+  display = either error (putStrLn . roomId);
