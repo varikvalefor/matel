@@ -284,6 +284,11 @@ createRoom' :: [String]
             -> Auth
             -- ^ The information which is used to authorise the request
             -> IO ();
+createRoom' [] = error "";
+createRoom' [_] = error $ "Your one-word demands are starting to " ++
+  "piss me off.";
+createRoom' [_,_] = error $ "Should I just assume that you want to " ++
+  "make all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
   rm :: Room
