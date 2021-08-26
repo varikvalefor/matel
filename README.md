@@ -19,7 +19,6 @@ The official pronunciations of "Matel" include \/məˈtɛl\/, which is VARIK's p
 For all new bugs, a bug can be mentioned via the GitHub "Issues" feature or by sending a DETAILED e-mail to Varik "EVERY FILE MUST CONTAIN A JOKE" Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line contains the phrase "MATEL BUG".
 
 ## Contributing
-
 Contributions are welcomed but must be released in accordance with Matel's licence.
 
 For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for this good change can be submitted to this GitHub repository.
@@ -44,6 +43,7 @@ The colours of Matel's TUI can be changed through the editing of the `Colour` mo
 Matel is incomplete and currently useless.
 ### Using MATELCLI
 Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
+
 ## Commit Labels
 ### Untested Commits and "(U)"
 For all untested commits, the commit message of an untested commit should begin with "(U)".
