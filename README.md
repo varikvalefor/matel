@@ -16,7 +16,7 @@ The goals of the development of Matel are as follows:
 The official pronunciations of "Matel" include \/məˈtɛl\/, which is VARIK's preferred pronunciation, and \/meɪˌtəl\/.
 
 ## Reporting Bugs
-For all new bugs, a bug can be mentioned via the GitHub "Issues" feature or by sending a DETAILED e-mail to Varik "VERY FILE MUST CONTAIN A JOKE" Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line contains the phrase "MATEL BUG".
+For all new bugs, a bug can be mentioned via the GitHub "Issues" feature or by sending a DETAILED e-mail to Varik "EVERY FILE MUST CONTAIN A JOKE" Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line contains the phrase "MATEL BUG".
 
 ## Contributing
 
