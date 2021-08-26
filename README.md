@@ -40,7 +40,10 @@ For all lines of this file _g_, _g_ follows the format "[LABEL]: [CONTENT]".  Th
 * \<`authtoken`, the authorisation token which Matel uses to act on behalf of the user\>
 #### Colour
 The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `app/Colour.hs`.  Like most other modules of Matel, `Colour` has decent documentation and can be edited reasonably easily.
-
+### Using Matel
+Matel is incomplete and currently useless.
+### Using MATELCLI
+Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
 ## Commit Labels
 ### Untested Commits and "(U)"
 For all untested commits, the commit message of an untested commit should begin with "(U)".
