@@ -438,11 +438,10 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r a = responseToMaybe <$> (generateAuthdRequest uri a >>= httpBS)
+leave r a = responseToMaybe <$> TP.req TP.POST querr "" a
   where
-  uri :: String
-  uri = "POST https://" ++ homeserver a ++
-    "/_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
+  querr :: String
+  querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
 
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
