@@ -146,7 +146,7 @@ sync since user = responseToLeftRight <$> (geneReq >>= httpBS)
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
-joinedRooms a = processResponse <$> (generateRequest >>= httpBS)
+joinedRooms a = processResponse <$> TP.req TP.GET querr "" a
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
@@ -155,12 +155,8 @@ joinedRooms a = processResponse <$> (generateRequest >>= httpBS)
       getResponseBody response
     | otherwise = Left $ responseToStringth response
   --
-  generateRequest :: IO Request
-  generateRequest = generateAuthdRequest uri a
-  --
-  uri :: String
-  uri = "GET https://" ++ homeserver a ++
-    "/_matrix/client/r0/joined_rooms"
+  querr :: String
+  querr = "_matrix/client/r0/joined_rooms"
   --
   toRooms :: [String] -> [Room]
   toRooms = map (\k -> Def.room {roomId = k});
