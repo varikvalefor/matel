@@ -214,15 +214,10 @@ join :: Room
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
-join r i a = responseToMaybe <$> (generateRequest >>= httpBS)
+join r i a = responseToMaybe <$> TP.req TP.POST querr joinReq a
   where
-  generateRequest :: IO Request
-  generateRequest =
-    setRequestBodyLBS joinReq <$> generateAuthdRequest uri a
-  --
-  uri :: String
-  uri = "POST https://" ++ homeserver a ++
-    "/_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
+  querr :: String
+  querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
   --
   joinReq :: BSL.ByteString
   joinReq
