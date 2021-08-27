@@ -405,18 +405,13 @@ unban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-unban tarjay rome a = responseToMaybe <$> (generateRequest >>= httpBS)
+unban tarjay rome a = responseToMaybe <$> TP.req TP.POST querr unbanRq a
   where
-  generateRequest :: IO Request
-  generateRequest =
-    setRequestBodyLBS unbanReq <$> generateAuthdRequest uri a
+  querr :: String
+  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
   --
-  uri :: String
-  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
-    roomId rome ++ "/unban"
-  --
-  unbanReq :: BSL.ByteString
-  unbanReq = fromString $
+  unbanRq :: BSL.ByteString
+  unbanRq = fromString $
     "{\n\t" ++
       "\"user_id\": " ++ show (username tarjay) ++ "\n" ++
     "}";
