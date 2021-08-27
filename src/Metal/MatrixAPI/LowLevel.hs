@@ -326,18 +326,13 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
+kick tarjay rome m a = responseToMaybe <$> TP.req TP.POST querr kickRq a
   where
-  generateRequest :: IO Request
-  generateRequest =
-    setRequestBodyLBS kickReq <$> generateAuthdRequest uri a
+  querr :: String
+  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
   --
-  uri :: String
-  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
-    roomId rome ++ "/kick"
-  --
-  kickReq :: BSL.ByteString
-  kickReq = fromString $
+  kickRq :: BSL.ByteString
+  kickRq = fromString $
     "{\n\t" ++
       "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
       "\"reason\": " ++ show m ++ "\n" ++
