@@ -87,24 +87,22 @@ decryptWKey crip key = T.pack [];
 loginPass :: Auth
           -- ^ The authorisation information of Matel's user
           -> IO (Either Stringth Stringth);
-loginPass user = responseToLeftRight <$> (generateRequest >>= httpBS)
+loginPass a = responseToLeftRight <$> TP.req TP.POST querr logreq a
   where
-  generateRequest :: IO Request
-  generateRequest = setRequestBodyJSON logreq <$> parseRequest uri
+  querr :: String
+  querr = "_matrix/client/r0/login"
   --
-  uri :: String
-  uri = "POST https://" ++ homeserver user ++ "/_matrix/client/r0/login"
-  --
-  logreq :: LoginRequest
-  logreq = LoginRequest {
-    lrq_type = "m.login.password",
-    lrq_identifier = UserIdentifier {
-      usident_type = "m.id.user",
-      usident_user = username user
-    },
-    lrq_password = password user,
-    lrq_initial_device_display_name = "Matel"
-  };
+  logreq :: BSL.ByteString
+  logreq = fromString $
+    "{\n\t" ++
+      "\"type\": \"m.login.password\",\n\t" ++
+      "\"identifier\": {\n\t\t" ++
+        "\"type\": \"m.id.user\",\n\t\t" ++
+        "\"user\": " ++ show (username a) ++ "\n\t" ++
+      "},\n\t" ++
+      "\"password\": " ++ show (password a) ++ ",\n\t" ++
+      "\"initial_device_display_name\": \"Matel\"\n" ++
+    "}";
 
 -- | @sync@ accesses the Matrix "sync" function, returning the result
 -- of this synchronisation.
