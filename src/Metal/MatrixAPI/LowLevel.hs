@@ -460,6 +460,6 @@ createRoom r pOrP a = responseToEither <$> TP.req TP.POST querr bod a
   roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
   --
   err :: Stringth
-  err = error $ "An unexpected error occurs!  The response code " ++
-        "indicates success... but the response STRING lacks a " ++
-        "\"room_id\" field.";
+  err = error "An unexpected error occurs!  The response code \
+        \indicates success... but the response STRING lacks a \
+        \\"room_id\" field.";
