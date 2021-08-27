@@ -275,7 +275,7 @@ runKick k a
   room :: Room
   room = Def.room {roomId = k !! 1};
 
--- | @createRoom [name_, topic_, permission_]@ should create a Matrix
+-- | @createRoom [name_, topic_, permission_] a@ should create a Matrix
 -- room @k@ such that @roomName k == name_@ and @topic k == topic_@.  If
 -- @permission_ == "private"@, then a private room should be created.
 -- If @permission_ == "public"@, then a public room should be created.
