@@ -121,13 +121,10 @@ sync :: Maybe String
      -> Auth
      -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
-sync since user = responseToLeftRight <$> (geneReq >>= httpBS)
+sync since a = responseToLeftRight <$> TP.req TP.GET querr syncreq a
   where
-  geneReq :: IO Request
-  geneReq = setRequestBodyLBS syncreq <$> generateAuthdRequest uri user
-  --
-  uri :: String
-  uri = "GET https://" ++ homeserver user ++ "/_matrix/client/r0/sync"
+  querr :: String
+  querr = "_matrix/client/r0/sync"
   --
   syncreq :: BSL.ByteString
   syncreq
