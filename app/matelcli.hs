@@ -300,3 +300,15 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   --
   display :: Either String Room -> IO ()
   display = either error (putStrLn . roomId);
+
+-- | @sendNotice@ sends a "@m.notice@" message.
+--
+-- The first and second elements  of the first argument are the internal
+-- room ID of the Matrix room to which the notice should be sent and the
+-- text-based content of this notice, respectively.
+sendNotice :: [String]
+           -- ^ The command-line arguments
+           -> Auth
+           -- ^ Authorisation crap
+           -> IO ();
+sendNotice _ _ = error "How in the hell did you get here?";
