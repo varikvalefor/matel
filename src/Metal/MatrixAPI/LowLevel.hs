@@ -368,15 +368,10 @@ ban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-ban tarjay rome m a = responseToMaybe <$> (generateRequest >>= httpBS)
+ban tarjay rome m a = responseToMaybe <$> TP.req TP.POST querr banReq
   where
-  generateRequest :: IO Request
-  generateRequest =
-    setRequestBodyLBS banReq <$> generateAuthdRequest uri a
-  --
-  uri :: String
-  uri = "GET https://" ++ homeserver a ++ "/_matrix/client/r0/rooms/" ++
-    roomId rome ++ "/ban"
+  querr :: String
+  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
   --
   banReq :: BSL.ByteString
   banReq = fromString $
