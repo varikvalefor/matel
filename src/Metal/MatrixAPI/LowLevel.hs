@@ -276,11 +276,10 @@ getDisplayName :: User
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
                -> IO (Either String User);
-getDisplayName u a = processResponse <$> (generateRequest >>= httpBS)
+getDisplayName u a = processResponse <$> TP.req TP.GET querr "" a
   where
-  generateRequest :: IO Request
-  generateRequest = parseRequest $ "GET https://" ++ homeserver a ++
-    "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  querr :: String
+  querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
   toDispName :: Response BS.ByteString -> Stringth
   toDispName = dnr_displayname . fromJust . A.decode .
