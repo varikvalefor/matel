@@ -43,6 +43,8 @@ import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
+import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
+-- I need T.P. for my bunghole!
 
 -- | @stillUnfinishedStayTuned@ exists only if Matel is useless as a
 -- Matrix client.
@@ -467,21 +469,18 @@ createRoom :: Room
            -> Auth
            -- ^ The information which is used to authorise the request
            -> IO (Either String Room);
-createRoom r pOrP a = responseToEither <$> (genReq >>= httpBS)
+createRoom r pOrP a = responseToEither <$> TP.req TP.POST querr bod a
   where
-  genReq :: IO Request
-  genReq = setRequestBodyLBS createReq <$> generateAuthdRequest uri a
+  querr :: String
+  querr = "_matrix/client/r0/createRoom"
   --
-  createReq :: BSL.ByteString
-  createReq = fromString $
+  bod :: BSL.ByteString
+  bod = fromString $
     "{\n\t" ++
       "\"visibility\": " ++ show pOrP ++ ",\n" ++
       "\"name\": " ++ show (roomName r) ++ ",\n" ++
       "\"topic\": " ++ show (topic r) ++ "\n" ++
     "}"
-  --
-  uri :: String
-  uri = "POST https://" ++ homeserver a ++ "/_matrix/client/r0/createRoom"
   --
   responseToEither :: Response BS.ByteString -> Either String Room
   responseToEither resp = case getResponseStatusCode resp of
