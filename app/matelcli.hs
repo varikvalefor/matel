@@ -312,4 +312,6 @@ sendNotice :: [String]
            -> Auth
            -- ^ Authorisation crap
            -> IO ();
-sendNotice _ _ = error "How in the hell did you get here?";
+sendNotice _ _ = error "How in the hell did you get here?  sendNotice \
+                 \is _completely_ unimplemented.  You must have hacked \
+                 \at the source code or something.  Good work.";
