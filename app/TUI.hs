@@ -1,5 +1,5 @@
--- | TUI contains some functions which Matel uses when drawing stuff
--- to the terminal.
+-- | TUI contains some functions which Matel uses when drawing stuff to
+-- the terminal.
 --
 -- Stuff is placed into TUI to ensure that Matel's source code is at
 -- least somewhat organised.
