@@ -5,15 +5,15 @@
 -- least somewhat organised.
 module TUI where
 import Brick;
-import Brick.Widgets.Center;
-import Brick.Widgets.Border;
-import Brick.Widgets.Border.Style;
-import Control.Concurrent;
-import Control.Monad;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
+import Control.Monad;
+import Control.Concurrent;
+import Brick.Widgets.Center;
+import Brick.Widgets.Border;
 import Metal.Messages.Standard;
+import Brick.Widgets.Border.Style;
 
 -- | 'Screen's are TUI data which should be immediately drawn.
 type Screen = Widget ();
