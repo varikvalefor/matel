@@ -104,9 +104,10 @@ send :: [String]
      -> IO ();
 send k a
   | k == [] = error "I need some arguments, fat-ass."
-  | length k < 2 = error $ "I thought that you were improving.  " ++
-    "I now see that I was wrong.  Really, I should be mad at myself " ++
-    "for apparently going insane by having some faith in you."
+  | length k < 2 = error "I thought that you were improving.  I now \
+                   \see that I was wrong.  Really, I should be mad at \
+                   \myself for apparently going insane by having some \
+                   \faith in you."
   | otherwise = target >>= \t -> isSentToRoom t dest a >>= dispError
   where
   target :: IO StdMess
