@@ -220,7 +220,10 @@ then a private room is created.  If
 .Ar permission
 equals
 .Dq public ,
-then a public room is created.
+then a public room is created.  If
+.Ar permission
+equals some other thing, then the homeserver probably responds with
+whinging.
 .Pp
 If the desired room is actually created, then the internal Matrix ID of
 the created room is written to the standard output.
