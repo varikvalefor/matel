@@ -43,7 +43,3 @@ The colours of Matel's TUI can be changed through the editing of the `Colour` mo
 Matel is incomplete and currently useless.
 ### Using MATELCLI
 Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
-
-## Commit Labels
-### Untested Commits and "(U)"
-For all untested commits, the commit message of an untested commit should begin with "(U)".
