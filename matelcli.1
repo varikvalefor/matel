@@ -73,6 +73,16 @@ sends the file whose path is
 .Ar path
 to the Matrix room whose internal Matrix ID is
 .Ar room .
+.Ss SENDING NOTICES
+.Nm matelcli send notice
+.Ar room
+sends a
+.Dq m.notice
+event whose
+.Dq body
+content equals the standard input to the Matrix room whose internal
+Matrix room ID is
+.Ar room .
 .Sh GRABBING PILLS, IF "PILLS" REFERS TO MESSAGES
 .Nm matelcli grab
 .Ar n
