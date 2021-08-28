@@ -266,8 +266,8 @@ runKick :: [String]
         -- user
         -> IO ();
 runKick k a
-  | length k < 3 = error $ "I'll kick YOUR ass if you don't start " ++
-    "giving me some actual directions."
+  | length k < 3 = error "I'll kick YOUR ass if you don't start giving \
+                   \giving me some actual directions."
   | otherwise = kick user room (k !! 2) a >>= dispError
   where
   user :: User
