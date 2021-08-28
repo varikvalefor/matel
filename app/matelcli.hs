@@ -165,8 +165,8 @@ mkRead :: [String]
        -- ^ The authorisation information which is used to mark the
        -- message as having been read.
        -> IO ();
-mkRead [] a = error $ "Someone should knock you upside the head a " ++
-  "few times, punk.  Dismissed.";
+mkRead [] a = error "Someone should knock you upside the head a few \
+              \times, punk.  Dismissed.";
 mkRead k a = markRead Def.stdMess {messageId = head k} a >>= dispError;
 
 -- | @dispError@ is used to display error messages without needlessly
