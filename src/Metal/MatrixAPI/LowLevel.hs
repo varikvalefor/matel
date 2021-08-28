@@ -438,7 +438,7 @@ createRoom :: Room
            -> Auth
            -- ^ The information which is used to authorise the request
            -> IO (Either String Room);
-createRoom r pOrP a = responseToEither <$> TP.req TP.POST querr bod a
+createRoom r publcty a = responseToEither <$> TP.req TP.POST querr bod a
   where
   querr :: String
   querr = "_matrix/client/r0/createRoom"
@@ -446,7 +446,7 @@ createRoom r pOrP a = responseToEither <$> TP.req TP.POST querr bod a
   bod :: BSL.ByteString
   bod = fromString $
     "{\n\t" ++
-      "\"visibility\": " ++ show pOrP ++ ",\n" ++
+      "\"visibility\": " ++ show publcty ++ ",\n" ++
       "\"name\": " ++ show (roomName r) ++ ",\n" ++
       "\"topic\": " ++ show (topic r) ++ "\n" ++
     "}"
