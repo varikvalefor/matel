@@ -84,8 +84,8 @@ list (k:_) a =
     "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
     "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
     "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
-    _             -> error $ "The police will be listing your " ++
-                     "injuries if you don't stop inputting crap.";
+    _             -> error "The police will be listing your injuries \
+                     \if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 --
