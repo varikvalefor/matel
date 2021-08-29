@@ -98,10 +98,10 @@ combineSingleValue c a b d
     -- Randomly determining whether the value of @c a@ or @c b@ should
     -- be used was determined.  But VARIK realised that doing such a
     -- thing safely implies using the IO monad and decreasing the
-    -- simplicity of @t@.
+    -- simplicity of @combineSingleValue@.
     --
     -- Additionally, taking this approach would reduce the performance
-    -- of @t@, which would be lame.
+    -- of @combineSingleValue@, which would be lame.
   | c a /= c d = c a
   | c b /= c d = c b
   | otherwise =  c d;
