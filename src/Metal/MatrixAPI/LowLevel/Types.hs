@@ -65,17 +65,20 @@ instance ToJSON StdMess where
     | msgType k == Location = object
       [
         "body" .= body k,
-        "geo_uri" .= fromMaybe (error "This m.location lacks a \"geo_uri\" field!") (geo_uri k)
+        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k)
       ]
     | msgType k == Attach = object [
         "body" .= body k,
         "filename" .= filename k,
         "info" .= object [
-          "mimetype" .= fromMaybe (error "This attachment lacks a \"mimetype\" field!") (mimetype <$> fileInfo k),
-          "size" .= fromMaybe (error "This attachment lacks a \"size\" field!") (size <$> fileInfo k)
+          "mimetype" .= fromMaybe (errorNoField "mimetype") (mimetype <$> fileInfo k),
+          "size" .= fromMaybe (errorNoField "size") (size <$> fileInfo k)
         ],
         "msgtype" .= show (msgType k),
         "url" .= url k
       ]
     | otherwise = error $ "A proper error!  ToJSON does not account \
-      \for StdMess values of @msgType@ " ++ show (msgType k) ++ ".";
+      \for StdMess values of @msgType@ " ++ show (msgType k) ++ "."
+    where
+    errorNoField :: String -> a
+    errorNoField j = error $ "This " ++ show (msgType k) ++ " lacks a " ++ show j ++ "field!";
