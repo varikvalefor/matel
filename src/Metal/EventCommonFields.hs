@@ -1,5 +1,5 @@
 -- | This module contains 'EventCommonFields'.
-module EventCommonFields where
+module Metal.EventCommonFields where
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
