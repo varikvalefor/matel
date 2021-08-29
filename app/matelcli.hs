@@ -27,6 +27,7 @@ import Control.Concurrent;
 import System.Environment;
 import Control.Monad ((>=>));
 import Metal.Messages.Standard;
+import Metal.EventCommonFields;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import Metal.MatrixAPI.HighLevel;
@@ -168,7 +169,7 @@ mkRead :: [String]
        -> IO ();
 mkRead [] a = error "Someone should knock you upside the head a few \
               \times, punk.  Dismissed.";
-mkRead k a = markRead Def.stdMess {messageId = head k} a >>= dispError;
+mkRead k a = markRead Def.stdMess {boilerplate = Def.eventCommonFields {eventId = head k}} a >>= dispError;
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.

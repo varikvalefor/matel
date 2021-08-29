@@ -2,6 +2,7 @@
 module Metal.Messages.Standard where
 import Metal.Base;
 import Metal.User;
+import Metal.EventCommonFields;
 
 -- | 'MessageType' is used to describe the types of the messages which
 -- 'StdMess' records represent.  Documentation of this thing is visible
@@ -26,15 +27,8 @@ data StdMess = StdMess {
   --
   -- @msgType k == Sticker@ iff @k@ contains a "sticker".
   msgType :: MessageType,
-  -- | @messageId k@ equals the identifier of @k@.
-  messageId :: Identifier,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
-  -- | @sender k@ is the 'User'-based description of the sender of @k@.
-  sender :: User,
-  -- | @timestamp k@ equals the UNIX time-based timestamp of @k@,
-  -- according to the origin server of @k@.
-  timestamp :: UNIXTime,
   -- | @fmtBody k@ is the value of the "@formatted_body@" field of the
   -- JSON equivalent of @k@.
   fmtBody :: Maybe MessageText,
@@ -55,5 +49,8 @@ data StdMess = StdMess {
   --
   -- @snd <$> attachment_client k@ is the actual content of the file
   -- which should be uploaded.
-  attachment_client :: Maybe (Stringth, Stringth)
+  attachment_client :: Maybe (Stringth, Stringth),
+  -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
+  -- fields which all event types should contain.
+  boilerplate :: EventCommonFields
 } deriving (Eq, Read, Show);

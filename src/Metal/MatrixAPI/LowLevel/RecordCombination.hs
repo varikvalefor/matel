@@ -8,6 +8,7 @@ import Metal.User;
 import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
+import Metal.EventCommonFields;
 import qualified Metal.Default as Def;
 
 class Combinable a where
@@ -20,13 +21,11 @@ class Combinable a where
 instance Combinable StdMess where
   combine a b = StdMess {
     msgType = g msgType,
-    messageId = g messageId,
     body = g body,
-    sender = g sender,
-    timestamp = g timestamp,
     fmtBody = g fmtBody,
     fmt = g fmt,
-    attachment_client = g attachment_client
+    attachment_client = g attachment_client,
+    boilerplate = combine (boilerplate a) (boilerplate b)
   } where
     g :: Eq b => (StdMess -> b) -> b
     g c = combineSingleValue c a b Def.stdMess;
@@ -70,6 +69,15 @@ instance Combinable Room where
   } where
     g :: Eq b => (Room -> b) -> b
     g c = combineSingleValue c a b Def.room;
+
+instance Combinable EventCommonFields where
+  combine a b = EventCommonFields {
+    sender = g sender,
+    origin_server_ts = g origin_server_ts,
+    eventId = g eventId
+  } where
+    g :: Eq b => (EventCommonFields -> b) -> b
+    g c = combineSingleValue c a b Def.eventCommonFields
 
 combineSingleValue :: Eq b
   => (a -> b)

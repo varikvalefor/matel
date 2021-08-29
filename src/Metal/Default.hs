@@ -10,6 +10,7 @@ import Metal.User;
 import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
+import Metal.EventCommonFields;
 
 -- | @user@ is a default-valued 'User' record.
 user :: User;
@@ -51,16 +52,22 @@ room = Room {
 stdMess :: StdMess;
 stdMess = StdMess {
   msgType = TextInnit,
-  messageId = "Some dummy forgot to set this value.",
-  -- Above this comment is a rare instance of Matel insulting Matel's
-  -- author, as opposed to Matel's user.  Observe the behaviour of this
-  -- specimen... and be sure to take notes.
   body = "I am using incomplete software.",
   -- Insults and lame jokes are the lifeblood of Matel... and VARIK's
   -- other projects.
-  sender = user,
-  timestamp = -8675309,
   fmtBody = Nothing,
   fmt = MatrixCusHTML,
-  attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen")
+  attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen"),
+  boilerplate = eventCommonFields
+};
+
+eventCommonFields :: EventCommonFields;
+eventCommonFields = EventCommonFields {
+  sender = user,
+  origin_server_ts = -8675309,
+  eventId = "Some dummy forgot to set this value.",
+  -- Above this comment is a rare instance of Matel insulting Matel's
+  -- author, as opposed to Matel's user.  Observe the behaviour of
+  -- this specimen... and be sure to take notes.
+  destRoom = room
 };
