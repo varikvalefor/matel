@@ -34,8 +34,8 @@ class Event a where
   eventType :: a -> String;
 
 instance Event StdMess where
-  eventType a = "m.room.message"; 
-  
+  eventType a = "m.room.message";
+
 -- | @sendEvent ev rm a@ only if @ev@ is sent to room @rm@ via @a@...
 -- or an error message is returned.
 sendEvent :: Event a
