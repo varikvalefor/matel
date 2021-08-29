@@ -17,5 +17,7 @@ data EventCommonFields = EventCommonFields {
   sender :: User,
   -- | @destRoom k@ describes the Matrix room which is the destination
   -- of @l@.
-  destRoom :: Room
+  destRoom :: Room,
+  -- | @eventId k@ is the event ID of @l@.
+  eventId :: String
 } deriving (Eq, Read, Show);
