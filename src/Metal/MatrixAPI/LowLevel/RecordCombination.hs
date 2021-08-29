@@ -25,6 +25,7 @@ instance Combinable StdMess where
     fmtBody = g fmtBody,
     fmt = g fmt,
     attachment_client = g attachment_client,
+    geo_uri = g geo_uri,
     boilerplate = combine (boilerplate a) (boilerplate b)
   } where
     g :: Eq b => (StdMess -> b) -> b
