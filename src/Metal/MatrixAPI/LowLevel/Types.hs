@@ -7,6 +7,7 @@ module Metal.MatrixAPI.LowLevel.Types where
 import Data.Aeson;
 import Metal.Base;
 import Data.Aeson.TH;
+import Metal.Messages.Standard;
 
 -- | For all 'LoginRequest' @k@, @k@ is a login request which is to be
 -- converted to JSON.
@@ -51,3 +52,13 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
 deriveJSON defaultOptions ''StringListRoomIdentifier;
 
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
+
+instance ToJSON StdMess where
+  toJSON k
+    | msgType k `elem` [TextInnit, Notice] = object
+      [
+        "body" .= body k,
+        "msgtype" .= show (msgType k)
+      ]
+    | otherwise = error $ "A proper error!  ToJSON does not account \
+      \for StdMess values of @msgType@ " ++ show (msgType k) ++ ".";

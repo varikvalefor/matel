@@ -15,7 +15,7 @@ module Metal.MatrixAPI.HighLevel (
   memberRooms,
   memberSpaces,
   memberComms,
-  isSentToRoom,
+  sendEvent,
   markRead,
   -- The following things are just imported from
   -- Metal.MatrixAPI.LowLevel and exported exactly as these
@@ -116,27 +116,6 @@ memberComms = idOrError <.> joinedComms;
 -- whose message is @k@.
 idOrError :: Either Stringth a -> a;
 idOrError = either (error . T.unpack) id;
-
--- | @isSentToRoom g k a@ sends @g@ to Matrix room @k@ from the account
--- which is specified in @a@.
---
--- @isSentToRoom g k a@ equals an IO-monadic @""@ if no problem is
--- encountered.  @isSentToRoom g k a@ otherwise equals an explanation of
--- the problem.
---
--- @isSentToRoom@ is currently nonfunctional.
-isSentToRoom :: StdMess
-             -- ^ The message which should be sent
-             -> Room
-             -- ^ The room to which the message should be sent
-             -> Auth
-             -- ^ Authorisation crap
-             -> IO (Maybe ErrorCode);
-isSentToRoom ms rm a =
-  case msgType ms of
-    TextInnit -> sendTextMessage (body ms) (roomId rm) a
-    _         -> error $ "isSentToRoom: Sending messages of type " ++
-                 show (msgType ms) ++ " is unimplemented.";
 
 -- | @markRead k a@ marks @k@ as having been read.
 --

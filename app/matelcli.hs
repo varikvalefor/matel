@@ -109,7 +109,7 @@ send k a
                    \see that I was wrong.  Really, I should be mad at \
                    \myself for apparently going insane by having some \
                    \faith in you."
-  | otherwise = target >>= \t -> isSentToRoom t dest a >>= dispError
+  | otherwise = target >>= \t -> sendEvent t dest a >>= dispError
   where
   target :: IO StdMess
   target =
@@ -117,7 +117,8 @@ send k a
     "text"   -> T.getContents >>= \input ->
                 return Def.stdMess {body = input}
     "file"   -> error "Sending files is unimplemented."
-    "notice" -> error "Sending notices is unimplemented."
+    "notice" -> T.getContents >>= \input ->
+                return Def.stdMess {body = input, msgType = Notice}
     _        -> error $ "I ought to send you to the garbage " ++
                 "disposal, shit-tits.  Read the fucking manual."
   --
@@ -303,17 +304,3 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   --
   display :: Either String Room -> IO ()
   display = either error (putStrLn . roomId);
-
--- | @sendNotice@ sends a "@m.notice@" message.
---
--- The first and second elements  of the first argument are the internal
--- room ID of the Matrix room to which the notice should be sent and the
--- text-based content of this notice, respectively.
-sendNotice :: [String]
-           -- ^ The command-line arguments
-           -> Auth
-           -- ^ Authorisation crap
-           -> IO ();
-sendNotice _ _ = error "How in the hell did you get here?  sendNotice \
-                 \is _completely_ unimplemented.  You must have hacked \
-                 \at the source code or something.  Good work.";

@@ -20,6 +20,7 @@ module Metal.MatrixAPI.LowLevel (
   ban,
   unban,
   createRoom,
+  module Metal.MatrixAPI.LowLevel.Send,
   module Metal.MatrixAPI.LowLevel.Send.Text,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
@@ -34,6 +35,7 @@ import Metal.Community;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
+import Metal.MatrixAPI.LowLevel.Send;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;

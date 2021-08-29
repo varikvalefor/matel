@@ -10,7 +10,7 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
-data ReqType = GET | POST;
+data ReqType = GET | POST | PUT;
 
 -- | @req type_ query body auth@ sends a HTTP request of type @type_@ to
 -- FQDN @homeserver auth@ such that @auth@ is used as the content of the
@@ -42,6 +42,7 @@ req type_ query body auth = genRequest >>= httpBS
     rqt :: String
     rqt = case type_ of
       GET  -> "GET"
+      PUT  -> "PUT"
       POST -> "POST"
       _    -> error "req receives an unknown ReqType.  As a result of \
               \not understanding this ReqType, req halts and catches \

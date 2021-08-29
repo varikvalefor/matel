@@ -52,6 +52,7 @@ library
     -- The following modules export stuff which is re-exported by
     -- Metal.MatrixAPI.HighLevel.  These modules are hidden because the
     -- exposure of these modules would be largely redundant.
+    Metal.MatrixAPI.LowLevel.Send
     Metal.MatrixAPI.LowLevel.Send.Text
     Metal.MatrixAPI.LowLevel.GenerateAuth
   other-extensions:
