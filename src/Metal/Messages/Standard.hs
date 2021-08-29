@@ -13,6 +13,7 @@ data MessageType = TextInnit
                  | Attach
                  | Sticker
                  | Notice
+                 | Location
   deriving (Eq, Read);
 
 instance Show MessageType where
@@ -21,6 +22,7 @@ instance Show MessageType where
     Image     -> "m.image"
     Attach    -> "m.file"
     Sticker   -> "m.sticker"
+    Location  -> "m.location"
     Notice    -> "m.notice";
 
 -- | For all 'StdMess' @k@, @k@ is an unencrypted or decrypted Matrix
@@ -40,6 +42,9 @@ data StdMess = StdMess {
   -- @msgType k == Sticker@ iff @k@ contains a "sticker".
   --
   -- @msgType k == Notice@ iff @k@ is a "notice".
+  --
+  -- @msgType k == Location@ iff @k@ describes a physical location of
+  -- some sort, e.g., the location of the bodies.
   msgType :: MessageType,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
@@ -64,6 +69,10 @@ data StdMess = StdMess {
   -- @snd <$> attachment_client k@ is the actual content of the file
   -- which should be uploaded.
   attachment_client :: Maybe (Stringth, Stringth),
+  -- | If @'msgType' k == 'Location'@, then @geo_uri k@ is the
+  -- coordinates of the location which @k@ describes.  @geo_uri k@
+  -- should otherwise equal 'Nothing'.
+  geo_uri :: Maybe Stringth,
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
   boilerplate :: EventCommonFields

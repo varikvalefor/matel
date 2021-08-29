@@ -5,6 +5,7 @@
 -- use only within Metal.MatrixAPI.LowLevel.
 module Metal.MatrixAPI.LowLevel.Types where
 import Data.Aeson;
+import Data.Maybe;
 import Metal.Base;
 import Data.Aeson.TH;
 import Metal.Messages.Standard;
@@ -59,6 +60,11 @@ instance ToJSON StdMess where
       [
         "body" .= body k,
         "msgtype" .= show (msgType k)
+      ]
+    | msgType k == Location = object
+      [
+        "body" .= body k,
+        "geo_uri" .= fromMaybe (error "This m.location lacks a \"geo_uri\" field!") (geo_uri k)
       ]
     | otherwise = error $ "A proper error!  ToJSON does not account \
       \for StdMess values of @msgType@ " ++ show (msgType k) ++ ".";

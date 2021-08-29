@@ -58,6 +58,7 @@ stdMess = StdMess {
   fmtBody = Nothing,
   fmt = MatrixCusHTML,
   attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen"),
+  geo_uri = Nothing,
   boilerplate = eventCommonFields
 };
 
