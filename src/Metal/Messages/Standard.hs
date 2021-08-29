@@ -13,7 +13,15 @@ data MessageType = TextInnit
                  | Attach
                  | Sticker
                  | Notice
-  deriving (Eq, Read, Show);
+  deriving (Eq, Read);
+
+instance Show MessageType where
+  show k = case k of
+    TextInnit -> "m.text"
+    Image     -> "m.image"
+    Attach    -> "m.file"
+    Sticker   -> "m.sticker"
+    Notice    -> "m.notice";
 
 -- | For all 'StdMess' @k@, @k@ is an unencrypted or decrypted Matrix
 -- message.  @k@ may be a standard text-based message or a message which
