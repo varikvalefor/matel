@@ -1,7 +1,7 @@
 -- | This module contains 'EventCommonFields'.
 --
--- This idea is partially the work of SIMON MICHAEL.  VARIK appreciates
--- being slapped sensible.
+-- SIMON MICHAEL is partially responsible for this approach to adding
+-- boilerplate fields.  VARIK appreciates being slapped sensible.
 module Metal.EventCommonFields where
 import Metal.Base;
 import Metal.Room;
