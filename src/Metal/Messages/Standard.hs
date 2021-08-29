@@ -8,7 +8,11 @@ import Metal.EventCommonFields;
 -- 'StdMess' records represent.  Documentation of this thing is visible
 -- in the documentation of @'msgType'@; 'MessageType' is actually pretty
 -- useless alone.
-data MessageType = TextInnit | Image | Attach | Sticker | Notice
+data MessageType = TextInnit
+                 | Image
+                 | Attach
+                 | Sticker
+                 | Notice
   deriving (Eq, Read, Show);
 
 -- | For all 'StdMess' @k@, @k@ is an unencrypted or decrypted Matrix
