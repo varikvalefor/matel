@@ -1,4 +1,7 @@
 -- | This module contains 'EventCommonFields'.
+--
+-- This idea is partially the work of SIMON MICHAEL.  VARIK appreciates
+-- being slapped sensible.
 module Metal.EventCommonFields where
 import Metal.Base;
 import Metal.Room;
