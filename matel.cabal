@@ -35,7 +35,7 @@ library
     Metal.OftenUsedFunctions
     Metal.MatrixAPI.HighLevel
     Metal.MatrixAPI.LowLevel
-    Metal.Messages.Encrypted
+    Metal.Encrypted
     Metal.Messages.Standard
     Metal.Default
     Metal.FavoriteNoise
