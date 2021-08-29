@@ -83,6 +83,7 @@ instance Combinable EventCommonFields where
     g :: Eq b => (EventCommonFields -> b) -> b
     g c = combineSingleValue c a b Def.eventCommonFields
 
+-- | At this point, just read the source code.
 combineSingleValue :: Eq b
                    => (a -> b)
                    -- ^ The field constructor
