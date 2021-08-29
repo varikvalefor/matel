@@ -30,6 +30,8 @@ data StdMess = StdMess {
   -- type.
   --
   -- @msgType k == Sticker@ iff @k@ contains a "sticker".
+  --
+  -- @msgType k == Notice@ iff @k@ is a @m.notice@.
   msgType :: MessageType,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
