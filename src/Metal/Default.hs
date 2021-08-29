@@ -11,7 +11,7 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
-import qualified Metal.Messages.VideoInfo as VI;
+import qualified Metal.Messages.FileInfo as FI;
 import qualified Metal.Messages.EncryptedFile as EF;
 import qualified Metal.Messages.ThumbnailInfo as TI;
 
@@ -63,7 +63,7 @@ stdMess = StdMess {
   attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen"),
   geo_uri = Nothing,
   url = Nothing,
-  Metal.Messages.Standard.videoInfo = Nothing,
+  Metal.Messages.Standard.fileInfo = Nothing,
   filename = Nothing,
   file = Nothing,
   boilerplate = eventCommonFields
@@ -82,16 +82,16 @@ eventCommonFields = EventCommonFields {
 };
 
 -- | @videoInfo@ is a default-valued 'VideoInfo' record.
-videoInfo :: VI.VideoInfo;
-videoInfo = VI.VideoInfo {
-  VI.duration = Nothing,
-  VI.h = Nothing,
-  VI.w = Nothing,
-  VI.mimetype = Nothing,
-  VI.size = Nothing,
-  VI.thumbnail_url = Nothing,
-  VI.thumbnail_file = Nothing,
-  VI.thumbnail_info = Nothing
+fileInfo :: FI.FileInfo;
+fileInfo = FI.FileInfo {
+  FI.duration = Nothing,
+  FI.h = Nothing,
+  FI.w = Nothing,
+  FI.mimetype = Nothing,
+  FI.size = Nothing,
+  FI.thumbnail_url = Nothing,
+  FI.thumbnail_file = Nothing,
+  FI.thumbnail_info = Nothing
 };
 
 -- | @encryptedFile@ is a default-valued 'EncryptedFile' record.

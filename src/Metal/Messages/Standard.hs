@@ -4,7 +4,6 @@ import Metal.Base;
 import Metal.User;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.VideoInfo;
 import Metal.Messages.EncryptedFile;
 
 -- | 'MessageType' is used to describe the types of the messages which
@@ -80,14 +79,11 @@ data StdMess = StdMess {
   -- coordinates of the location which @k@ describes.  @geo_uri k@
   -- should otherwise equal 'Nothing'.
   geo_uri :: Maybe Stringth,
-  -- | @videoInfo /= 'Nothing'@ only if @msgType k == Video@ and
-  -- @videoInfo k@ describes the video to which @k@ points.
-  videoInfo :: Maybe VideoInfo,
   -- | If @k@ primarily serves as the container of a URL, then @url k@
   -- is this URL.
   url :: Maybe String,
-  -- | If @msgType k == 'Attach'@ and the original filename of the file
-  -- which @k@ describes is known, then @filename@ is the original
+  -- | If @k@ contains a file and the original filename of the file
+  -- which @k@ contains is known, then @filename@ is the original
   -- filename of the file which @k@ describes.  @file k@ otherwise
   -- equals 'Nothing'.
   filename :: Maybe String,
@@ -95,7 +91,7 @@ data StdMess = StdMess {
   -- originally encrypted, then @file k@ is the content of the file
   -- which @k@ describes.  @file k@ otherwise equals 'Nothing'.
   file :: Maybe EncryptedFile,
-  -- | If @msgType k == 'Attach'@, then @fileInfo k@ contains some
+  -- | If @k@ mentions a file, then @fileInfo k@ contains some
   -- information regarding the file which @k@ describes.  @fileInfo k@
   -- otherwise equals 'Nothing'.
   fileInfo :: Maybe FileInfo,

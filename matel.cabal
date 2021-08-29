@@ -38,7 +38,6 @@ library
     Metal.Encrypted
     Metal.Messages.Standard
     Metal.Messages.EncryptedFile
-    Metal.Messages.VideoInfo
     Metal.Messages.FileInfo
     Metal.Messages.ThumbnailInfo
     Metal.Default
