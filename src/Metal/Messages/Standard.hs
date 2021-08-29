@@ -3,7 +3,9 @@ module Metal.Messages.Standard where
 import Metal.Base;
 import Metal.User;
 import Metal.EventCommonFields;
+import Metal.Messages.FileInfo;
 import Metal.Messages.VideoInfo;
+import Metal.Messages.EncryptedFile;
 
 -- | 'MessageType' is used to describe the types of the messages which
 -- 'StdMess' records represent.  Documentation of this thing is visible
@@ -84,6 +86,19 @@ data StdMess = StdMess {
   -- | If @k@ primarily serves as the container of a URL, then @url k@
   -- is this URL.
   url :: Maybe String,
+  -- | If @msgType k == 'Attach'@ and the original filename of the file
+  -- which @k@ describes is known, then @filename@ is the original
+  -- filename of the file which @k@ describes.  @file k@ otherwise
+  -- equals 'Nothing'.
+  filename :: Maybe String,
+  -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
+  -- originally encrypted, then @file k@ is the content of the file
+  -- which @k@ describes.  @file k@ otherwise equals 'Nothing'.
+  file :: Maybe EncryptedFile,
+  -- | If @msgType k == 'Attach'@, then @fileInfo k@ contains some
+  -- information regarding the file which @k@ describes.  @fileInfo k@
+  -- otherwise equals 'Nothing'.
+  fileInfo :: Maybe FileInfo,
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
   boilerplate :: EventCommonFields

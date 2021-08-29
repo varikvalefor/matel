@@ -39,6 +39,7 @@ library
     Metal.Messages.Standard
     Metal.Messages.EncryptedFile
     Metal.Messages.VideoInfo
+    Metal.Messages.FileInfo
     Metal.Messages.ThumbnailInfo
     Metal.Default
     Metal.FavoriteNoise

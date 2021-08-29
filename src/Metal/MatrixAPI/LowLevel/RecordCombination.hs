@@ -7,6 +7,7 @@ import Metal.Room;
 import Metal.User;
 import Metal.Space;
 import Metal.Community;
+import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
 import qualified Metal.Default as Def;
@@ -30,6 +31,9 @@ instance Combinable StdMess where
     geo_uri = g geo_uri,
     videoInfo = g videoInfo,
     url = g url,
+    filename = g filename,
+    file = g file,
+    fileInfo = g fileInfo,
     boilerplate = g boilerplate
   } where
     g :: Eq b => (StdMess -> b) -> b

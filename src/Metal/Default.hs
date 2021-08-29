@@ -64,6 +64,8 @@ stdMess = StdMess {
   geo_uri = Nothing,
   url = Nothing,
   Metal.Messages.Standard.videoInfo = Nothing,
+  filename = Nothing,
+  file = Nothing,
   boilerplate = eventCommonFields
 };
 

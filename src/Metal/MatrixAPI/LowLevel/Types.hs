@@ -8,6 +8,7 @@ import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
 import Data.Aeson.TH;
+import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 
 -- | For all 'LoginRequest' @k@, @k@ is a login request which is to be
@@ -65,6 +66,16 @@ instance ToJSON StdMess where
       [
         "body" .= body k,
         "geo_uri" .= fromMaybe (error "This m.location lacks a \"geo_uri\" field!") (geo_uri k)
+      ]
+    | msgType k == Attach = object [
+        "body" .= body k,
+        "filename" .= filename k,
+        "info" .= object [
+          "mimetype" .= fromMaybe (error "This attachment lacks a \"mimetype\" field!") (mimetype <$> fileInfo k),
+          "size" .= fromMaybe (error "This attachment lacks a \"size\" field!") (size <$> fileInfo k)
+        ],
+        "msgtype" .= show (msgType k),
+        "url" .= url k
       ]
     | otherwise = error $ "A proper error!  ToJSON does not account \
       \for StdMess values of @msgType@ " ++ show (msgType k) ++ ".";
