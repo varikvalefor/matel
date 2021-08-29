@@ -3,6 +3,7 @@ module Metal.Messages.Standard where
 import Metal.Base;
 import Metal.User;
 import Metal.EventCommonFields;
+import Metal.Messages.VideoInfo;
 
 -- | 'MessageType' is used to describe the types of the messages which
 -- 'StdMess' records represent.  Documentation of this thing is visible
@@ -14,6 +15,7 @@ data MessageType = TextInnit
                  | Sticker
                  | Notice
                  | Location
+                 | Video
   deriving (Eq, Read);
 
 instance Show MessageType where
@@ -23,6 +25,7 @@ instance Show MessageType where
     Attach    -> "m.file"
     Sticker   -> "m.sticker"
     Location  -> "m.location"
+    Video     -> "m.video"
     Notice    -> "m.notice";
 
 -- | For all 'StdMess' @k@, @k@ is an unencrypted or decrypted Matrix
@@ -45,6 +48,8 @@ data StdMess = StdMess {
   --
   -- @msgType k == Location@ iff @k@ describes a physical location of
   -- some sort, e.g., the location of the bodies.
+  --
+  -- @msgType k == Video@ iff @k@ contains a video clip.
   msgType :: MessageType,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
@@ -73,6 +78,12 @@ data StdMess = StdMess {
   -- coordinates of the location which @k@ describes.  @geo_uri k@
   -- should otherwise equal 'Nothing'.
   geo_uri :: Maybe Stringth,
+  -- | @videoInfo /= 'Nothing'@ only if @msgType k == Video@ and
+  -- @videoInfo k@ describes the video to which @k@ points.
+  videoInfo :: Maybe VideoInfo,
+  -- | If @k@ primarily serves as the container of a URL, then @url k@
+  -- is this URL.
+  url :: Maybe String,
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
   boilerplate :: EventCommonFields

@@ -11,6 +11,9 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
+import qualified Metal.Messages.VideoInfo as VI;
+import qualified Metal.Messages.EncryptedFile as EF;
+import qualified Metal.Messages.ThumbnailInfo as TI;
 
 -- | @user@ is a default-valued 'User' record.
 user :: User;
@@ -59,6 +62,8 @@ stdMess = StdMess {
   fmt = MatrixCusHTML,
   attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen"),
   geo_uri = Nothing,
+  url = Nothing,
+  Metal.Messages.Standard.videoInfo = Nothing,
   boilerplate = eventCommonFields
 };
 
@@ -71,4 +76,34 @@ eventCommonFields = EventCommonFields {
   -- author, as opposed to Matel's user.  Observe the behaviour of
   -- this specimen... and be sure to take notes.
   destRoom = room
+};
+
+videoInfo :: VI.VideoInfo;
+videoInfo = VI.VideoInfo {
+  VI.duration = Nothing,
+  VI.h = Nothing,
+  VI.w = Nothing,
+  VI.mimetype = Nothing,
+  VI.size = Nothing,
+  VI.thumbnail_url = Nothing,
+  VI.thumbnail_file = Nothing,
+  VI.thumbnail_info = Nothing
+};
+
+encryptedFile :: EF.EncryptedFile;
+encryptedFile = EF.EncryptedFile {
+  EF.url = "ass.varikose.god/asdfasdfasdfasdf",
+  EF.key = jwk,
+  EF.iv = "SHA4-65536",
+  EF.hashes = [],
+  EF.v = "FOR VENDETTA"
+};
+
+jwk :: EF.JWK;
+jwk = EF.JWK {
+  EF.kty = "oct",
+  EF.key_ops = ["semaphore"],
+  EF.alg = "A256CTR",
+  EF.k = "tf6hZnSUTpTLCXWgKRtXddjF1KapZCJoVw1L5DMoRbpGznsKtxINNvaH9qyJn0d",
+  EF.ext = True
 };

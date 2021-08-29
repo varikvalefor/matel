@@ -37,6 +37,9 @@ library
     Metal.MatrixAPI.LowLevel
     Metal.Encrypted
     Metal.Messages.Standard
+    Metal.Messages.EncryptedFile
+    Metal.Messages.VideoInfo
+    Metal.Messages.ThumbnailInfo
     Metal.Default
     Metal.FavoriteNoise
     Metal.EventCommonFields
