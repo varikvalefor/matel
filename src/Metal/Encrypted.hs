@@ -14,13 +14,13 @@ data Encrypted = Encrypted {
   algorithm :: Stringth,
   -- | @device_id k@ equals the content of the "device_id" field of
   -- @k@'s source.
-  device_id :: Stringth,
+  device_id :: Maybe Stringth,
   -- | @sender_key k@ equals the content of the "sender_key" field of
   -- @k@'s source, i.e., the public key of the sender of the event.
   sender_key :: Stringth,
   -- | @session_id k@ equals the content of the "session_id" field of
   -- @k@'s source, i.e., the ID of the session which sends the event.
-  session_id :: Stringth,
+  session_id :: Maybe Stringth,
   -- | @boilerplate k@ contains the fields which all event types
   -- contain.
   boilerplate :: EventCommonFields
