@@ -11,6 +11,8 @@ import Metal.Messages.Standard;
 import Metal.EventCommonFields;
 import qualified Metal.Default as Def;
 
+-- | For all types @a@, @a@ belongs to 'Combinable' iff values of type
+-- @a@ can be @'combine'@d.
 class Combinable a where
   -- | Where @a@ and @b@ are values of some shared record type @c@,
   -- @combine a b@ replaces the default values of @a@ with the
