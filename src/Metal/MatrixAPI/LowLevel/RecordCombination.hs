@@ -81,15 +81,15 @@ instance Combinable EventCommonFields where
     g c = combineSingleValue c a b Def.eventCommonFields
 
 combineSingleValue :: Eq b
-  => (a -> b)
-  -- ^ The field constructor
-  -> a
-  -- ^ The first record whose value might be used
-  -> a
-  -- ^ The second record whose value might be used
-  -> a
-  -- ^ The default record
-  -> b;
+                   => (a -> b)
+                   -- ^ The field constructor
+                   -> a
+                   -- ^ The first record whose value might be used
+                   -> a
+                   -- ^ The second record whose value might be used
+                   -> a
+                   -- ^ The default record
+                   -> b;
 combineSingleValue c a b d
   | c a == c b = c a
     -- Randomly determining whether the value of @c a@ or @c b@ should
