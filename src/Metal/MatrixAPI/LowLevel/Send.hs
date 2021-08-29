@@ -13,6 +13,7 @@ import Data.Maybe;
 import Metal.Space;
 import Control.Lens;
 import Metal.Community;
+import Metal.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import qualified Data.Text as T;
@@ -35,6 +36,9 @@ class Event a where
 
 instance Event StdMess where
   eventType a = "m.room.message";
+
+instance Event Encrypted where
+  eventType a = "m.room.encrypted";
 
 -- | @sendEvent ev rm a@ only if @ev@ is sent to room @rm@ via @a@...
 -- or an error message is returned.

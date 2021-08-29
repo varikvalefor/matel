@@ -8,6 +8,7 @@ import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
 import Data.Aeson.TH;
+import Metal.Encrypted;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 
@@ -82,3 +83,13 @@ instance ToJSON StdMess where
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType k) ++ " lacks a " ++ show j ++ "field!";
+
+instance ToJSON Encrypted where
+  toJSON k = object
+    [
+      "algorithm" .= algorithm k,
+      "ciphertext" .= ciphertext k,
+      "sender_key" .= sender_key k,
+      "device_id" .= fromMaybe "" (device_id k),
+      "session_id" .= fromMaybe "" (session_id k)
+    ];
