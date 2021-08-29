@@ -30,7 +30,7 @@ instance Combinable StdMess where
     geo_uri = g geo_uri,
     videoInfo = g videoInfo,
     url = g url,
-    boilerplate = combine (boilerplate a) (boilerplate b)
+    boilerplate = g boilerplate
   } where
     g :: Eq b => (StdMess -> b) -> b
     g c = combineSingleValue c a b Def.stdMess;
