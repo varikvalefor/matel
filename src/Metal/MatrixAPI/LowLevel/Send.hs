@@ -60,13 +60,3 @@ sendEvent ev rm a = process <$> TP.req TP.PUT querr (A.encode ev) a
     _   -> Just $ "sendEvent: An error is returned.  Thus spake the \
            \homeserver: " ++ show (getResponseStatusCode k) ++ "; " ++
            show (getResponseBody k) ++ ".";
---
---instance Event StdMess where
---  sendEvent ms rm = process <.> TP.req TP.PUT querr bod
---    where
---    querr :: String
---    querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
---            "/state/m.message"
---    --
---    bod :: BSL.ByteString
---    bod = encode ms
