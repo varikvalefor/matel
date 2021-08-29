@@ -74,6 +74,7 @@ instance Combinable EventCommonFields where
   combine a b = EventCommonFields {
     sender = g sender,
     origin_server_ts = g origin_server_ts,
+    destRoom = g destRoom,
     eventId = g eventId
   } where
     g :: Eq b => (EventCommonFields -> b) -> b
