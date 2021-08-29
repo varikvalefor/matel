@@ -21,7 +21,6 @@ import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
-import Metal.MatrixAPI.LowLevel.Send.Text;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
