@@ -11,6 +11,7 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
+import qualified Metal.Encrypted as E;
 import qualified Metal.Messages.FileInfo as FI;
 import qualified Metal.Messages.EncryptedFile as EF;
 import qualified Metal.Messages.ThumbnailInfo as TI;
@@ -112,4 +113,16 @@ jwk = EF.JWK {
   EF.alg = "A256CTR",
   EF.k = "tf6hZnSUTpTLCXWgKRtXddjF1KapZCJoVw1L5DMoRbpGznsKtxINNvaH9qyJn0d",
   EF.ext = True
+};
+
+-- | @encrypted@ is a default-valued 'E.Encrypted' record.
+encrypted :: E.Encrypted;
+encrypted = E.Encrypted {
+  E.ciphertext = "WW91J3JlIGJhZC4gIFlvdSdyZSBiY\
+                 \WQuICBZb3UgZnVja2luJyBzdWNrLgo",
+  E.algorithm = "AL GORE",
+  E.device_id = Nothing,
+  E.sender_key = "7",
+  E.session_id = Nothing,
+  E.boilerplate = eventCommonFields
 };
