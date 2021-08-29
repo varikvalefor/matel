@@ -67,6 +67,7 @@ stdMess = StdMess {
   boilerplate = eventCommonFields
 };
 
+-- | @eventCommonFields@ is a default-valued 'EventCommonFields' record.
 eventCommonFields :: EventCommonFields;
 eventCommonFields = EventCommonFields {
   sender = user,
@@ -78,6 +79,7 @@ eventCommonFields = EventCommonFields {
   destRoom = room
 };
 
+-- | @videoInfo@ is a default-valued 'VideoInfo' record.
 videoInfo :: VI.VideoInfo;
 videoInfo = VI.VideoInfo {
   VI.duration = Nothing,
@@ -90,6 +92,7 @@ videoInfo = VI.VideoInfo {
   VI.thumbnail_info = Nothing
 };
 
+-- | @encryptedFile@ is a default-valued 'EncryptedFile' record.
 encryptedFile :: EF.EncryptedFile;
 encryptedFile = EF.EncryptedFile {
   EF.url = "ass.varikose.god/asdfasdfasdfasdf",
@@ -99,6 +102,7 @@ encryptedFile = EF.EncryptedFile {
   EF.v = "FOR VENDETTA"
 };
 
+-- | @jwk@ is a default-valued 'JWK' record.
 jwk :: EF.JWK;
 jwk = EF.JWK {
   EF.kty = "oct",
