@@ -7,7 +7,7 @@ import qualified Data.ByteString as BS;
 -- | @detroit k@ breaks such that a description of @k@ is written to the
 -- standard error.
 detroit :: Response BS.ByteString -> a;
-detroit k = error "Thus spake the homeserver: " ++ getResponseCode k ++
+detroit k = error "Thus spake the homeserver: " ++ getResponseStatusCode k ++
             "; " ++ show (getResponseBody k) ++ ".";
 
 -- | @justLeft (Left k) == k@.  @justLeft (Right g)@ throws an error.
