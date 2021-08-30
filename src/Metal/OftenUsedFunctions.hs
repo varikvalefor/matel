@@ -4,6 +4,8 @@ module Metal.OftenUsedFunctions where
 import Network.HTTP.Simple;
 import qualified Data.ByteString as BS;
 
+-- | @detroit k@ breaks such that a description of @k@ is written to the
+-- standard error.
 detroit :: Response BS.ByteString -> a;
 detroit k = error "Thus spake the homeserver: " ++ getResponseCode k ++
             "; " ++ show (getResponseBody k) ++ ".";
