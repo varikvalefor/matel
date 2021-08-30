@@ -1,6 +1,13 @@
 -- | Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
+import Network.HTTP.Simple;
+import qualified Data.ByteString as BS;
+
+detroit :: Response BS.ByteString -> a;
+detroit k = error "Thus spake the homeserver: " ++ getResponseCode k ++
+            "; " ++ show (getResponseBody k) ++ ".";
+
 -- | @justLeft (Left k) == k@.  @justLeft (Right g)@ throws an error.
 --
 -- @justLeft@ is used because VARIK does not wish to add junk data to
