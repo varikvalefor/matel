@@ -38,6 +38,8 @@ import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Data.Either as EE;
+import qualified Metal.Default as Def;
+import Metal.MatrixAPI.LowLevel.FetchEvents;
 
 -- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
@@ -51,7 +53,7 @@ recentMessagesFrom :: Integer
                    -> Auth
                    -- ^ Authorisation crap
                    -> IO [StdMess];
-recentMessagesFrom _ _ _ = error "recentMessages is unimplemented.";
+recentMessagesFrom n r = fetchEvents n 'b' Def.stdMess r;
 
 -- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
