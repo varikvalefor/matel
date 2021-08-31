@@ -45,5 +45,5 @@ The colours of Matel's TUI can be changed through the editing of the `Colour` mo
 Matel is incomplete and currently useless.
 ### Using MATELCLI
 Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
-### The Matel Room
+## The Matel Room
 There exists a Matrix room such that this Matrix room is dedicated to Matel.  See The Matel Room <`\#johnnykissassSuckupfest:matrix.org`>.
