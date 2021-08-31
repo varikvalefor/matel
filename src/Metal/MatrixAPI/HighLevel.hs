@@ -67,7 +67,7 @@ earlyMessagesFrom :: Integer
                   -- ^ The authorisation details with which messages are
                   -- fetched
                   -> IO [StdMess];
-earlyMessagesFrom _ _ _ = error "earlyMessagesFrom is unimplemented.";
+earlyMessagesFrom n r = fetchEvents n 'b' Def.stdMess r;
 
 -- | @memberRooms x@ equals a list of all rooms of which Matel's user,
 -- whose login information is contained within @x@, is a member.
