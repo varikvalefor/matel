@@ -49,7 +49,7 @@ instance Event StdMess where
   fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
     where
     process :: Response BS.ByteString -> [StdMess]
-    process k = case getResponseCode k of
+    process k = case getResponseStatusCode k of
       200 -> error "fetchEvents: process is unimplemented."
       _   -> detroit k
     --
