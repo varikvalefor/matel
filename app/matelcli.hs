@@ -170,7 +170,10 @@ mkRead :: [String]
        -> IO ();
 mkRead [] a = error "Someone should knock you upside the head a few \
               \times, punk.  Dismissed.";
-mkRead k a = markRead Def.stdMess {boilerplate = Def.eventCommonFields {eventId = head k}} a >>= dispError;
+mkRead k a = markRead Def.stdMess {boilerplate = boi} a >>= dispError
+  where
+  boi :: EventCommonFields
+  boi = Def.eventCommonFields {eventId = head k};
 
 -- | @dispError@ is used to display error messages without needlessly
 -- feeding lines.
