@@ -175,8 +175,8 @@ mkRead k a = markRead Def.stdMess {boilerplate = boi} a >>= dispError
   boi :: EventCommonFields
   boi = Def.eventCommonFields {eventId = head k};
 
--- | @dispError@ displays error messages without needlessly
--- feeding lines.
+-- | @dispError@ displays error messages without needlessly feeding
+-- lines.
 --
 -- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
 -- otherwise runs @error k@.
