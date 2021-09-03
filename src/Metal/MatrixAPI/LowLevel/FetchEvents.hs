@@ -72,6 +72,7 @@ instance Event StdMess where
       "m.text"   -> valueMTextToStdMess k
       "m.notice" -> (valueMTextToStdMess k) {msgType = Notice}
       "m.image"  -> valueMImageToStdMess k
+      "m.location" -> valueMLocationToStdMess k
       _          -> Def.stdMess
       where
       theMessageType :: String
@@ -130,3 +131,14 @@ valueMImageToStdMess k = Def.stdMess {
 } where
   con :: Value
   con = k .! "{content}";
+
+-- | Where @k@ represents a @m.room.message@ of message type @m.image@,
+-- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @k@.
+valueMLocationToStdMess :: Value -> StdMess
+valueMLocationToStdMess k = Def.stdMess {
+  msgType = Location,
+  body = k .! "{content:body}",
+  geo_uri = k .! "{content:geo_uri}",
+  boilerplate = valueToECF k
+};
