@@ -70,24 +70,29 @@ instance Event StdMess where
                   fmtBody = k .? "{content:{formatted_body}}",
                   -- \^ The "formatted_body" field _should_ be
                   -- present... but _may_ not be present.
-                  boilerplate = boiler
+                  boilerplate = valueToECF k
                 }
       _        -> error $ "Message type " ++
                   theMessageType ++ " is unsupported."
       where
       theMessageType :: String
       theMessageType = k .! "{content:{msgtype}}"
-      --
-      boiler :: EventCommonFields
-      boiler = Def.eventCommonFields {
-        sender = Def.user {username = k .! "{sender}"},
-        destRoom = Def.room {roomId = k .! "{room_id}"},
-        eventId = k .! "{event_id}",
-        origin_server_ts = k .! "{origin_server_ts}"
-      }
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.message%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
+
+-- | @valueToECF k@ describes the boilerplate portion of the Matrix
+-- message which @k@ represents.
+valueToECF :: Value
+           -- ^ A representation of the message whose boilerplate crap
+           -- should be described
+           -> EventCommonFields;
+valueToECF k = EventCommonFields {
+    sender = Def.user {username = k .! "{sender}"},
+    destRoom = Def.room {roomId = k .! "{room_id}"},
+    eventId = k .! "{event_id}",
+    origin_server_ts = k .! "{origin_server_ts}"
+  };
