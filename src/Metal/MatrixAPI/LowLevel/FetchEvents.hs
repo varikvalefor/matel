@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 
 -- | This module contains @'fetchEvents'@ and some things which support
 -- @'fetchEvents'@.
@@ -10,6 +11,7 @@ import Metal.User;
 import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
+import Metal.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Metal.Messages.FileInfo;
@@ -142,3 +144,41 @@ valueMLocationToStdMess k = Def.stdMess {
   geo_uri = k .! "{content:geo_uri}",
   boilerplate = valueToECF k
 };
+
+instance Event Encrypted where
+  fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
+    where
+    process :: Response BS.ByteString -> [Encrypted]
+    process k = case getResponseStatusCode k of
+      200 -> filter nonDef $ map toEncrypted $ (toValue k) .! "{chunk}"
+      _   -> detroit k
+      where
+      toValue :: Response BS.ByteString -> Value
+      toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
+                getResponseBody
+      --
+      nonDef :: Encrypted -> Bool
+      nonDef = not . (== Def.encrypted)
+      --
+      chunkMissing :: a
+      chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
+                     \fetchEvents: The \"chunk\" field is absent!"
+    --
+    toEncrypted :: Value -> Encrypted
+    toEncrypted k = Def.encrypted {
+      algorithm = ct .! "{algorithm}",
+      ciphertext = ct .! "{ciphertext}",
+      device_id = ct .! "{device_id}",
+      sender_key = ct .! "{sender_key}",
+      session_id = ct .! "{session_id}",
+      boilerplate = valueToECF k
+    } where
+      ct :: Value
+      ct = k .! "{content}"
+    --
+    querr :: String
+    querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
+            "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
+            \%5B%22m.room.encrypted%22%5D%7D" ++
+            -- \^ "Yo, only select the unencrypted stuff."
+            "&dir=" ++ [d];
