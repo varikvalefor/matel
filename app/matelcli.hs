@@ -314,7 +314,7 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
 messToHumanReadable :: StdMess
                     -- ^ The message which should be described
                     -> String;
-messToHumanReadable k = "At " ++ show (origin_server_ts $ boilerplate k) ++
-                        ", " ++ username (sender $ boilerplate k) ++
-                        " sends the following " ++ show (msgType k) ++
-                        ": " ++ show (body k);
+messToHumanReadable k =
+  "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
+  username (sender $ boilerplate k) ++ " sends the following " ++
+  show (msgType k) ++ ": " ++ show (body k);
