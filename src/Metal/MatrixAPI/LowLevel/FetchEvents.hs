@@ -90,4 +90,4 @@ instance Event StdMess where
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.message%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
-            "&dir=" ++ [d]
+            "&dir=" ++ [d];
