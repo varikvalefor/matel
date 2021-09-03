@@ -70,6 +70,7 @@ library
     string-random,
     async,
     lens-aeson,
+    aeson-quick,
     lens,
     text
   hs-source-dirs: src
