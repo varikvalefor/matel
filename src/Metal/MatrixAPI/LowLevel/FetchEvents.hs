@@ -64,10 +64,7 @@ instance Event StdMess where
                      \fetchEvents: The \"chunk\" field is absent!"
     --
     toMessage :: Value -> StdMess
-    toMessage k = case (k .! "{content:{msgtype}}" :: String) of
-      -- \^ Yes, the cheesy typecast _is_ necessary; GHC complains about
-      -- type ambiguity and refuses to compile this file if this
-      -- typecast is absent.
+    toMessage k = case theMessageType of
       "m.text" -> Def.stdMess {
                   body = k .! "{content:{body}}",
                   fmtBody = k .? "{content:{formatted_body}}",
@@ -76,8 +73,11 @@ instance Event StdMess where
                   boilerplate = boiler
                 }
       _        -> error $ "Message type " ++
-                  (k .! "{content:{msgtype}}") ++ " is unsupported."
+                  theMessageType ++ " is unsupported."
       where
+      theMessageType :: String
+      theMessageType = k .! "{content:{msgtype}}"
+      --
       boiler :: EventCommonFields
       boiler = Def.eventCommonFields {
         sender = Def.user {username = k .! "{sender}"},
