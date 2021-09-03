@@ -66,8 +66,8 @@ instance Event StdMess where
     toMessage :: Value -> StdMess
     toMessage k = case theMessageType of
       "m.text" -> valueMTextToStdMess k
-      _        -> error $ "Message type " ++
-                  theMessageType ++ " is unsupported."
+      _        -> error $ "Message type " ++ theMessageType ++
+                  " is unsupported."
       where
       theMessageType :: String
       theMessageType = k .! "{content:{msgtype}}"
