@@ -454,7 +454,7 @@ createRoom r publcty a = responseToEither <$> TP.req TP.POST querr bod a
   responseToEither :: Response BS.ByteString -> Either String Room
   responseToEither resp = case getResponseStatusCode resp of
     200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
-    _   -> Left $ fromMaybe (error "") $ responseToMaybe resp
+    _   -> Left $ fromJust $ responseToMaybe resp
   --
   roomIdOf :: BS.ByteString -> Identifier
   roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
