@@ -316,5 +316,5 @@ messToHumanReadable :: StdMess
                     -> String;
 messToHumanReadable k = "At " ++ show (origin_server_ts $ boilerplate k) ++
                         ", " ++ username (sender $ boilerplate k) ++
-                        " sends the following " ++ show (msgType k) ++ ": " ++
-                        show (body k);
+                        " sends the following " ++ show (msgType k) ++
+                        ": " ++ show (body k);
