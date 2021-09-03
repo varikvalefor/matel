@@ -1,3 +1,4 @@
+{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -7,10 +8,19 @@ module Metal.MatrixAPI.LowLevel.Types where
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
+import Metal.Room;
+import Metal.User;
+import Control.Lens hiding ((.=));
+import Data.Aeson (FromJSON, fromJSON);
+import Data.Aeson.Types (Parser);
 import Data.Aeson.TH;
+import Data.Aeson.Lens;
 import Metal.Encrypted;
+import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
+import qualified Data.Text as T;
+import qualified Metal.Default as Def;
 
 -- | For all 'LoginRequest' @k@, @k@ is a login request which is to be
 -- converted to JSON.
@@ -93,3 +103,60 @@ instance ToJSON Encrypted where
       "device_id" .= fromMaybe "" (device_id k),
       "session_id" .= fromMaybe "" (session_id k)
     ];
+
+instance FromJSON StdMess where
+  parseJSON k = 
+    case m (k ^? Data.Aeson.Lens.key "type" . _String) of
+      "m.text" -> run $ \k ->
+        k .: "content" .-> "body" >>= \theBody ->
+        k .: "sender" >>= \theSender ->
+        k .: "origin_server_ts" >>= \theTimestamp ->
+        k .: "room_id" >>= \theRoomId ->
+        k .: "event_id" >>= \theEventId ->
+        return Def.stdMess {
+          body = theBody,
+          boilerplate = Def.eventCommonFields {
+            origin_server_ts = theTimestamp,
+            sender = Def.user {username = theSender},
+            destRoom = Def.room {roomId = theRoomId},
+            eventId = theEventId
+          }
+        }
+      _        -> error $ show $ m $ k ^? key "type" . _String -- run $ \k -> return Def.stdMess --error "Support for this message type is unimplemented."
+    where
+    m :: Maybe a -> a
+    m = fromMaybe (error $ show k)
+    --
+    run f = withObject "StdMess" f k;
+
+--instance FromJSON StdMess where
+--  parseJSON = withObject "StdMess" (\k ->
+--    case m (k ^? Data.Aeson.Lens.key "type" . Data.Aeson.Lens._String) of
+--      "m.text" ->
+--        k .: "content" .-> "body" >>= \theBody ->
+--        k .: "sender" >>= \theSender ->
+--        k .: "origin_server_ts" >>= \theTimestamp ->
+--        k .: "room_id" >>= \theRoomId ->
+--        k .: "event_id" >>= \theEventId ->
+--        return StdMess {
+--          body = theBody,
+--          boilerplate = Def.eventCommonFields {
+--            origin_server_ts = theTimestamp,
+--            sender = Def.user {username = theSender},
+--            destRoom = Def.room {roomId = theRoomId},
+--            eventId = theEventId
+--          }
+--        }
+--      _        -> error "Support for this message type is unimplemented.")
+--    where
+--    m :: Maybe a -> a
+--    m = fromMaybe (error "An invalid message is processed.");
+-- | This thing is parses nested objects and is only of use within this
+-- module.
+(.->) :: FromJSON a
+      => Parser Object
+      -- ^ The thing in which the desired nested bit is contained
+      -> Stringth
+      -- ^ The key of the value which should be returned
+      -> Parser a;
+(.->) p k = p >>= (.: k);
