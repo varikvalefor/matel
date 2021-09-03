@@ -307,3 +307,14 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   --
   display :: Either String Room -> IO ()
   display = either error (putStrLn . roomId);
+
+-- | @messToHumanReadable k@ is roughly equivalent to @show k@.
+-- However, VARIK finds that the readability of @messToHumanReadable k@
+-- is greater than the readability of @show k@.
+messToHumanReadable :: StdMess
+                    -- ^ The message which should be described
+                    -> String;
+messToHumanReadable k = "At " ++ show (origin_server_ts $ boilerplate k) ++
+                        ", " ++ username (sender $ boilerplate k) ++
+                        " sends the following message: " ++
+                        show (body k);
