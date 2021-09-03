@@ -68,9 +68,9 @@ instance Event StdMess where
     --
     toMessage :: Value -> StdMess
     toMessage k = case theMessageType of
-      "m.text" -> valueMTextToStdMess k
+      "m.text"   -> valueMTextToStdMess k
       "m.notice" -> (valueMTextToStdMess k) {msgType = Notice}
-      _        -> Def.stdMess
+      _          -> Def.stdMess
       where
       theMessageType :: String
       theMessageType = k .! "{content:{msgtype}}"
