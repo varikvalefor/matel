@@ -142,8 +142,8 @@ valueMImageToStdMess k = Def.stdMess {
 -- @m.location@, @valueMTextToStdMess@ is a 'StdMess' which should be
 -- equivalent to @k@.
 valueMLocationToStdMess :: Value
-                        -- ^ The representation of the message which should
-                        -- become a 'StdMess'
+                        -- ^ The representation of the message which
+                        -- should become a 'StdMess'
                         -> StdMess;
 valueMLocationToStdMess k = Def.stdMess {
   msgType = Location,
