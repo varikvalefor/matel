@@ -87,7 +87,9 @@ instance Event StdMess where
       }
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
-            "/messages?limit=" ++ show n ++ "&types=m.room.message" ++
+            "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
+            \%5B%22m.room.message%22%5D%7D" ++
+            -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d]
     --
     bod :: BSL.ByteString
