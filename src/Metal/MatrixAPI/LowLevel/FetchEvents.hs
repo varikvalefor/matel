@@ -85,11 +85,11 @@ valueToECF :: Value
            -- should be described
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
-    sender = Def.user {username = k .! "{sender}"},
-    destRoom = Def.room {roomId = k .! "{room_id}"},
-    eventId = k .! "{event_id}",
-    origin_server_ts = k .! "{origin_server_ts}"
-  };
+  sender = Def.user {username = k .! "{sender}"},
+  destRoom = Def.room {roomId = k .! "{room_id}"},
+  eventId = k .! "{event_id}",
+  origin_server_ts = k .! "{origin_server_ts}"
+};
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.text@,
 -- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
