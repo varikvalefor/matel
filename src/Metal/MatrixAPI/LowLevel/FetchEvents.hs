@@ -12,6 +12,7 @@ import Metal.Space;
 import Metal.Community;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
+import Metal.Messages.FileInfo;
 import Metal.EventCommonFields;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
@@ -70,6 +71,7 @@ instance Event StdMess where
     toMessage k = case theMessageType of
       "m.text"   -> valueMTextToStdMess k
       "m.notice" -> (valueMTextToStdMess k) {msgType = Notice}
+      "m.image"  -> valueMImageToStdMess k
       _          -> Def.stdMess
       where
       theMessageType :: String
@@ -109,3 +111,20 @@ valueMTextToStdMess k = Def.stdMess {
   -- present... but _may_ not be present.
   boilerplate = valueToECF k
 };
+
+-- | Where @k@ represents a @m.room.message@ of message type @m.image@,
+-- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @k@.
+valueMImageToStdMess :: Value -> StdMess;
+valueMImageToStdMess k = Def.stdMess {
+  msgType = Image,
+  body = k .! "{content:{body}}",
+  fileInfo = Just Def.fileInfo {
+    w = k .? "{content:{info:{w}}}",
+    h = k .? "{content:{info:{h}}}",
+    mimetype = k .? "{content:{info:{mimetype}}}",
+    size = k .? "{content:{info:{size}}}"
+  },
+  url = k .? "{content:{url}}",
+  boilerplate = valueToECF k
+}
