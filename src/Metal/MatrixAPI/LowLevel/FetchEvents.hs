@@ -119,7 +119,10 @@ valueMTextToStdMess k = Def.stdMess {
 -- | Where @k@ represents a @m.room.message@ of message type @m.image@,
 -- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
 -- @k@.
-valueMImageToStdMess :: Value -> StdMess;
+valueMImageToStdMess :: Value
+                     -- ^ The representation of the message which should
+                     -- become a 'StdMess'
+                     -> StdMess;
 valueMImageToStdMess k = Def.stdMess {
   msgType = Image,
   body = con .! "{body}",
