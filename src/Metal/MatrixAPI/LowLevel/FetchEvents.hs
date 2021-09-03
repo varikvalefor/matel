@@ -73,15 +73,17 @@ instance Event StdMess where
                   fmtBody = k .? "{content:{formatted_body}}",
                   -- \^ The "formatted_body" field _should_ be
                   -- present... but _may_ not be present.
-                  boilerplate = Def.eventCommonFields {
-                    sender = Def.user {username = k .! "{sender}"},
-                    destRoom = Def.room {roomId = k .! "{room_id}"},
-                    eventId = k .! "{event_id}",
-                    origin_server_ts = k .! "{origin_server_ts}"
-                  }
+                  boilerplate = boiler
                 }
       _        -> error "fuck"
-    --
+      where
+      boiler :: EventCommonFields
+      boiler = Def.eventCommonFields {
+        sender = Def.user {username = k .! "{sender}"},
+        destRoom = Def.room {roomId = k .! "{room_id}"},
+        eventId = k .! "{event_id}",
+        origin_server_ts = k .! "{origin_server_ts}"
+      }
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&types=m.room.message" ++
