@@ -90,7 +90,7 @@ instance Event StdMess where
             "&dir=" ++ [d]
     --
     bod :: BSL.ByteString
-    bod = fromString $
+    bod = BSL.pack $ map (toEnum . fromEnum) $
           "{\n\t" ++
             "\"filter\": {\n\t\t" ++
               "\"types\": [\"m.room.message\"]\n\t" ++
