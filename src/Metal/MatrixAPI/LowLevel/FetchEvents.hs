@@ -65,13 +65,7 @@ instance Event StdMess where
     --
     toMessage :: Value -> StdMess
     toMessage k = case theMessageType of
-      "m.text" -> Def.stdMess {
-                  body = k .! "{content:{body}}",
-                  fmtBody = k .? "{content:{formatted_body}}",
-                  -- \^ The "formatted_body" field _should_ be
-                  -- present... but _may_ not be present.
-                  boilerplate = valueToECF k
-                }
+      "m.text" -> valueMTextToStdMess k
       _        -> error $ "Message type " ++
                   theMessageType ++ " is unsupported."
       where
@@ -96,3 +90,18 @@ valueToECF k = EventCommonFields {
     eventId = k .! "{event_id}",
     origin_server_ts = k .! "{origin_server_ts}"
   };
+
+-- | Where @k@ represents a @m.room.message@ of message type @m.text@,
+-- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @k@.
+valueMTextToStdMess :: Value
+                    -- ^ The representation of the message which should
+                    -- become a 'StdMess'
+                    -> StdMess;
+valueMTextToStdMess k = Def.stdMess {
+  body = k .! "{content:{body}}",
+  fmtBody = k .? "{content:{formatted_body}}",
+  -- \^ The "formatted_body" field _should_ be
+  -- present... but _may_ not be present.
+  boilerplate = valueToECF k
+};
