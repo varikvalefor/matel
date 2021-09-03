@@ -137,7 +137,7 @@ valueMImageToStdMess k = Def.stdMess {
 -- | Where @k@ represents a @m.room.message@ of message type
 -- @m.location@, @valueMTextToStdMess@ is a 'StdMess' which should be
 -- equivalent to @k@.
-valueMLocationToStdMess :: Value -> StdMess
+valueMLocationToStdMess :: Value -> StdMess;
 valueMLocationToStdMess k = Def.stdMess {
   msgType = Location,
   body = k .! "{content:body}",
