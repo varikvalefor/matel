@@ -52,12 +52,15 @@ instance Event StdMess where
     where
     process :: Response BS.ByteString -> [StdMess]
     process k = case getResponseStatusCode k of
-      200 -> map toMessage $ (toValue k) .! "{chunk}"
+      200 -> filter nonDef $ map toMessage $ (toValue k) .! "{chunk}"
       _   -> detroit k
       where
       toValue :: Response BS.ByteString -> Value
       toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
                 getResponseBody
+      --
+      nonDef :: StdMess -> Bool
+      nonDef = not . (== Def.stdMess)
       --
       chunkMissing :: a
       chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
@@ -66,8 +69,7 @@ instance Event StdMess where
     toMessage :: Value -> StdMess
     toMessage k = case theMessageType of
       "m.text" -> valueMTextToStdMess k
-      _        -> error $ "Message type " ++ theMessageType ++
-                  " is unsupported."
+      _        -> Def.stdMess
       where
       theMessageType :: String
       theMessageType = k .! "{content:{msgtype}}"
