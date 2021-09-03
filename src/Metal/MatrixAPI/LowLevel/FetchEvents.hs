@@ -145,6 +145,17 @@ valueMLocationToStdMess k = Def.stdMess {
   boilerplate = valueToECF k
 };
 
+-- | Where @k@ represents a @m.room.message@ of message type @m.file@,
+-- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @k@.
+valueMFileToStdMess :: Value -> StdMess;
+valueMFileToStdMess k = Def.stdMess {
+  msgType = Attach,
+  body = k .! "{content:{body}}",
+  filename = k .? "{content:{filename}}",
+  url = k .! "{content:{file}}"
+};
+
 instance Event Encrypted where
   fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
     where
