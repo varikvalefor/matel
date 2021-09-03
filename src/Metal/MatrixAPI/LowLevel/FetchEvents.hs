@@ -93,4 +93,4 @@ instance Event StdMess where
             "\"filter\": {\n\t\t" ++
               "\"types\": [\"m.room.message\"]\n\t" ++
             "}\n" ++
-          "}"
+          "}";
