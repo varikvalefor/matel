@@ -75,7 +75,8 @@ instance Event StdMess where
                   -- present... but _may_ not be present.
                   boilerplate = boiler
                 }
-      _        -> error "fuck"
+      _        -> error $ "Message type " ++
+                  (k .! "{content:{msgtype}}") ++ " is unsupported."
       where
       boiler :: EventCommonFields
       boiler = Def.eventCommonFields {
