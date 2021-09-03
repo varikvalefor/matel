@@ -75,6 +75,7 @@ instance Event StdMess where
       "m.notice"   -> (valueMTextToStdMess k) {msgType = Notice}
       "m.image"    -> valueMImageToStdMess k
       "m.location" -> valueMLocationToStdMess k
+      "m.file"     -> valueMFileToStdMess k
       _            -> Def.stdMess
       where
       theMessageType :: String
