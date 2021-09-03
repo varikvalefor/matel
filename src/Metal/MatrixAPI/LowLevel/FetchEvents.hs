@@ -48,7 +48,7 @@ class Event a where
               -> IO [a];
 
 instance Event StdMess where
-  fetchEvents n d ms rm = process <.> TP.req TP.GET querr bod
+  fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
     where
     process :: Response BS.ByteString -> [StdMess]
     process k = case getResponseStatusCode k of
@@ -91,11 +91,3 @@ instance Event StdMess where
             \%5B%22m.room.message%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d]
-    --
-    bod :: BSL.ByteString
-    bod = BSL.pack $ map (toEnum . fromEnum) $
-          "{\n\t" ++
-            "\"filter\": {\n\t\t" ++
-              "\"types\": [\"m.room.message\"]\n\t" ++
-            "}\n" ++
-          "}";
