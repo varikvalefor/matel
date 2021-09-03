@@ -71,6 +71,7 @@ instance Event StdMess where
       where
       theMessageType :: String
       theMessageType = k .! "{content:{msgtype}}"
+    --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
