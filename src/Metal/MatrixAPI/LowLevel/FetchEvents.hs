@@ -118,13 +118,15 @@ valueMTextToStdMess k = Def.stdMess {
 valueMImageToStdMess :: Value -> StdMess;
 valueMImageToStdMess k = Def.stdMess {
   msgType = Image,
-  body = k .! "{content:{body}}",
+  body = con .! "{body}",
   fileInfo = Just Def.fileInfo {
-    w = k .? "{content:{info:{w}}}",
-    h = k .? "{content:{info:{h}}}",
-    mimetype = k .? "{content:{info:{mimetype}}}",
-    size = k .? "{content:{info:{size}}}"
+    w = con .? "{info:{w}}",
+    h = con .? "{info:{h}}",
+    mimetype = con .? "{info:{mimetype}}",
+    size = con .? "{info:{size}}"
   },
-  url = k .? "{content:{url}}",
+  url = con .? "{url}",
   boilerplate = valueToECF k
-}
+} where
+  con :: Value
+  con = k .! "{content}";
