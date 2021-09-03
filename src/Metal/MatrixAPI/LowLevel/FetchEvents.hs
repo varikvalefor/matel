@@ -94,6 +94,3 @@ instance Event StdMess where
               "\"types\": [\"m.room.message\"]\n\t" ++
             "}\n" ++
           "}"
-    --
-    fromString :: String -> BSL.ByteString
-    fromString = BSL.pack . map (toEnum . fromEnum);
