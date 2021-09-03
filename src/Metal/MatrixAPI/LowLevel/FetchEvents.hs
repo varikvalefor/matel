@@ -155,7 +155,10 @@ valueMLocationToStdMess k = Def.stdMess {
 -- | Where @k@ represents a @m.room.message@ of message type @m.file@,
 -- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
 -- @k@.
-valueMFileToStdMess :: Value -> StdMess;
+valueMFileToStdMess :: Value
+                    -- ^ The representation of the message which should
+                    -- become a 'StdMess'
+                    -> StdMess;
 valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
