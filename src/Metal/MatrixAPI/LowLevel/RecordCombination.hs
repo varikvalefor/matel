@@ -34,7 +34,7 @@ instance Combinable StdMess where
     geo_uri = g geo_uri,
     url = g url,
     filename = g filename,
-    file = g file,
+    file = g' file,
     fileInfo = g' fileInfo,
     boilerplate = combine (S.boilerplate a) (S.boilerplate b)
   } where
