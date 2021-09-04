@@ -50,7 +50,7 @@ instance Event StdMess where
     where
     process :: Response BS.ByteString -> [StdMess]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toMessage $ (toValue k) .! "{chunk}"
+      200 -> filter nonDef $ map toMessage $ toValue k .! "{chunk}"
       _   -> detroit k
       where
       toValue :: Response BS.ByteString -> Value
