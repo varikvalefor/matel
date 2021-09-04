@@ -82,7 +82,7 @@ instance ToJSON StdMess where
         "body" .= body k,
         "filename" .= filename k,
         "info" .= object [
-          "mimetype" .= fromMaybe (errorNoField "mimetype") (mimetype <$> fileInfo k),
+          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
           "size" .= maybe (errorNoField "size") size (fileInfo k)
         ],
         "msgtype" .= show (msgType k),
