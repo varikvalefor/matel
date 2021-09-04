@@ -1,8 +1,6 @@
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
 module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
-import Metal.Auth;
-import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Metal.Space;
