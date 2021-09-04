@@ -8,8 +8,6 @@ module Metal.MatrixAPI.LowLevel.Send (
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
-import Metal.Space;
-import Control.Lens;
 import Metal.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
