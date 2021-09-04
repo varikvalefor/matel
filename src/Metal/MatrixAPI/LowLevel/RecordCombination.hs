@@ -102,9 +102,12 @@ instance Combinable FileInfo where
     mimetype = g mimetype,
     size = g size,
     thumbnail_url = g thumbnail_url,
-    thumbnail_file = g thumbnail_file,
+    thumbnail_file = g' thumbnail_file,
     thumbnail_info = g thumbnail_info
   } where
+    g' :: Combinable b => Eq b => (FileInfo -> Maybe b) -> Maybe b
+    g' c = combineSingleMaybeRecord c a b
+    --
     g :: Eq b => (FileInfo -> b) -> b
     g c = combineSingleValue c a b Def.fileInfo;
 
