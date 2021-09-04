@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
 module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
@@ -7,7 +9,7 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
-import Metal.EventCommonFields;
+import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
 
 -- | For all types @a@, @a@ belongs to 'Combinable' iff values of type
@@ -99,6 +101,17 @@ instance Combinable FileInfo where
   } where
     g :: Eq b => (FileInfo -> b) -> b
     g c = combineSingleValue c a b Def.fileInfo
+
+instance Combinable EncryptedFile where
+  combine a b = EncryptedFile {
+    url = g url,
+    key = g key,
+    iv = g iv,
+    hashes = g hashes,
+    v = g v
+  } where
+    g :: Eq b => (EncryptedFile -> b) -> b
+    g c = combineSingleValue c a b Def.encryptedFile
 
 -- | At this point, just read the source code of this function, which
 -- is _very_ simple.
