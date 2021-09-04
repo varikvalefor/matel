@@ -99,6 +99,10 @@ memberRooms a = joinedRooms a >>= maybeShowRms
 
 -- | @memberSpaces x@ equals a list of all spaces of which Matel's user,
 -- whose login information is contained within @x@, is a member.
+--
+-- @memberSpaces@ may throw an error and burst into flames.  Feel free
+-- to request the removal of this error functionality if this error
+-- functionality is found to be inconvenient.
 memberSpaces :: Auth
              -- ^ The authorisation information of the Matrix user,
              -- probably Matel's user, whose joined spaces should be
