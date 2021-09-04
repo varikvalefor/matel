@@ -8,8 +8,7 @@ import Metal.EventCommonFields;
 data Encrypted = Encrypted {
   -- | @ciphertext k@ is the actual encrypted bit of this event.
   ciphertext :: Stringth,
-  -- | @algorithm k@ equals the content of the "algorithm" field of
-  -- @k@'s source.
+  -- | @algorithm k@ is the algorithm which is used to encrypt @k@.
   algorithm :: Stringth,
   -- | @device_id k@ equals the content of the "device_id" field of
   -- @k@'s source.
