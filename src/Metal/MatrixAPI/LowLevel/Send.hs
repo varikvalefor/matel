@@ -9,6 +9,7 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.Encrypted;
+import Metal.FavoriteNoise;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
@@ -39,11 +40,11 @@ sendEvent :: Event a
           -> Auth
           -- ^ The authorisation crap which is used to send the event
           -> IO (Maybe ErrorCode);
-sendEvent ev rm = process <.> TP.req TP.PUT querr (A.encode ev)
+sendEvent ev rm a = q >>= \r -> process <$> TP.req TP.PUT r (A.encode ev) a
   where
-  querr :: String
-  querr = "_matrix/client/r0/rooms/" ++ roomId rm ++ "/state/" ++
-          eventType ev
+  q :: IO String
+  q = (("_matrix/client/r0/rooms/" ++ roomId rm ++ "/state/" ++
+        eventType ev ++ "/") ++) <$> favoriteNoise;
   --
   process :: Response BS.ByteString -> Maybe ErrorCode
   process k = case getResponseStatusCode k of
