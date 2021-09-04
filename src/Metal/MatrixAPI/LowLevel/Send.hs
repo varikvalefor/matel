@@ -8,24 +8,13 @@ module Metal.MatrixAPI.LowLevel.Send (
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
-import Metal.User;
-import Data.Maybe;
 import Metal.Space;
 import Control.Lens;
-import Metal.Community;
 import Metal.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
-import qualified Data.Text as T;
 import qualified Data.Aeson as A;
-import Metal.MatrixAPI.LowLevel.Types;
-import qualified Data.Aeson.Lens as A;
-import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
-import qualified Data.ByteString.Lazy as BSL;
-import Metal.MatrixAPI.LowLevel.GenerateAuth;
-import Metal.MatrixAPI.LowLevel.GetRoomInformation;
-import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
 
