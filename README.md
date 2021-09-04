@@ -47,4 +47,4 @@ Matel is incomplete and currently useless.
 Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
 
 ## The Matel Room
-There exists a Matrix room such that this Matrix room is dedicated to Matel.  See The Matel Room <`\#johnnykissassSuckupfest:matrix.org`>.
+There exists a Matrix room such that this Matrix room is dedicated to Matel.  See The Matel Room <`#johnnykissassSuckupfest:matrix.org`>.
