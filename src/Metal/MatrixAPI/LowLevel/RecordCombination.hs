@@ -7,6 +7,7 @@ import Metal.Room;
 import Metal.User;
 import Metal.Space;
 import Metal.Community;
+import Metal.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
@@ -113,6 +114,18 @@ instance Combinable EncryptedFile where
   } where
     g :: Eq b => (EncryptedFile -> b) -> b
     g c = combineSingleValue c a b Def.encryptedFile
+
+instance Combinable Encrypted where
+  combine a b = Encrypted {
+    ciphertext = g ciphertext,
+    algorithm = g algorithm,
+    device_id = g device_id,
+    sender_key = g sender_key,
+    session_id = g session_id,
+    boilerplate = combine (En.boilerplate a) (En.boilerplate b)
+  } where
+    g :: Eq b => (Encrypted -> b) -> b
+    g c = combineSingleValue c a b Def.encrypted;
 
 -- | At this point, just read the source code of this function, which
 -- is _very_ simple.
