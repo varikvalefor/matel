@@ -7,6 +7,7 @@ import Metal.Room;
 import Metal.User;
 import Metal.Space;
 import Metal.Community;
+import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 import Metal.Messages.EncryptedFile;
