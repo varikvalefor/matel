@@ -6,8 +6,7 @@ import Metal.EventCommonFields;
 
 -- | For all 'CryptoMess' @k@, @k@ is an encrypted Matrix message.
 data Encrypted = Encrypted {
-  -- | @ciphertext k@ equals the content of the "ciphertext" field of
-  -- @k@'s source.
+  -- | @ciphertext k@ is the actual encrypted bit of this event.
   ciphertext :: Stringth,
   -- | @algorithm k@ equals the content of the "algorithm" field of
   -- @k@'s source.
