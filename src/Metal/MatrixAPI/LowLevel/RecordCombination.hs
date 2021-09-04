@@ -100,7 +100,8 @@ instance Combinable FileInfo where
     g :: Eq b => (FileInfo -> b) -> b
     g c = combineSingleValue c a b Def.fileInfo
 
--- | At this point, just read the source code.
+-- | At this point, just read the source code of this function, which
+-- is _very_ simple.
 combineSingleValue :: Eq b
                    => (a -> b)
                    -- ^ The field constructor
