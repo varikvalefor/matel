@@ -11,6 +11,7 @@ import Metal.Room;
 import Metal.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
+import Metal.OftenUsedFunctions;
 import qualified Data.Aeson as A;
 import qualified Data.ByteString as BS;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
@@ -38,7 +39,7 @@ sendEvent :: Event a
           -> Auth
           -- ^ The authorisation crap which is used to send the event
           -> IO (Maybe ErrorCode);
-sendEvent ev rm a = process <$> TP.req TP.PUT querr (A.encode ev) a
+sendEvent ev rm = process <.> TP.req TP.PUT querr (A.encode ev)
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rm ++ "/state/" ++
