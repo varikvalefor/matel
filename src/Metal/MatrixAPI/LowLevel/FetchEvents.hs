@@ -58,7 +58,7 @@ instance Event StdMess where
                 getResponseBody
       --
       nonDef :: StdMess -> Bool
-      nonDef = not . (== Def.stdMess)
+      nonDef = (/= Def.stdMess)
       --
       chunkMissing :: a
       chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
