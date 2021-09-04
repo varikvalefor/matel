@@ -166,7 +166,7 @@ instance Event Encrypted where
     where
     process :: Response BS.ByteString -> [Encrypted]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toEncrypted $ (toValue k) .! "{chunk}"
+      200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
       _   -> detroit k
       where
       toValue :: Response BS.ByteString -> Value
