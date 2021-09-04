@@ -18,8 +18,8 @@ data Encrypted = Encrypted {
   -- | @sender_key k@ is the public key of the sender of this encrypted
   -- event.
   sender_key :: Stringth,
-  -- | @session_id k@ equals the content of the "session_id" field of
-  -- @k@'s source, i.e., the ID of the session which sends the event.
+  -- | @session_id k@ is the ID of the Matrix session which sends this
+  -- event.
   session_id :: Maybe Stringth,
   -- | @boilerplate k@ contains the fields which all event types
   -- contain.
