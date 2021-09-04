@@ -46,12 +46,6 @@ data UserIdentifier = UserIdentifier {
   usident_user :: String
 } deriving (Eq, Read, Show);
 
--- | 'StringListRoomIdentifier' is used to read the output of the
--- "joined rooms" Matrix API query.
-data StringListRoomIdentifier = StringListRoomIdentifier {
-  joined_room :: [String]
-} deriving (Eq, Read, Show);
-
 -- | 'DisplayNameResponse' is used to read the response of the
 -- "displayname" Matrix API request.
 data DisplayNameResponse = DisplayNameResponse {
@@ -61,8 +55,6 @@ data DisplayNameResponse = DisplayNameResponse {
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''LoginRequest;
 
 deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
-
-deriveJSON defaultOptions ''StringListRoomIdentifier;
 
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 
