@@ -109,6 +109,10 @@ memberSpaces = idOrError <.> joinedSpaces;
 -- | @memberComms a@ equals a list of all Matrix communities of which
 -- Matel's user, whose login information is contained within @a@, is a
 -- member.
+--
+-- @memberComms@ may throw an error and burst into flames.  Feel free to
+-- request the removal of this error functionality if this error
+-- functionality is found to be inconvenient.
 memberComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO [Community];
