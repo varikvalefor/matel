@@ -86,6 +86,20 @@ instance Combinable EventCommonFields where
     g :: Eq b => (EventCommonFields -> b) -> b
     g c = combineSingleValue c a b Def.eventCommonFields
 
+instance Combinable FileInfo where
+  combine a b = FileInfo {
+    w = g w,
+    h = g h,
+    duration = g duration,
+    mimetype = g mimetype,
+    size = g size,
+    thumbnail_url = g thumbnail_url,
+    thumbnail_file = g thumbnail_file,
+    thumbnail_info = g thumbnail_info
+  } where
+    g :: Eq b => (FileInfo -> b) -> b
+    g c = combineSingleValue c a b Def.fileInfo
+
 -- | At this point, just read the source code.
 combineSingleValue :: Eq b
                    => (a -> b)
