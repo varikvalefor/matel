@@ -15,8 +15,8 @@ data Encrypted = Encrypted {
   -- | @device_id k@ equals the content of the "device_id" field of
   -- @k@'s source.
   device_id :: Maybe Stringth,
-  -- | @sender_key k@ equals the content of the "sender_key" field of
-  -- @k@'s source, i.e., the public key of the sender of the event.
+  -- | @sender_key k@ is the public key of the sender of this encrypted
+  -- event.
   sender_key :: Stringth,
   -- | @session_id k@ equals the content of the "session_id" field of
   -- @k@'s source, i.e., the ID of the session which sends the event.
