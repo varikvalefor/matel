@@ -11,7 +11,7 @@ import Metal.Community;
 import Metal.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.Standard;
+import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
 
@@ -36,7 +36,7 @@ instance Combinable StdMess where
     filename = g filename,
     file = g file,
     fileInfo = g' fileInfo,
-    boilerplate = g boilerplate
+    boilerplate = combine (S.boilerplate a) (S.boilerplate b)
   } where
     g' :: Combinable b => Eq b => (StdMess -> Maybe b) -> Maybe b
     g' c = combineSingleMaybeRecord c a b
