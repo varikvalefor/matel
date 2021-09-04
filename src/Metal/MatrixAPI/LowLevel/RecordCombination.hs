@@ -3,6 +3,7 @@
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
 module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
+import Data.Maybe;
 import Metal.Room;
 import Metal.User;
 import Metal.Space;
@@ -151,3 +152,25 @@ combineSingleValue c a b d
   | c a /= c d = c a
   | c b /= c d = c b
   | otherwise =  c d;
+
+-- | @combineSingleMaybeRecord c a b@ combines 'Combinable' record
+-- fields @c a@ and @c b@ on a field-by-field basis, returning the
+-- result of this combination.
+--
+-- This thing works exclusively with fields which 'Maybe' exist.
+combineSingleMaybeRecord :: Combinable b
+                         => Eq b
+                         => (a -> Maybe b)
+                         -- ^ The field constructor
+                         -> a
+                         -- ^ The first record whose field may be
+                         -- sacrificed or chimaera'd
+                         -> a
+                         -- ^ The second record whose field may be
+                         -- sacrificed or chimaera'd
+                         -> Maybe b
+combineSingleMaybeRecord c a b
+  | isNothing (c a) && isNothing (c b) = c a
+  | isNothing (c a) = c b
+  | isNothing (c b) = c a
+  | otherwise = Just $ combine (fromJust $ c a) (fromJust $ c b);
