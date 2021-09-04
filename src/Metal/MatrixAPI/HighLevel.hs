@@ -71,6 +71,10 @@ earlyMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @memberRooms x@ equals a list of all rooms of which Matel's user,
 -- whose login information is contained within @x@, is a member.
+--
+-- @memberRooms@ may throw an error and burst into flames.  Feel free to
+-- request the removal of this error functionality if this error
+-- functionality is found to be inconvenient.
 memberRooms :: Auth
             -- ^ The information which is used to authenticate Matel's
             -- user
