@@ -11,6 +11,7 @@ import Metal.Community;
 import Metal.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
+import Metal.Messages.ThumbnailInfo;
 import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
@@ -103,7 +104,7 @@ instance Combinable FileInfo where
     size = g size,
     thumbnail_url = g thumbnail_url,
     thumbnail_file = g' thumbnail_file,
-    thumbnail_info = g' thumbnail_info
+    thumbnail_info = g thumbnail_info
   } where
     g' :: Combinable b => Eq b => (FileInfo -> Maybe b) -> Maybe b
     g' c = combineSingleMaybeRecord c a b
