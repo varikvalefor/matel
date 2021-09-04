@@ -53,7 +53,7 @@ recentMessagesFrom :: Integer
                    -> Auth
                    -- ^ Authorisation crap
                    -> IO [StdMess];
-recentMessagesFrom n r = fetchEvents n 'b' Def.stdMess r;
+recentMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
