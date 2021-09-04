@@ -174,7 +174,7 @@ instance Event Encrypted where
                 getResponseBody
       --
       nonDef :: Encrypted -> Bool
-      nonDef = not . (== Def.encrypted)
+      nonDef = (/= Def.encrypted)
       --
       chunkMissing :: a
       chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
