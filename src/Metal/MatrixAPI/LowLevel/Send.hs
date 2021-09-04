@@ -41,7 +41,7 @@ sendEvent :: Event a
           -- ^ The authorisation crap which is used to send the event
           -> IO (Maybe ErrorCode);
 sendEvent ev rm a = qenerateQuery >>= \querr ->
-                    process <$> TP.req TP.PUT r (A.encode ev) a
+                    process <$> TP.req TP.PUT querr (A.encode ev) a
   where
   qenerateQuery :: IO String
   qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
