@@ -35,9 +35,12 @@ instance Combinable StdMess where
     url = g url,
     filename = g filename,
     file = g file,
-    fileInfo = g fileInfo,
+    fileInfo = g' fileInfo,
     boilerplate = g boilerplate
   } where
+    g' :: Combinable b => Eq b => (StdMess -> Maybe b) -> Maybe b
+    g' c = combineSingleMaybeRecord c a b
+    --
     g :: Eq b => (StdMess -> b) -> b
     g c = combineSingleValue c a b Def.stdMess;
 
