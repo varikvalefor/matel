@@ -38,6 +38,7 @@ import Metal.MatrixAPI.LowLevel.Send;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
+import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
@@ -145,7 +146,7 @@ joinedRooms a = processResponse <$> TP.req TP.GET querr "" a
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
     | getResponseStatusCode response == 200 = Right $ toRooms $
-      joined_room $ fromJust $ A.decode $ BSL.fromStrict $
+      (Q..! "{joined_rooms}") $ fromJust $ Q.decode $ BSL.fromStrict $
       getResponseBody response
     | otherwise = Left $ responseToStringth response
   --
