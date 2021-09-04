@@ -88,7 +88,7 @@ instance Combinable EventCommonFields where
     eventId = g eventId
   } where
     g :: Eq b => (EventCommonFields -> b) -> b
-    g c = combineSingleValue c a b Def.eventCommonFields
+    g c = combineSingleValue c a b Def.eventCommonFields;
 
 instance Combinable FileInfo where
   combine a b = FileInfo {
@@ -102,7 +102,7 @@ instance Combinable FileInfo where
     thumbnail_info = g thumbnail_info
   } where
     g :: Eq b => (FileInfo -> b) -> b
-    g c = combineSingleValue c a b Def.fileInfo
+    g c = combineSingleValue c a b Def.fileInfo;
 
 instance Combinable EncryptedFile where
   combine a b = EncryptedFile {
@@ -113,7 +113,7 @@ instance Combinable EncryptedFile where
     v = g v
   } where
     g :: Eq b => (EncryptedFile -> b) -> b
-    g c = combineSingleValue c a b Def.encryptedFile
+    g c = combineSingleValue c a b Def.encryptedFile;
 
 instance Combinable Encrypted where
   combine a b = Encrypted {
