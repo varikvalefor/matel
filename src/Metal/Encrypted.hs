@@ -10,8 +10,7 @@ data Encrypted = Encrypted {
   ciphertext :: Stringth,
   -- | @algorithm k@ is the algorithm which is used to encrypt @k@.
   algorithm :: Stringth,
-  -- | @device_id k@ equals the content of the "device_id" field of
-  -- @k@'s source.
+  -- | @device_id k@ is the ID of the device which sends @k@.
   device_id :: Maybe Stringth,
   -- | @sender_key k@ is the public key of the sender of @k@.
   sender_key :: Stringth,
