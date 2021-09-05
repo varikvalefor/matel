@@ -110,8 +110,8 @@ getTopic r a = process <$> rq r "/state/m.room.topic/" a
   --
   kemo :: T.Text
   kemo = error $ "A fairly goofy error is encountered.  The JSON " ++
-            "value which the \"m.room.topic\" request returns does " ++
-            "NOT contain a \"name\" field.";
+         "value which the \"m.room.topic\" request returns does " ++
+         "NOT contain a \"name\" field.";
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
 -- room ID is @roomId r@.  The @'roomName'@ value of the output 'Room'
