@@ -8,19 +8,10 @@ module Metal.MatrixAPI.LowLevel.Types where
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
-import Metal.Room;
-import Metal.User;
-import Control.Lens hiding ((.=));
-import Data.Aeson (FromJSON, fromJSON);
-import Data.Aeson.Types (Parser);
 import Data.Aeson.TH;
-import Data.Aeson.Lens;
 import Metal.Encrypted;
-import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
-import qualified Data.Text as T;
-import qualified Metal.Default as Def;
 
 -- | For all 'LoginRequest' @k@, @k@ is a login request which is to be
 -- converted to JSON.
