@@ -3,6 +3,7 @@
 module Metal.OftenUsedFunctions where
 import Network.HTTP.Simple;
 import qualified Data.ByteString as BS;
+import qualified Data.ByteString.Lazy as BSL;
 
 -- | @detroit k@ breaks such that a description of @k@ is written to the
 -- standard error.
@@ -36,3 +37,10 @@ justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
 -- | @(a <.> b) k@ is equivalent to @a <$> b k@.
 (<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
 (<.>) a b c = a <$> b c;
+
+-- | @fromString x@ is a 'BSL.ByteString' whose content is the content
+-- of @x@.
+--
+-- @fromString@ is used only within this module.
+fromString :: String -> BSL.ByteString;
+fromString = BSL.pack . map (toEnum . fromEnum);
