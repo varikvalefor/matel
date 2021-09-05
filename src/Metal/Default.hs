@@ -14,7 +14,6 @@ import Metal.EventCommonFields;
 import qualified Metal.Encrypted as E;
 import qualified Metal.Messages.FileInfo as FI;
 import qualified Metal.Messages.EncryptedFile as EF;
-import qualified Metal.Messages.ThumbnailInfo as TI;
 
 -- | @user@ is a default-valued 'User' record.
 user :: User;
