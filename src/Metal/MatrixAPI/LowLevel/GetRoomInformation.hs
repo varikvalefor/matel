@@ -80,7 +80,7 @@ getMembers :: Room
            -- ^ The authorisation information which is used to fetch
            -- the list of members
            -> IO (Either Stringth Room);
-getMembers room a = process <$> rq room "/members" a
+getMembers room = process <.> rq room "/members"
   where
   process :: Response BS.ByteString -> Either Stringth Room
   process response = case getResponseStatusCode response of
