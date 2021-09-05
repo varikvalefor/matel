@@ -29,7 +29,7 @@ import Metal.Room;
 import Metal.User;
 import Data.Maybe;
 import Metal.Space;
-import Control.Lens;
+import Control.Lens hiding ((<.>));
 import Metal.Community;
 import Network.HTTP.Simple;
 import Metal.OftenUsedFunctions;
@@ -440,7 +440,7 @@ createRoom :: Room
            -> Auth
            -- ^ The information which is used to authorise the request
            -> IO (Either String Room);
-createRoom r publcty a = responseToEither <$> TP.req TP.POST querr bod a
+createRoom r publcty = responseToEither <.> TP.req TP.POST querr bod
   where
   querr :: String
   querr = "_matrix/client/r0/createRoom"
