@@ -9,7 +9,6 @@ module Metal.MatrixAPI.LowLevel.GetRoomInformation (
 import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
-import Metal.User;
 import Metal.Auth;
 import Control.Lens hiding ((<.>));
 import Network.HTTP.Simple;
@@ -19,7 +18,6 @@ import qualified Data.Text as T;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Lens as A;
 import qualified Data.ByteString as BS;
-import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
