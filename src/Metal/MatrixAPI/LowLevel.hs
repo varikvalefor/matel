@@ -92,7 +92,8 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST querr logreq a
   querr :: String
   querr = "_matrix/client/r0/login"
   --
-  responseToLeftRight' :: Response BS.ByteString -> Either Stringth Stringth
+  responseToLeftRight' :: Response BS.ByteString
+                       -> Either Stringth Stringth
   responseToLeftRight' j
     -- J
     | getResponseStatusCode j == 200 = bodyValue Q..! "{access_token}"
