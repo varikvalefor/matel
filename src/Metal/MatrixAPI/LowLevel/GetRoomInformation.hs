@@ -22,6 +22,7 @@ import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.GenerateAuth;
 import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
+import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
 -- | @getRoomInformation room a@ equals a 'Room'-based representation of
 -- the Matrix room whose internal Matrix ID is specified within @room@
@@ -149,8 +150,7 @@ rq :: Room
    -> Auth
    -- ^ The user whose authorisation details/homeserver FQDN are used
    -> IO (Response BS.ByteString)
-rq room k a = generateAuthdRequest uri a >>= httpBS
+rq room k a = TP.req TP.GET querr "" a
   where
-  uri :: String
-  uri = "GET https://" ++ homeserver a ++
-    "/matrix/_client/r0/rooms" ++ roomId room ++ k;
+  querr :: String
+  querr = "/matrix/_client/r0/rooms" ++ roomId room ++ k;
