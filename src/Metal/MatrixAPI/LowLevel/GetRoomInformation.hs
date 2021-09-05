@@ -100,7 +100,7 @@ getTopic :: Room
          -> Auth
          -- ^ The authorisation information of the user
          -> IO Room;
-getTopic r a = process <$> rq r "/state/m.room.topic/" a
+getTopic r = process <.> rq r "/state/m.room.topic/"
   where
   process :: Response BS.ByteString -> Room
   process k = Def.room {topic = fromMaybe kemo $ extractTopic k}
