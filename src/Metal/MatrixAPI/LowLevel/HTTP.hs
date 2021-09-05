@@ -50,3 +50,15 @@ req type_ query body auth = genRequest >>= httpBS
               \fire is extinguished with saltwater, and electronic \
               \stuff does not particularly care for saltwater.  As \
               \such, req is now broken.";
+
+instance Show ReqType where
+  show k = case k of
+    GET  -> "GET"
+    PUT  -> "PUT"
+    POST -> "POST"
+    _    -> error "req receives an unknown ReqType.  As a result of \
+            \not understanding this ReqType, req halts and catches \
+            \fire.  Although the fire is quickly extinguished, the \
+            \fire is extinguished with saltwater, and electronic \
+            \stuff does not particularly care for saltwater.  As \
+            \such, req is now broken.";
