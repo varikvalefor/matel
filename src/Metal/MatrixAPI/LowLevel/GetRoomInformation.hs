@@ -153,4 +153,4 @@ rq :: Room
 rq room k a = TP.req TP.GET querr "" a
   where
   querr :: String
-  querr = "/matrix/_client/r0/rooms" ++ roomId room ++ k;
+  querr = "/matrix/_client/r0/rooms/" ++ roomId room ++ k;
