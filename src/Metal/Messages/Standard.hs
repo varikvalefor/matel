@@ -1,7 +1,6 @@
 -- | Metal.Messages.Standard contains the 'StdMess' record type.
 module Metal.Messages.Standard where
 import Metal.Base;
-import Metal.User;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.EncryptedFile;
