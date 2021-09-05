@@ -78,7 +78,8 @@ instance ToJSON StdMess where
       \for StdMess values of @msgType@ " ++ show (msgType k) ++ "."
     where
     errorNoField :: String -> a
-    errorNoField j = error $ "This " ++ show (msgType k) ++ " lacks a " ++ show j ++ "field!";
+    errorNoField j = error $ "This " ++ show (msgType k) ++
+                     " lacks a " ++ show j ++ "field!";
 
 instance ToJSON Encrypted where
   toJSON k = object
