@@ -389,7 +389,7 @@ unban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-unban tarjay rome a = responseToMaybe <$> TP.req TP.POST querr unbanRq a
+unban tarjay rome = responseToMaybe <$> TP.req TP.POST querr unbanRq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
