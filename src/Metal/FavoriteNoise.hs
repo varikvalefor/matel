@@ -4,7 +4,6 @@
 -- to this module to ensure that multiple functions can take advantage
 -- of the existence of @'favoriteNoise'@.
 module Metal.FavoriteNoise where
-import Metal.Base;
 import Text.StringRandom;
 import qualified Data.Text as T;
 
