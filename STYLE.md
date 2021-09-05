@@ -5,3 +5,14 @@ For all lines, the character-based length of a line should be less than or equal
 ```haskell
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 ```
+## Semicolons
+Matel's source code contains some unnecessary semicolons.
+
+For all things which can be terminated by a semicolon without being broken _k_, _k_ should be terminated by a semicolon.
+
+An example of a poorly-placed semicolon is as follows:
+```haskell
+main = blahblah;
+	where blahblah = and [so, so]
+```
+This semicolon is placed poorly because the "`where`" clause which follows the semicolon is no longer specific to `main`, which defeats the purpose of the "`where`" clause.
