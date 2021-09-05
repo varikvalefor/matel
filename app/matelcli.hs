@@ -114,19 +114,19 @@ send k a
   target :: IO StdMess
   target =
     case head k of
-    "text"   -> T.getContents >>= \input ->
-                return Def.stdMess {body = input}
-    "file"   -> error "Sending files is unimplemented."
-    "notice" -> T.getContents >>= \input ->
-                return Def.stdMess {body = input, msgType = Notice}
+    "text"     -> T.getContents >>= \input ->
+                  return Def.stdMess {body = input}
+    "file"     -> error "Sending files is unimplemented."
+    "notice"   -> T.getContents >>= \input ->
+                  return Def.stdMess {body = input, msgType = Notice}
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
                     geo_uri = Just $ T.pack $ k !! 1,
                     body = input
                   }
-    _        -> error $ "I ought to send you to the garbage " ++
-                "disposal, shit-tits.  Read the fucking manual."
+    _          -> error $ "I ought to send you to the garbage " ++
+                  "disposal, shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! n}
