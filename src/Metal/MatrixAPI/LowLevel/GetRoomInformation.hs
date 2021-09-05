@@ -63,7 +63,7 @@ getEncryptionStatus :: Room
                     -- ^ The authorisation information which is used to
                     -- fetch the encryption status
                     -> IO Room;
-getEncryptionStatus room a = process <$> rq room "/event/m.room.key" a
+getEncryptionStatus room = process <.> rq room "/event/m.room.key"
   where
   process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
