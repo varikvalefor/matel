@@ -80,11 +80,11 @@ list :: [String] -> Auth -> IO ();
 list [] _ = error "Write an argument or be made sufficiently \
             \brain-dead to never write arguments again.";
 list (k:_) a = case k of
-    "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
-    "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
-    "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
-    _             -> error "The police will be listing your injuries \
-                     \if you don't stop inputting crap.";
+  "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
+  "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
+  "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
+  _             -> error "The police will be listing your injuries \
+                   \if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 --
