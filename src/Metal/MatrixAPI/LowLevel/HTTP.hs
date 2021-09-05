@@ -37,7 +37,7 @@ req type_ query body auth = genRequest >>= httpBS
   addHeader = addRequestHeader "Authorization" (authToken' auth)
   --
   prefix :: String
-  prefix = show type_ ++ " https://" ++ homeserver auth ++ "/"
+  prefix = show type_ ++ " https://" ++ homeserver auth ++ "/";
 
 instance Show ReqType where
   show k = case k of
