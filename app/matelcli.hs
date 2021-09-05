@@ -51,8 +51,7 @@ determineAction :: [String]
 determineAction [] a = error "I never thought that I would have a \
   \stress-induced heart attack by the age of forty, but you're making \
   \me rethink some things.";
-determineAction (command:stuff) a =
-  case command of
+determineAction (command:stuff) a = case command of
     "list"       -> list stuff a
     "send"       -> send stuff a
     "grab"       -> grab stuff a
