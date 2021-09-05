@@ -11,9 +11,10 @@ import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Metal.Auth;
-import Control.Lens;
+import Control.Lens hiding ((<.>));
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
+import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Lens as A;
@@ -126,7 +127,7 @@ getRoomName :: Room
             -> Auth
             -- ^ The authorisation information
             -> IO Room;
-getRoomName r a = process <$> rq r "/state/m.room.name/" a
+getRoomName r = process <.> rq r "/state/m.room.name/"
   where
   process :: Response BS.ByteString -> Room
   process k = Def.room {roomName = fromMaybe detroit $ extractName k}
