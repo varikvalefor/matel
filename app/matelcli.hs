@@ -79,8 +79,7 @@ determineAction (command:stuff) a = case command of
 list :: [String] -> Auth -> IO ();
 list [] _ = error "Write an argument or be made sufficiently \
             \brain-dead to never write arguments again.";
-list (k:_) a =
-  case k of
+list (k:_) a = case k of
     "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
     "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
     "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
