@@ -1,8 +1,6 @@
 -- | Metal.User contains the 'User' datatype."
 module Metal.User where
 import Metal.Base;
-import Data.Maybe (fromJust);
-import Data.List (elemIndex);
 
 -- | 'User' holds data regarding an arbitrary Matrix user.
 data User = User {
