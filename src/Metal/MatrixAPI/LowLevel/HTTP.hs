@@ -3,7 +3,6 @@
 -- | This module contains @'req'@ and some stuff which supports @'req'@.
 module Metal.MatrixAPI.LowLevel.HTTP where
 import Metal.Auth;
-import Metal.Base;
 import Metal.User;
 import Network.HTTP.Simple;
 import qualified Data.ByteString as BS;
