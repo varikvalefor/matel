@@ -50,7 +50,6 @@ getRoomInformation room a =
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
   -- directly access the Matrix API.
-  --
   functions :: [Room -> Auth -> IO Room]
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
