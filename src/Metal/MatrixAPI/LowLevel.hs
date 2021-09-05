@@ -87,11 +87,17 @@ decryptWKey crip key = T.pack [];
 loginPass :: Auth
           -- ^ The authorisation information of Matel's user
           -> IO (Either Stringth Stringth);
-loginPass a = responseToLeftRight <$> TP.req TP.POST querr logreq a
+loginPass a = responseToLeftRight' <$> TP.req TP.POST querr logreq a
   where
   querr :: String
   querr = "_matrix/client/r0/login"
   --
+  responseToLeftRight' :: Response BS.ByteString -> Either Stringth Stringth
+  responseToLeftRight' j
+    -- J
+    | getResponseStatusCode j == 200 = bodyValue Q..! "{access_token}"
+    | otherwise = responseToLeftRight j
+    where bodyValue = fromJust $ Q.decode $ BSL.fromStrict $ getResponseBody j
   logreq :: BSL.ByteString
   logreq = fromString $
     "{\n\t" ++
