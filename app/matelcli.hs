@@ -112,8 +112,7 @@ send k a
   | otherwise = target >>= \t -> sendEvent t dest a >>= dispError
   where
   target :: IO StdMess
-  target =
-    case head k of
+  target = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
     "file"     -> error "Sending files is unimplemented."
