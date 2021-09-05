@@ -147,7 +147,7 @@ rq :: Room
    -> String
    -- ^ The "\/whatever" addition to the query
    -> Auth
-   -- The user whose authorisation details/homeserver FQDN are used
+   -- ^ The user whose authorisation details/homeserver FQDN are used
    -> IO (Response BS.ByteString)
 rq room k a = generateAuthdRequest uri a >>= httpBS
   where
