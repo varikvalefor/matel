@@ -96,7 +96,7 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST querr logreq a
                        -> Either Stringth Stringth
   responseToLeftRight' j
     -- J
-    | getResponseStatusCode j == 200 = bodyValue Q..! "{access_token}"
+    | getResponseStatusCode j == 200 = Right $ bodyValue Q..! "{access_token}"
     | otherwise = responseToLeftRight j
     where bodyValue = fromJust $ Q.decode $ BSL.fromStrict $
             getResponseBody j
@@ -469,5 +469,5 @@ createRoom r publcty a = responseToEither <$> TP.req TP.POST querr bod a
   --
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
-        \indicates success... but the response STRING lacks a \
+        \indicates success... but the response String lacks a \
         \\"room_id\" field.";
