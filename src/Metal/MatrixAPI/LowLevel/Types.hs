@@ -62,7 +62,8 @@ instance ToJSON StdMess where
         "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
         "msgtype" .= show (msgType k)
       ]
-    | msgType k == Attach = object [
+    | msgType k == Attach = object
+      [
         "body" .= body k,
         "filename" .= filename k,
         "info" .= object [
