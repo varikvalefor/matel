@@ -119,6 +119,12 @@ send k a
     "file"   -> error "Sending files is unimplemented."
     "notice" -> T.getContents >>= \input ->
                 return Def.stdMess {body = input, msgType = Notice}
+    "location" -> T.getContents >>= \input ->
+                  return Def.stdMess {
+                    msgType = Location,
+                    geo_uri = Just $ T.pack $ k !! 1,
+                    body = input
+                  }
     _        -> error $ "I ought to send you to the garbage " ++
                 "disposal, shit-tits.  Read the fucking manual."
   --
@@ -126,7 +132,7 @@ send k a
   dest = Def.room {roomId = k !! n}
     where
     n :: Int
-    n | head k == "file" = 2
+    n | head k `elem` ["file", "location"] = 2
       | otherwise = 1;
       -- This bit is necessary because the number of arguments of the
       -- "send file" command is not equals to the number of arguments

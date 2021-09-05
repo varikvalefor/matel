@@ -83,6 +83,21 @@ event whose
 content equals the standard input to the Matrix room whose internal
 Matrix room ID is
 .Ar room .
+.Ss SENDING LOCATIONS
+.Nm matelcli send location
+.Ar geouri
+.Ar room
+sends a
+.Dq m.location
+message whose
+.Dq geo_uri
+field contains
+.Ar geouri
+to the Matrix room whose internal Matrix ID is
+.Ar room .
+The
+.Dq body
+field of this message is fetched from the standard input.
 .Sh GRABBING PILLS, IF "PILLS" REFERS TO MESSAGES
 .Nm matelcli grab
 .Ar n

@@ -59,7 +59,8 @@ instance ToJSON StdMess where
     | msgType k == Location = object
       [
         "body" .= body k,
-        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k)
+        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
+        "msgtype" .= show (msgType k)
       ]
     | msgType k == Attach = object [
         "body" .= body k,
