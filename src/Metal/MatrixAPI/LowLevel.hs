@@ -417,7 +417,7 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r a = responseToMaybe <$> TP.req TP.POST querr "" a
+leave r = responseToMaybe <$> TP.req TP.POST querr ""
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
