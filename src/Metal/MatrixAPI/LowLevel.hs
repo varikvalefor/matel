@@ -32,6 +32,7 @@ import Metal.Space;
 import Control.Lens;
 import Metal.Community;
 import Network.HTTP.Simple;
+import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import Metal.MatrixAPI.LowLevel.Send;
@@ -420,13 +421,6 @@ leave r a = responseToMaybe <$> TP.req TP.POST querr "" a
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
-
--- | @fromString x@ is a 'BSL.ByteString' whose content is the content
--- of @x@.
---
--- @fromString@ is used only within this module.
-fromString :: String -> BSL.ByteString;
-fromString = BSL.pack . map (toEnum . fromEnum);
 
 -- | @createRoom r a@ attempts to create a Matrix room whose information
 -- matches the information of @a@.  If this attempt fails, then a
