@@ -40,7 +40,5 @@ justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
 
 -- | @fromString x@ is a 'BSL.ByteString' whose content is the content
 -- of @x@.
---
--- @fromString@ is used only within this module.
 fromString :: String -> BSL.ByteString;
 fromString = BSL.pack . map (toEnum . fromEnum);
