@@ -45,7 +45,7 @@ getRoomInformation room a =
   --
   fetchRoomValues :: IO [Room]
   fetchRoomValues = mapConcurrently (\f -> f room a) functions
-  -- The term "fetch", as opposed to "get", is used to indicate that
+  -- \^ The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
   -- directly access the Matrix API.
