@@ -66,7 +66,8 @@ instance ToJSON StdMess where
       [
         "body" .= body k,
         "filename" .= filename k,
-        "info" .= object [
+        "info" .= object
+        [
           "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
           "size" .= maybe (errorNoField "size") size (fileInfo k)
         ],
