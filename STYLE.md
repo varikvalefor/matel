@@ -15,6 +15,6 @@ For all things which can be terminated by a semicolon without being broken _k_, 
 An example of a poorly-placed semicolon is as follows:
 ```haskell
 main = blahblah;
-	where blahblah = and [so, so]
+  where blahblah = and [so, so]
 ```
 This semicolon is placed poorly because the "`where`" clause which follows the semicolon is no longer specific to `main`, which defeats the purpose of the "`where`" clause.
