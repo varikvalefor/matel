@@ -6,7 +6,7 @@
 -- License     : BSD-3-Clause
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
--- Portability : POSIX
+-- Portability : portable
 --
 -- Metal.Auth contains Matel's 'Auth' datatype, which is used for
 -- the authentication of Matel's user.
