@@ -474,5 +474,5 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST querr bod
   --
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
-        \indicates success... but the response String lacks a \
+        \indicates success... but the body of the response lacks a \
         \\"room_id\" field.";
