@@ -138,6 +138,9 @@ sync since = responseToLeftRight <.> TP.req TP.GET querr syncreq
     | isNothing since = ""
     | otherwise = fromString $
       "{\"since\": \"" ++ fromJust since ++ "\"}";
+    -- \^ Using this thing instead of @maybe@ looks a bit cheesy.
+    -- However, the line length of the @maybe@-based equivalent is
+    -- greater than the maximum line length of this cheesy thing.  Stet.
 
 -- | @joinedRooms k@ sends the "joined_rooms" query to the homeserver of
 -- @k@, authenticating as @k@.
