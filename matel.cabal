@@ -80,9 +80,9 @@ executable matel
   main-is: matel.hs
   ghc-options: -haddock -threaded -O2 -dynamic
   other-modules:
-    TUI,
-    Plegg,
-    Colour,
+    TUI
+    Plegg
+    Colour
     GetAuth
   build-depends:
     base ^>=4.14.1.0,
