@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains @'favoriteNoise'@.  @'favoriteNoise'@ is moved
+-- | Module    : Metal.FavoriteNoise
+-- Description : Metal's string-generating stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains @'favoriteNoise'@.  @'favoriteNoise'@ is moved
 -- to this module to ensure that multiple functions can take advantage
 -- of the existence of @'favoriteNoise'@.
 module Metal.FavoriteNoise where
