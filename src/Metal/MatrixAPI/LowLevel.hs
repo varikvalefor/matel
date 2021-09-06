@@ -295,7 +295,7 @@ getDisplayName u a = processResponse <$> TP.req TP.GET querr "" a
       -- e.g., "this user does not exist" and "yo, the server done
       -- broke".  Such responses should raise "red flags"; something has
       -- gone wrong within this module, or the program which uses this
-      -- module is implemented badly.  Alternatively, the homeserver
+      -- module is implemented poorly.  Alternatively, the homeserver
       -- might just be a piece of crap.
 
 -- | @kick@ implements the Matrix API's
