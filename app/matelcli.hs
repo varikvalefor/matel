@@ -1,6 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | @matelcli@ is a command-line interface for Matrix which uses
+-- | Module    : Main
+-- Description : Business end of MATELCLI
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+-- @matelcli@ is a command-line interface for Matrix which uses
 -- Matel's underlying "Metal" infrastructure.
 --
 -- @matelcli@ is written such that for all text-based features of Matel
