@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | As a result of Metal.MatrixAPI.LowLevel's hugeness,
+-- | Module    : Metal.MatrixAPI.LowLevel.GenerateAuth
+-- Description : Metal's authorised-request-generating-stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- As a result of Metal.MatrixAPI.LowLevel's hugeness,
 -- @'generateAuthdRequest'@ is moved from Metal.MatrixAPI.LowLevel to
 -- Metal.MatrixAPI.LowLevel.GenerateAuth.
 module Metal.MatrixAPI.LowLevel.GenerateAuth (
