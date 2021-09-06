@@ -1,6 +1,14 @@
  {-# LANGUAGE OverloadedStrings #-}
 
--- | Metal.MatrixAPI.HighLevel contains functions which use the Matrix
+-- | Module    : Metal.HighLevel
+-- Description : Metal's high-level Matrix API stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.MatrixAPI.HighLevel contains functions which use the Matrix
 -- API by chaining together relatively low-level functions for the
 -- Matrix API.
 --
