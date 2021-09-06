@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains @'req'@ and some stuff which supports @'req'@.
+-- | Module    : Metal.MatrixAPI.LowLevel.HTTP
+-- Description : Boilerplate HTTP stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains @'req'@ and some stuff which supports @'req'@.
 module Metal.MatrixAPI.LowLevel.HTTP where
 import Metal.Auth;
 import Metal.User;
