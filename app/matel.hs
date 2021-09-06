@@ -1,4 +1,12 @@
--- | This module contains the most high-level source code of the Matel
+-- | Module    : Main
+-- Description : Business end of Matel
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains the most high-level source code of the Matel
 -- TUI client.
 --
 -- No documentation regarding the user interface is provided; the
