@@ -78,4 +78,7 @@ module Plegg where
 #else
   plegg :: IO ();
   plegg = return ();
+
+  univac :: IO ();
+  univac = return ();
 #endif
