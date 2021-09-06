@@ -75,7 +75,6 @@ module Plegg where
       withCString path $ \pathC ->
       withCString perms $ \permsC ->
       unveil pathC permsC;
-
 #else
   plegg :: IO ();
   plegg = return ();
