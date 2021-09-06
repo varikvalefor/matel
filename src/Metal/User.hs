@@ -6,7 +6,7 @@
 -- Stability   : experimental
 -- Portability : portable
 --
--- Metal.User contains the 'User' datatype."
+-- Metal.User contains the 'User' datatype.
 module Metal.User where
 import Metal.Base;
 
