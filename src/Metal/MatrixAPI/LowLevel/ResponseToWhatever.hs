@@ -30,9 +30,6 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
 -- | If the status code of @k@ equals @200@, then @responseToMaybe k@
 -- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
 -- equivalent of @'responseToStringth' k@.
---
--- This function is added to decrease the amount of boilerplate stuff
--- within this module.
 responseToMaybe :: Response BS.ByteString -> Maybe String;
 responseToMaybe theResponse
   | getResponseStatusCode theResponse == 200 = Nothing
