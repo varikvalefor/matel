@@ -1,5 +1,13 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 
+-- | Module    : Metal.MatrixAPI.LowLevel.RecordCombination
+-- Description : Record type combination crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
 module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
