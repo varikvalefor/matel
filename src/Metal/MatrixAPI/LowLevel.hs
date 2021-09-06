@@ -157,7 +157,7 @@ joinedRooms = processResponse <.> TP.req TP.GET querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
-    | getResponseStatusCode response == 200 = Right $ toRooms $
+    | getResponseStatusCode response == 200 = Right $ map toRoom $
       (Q..! "{joined_rooms}") $ fromJust $ Q.decode $ BSL.fromStrict $
       getResponseBody response
     | otherwise = Left $ responseToStringth response
@@ -165,8 +165,8 @@ joinedRooms = processResponse <.> TP.req TP.GET querr ""
   querr :: String
   querr = "_matrix/client/r0/joined_rooms"
   --
-  toRooms :: [String] -> [Room]
-  toRooms = map (\k -> Def.room {roomId = k});
+  toRoom :: String -> Room
+  toRoom k = Def.room {roomId = k};
 
 -- | @joinedSpaces k@ sends the "not yet implemented" query to the
 -- homeserver of @k@, authenticating as @k@.
