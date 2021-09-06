@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains @'sendEvent'@ and some stuff which supports
+-- | Module    : Metal.MatrixAPI.LowLevel.Send
+-- Description : Stuff-sending stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains @'sendEvent'@ and some stuff which supports
 -- @'sendEvent'@.
 module Metal.MatrixAPI.LowLevel.Send (
   sendEvent
