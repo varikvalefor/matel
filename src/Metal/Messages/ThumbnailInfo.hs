@@ -1,4 +1,12 @@
--- | This module contains 'ThumbnailInfo'.
+-- | Module    : Metal.Messages.ThumbnailInfo
+-- Description : Thumbnail image crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains 'ThumbnailInfo'.
 module Metal.Messages.ThumbnailInfo where
 -- | For all 'ThumbnailInfo' @k@, @k@ describes a thumbnail image.
 data ThumbnailInfo = ThumbnailInfo {
