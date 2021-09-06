@@ -1,4 +1,12 @@
--- | This module contains 'EventCommonFields'.
+-- | Module    : Metal.EventCommonFields
+-- Description : Metal's boilerplate record fields
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This module contains 'EventCommonFields'.
 --
 -- SIMON MICHAEL is partially responsible for this approach to adding
 -- boilerplate fields.  VARIK appreciates being slapped sensible.
