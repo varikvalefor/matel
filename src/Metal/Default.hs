@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains some default records.  These records are used
+-- | Module    : Metal.Default
+-- Description : Metal's default records
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- This module contains some default records.  These records are used
 -- instead of having undefined fields because Haskell compilers
 -- generally disapprove of having undefined fields in records.
 module Metal.Default where
