@@ -360,7 +360,7 @@ ban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-ban tarjay rome m a = responseToMaybe <$> TP.req TP.POST querr banReq a
+ban tarjay rome m = responseToMaybe <.> TP.req TP.POST querr banReq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
