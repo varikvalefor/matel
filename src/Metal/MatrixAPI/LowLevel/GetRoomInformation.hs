@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | As a result of Metal.MatrixAPI.LowLevel's hugeness,
+-- | Module    : Metal.MatrixAPI.LowLevel.GetRoomInformation
+-- Description : Metal's stuff what fetches the information of rooms
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- As a result of Metal.MatrixAPI.LowLevel's hugeness,
 -- @'getRoomInformation'@ is moved from Metal.MatrixAPI.LowLevel to
 -- Metal.MatrixAPI.LowLevel.GetRoomInformation.
 module Metal.MatrixAPI.LowLevel.GetRoomInformation (
