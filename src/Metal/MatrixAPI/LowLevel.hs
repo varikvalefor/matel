@@ -323,7 +323,7 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome m a = responseToMaybe <$> TP.req TP.POST querr kickRq a
+kick tarjay rome m = responseToMaybe <.> TP.req TP.POST querr kickRq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
