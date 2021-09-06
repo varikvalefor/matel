@@ -1,3 +1,11 @@
+-- | Module    : Metal.OftenUsedFunctions
+-- Description : Miscellaneous boilerplate functions
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
 -- | Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
