@@ -4,7 +4,7 @@
 -- License     : BSD-3-Clause
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
--- Portability : portable
+-- Portability : POSIX
 --
 -- This module contains the most high-level source code of the Matel
 -- TUI client.
