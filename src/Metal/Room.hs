@@ -1,4 +1,12 @@
--- | Metal.Room contains the 'Room' datatype.
+-- | Module    : Metal.Room
+-- Description : Matel's representation of the Matrix room
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.Room contains the 'Room' datatype.
 module Metal.Room where
 import Metal.Base;
 import Metal.User;
