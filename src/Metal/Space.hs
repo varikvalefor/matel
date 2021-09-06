@@ -1,4 +1,12 @@
--- | Metal.Space contains the 'Space' datatype.
+-- | Module    : Metal.Space
+-- Description : Metal's representation of the Matrix space
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.Space contains the 'Space' datatype.
 module Metal.Space where
 import Metal.Base;
 import Metal.Room;
