@@ -291,7 +291,7 @@ getDisplayName u a = processResponse <$> TP.req TP.GET querr "" a
       -- This "404" thing accounts for users whose display names are
       -- undefined.
       _   -> Left $ T.unpack $ responseToStringth r;
-      -- This case accounts for all situations which should not occur,
+      -- This case accounts for all situations which SHOULD NOT occur,
       -- e.g., "this user does not exist" and "yo, the server done
       -- broke".  Such responses should raise "red flags"; something has
       -- gone wrong within this module, or the program which uses this
