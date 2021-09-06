@@ -1,4 +1,12 @@
--- | Metal.User contains the 'User' datatype."
+-- | Module    : Metal.User
+-- Description : Matel's representation of the Matrix user
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.User contains the 'User' datatype."
 module Metal.User where
 import Metal.Base;
 
