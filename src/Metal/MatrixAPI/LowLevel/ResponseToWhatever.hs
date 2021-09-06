@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | Metal.MatrixAPI.LowLevel.ResponseToWhatever contains functions
+-- | Module    : Metal.MatrixAPI.LowLevel.ResponseToWhatever
+-- Description : HTTP response conversion gubbins
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.MatrixAPI.LowLevel.ResponseToWhatever contains functions
 -- which process the 'Response's of @'httpBS'@, outputting relevant
 -- stuff as data of certain types.
 --
