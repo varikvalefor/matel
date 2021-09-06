@@ -1,7 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 
--- | This module contains @'fetchEvents'@ and some things which support
+-- | Module    : Metal.MatrixAPI.LowLevel.FetchEvents
+-- Description : Metal's low-level event-fetching crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- This module contains @'fetchEvents'@ and some things which support
 -- @'fetchEvents'@.
 module Metal.MatrixAPI.LowLevel.FetchEvents (fetchEvents) where
 import Metal.Auth;
