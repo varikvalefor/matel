@@ -1,9 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Metal.Auth contains Matel's 'Auth' datatype, which is used for
--- the authentication of Matel's user, as well as
--- 'getAuthorisationDetails', which fetches Matel's user's authorisation
--- information.
+-- the authentication of Matel's user.
 module Metal.Auth (Auth, authToken') where
 import Metal.User;
 import qualified Data.ByteString.Char8 as BS8;
