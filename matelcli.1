@@ -253,6 +253,19 @@ to the Matrix room whose internal Matrix ID is
 .Sy !junkers:matrix.org :
 .Pp
 .Dl  echo -n 'yo, you suck' | matelcli send text !junkers:matrix.org
+.Sh IMPROVING THE DISPLAY OF STUFF
+The default
+.Dq Show
+instances which are used to print stuff are by and large a bit cheesy;
+however, re-writing these things should be reasonably easy for
+experienced Haskellers.  But inexperienced Haskellers need not worry;
+within reason, VARIK is willing to write custom
+.Dq Show
+instances for Matel users.  But men who wish to request custom
+.Dq Show
+instances should ensure that the desired
+.Dq Show
+instance does not already exist.
 .Sh AUTHOR
 .Nm matelcli
 is maintained by
