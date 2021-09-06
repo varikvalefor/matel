@@ -46,11 +46,15 @@ module Plegg where
   foreign import ccall "unistd.h pledge" pledge :: CString -> Ptr [CString] -> IO Int;
   foreign import ccall "unistd.h unveil" unveil :: CString -> CString -> IO Int;
 
+  -- | @plegg@ is an extremely high-level interface to @pledge(2)@.  At
+  -- this point, just read the source code.
   plegg :: IO ();
   plegg = throwErrnoIfMinus1_ "pledge fails!" $
           withCString "rpath inet dns stdio" $ \premises ->
           pledge premises nullPtr;
 
+  -- | @univac@ is an extremely high-level interface to @unveil(2)@.  At
+  -- this point, just read the source code.
   univac :: IO ();
   univac =
     getHomeDirectory >>= \hd ->
