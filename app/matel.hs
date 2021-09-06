@@ -6,6 +6,7 @@
 
 module Main where
 import TUI;
+import Plegg;
 import GetAuth;
 import Metal.Auth;
 import Metal.Base;
@@ -20,6 +21,7 @@ import Control.Concurrent;
 -- Write your own crap.
 main :: IO ();
 main =
+  univac >> plegg >>
   getAuthorisationDetails >>= \aufFile ->
   newEmptyMVar >>= \comVar ->
   forkIO (fetchData comVar aufFile) >> summonTUI comVar;

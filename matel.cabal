@@ -81,6 +81,7 @@ executable matel
   ghc-options: -haddock -threaded -O2 -dynamic
   other-modules:
     TUI,
+    Plegg,
     Colour,
     GetAuth
   build-depends:
