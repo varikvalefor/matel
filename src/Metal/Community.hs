@@ -1,4 +1,12 @@
--- | Metal.Community contains the 'Community' datatype.
+-- | Module    : Metal.Community
+-- Description : Metal's 'Community' datatype
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.Community contains the 'Community' datatype.
 module Metal.Community where
 import Metal.Base;
 
