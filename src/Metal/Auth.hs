@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | Metal.Auth contains Matel's 'Auth' datatype, which is used for
+-- | Module    : Metal.Auth
+-- Description : Metal's 'Auth' type and similar stuff
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : POSIX
+--
+-- Metal.Auth contains Matel's 'Auth' datatype, which is used for
 -- the authentication of Matel's user.
 module Metal.Auth (Auth, authToken') where
 import Metal.User;
