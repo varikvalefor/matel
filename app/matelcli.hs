@@ -39,7 +39,7 @@ import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 -- | Chicken chow mein main...
 main :: IO ();
 main =
-  plegg >>
+  univac >> plegg >>
   getAuthorisationDetails >>= \aufFile ->
     getArgs >>= flip determineAction aufFile;
 

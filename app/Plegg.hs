@@ -41,13 +41,47 @@ module Plegg where
   import Foreign (Ptr, nullPtr);
   import Foreign.C.Error (throwErrnoIfMinus1_);
   import Foreign.C.String (CString, withCString);
+  import System.Directory;
 
   foreign import ccall "unistd.h pledge" pledge :: CString -> Ptr [CString] -> IO Int;
+  foreign import ccall "unistd.h unveil" unveil :: CString -> CString -> IO Int;
 
   plegg :: IO ();
   plegg = throwErrnoIfMinus1_ "pledge fails!" $
           withCString "rpath inet dns stdio" $ \premises ->
           pledge premises nullPtr;
+
+  univac :: IO ();
+  univac = exposeConfigPath >> exposeRandomPath >> exposeCAPath
+    where
+    exposeConfigPath :: IO ()
+    exposeConfigPath = 
+      throwErrnoIfMinus1_ "unveil hath fallen!" $
+      ((++ "/.config/matel") <$> getHomeDirectory) >>= \path ->
+      withCString path $ \pathC ->
+      withCString "rx" $ \perm ->
+      unveil pathC perm
+    -- \| Exposing this file  is necessary because if this thing is not
+    -- exposed, then Matel has no reason to trust that the homeserver is
+    -- actually the homeserver, as opposed to being some lame-ass
+    -- credential sniffer.
+    exposeCAPath :: IO ()
+    exposeCAPath = 
+      throwErrnoIfMinus1_ "unveil hath fallen!" $
+      ((++ "/.pki") <$> getHomeDirectory) >>= \path ->
+      withCString "/etc/ssl/cert.pem" $ \pathC ->
+      withCString "rx" $ \perm ->
+      unveil pathC perm
+    -- \| Exposing /dev/random IS necessary; if /dev/random is not
+    -- exposed, then the entropy which is used to initiate TLS
+    -- connections cannot be generated.
+    exposeRandomPath :: IO ()
+    exposeRandomPath = 
+      throwErrnoIfMinus1_ "unveil hath fallen!" $
+      withCString "/dev/urandom" $ \pathC ->
+      withCString "rx" $ \perm ->
+      unveil pathC perm;
+
 #else
   plegg :: IO ();
   plegg = return ();
