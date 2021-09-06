@@ -150,7 +150,7 @@ sync since a = responseToLeftRight <$> TP.req TP.GET querr syncreq a
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
-joinedRooms a = processResponse <$> TP.req TP.GET querr "" a
+joinedRooms = processResponse <.> TP.req TP.GET querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
