@@ -128,7 +128,7 @@ sync :: Maybe String
      -> Auth
      -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
-sync since a = responseToLeftRight <$> TP.req TP.GET querr syncreq a
+sync since = responseToLeftRight <.> TP.req TP.GET querr syncreq
   where
   querr :: String
   querr = "_matrix/client/r0/sync"
