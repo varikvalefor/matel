@@ -24,7 +24,7 @@ copyright:     (c) Varik Valefor 2021.
 category:      Chat
 
 library
-  ghc-options: -O2 -haddock
+  ghc-options: -O2 -haddock -Wall
   exposed-modules:
     Metal.Auth
     Metal.Space
@@ -98,10 +98,12 @@ executable matelcli
   ghc-options: -haddock -threaded -O2 -dynamic
   other-modules:
     GetAuth
+    Plegg
   build-depends:
     base ^>=4.14.1.0,
     directory,
     matel,
-    text
+    text,
+    filepath
   hs-source-dirs: app
   default-language: Haskell2010

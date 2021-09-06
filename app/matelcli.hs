@@ -12,6 +12,7 @@
 -- is only of particular interest to men who wish to modify @matelcli@
 -- or understand the inner workings of @matelcli@.
 module Main where
+import Plegg;
 import GetAuth;
 import Text.Read;
 import Data.Maybe;
@@ -38,8 +39,9 @@ import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
 -- | Chicken chow mein main...
 main :: IO ();
 main =
+  plegg >>
   getAuthorisationDetails >>= \aufFile ->
-  getArgs >>= flip determineAction aufFile;
+    getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
