@@ -1,4 +1,12 @@
--- | Metal.Messages.Standard contains the 'StdMess' record type.
+-- | Module    : Metal.Messages.Standard
+-- Description : Unencrypted/decrypted message type
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.Messages.Standard contains the 'StdMess' record type.
 module Metal.Messages.Standard where
 import Metal.Base;
 import Metal.EventCommonFields;
