@@ -1,4 +1,12 @@
--- | Metal.Base contains the core data types of Metal.
+-- | Module    : Metal.Base
+-- Description : Metal's basic datatypes and whatnot
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.Base contains the core data types of Metal.
 module Metal.Base where
 import qualified Data.Text as T;
 
