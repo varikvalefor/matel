@@ -1,4 +1,12 @@
--- | This file contains 'EncryptedFile' and company.
+-- | Module    : Metal.Messages.EncryptedFile
+-- Description : Encrypted file attachment record type
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- This file contains 'EncryptedFile' and company.
 module Metal.Messages.EncryptedFile where
 -- | For all 'EncryptedFile' @k@, @k@ describes an encrypted file.
 data EncryptedFile = EncryptedFile {
