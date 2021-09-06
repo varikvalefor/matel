@@ -1,4 +1,13 @@
--- | Metal.Messages.Encrypted contains the source code of the
+-- | Module    : Metal.Encrypted
+-- Description : Metal's datatype what represents encrypted events
+--               of the Matrix instant messaging service
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : experimental
+-- Portability : portable
+--
+-- Metal.Messages.Encrypted contains the source code of the
 -- 'CryptoMess' record type.
 module Metal.Encrypted where
 import Metal.Base;
