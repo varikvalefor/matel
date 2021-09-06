@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | Metal.MatrixAPI.LowLevel contains functions which directly access
+-- | Module    : Metal.MatrixAPI.LowLevel
+-- Description : Low-level interface to the Matrix API
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.MatrixAPI.LowLevel contains functions which directly access
 -- the Matrix API via HTTP requests, as opposed to being abstracted.
 --
 -- Additionally, the functions of this module do NOT transparently
