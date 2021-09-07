@@ -1,5 +1,10 @@
 # Compiling
 The `Makefile` handles the compilation and installation of Matel.
+
+To compile and install Matel, run the following command:
+```sh
+make
+```
 # Caveats
 First, this file is unfinished.
 ## Cross-Compiling
