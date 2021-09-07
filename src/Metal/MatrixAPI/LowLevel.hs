@@ -516,8 +516,7 @@ upload attachment name a = process <$> (reequest >>= httpBS)
              setRequestBodyLBS attachmentBSL <$> parseRequest querr
   --
   attachmentBSL :: BSL.ByteString
-  attachmentBSL = fromString $
-                  T.unpack attachment
+  attachmentBSL = fromString $ T.unpack attachment
   --
   querr :: String
   querr = "POST https://" ++ homeserver a ++
