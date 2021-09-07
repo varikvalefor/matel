@@ -501,7 +501,7 @@ upload attachment name a = process <$> (reequest >>= httpBS)
   where
   encodedName :: String
   encodedName = toString $
-                urlEncode True (BSL.toStrict $ fromString name)
+                urlEncode True (fromString name)
   --
   process :: Response BS.ByteString -> Either Stringth Stringth
   process k = case getResponseStatusCode k of
