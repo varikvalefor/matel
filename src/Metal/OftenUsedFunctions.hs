@@ -10,6 +10,7 @@
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
 import Network.HTTP.Simple;
+import qualified Data.Text.Lazy as T;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
@@ -59,3 +60,7 @@ class StringLike a where
 instance StringLike BSL.ByteString where
   fromString = BSL.pack . map (toEnum . fromEnum)
   toString = map (toEnum . fromEnum) . BSL.unpack;
+
+instance StringLike T.Text where
+  fromString = T.pack
+  toString = T.unpack;
