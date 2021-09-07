@@ -13,7 +13,7 @@ Let _k_ denote the set of all operating systems which support `pledge(2)` and `u
 Let _m_ denote the set of all operating systems which do not support `pledge(2)` or `unveil(2)`.
 
 Let _E_ denote the set of all Matel programs which support `pledge(2)` or `unveil(2)`, e.g., MATELCLI.
-### Compiling on `pledge(2)`-et-al.-Supporting Systems
+### Compiling on Systems which Support `pledge(2)` et al.
 Theorem.  For all _g_ in _E_, for all _a_ in _k_, for all _b_ in _m_, _b_ does not run the result of compiling _g_ on _a_.
 
 Proof.
