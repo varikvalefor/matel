@@ -39,7 +39,6 @@ instance Combinable StdMess where
     body = g body,
     fmtBody = g fmtBody,
     fmt = g fmt,
-    attachment_client = g attachment_client,
     geo_uri = g geo_uri,
     url = g url,
     filename = g filename,

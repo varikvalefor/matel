@@ -68,7 +68,6 @@ stdMess = StdMess {
   -- other projects.
   fmtBody = Nothing,
   fmt = MatrixCusHTML,
-  attachment_client = Just ("noods", "spaghetti\nrigatoni\nramen"),
   geo_uri = Nothing,
   url = Nothing,
   Metal.Messages.Standard.fileInfo = Nothing,
