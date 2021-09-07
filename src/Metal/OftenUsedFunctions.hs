@@ -46,7 +46,16 @@ justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
 (<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
 (<.>) a b c = a <$> b c;
 
--- | @fromString x@ is a 'BSL.ByteString' whose content is the content
--- of @x@.
-fromString :: String -> BSL.ByteString;
-fromString = BSL.pack . map (toEnum . fromEnum);
+-- | 'StringLike' contains the types which can be converted to and from
+-- 'String's.
+class StringLike a where
+  -- | For all 'StringLike' values @a@, @fromString a@ is a 'String'
+  -- which is equivalent to @a@.
+  toString :: a -> String
+  -- | For all 'StringLike' types @a@, @fromString k :: a@ is an 'a'
+  -- value which is equivalent to @k@.
+  fromString :: String -> a
+
+instance StringLike BSL.ByteString where
+  fromString = BSL.pack . map (toEnum . fromEnum)
+  toString = map (toEnum . fromEnum) . BSL.unpack;
