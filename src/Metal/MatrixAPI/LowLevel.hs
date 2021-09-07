@@ -28,6 +28,7 @@ module Metal.MatrixAPI.LowLevel (
   ban,
   unban,
   createRoom,
+  upload,
   module Metal.MatrixAPI.LowLevel.Send,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
@@ -39,6 +40,7 @@ import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
 import Network.HTTP.Simple;
+import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
@@ -49,6 +51,7 @@ import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
+import Network.HTTP.Types.URI (urlEncode);
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
@@ -476,3 +479,46 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST querr bod
   err = error "An unexpected error occurs!  The response code \
         \indicates success... but the body of the response lacks a \
         \\"room_id\" field.";
+
+-- | @upload content filename a@ uploads the file whose content is
+-- @content@ to the homeserver of @a@.  @upload@ claims that the
+-- original filename of the file which contains @content@ is
+-- @filename@; however, the name of this file need not be @filename@.
+--
+-- The 'Right' value of the output, if present, contains the MXC URI
+-- of the file which is uploaded.
+--
+-- The 'Left' value of the output, if present, describes the error
+-- which occurs such that the file is not properly uploaded.
+upload :: Stringth
+       -- ^ The content of the file which should be uploaded
+       -> String
+       -- ^ The name of the file which should be uploaded
+       -> Auth
+       -- ^ The authorisation information
+       -> IO (Either Stringth Stringth);
+upload attachment name a = process <$> (reequest >>= httpBS)
+  where
+  encodedName :: String
+  encodedName = map (toEnum . fromEnum) $ BS.unpack $
+                urlEncode True (BSL.toStrict $ fromString name)
+  --
+  process :: Response BS.ByteString -> Either Stringth Stringth
+  process k = case getResponseStatusCode k of
+    200 -> Right $ fromJust $
+             (Q..! "{content_uri}") <$>
+             Q.decode (BSL.fromStrict $ getResponseBody k)
+    _   -> responseToLeftRight k
+  --
+  reequest :: IO Request
+  reequest = addRequestHeader "Content-Type" "text/plain" .
+             addRequestHeader "Authorization" (authToken' a) .
+             setRequestBodyLBS attachmentBSL <$> parseRequest querr
+  --
+  attachmentBSL :: BSL.ByteString
+  attachmentBSL = BSL.pack $ map (toEnum . fromEnum) $
+                  T.unpack attachment
+  --
+  querr :: String
+  querr = "POST https://" ++ homeserver a ++
+          "/_matrix/media/r0/upload?filename=" ++ encodedName;
