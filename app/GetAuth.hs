@@ -3,7 +3,7 @@
 -- | This module contains @'getAuthorisationDetails'@; although the
 -- function was previously contained within Metal.Auth, Metal makes
 -- no use of @getAuthorisationDetails@.
-module GetAuth (getAuthorisationDetails) where
+module GetAuth (getAuthorisationDetails, configFilePath) where
 import Metal.Auth;
 import Metal.Base;
 import Metal.User;
@@ -22,11 +22,8 @@ import qualified Metal.Default as Def;
 -- @[HOME DIRECTORY]\/.config\/matel@, whose formatting is described in
 -- Matel's "README" file.
 getAuthorisationDetails :: IO Auth;
-getAuthorisationDetails = configToUser <$> configFile
+getAuthorisationDetails = fmap configToUser $ T.readFile =<< configFilePath
   where
-  configFile :: IO Stringth
-  configFile = getHomeDirectory >>= T.readFile . (++ "/.config/matel")
-  --
   configToUser :: Stringth -> User
   configToUser cfg = Def.user {
     username = T.unpack $ xOf "username" cfg,
@@ -34,6 +31,10 @@ getAuthorisationDetails = configToUser <$> configFile
     homeserver = T.unpack $ xOf "homeserver" cfg,
     authToken = T.unpack $ xOf "authtoken" cfg
   };
+
+-- | @configFilePath@ is the path of Matel's configuration file.
+configFilePath :: IO FilePath;
+configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 
 -- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
 --
