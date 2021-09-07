@@ -41,7 +41,7 @@ import qualified Data.Text as T;
 import Metal.MatrixAPI.HighLevel;
 import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
-import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick);
+import Metal.MatrixAPI.LowLevel (loginPass, sync, join, leave, kick, upload);
 
 -- | Chicken chow mein main...
 main :: IO ();
@@ -71,6 +71,7 @@ determineAction (command:stuff) a = case command of
   "leave"      -> runLeave stuff a
   "kick"       -> runKick stuff a
   "createroom" -> createRoom' stuff a
+  "upload"     -> ooplawed stuff a
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -329,3 +330,21 @@ messToHumanReadable k =
   "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
   username (sender $ boilerplate k) ++ " sends the following " ++
   show (msgType k) ++ ": " ++ show (body k);
+
+-- | @ooplawed (filename:_) a@ uploads the file whose content is read
+-- from the standard input to the homeserver of @a@.  The homeserver
+-- is told that the filename of the uploaded file is @filename@.
+--
+-- Users of @ooplawed@ should not that @ooplawed@ uploads UNENCRYPTED
+-- files.  @ooplawed@ should be TLS-protected but does not support
+-- end-to-end encryption.
+ooplawed :: [String]
+         -- ^ The @'tail'@ of the command-line arguments
+         -> Auth
+         -- ^ The authorisation information
+         -> IO ();
+ooplawed (f:_) a = T.getContents >>= \c ->
+                   upload c f a >>= process
+  where
+  process :: Either Stringth Stringth -> IO ()
+  process = either (error . T.unpack) T.putStrLn;

@@ -245,6 +245,34 @@ the created room is written to the standard output.
 .Pp
 If something breaks, then a description of the breakage is written to
 the standard error.
+.Sh UPLOADING FILES
+.Nm matelcli upload
+.Ar filename
+uploads the file which is read from the standard input to the homeserver
+of the user of
+.Nm matelcli ,
+claiming that the filename of the uploaded file is
+.Ar filename .
+.Pp
+The content of the file is cheesily read from the standard input because
+giving
+.Nm matelcli
+direct access to the file implies being unable to use
+.Xr unveil 2
+to the maximum extent.
+.Pp
+Luckily, the cheesiness can be partially
+decreased if for all files
+.Va k ,
+.Va k
+is uploaded using the following command:
+.Pp
+.Dl matelcli upload k < k
+.Pp
+The user should note that files which are uploaded via the
+.Nm upload
+command are uploaded to the homeserver
+.Em unencrypted .
 .Sh EXAMPLES
 .Ss Sending a Text-Based Message
 The following command sends a message whose body is
