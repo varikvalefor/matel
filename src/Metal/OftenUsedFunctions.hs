@@ -61,6 +61,10 @@ instance StringLike BSL.ByteString where
   fromString = BSL.pack . map (toEnum . fromEnum)
   toString = map (toEnum . fromEnum) . BSL.unpack;
 
+instance StringLike BS.ByteString where
+  fromString = BS.pack . map (toEnum . fromEnum)
+  toString = map (toEnum . fromEnum) . BS.unpack;
+
 instance StringLike T.Text where
   fromString = T.pack
   toString = T.unpack;
