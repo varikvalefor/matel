@@ -200,8 +200,19 @@ dispError = maybe (return ()) error;
 -- specified in @k@ and writes this authorisation token to the standard
 -- output.
 logIn :: Auth -> IO ();
-logIn = loginPass >=> either busticate T.putStrLn
+logIn = loginPass >=> either busticate addAndDisplay
   where
+  addAndDisplay :: T.Text -> IO ();
+  addAndDisplay toke = configFilePath >>= \path ->
+                       T.readFile path >>= \phile ->
+                       T.putStrLn toke >>
+                       T.writeFile path (addToken phile toke)
+  --
+  addToken :: T.Text -> T.Text -> T.Text
+  addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
+                        filter ((/= "authtoken: ") . T.take 11) $
+                        T.lines phile
+  --
   busticate :: T.Text -> IO ()
   busticate = error . ("logIn: " ++) . T.unpack;
 

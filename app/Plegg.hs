@@ -50,7 +50,7 @@ module Plegg where
   -- this point, just read the source code.
   plegg :: IO ();
   plegg = throwErrnoIfMinus1_ "pledge fails!" $
-          withCString "rpath inet dns stdio" $ \premises ->
+          withCString "cpath wpath rpath inet dns stdio" $ \premises ->
           pledge premises nullPtr;
 
   -- | @univac@ is an extremely high-level interface to @unveil(2)@.  At
@@ -58,7 +58,7 @@ module Plegg where
   univac :: IO ();
   univac =
     getHomeDirectory >>= \hd ->
-    expose (hd ++ "/.config/matel") "rx" >>
+    expose (hd ++ "/.config/matel") "rwxc" >>
     -- \| Exposing /dev/random IS necessary; if /dev/random is not
     -- exposed, then the entropy which is used to initiate TLS
     -- connections cannot be generated.
