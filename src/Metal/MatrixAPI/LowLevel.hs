@@ -500,7 +500,7 @@ upload :: Stringth
 upload attachment name a = process <$> (reequest >>= httpBS)
   where
   encodedName :: String
-  encodedName = map (toEnum . fromEnum) $ BS.unpack $
+  encodedName = toString $
                 urlEncode True (BSL.toStrict $ fromString name)
   --
   process :: Response BS.ByteString -> Either Stringth Stringth
