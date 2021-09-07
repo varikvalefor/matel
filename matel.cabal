@@ -62,7 +62,7 @@ library
     TemplateHaskell
     DeriveAnyClass
   build-depends:
-    base ^>=4.14.1.0,
+    base ^>= 4.14.1.0,
     bytestring,
     basic-prelude,
     http-conduit,
@@ -86,7 +86,7 @@ executable matel
     Colour
     GetAuth
   build-depends:
-    base ^>=4.14.1.0,
+    base ^>= 4.14.1.0,
     directory,
     brick,
     matel,
@@ -102,7 +102,7 @@ executable matelcli
     GetAuth
     Plegg
   build-depends:
-    base ^>=4.14.1.0,
+    base ^>= 4.14.1.0,
     directory,
     matel,
     text
