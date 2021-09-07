@@ -516,7 +516,7 @@ upload attachment name a = process <$> (reequest >>= httpBS)
              setRequestBodyLBS attachmentBSL <$> parseRequest querr
   --
   attachmentBSL :: BSL.ByteString
-  attachmentBSL = BSL.pack $ map (toEnum . fromEnum) $
+  attachmentBSL = fromString $
                   T.unpack attachment
   --
   querr :: String
