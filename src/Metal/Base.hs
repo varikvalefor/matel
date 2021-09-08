@@ -39,6 +39,8 @@ type CipherByteData = Stringth;
 type PublicKey = Stringth;
 -- | For all 'PrivateKey' @g@, @g@ is a private key.
 type PrivateKey = Stringth;
+-- | For all 'SharedSecret' @k@, @k@ is a shared secret key.
+type SharedSecret = Stringth;
 -- | 'Stringth' is equivalent to 'T.Text' and added only for the sake of
 -- convenience.
 type Stringth = T.Text;

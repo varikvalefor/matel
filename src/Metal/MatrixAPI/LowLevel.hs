@@ -73,7 +73,7 @@ stillUnfinishedStayTuned = ();
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
             -- ^ The plaintext which should be encrypted
-            -> PublicKey
+            -> SharedSecret
             -- ^ The public key which should be used to encrypt the
             -- plaintext
             -> CipherByteData;
@@ -85,8 +85,9 @@ encryptWKey text key = T.pack [];
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData
             -- ^ The ciphertext which should be decrypted
-            -> PrivateKey
-            -- ^ The private key which is used to decrypt the ciphertext
+            -> SharedSecret
+            -- ^ The shared secret key which is used to decrypt the
+            -- ciphertext
             -> ByteData;
 decryptWKey crip key = T.pack [];
 
