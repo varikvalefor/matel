@@ -54,7 +54,7 @@ class Event a where
               -> IO [a];
 
 instance Event StdMess where
-  fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
+  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> [StdMess]
     process k = case getResponseStatusCode k of
@@ -170,7 +170,7 @@ valueMFileToStdMess k = Def.stdMess {
 };
 
 instance Event Encrypted where
-  fetchEvents n d ms rm = process <.> TP.req TP.GET querr ""
+  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> [Encrypted]
     process k = case getResponseStatusCode k of

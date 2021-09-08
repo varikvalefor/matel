@@ -99,7 +99,7 @@ decryptWKey crip key = T.pack [];
 loginPass :: Auth
           -- ^ The authorisation information of Matel's user
           -> IO (Either Stringth Stringth);
-loginPass a = responseToLeftRight' <$> TP.req TP.POST querr logreq a
+loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   where
   querr :: String
   querr = "_matrix/client/r0/login"
@@ -139,7 +139,7 @@ sync :: Maybe String
      -> Auth
      -- ^ The authorisation deets
      -> IO (Either Stringth Stringth);
-sync since = responseToLeftRight <.> TP.req TP.GET querr syncreq
+sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
   where
   querr :: String
   querr = "_matrix/client/r0/sync"
@@ -164,7 +164,7 @@ sync since = responseToLeftRight <.> TP.req TP.GET querr syncreq
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
 joinedRooms :: Auth -> IO (Either Stringth [Room]);
-joinedRooms = processResponse <.> TP.req TP.GET querr ""
+joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse response
@@ -228,7 +228,7 @@ join :: Room
      -> Auth
      -- ^ The authorisation information of Matel's user
      -> IO (Maybe String);
-join r i a = responseToMaybe <$> TP.req TP.POST querr joinReq a
+join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
@@ -285,7 +285,7 @@ getDisplayName :: User
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
                -> IO (Either String User);
-getDisplayName u = processResponse <.> TP.req TP.GET querr ""
+getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
   querr :: String
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
@@ -334,7 +334,7 @@ kick :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-kick tarjay rome m = responseToMaybe <.> TP.req TP.POST querr kickRq
+kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
@@ -371,7 +371,7 @@ ban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-ban tarjay rome m = responseToMaybe <.> TP.req TP.POST querr banReq
+ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
@@ -403,7 +403,7 @@ unban :: User
      -> Auth
      -- ^ The authorisation information
      -> IO (Maybe String);
-unban tarjay rome = responseToMaybe <.> TP.req TP.POST querr unbanRq
+unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
@@ -431,7 +431,7 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r = responseToMaybe <.> TP.req TP.POST querr ""
+leave r = responseToMaybe <.> TP.req TP.POST [] querr ""
   where
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
@@ -454,7 +454,7 @@ createRoom :: Room
            -> Auth
            -- ^ The information which is used to authorise the request
            -> IO (Either String Room);
-createRoom r publcty = responseToEither <.> TP.req TP.POST querr bod
+createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr :: String
   querr = "_matrix/client/r0/createRoom"

@@ -13,18 +13,23 @@ module Metal.MatrixAPI.LowLevel.HTTP where
 import Metal.Auth;
 import Metal.User;
 import Network.HTTP.Simple;
+import Network.HTTP.Types.Header;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
 data ReqType = GET | POST | PUT;
 
--- | @req type_ query body auth@ sends a HTTP request of type @type_@ to
--- FQDN @homeserver auth@ such that @auth@ is used as the content of the
--- "Authorization" header of the request and the path and query string
--- of this request are @query@.
+-- | @req type_ vx query body auth@ sends a HTTP request of type @type_@
+-- to FQDN @homeserver auth@ such that @auth@ is used as the content of
+-- the "Authorization" header of the request and the path and query
+-- string of this request are @query@.  Additionally, the headers which
+-- are specified in @vx@ are added to the request.
 req :: ReqType
     -- ^ The type of request which should be sent
+    -> [(HeaderName, BS.ByteString)]
+    -- ^ The additional header name/header value pairs which the request
+    -- should bear
     -> String
     -- ^ The path and query string of the request which should be sent
     -> BSL.ByteString
@@ -32,16 +37,17 @@ req :: ReqType
     -> Auth
     -- ^ The authorisation information of Matel's user
     -> IO (Response BS.ByteString);
-req type_ query body auth = genRequest >>= httpBS
+req type_ vx query body auth = genRequest >>= httpBS
   where
   genRequest :: IO Request
-  genRequest = addHeader . addBody <$> parseRequest (prefix ++ query)
+  genRequest = addHeaders . addBody <$> parseRequest (prefix ++ query)
   --
   addBody :: Request -> Request
   addBody = setRequestBodyLBS body
   --
-  addHeader :: Request -> Request
-  addHeader = addRequestHeader "Authorization" (authToken' auth)
+  addHeaders :: Request -> Request
+  addHeaders j = foldr (\a b -> addRequestHeader (fst a) (snd a) b) j h
+    where h = ("Authorization", authToken' auth):vx
   --
   prefix :: String
   prefix = show type_ ++ " https://" ++ homeserver auth ++ "/";

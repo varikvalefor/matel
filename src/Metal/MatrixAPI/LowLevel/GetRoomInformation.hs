@@ -156,7 +156,7 @@ rq :: Room
    -> Auth
    -- ^ The user whose authorisation details/homeserver FQDN are used
    -> IO (Response BS.ByteString)
-rq room k = TP.req TP.GET querr ""
+rq room k = TP.req TP.GET [] querr ""
   where
   querr :: String
   querr = "/matrix/_client/r0/rooms/" ++ roomId room ++ k;
