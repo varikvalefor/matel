@@ -47,6 +47,7 @@ library
     -- The following modules export stuff which is of real use only
     -- within Metal.MatrixAPI.LowLevel.
     Metal.MatrixAPI.LowLevel.Types
+    Metal.MatrixAPI.LowLevel.Crypto
     Metal.MatrixAPI.LowLevel.ResponseToWhatever
     Metal.MatrixAPI.LowLevel.GetRoomInformation
     Metal.MatrixAPI.LowLevel.RecordCombination

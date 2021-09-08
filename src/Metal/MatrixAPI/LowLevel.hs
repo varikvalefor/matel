@@ -30,6 +30,7 @@ module Metal.MatrixAPI.LowLevel (
   createRoom,
   upload,
   module Metal.MatrixAPI.LowLevel.Send,
+  module Metal.MatrixAPI.LowLevel.Crypto,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
 import Metal.Auth;
@@ -52,6 +53,7 @@ import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
+import Metal.MatrixAPI.LowLevel.Crypto;
 import Network.HTTP.Types.URI (urlEncode);
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
@@ -66,30 +68,6 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- is added to Matel.
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
-
--- | @encryptWKey z k@ encrypts @z@ with the public key @k@, outputting
--- the resulting ciphertext.
---
--- @encryptWKey@ is currently nonfunctional.
-encryptWKey :: ByteData
-            -- ^ The plaintext which should be encrypted
-            -> SharedSecret
-            -- ^ The public key which should be used to encrypt the
-            -- plaintext
-            -> CipherByteData;
-encryptWKey text key = T.pack [];
-
--- | @decryptWKey z k@ decrypts @z@ with @k@, outputting the
--- resulting 'ByteData'-based data.
---
--- @decryptWKey@ is currently nonfunctional.
-decryptWKey :: CipherByteData
-            -- ^ The ciphertext which should be decrypted
-            -> SharedSecret
-            -- ^ The shared secret key which is used to decrypt the
-            -- ciphertext
-            -> ByteData;
-decryptWKey crip key = T.pack [];
 
 -- | If @username k@ and @password k@ are defined, then @login k@
 -- fetches an authorisation token for Matrix user @k@.
