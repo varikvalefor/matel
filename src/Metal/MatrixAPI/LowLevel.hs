@@ -43,6 +43,7 @@ import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
+import Network.HTTP.Types.Header;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
 import Metal.MatrixAPI.LowLevel.Send;
@@ -497,11 +498,8 @@ upload :: Stringth
        -> Auth
        -- ^ The authorisation information
        -> IO (Either Stringth Stringth);
-upload attachment name a = process <$> (reequest >>= httpBS)
+upload attachment name = process <.> TP.req TP.POST hdr qq atch
   where
-  encodedName :: String
-  encodedName = toString $ urlEncode True (fromString name)
-  --
   process :: Response BS.ByteString -> Either Stringth Stringth
   process k = case getResponseStatusCode k of
     200 -> Right $ fromJust $
@@ -509,14 +507,12 @@ upload attachment name a = process <$> (reequest >>= httpBS)
              Q.decode (BSL.fromStrict $ getResponseBody k)
     _   -> responseToLeftRight k
   --
-  reequest :: IO Request
-  reequest = addRequestHeader "Content-Type" "text/plain" .
-             addRequestHeader "Authorization" (authToken' a) .
-             setRequestBodyLBS attachmentBSL <$> parseRequest querr
+  hdr :: [(HeaderName, BS.ByteString)]
+  hdr = [("Content-Type", "text/plain")]
   --
-  attachmentBSL :: BSL.ByteString
-  attachmentBSL = fromString $ T.unpack attachment
+  atch :: BSL.ByteString
+  atch = fromString $ T.unpack attachment
   --
-  querr :: String
-  querr = "POST https://" ++ homeserver a ++
-          "/_matrix/media/r0/upload?filename=" ++ encodedName;
+  qq :: String
+  qq = "_matrix/media/r0/upload?filename=" ++
+       toString (urlEncode True $ fromString name);
