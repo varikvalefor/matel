@@ -23,11 +23,12 @@ import qualified Data.ByteString.Lazy as BSL;
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
             -- ^ The plaintext which should be encrypted
-            -> SharedSecret
-            -- ^ The public key which should be used to encrypt the
-            -- plaintext
+            -> PublicKey
+            -- ^ The public key of the recipient of the encrypted thing
+            -> PrivateKey
+            -- ^ The private key of the sender of the encrypted thing
             -> CipherByteData;
-encryptWKey text key = T.pack [];
+encryptWKey text pu pr = T.pack [];
 
 -- | @decryptWKey z k@ decrypts @z@ with @k@, outputting the
 -- resulting 'ByteData'-based data.
@@ -35,8 +36,9 @@ encryptWKey text key = T.pack [];
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData
             -- ^ The ciphertext which should be decrypted
-            -> SharedSecret
-            -- ^ The shared secret key which is used to decrypt the
-            -- ciphertext
+            -> PublicKey
+            -- ^ The public key of the sender of the encrypted thing
+            -> PrivateKey
+            -- ^ The private key of the recipient of the encrypted thing
             -> ByteData;
-decryptWKey crip key = T.pack [];
+decryptWKey crip pu pr = T.pack [];
