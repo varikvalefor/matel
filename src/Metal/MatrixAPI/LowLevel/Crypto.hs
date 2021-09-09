@@ -10,12 +10,17 @@
 module Metal.MatrixAPI.LowLevel.Crypto (
   encryptWKey,
   decryptWKey,
+  calcSecret
 ) where
+import Data.Maybe;
 import Metal.Base;
 import qualified Data.Text as T;
+import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
+import qualified Crypto.PubKey.Curve25519 as X25519;
+import Crypto.Error;
 
 -- | @encryptWKey z k@ encrypts @z@ with the public key @k@, outputting
 -- the resulting ciphertext.
@@ -42,3 +47,19 @@ decryptWKey :: CipherByteData
             -- ^ The private key of the recipient of the encrypted thing
             -> ByteData;
 decryptWKey crip pu pr = T.pack [];
+
+-- | @calcSecret a b@ is the shared secret key of @a@ and @b@.
+calcSecret :: PublicKey
+           -> PrivateKey
+           -> X25519.DhSecret;
+calcSecret pu pr = X25519.dh pu' pr'
+  where
+  toBS :: T.Text -> BS.ByteString
+  toBS = fromString . T.unpack
+  --
+  pu' = yield $ X25519.publicKey $ toBS pu
+  --
+  pr' = yield $ X25519.secretKey (fromString $ T.unpack pr :: BS.ByteString)
+  --
+  yield :: CryptoFailable a -> a
+  yield = fromJust . maybeCryptoError;
