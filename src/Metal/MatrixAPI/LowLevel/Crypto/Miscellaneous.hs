@@ -34,3 +34,8 @@ aes256CryptBS pt sk iv = ctrCombine cipher (fromJust $ makeIV iv) pt
   where
   cipher :: AES256
   cipher = fromJust $ maybeCryptoError $ cipherInit sk;
+
+-- | @genIVorKeyBS@ returns a pseudorandom 'BS.ByteString' which is
+-- suitable for use as an AES initialisation vector or secret key.
+genIVorKeyBS :: IO BS.ByteString;
+genIVorKeyBS = getRandomBytes $ blockSize (undefined :: AES256);
