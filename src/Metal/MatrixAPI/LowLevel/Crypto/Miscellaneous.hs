@@ -16,20 +16,15 @@ import Crypto.Random.Types;
 import qualified Data.ByteString as BS;
 
 -- | @aes256CryptBS a b@ encrypts the cleartext @a@ with the 32-byte
--- secret key @b@, returning the 2-tuple of the ciphertext and the
--- initialisation vector.
+-- secret key @b@, returning the resulting ciphertext.
 aes256CryptBS :: BS.ByteString
               -- ^ The cleartext
               -> BS.ByteString
               -- ^ The 32-byte secret key
-              -> IO (BS.ByteString, BS.ByteString);
-aes256CryptBS pt sk = process <$> ivRandomBytes
+              -> BS.ByteString
+              -- ^ The 32-byte initialisation vector
+              -> BS.ByteString;
+aes256CryptBS pt sk iv = ctrCombine cipher (fromJust $ makeIV iv) pt
   where
-  ivRandomBytes :: IO BS.ByteString
-  ivRandomBytes = getRandomBytes $ blockSize (undefined :: AES256)
-  --
   cipher :: AES256
-  cipher = fromJust $ maybeCryptoError $ cipherInit sk
-  --
-  process :: BS.ByteString -> (BS.ByteString, BS.ByteString)
-  process iv = (ctrCombine cipher (fromJust $ makeIV iv) pt, iv);
+  cipher = fromJust $ maybeCryptoError $ cipherInit sk;
