@@ -1,0 +1,12 @@
+-- | Module    : Metal.LowLevel.MatrixAPI.Crypto.Megolm
+-- Description : Implementation of Megolm cryptographic protocol
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.LowLevel.MatrixAPI.Crypto.Megolm contains some functions which
+-- implement the Megolm cryptographic protocol such that messages and
+-- whatnot can be properly encrypted.
+module Metal.LowLevel.MatrixAPI.Crypto.Megolm where
