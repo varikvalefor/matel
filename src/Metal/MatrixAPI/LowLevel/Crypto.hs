@@ -35,8 +35,8 @@ encryptWKey :: ByteData
             -> CipherByteData;
 encryptWKey text pu pr = T.pack [];
 
--- | @decryptWKey z k@ decrypts @z@ with @k@, outputting the
--- resulting 'ByteData'-based data.
+-- | @decryptWKey z pu pr@ decrypts @z@ with the shared secret of public
+-- key @pu@ and private key @pr@, outputting the resulting cleartext.
 --
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData
