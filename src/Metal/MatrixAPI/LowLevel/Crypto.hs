@@ -50,7 +50,11 @@ decryptWKey crip pu pr = T.pack [];
 
 -- | @calcSecret a b@ is the shared secret key of @a@ and @b@.
 calcSecret :: PublicKey
+           -- ^ The public key of the recipient of the data with which
+           -- the resulting shared secret is encrypted
            -> PrivateKey
+           -- ^ The private key of the sender of the data with which the
+           -- resulting shared secret is encrypted
            -> X25519.DhSecret;
 calcSecret pu pr = X25519.dh pu' pr'
   where
