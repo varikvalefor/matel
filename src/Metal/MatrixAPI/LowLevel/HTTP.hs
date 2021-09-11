@@ -37,7 +37,7 @@ req :: ReqType
     -> Auth
     -- ^ The authorisation information of Matel's user
     -> IO (Response BS.ByteString);
-req type_ vx query body auth = genRequest >>= httpBS
+req type_ headers query body auth = genRequest >>= httpBS
   where
   genRequest :: IO Request
   genRequest = addHeaders . addBody <$> parseRequest (prefix ++ query)
@@ -47,7 +47,7 @@ req type_ vx query body auth = genRequest >>= httpBS
   --
   addHeaders :: Request -> Request
   addHeaders j = foldr (uncurry addRequestHeader) j h
-    where h = ("Authorization", authToken' auth):vx
+    where h = ("Authorization", authToken' auth):headers
   --
   prefix :: String
   prefix = show type_ ++ " https://" ++ homeserver auth ++ "/";
