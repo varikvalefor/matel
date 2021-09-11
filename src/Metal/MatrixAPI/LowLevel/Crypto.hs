@@ -22,8 +22,8 @@ import qualified Data.ByteString.Lazy as BSL;
 import qualified Crypto.PubKey.Curve25519 as X25519;
 import Crypto.Error;
 
--- | @encryptWKey z pu pr@ encrypts @z@ with the public key @pu@ and the
--- private key @pr@, outputting the resulting ciphertext.
+-- | @encryptWKey z pu pr@ encrypts @z@ with the shared secret of public
+-- key @pu@ and private key @pr@, outputting the resulting ciphertext.
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
