@@ -63,3 +63,7 @@ instance Show ReqType where
             \fire is extinguished with saltwater, and electronic \
             \stuff does not particularly care for saltwater.  As \
             \such, show is now broken.";
+            -- \^ No, GHC, this case is not redundant.  This case exists
+            -- to ensure that if some weird new ReqType is added without
+            -- receiving a 'Show' instance, then a descriptive error may
+            -- be thrown.
