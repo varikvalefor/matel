@@ -46,7 +46,7 @@ req type_ vx query body auth = genRequest >>= httpBS
   addBody = setRequestBodyLBS body
   --
   addHeaders :: Request -> Request
-  addHeaders j = foldr (\a b -> addRequestHeader (fst a) (snd a) b) j h
+  addHeaders j = foldr (uncurry addRequestHeader) j h
     where h = ("Authorization", authToken' auth):vx
   --
   prefix :: String
