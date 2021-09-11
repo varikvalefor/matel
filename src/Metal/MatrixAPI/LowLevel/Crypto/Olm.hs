@@ -1,0 +1,12 @@
+-- | Module    : Metal.LowLevel.MatrixAPI.Crypto.Olm
+-- Description : Implementation of Olm cryptographic protocol
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- Metal.LowLevel.MatrixAPI.Crypto.Olm contains some functions which
+-- implement the Olm cryptographic protocol such that messages and
+-- whatnot can be properly encrypted.
+module Metal.LowLevel.MatrixAPI.Crypto.Olm where
