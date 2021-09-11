@@ -30,7 +30,7 @@ aes256CryptBS :: BS.ByteString
               -> BS.ByteString
               -- ^ The 32-byte initialisation vector
               -> BS.ByteString;
-aes256CryptBS pt sk iv = ctrCombine cipher (fromJust $ makeIV iv) pt
+aes256CryptBS t sk iv = ctrCombine cipher (fromJust $ makeIV iv) t
   where
   -- \| A HOPEFULLY INTERESTING NOTE: Unlike many other type
   -- specifications which exist within the "@where@" clauses of Metal,
