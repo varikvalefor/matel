@@ -32,6 +32,12 @@ aes256CryptBS :: BS.ByteString
               -> BS.ByteString;
 aes256CryptBS pt sk iv = ctrCombine cipher (fromJust $ makeIV iv) pt
   where
+  -- \| A HOPEFULLY INTERESTING NOTE: Unlike many other type
+  -- specifications which exist within the "@where@" clauses of Metal,
+  -- this type specification is actually necessary.
+  --
+  -- Go ahead and try to compile this module after removing the type
+  -- specification.
   cipher :: AES256
   cipher = fromJust $ maybeCryptoError $ cipherInit sk;
 
