@@ -15,7 +15,13 @@ import Crypto.Cipher.Types;
 import Crypto.Random.Types;
 import qualified Data.ByteString as BS;
 
--- | @aes256CryptBS a b@ encrypts the cleartext @a@ with the 32-byte
+-- | If @t@ is ciphertext, then @aes256CryptBS t sk iv@ is the result of
+-- decrypting @t@ with the secret key @sk@ and the initialisation vector
+-- @sk@.
+--
+-- If @t@ is cleartext, then @aes256CryptBS t sk iv@ is the result of
+-- encrypting @t@ with the secret key @sk@ and the initialisation vector
+-- @sk@.
 -- secret key @b@, returning the resulting ciphertext.
 aes256CryptBS :: BS.ByteString
               -- ^ The cleartext
