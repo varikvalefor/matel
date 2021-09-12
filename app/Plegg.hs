@@ -52,6 +52,7 @@ module Plegg where
       withCString perms $ \permsC ->
       unveil pathC permsC;
 #else
+  -- | @plegg@ does nothing; this executable is not compiled on OpenBSD.
   plegg :: IO ();
   plegg = return ();
 
