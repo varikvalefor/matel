@@ -1,4 +1,12 @@
--- | This module contains some predefined colours which Matel uses when
+-- | Module    : Colour
+-- Description : Matel's colour-coding crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : POSIX
+--
+-- This module contains some predefined colours which Matel uses when
 -- Matel draws Matel's TUI.
 --
 -- Matel is designed to work best with light themes; as such, the
