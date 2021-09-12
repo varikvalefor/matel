@@ -456,9 +456,8 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
   -- \^ @fromJust@ could be used... but when processsing Nothing,
   -- @fromJust@ would provide a relatively nondescriptive error message,
-  -- and VARIK finds that nondescriptive error messages are crap.
-  -- As such, VARIK elects to use @fromMaybe err@ in favour of
-  -- @fromJust@.
+  -- and VARIK finds that nondescriptive error messages are crap.  As
+  -- such, VARIK elects to use @fromMaybe err@ in favour of @fromJust@.
   --
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
