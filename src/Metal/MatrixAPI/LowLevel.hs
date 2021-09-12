@@ -14,8 +14,6 @@
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
 module Metal.MatrixAPI.LowLevel (
-  encryptWKey,
-  decryptWKey,
   loginPass,
   sync,
   joinedRooms,
