@@ -56,6 +56,8 @@ module Plegg where
   plegg :: IO ();
   plegg = return ();
 
+  -- | @univac@ does nothing; this executable is not compiled on
+  -- OpenBSD.
   univac :: IO ();
   univac = return ();
 #endif
