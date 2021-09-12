@@ -4,6 +4,8 @@
 --
 -- Although the function was previously contained within Metal.Auth,
 -- Metal makes no use of @getAuthorisationDetails@.
+-- @getAuthorisationDetails@ is moved to this file to ensure that the
+-- complexity of Metal is minimised.
 module GetAuth (getAuthorisationDetails, configFilePath) where
 import Metal.Auth;
 import Metal.Base;
