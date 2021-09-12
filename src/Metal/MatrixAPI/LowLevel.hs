@@ -454,6 +454,9 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   --
   roomIdOf :: BS.ByteString -> Identifier
   roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
+  -- \^ @fromJust@ could be used... but when processsing Nothing,
+  -- @fromJust@ would provide a relatively nondescriptive error message,
+  -- and the author finds that nondescriptive error messages are crap.
   --
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
