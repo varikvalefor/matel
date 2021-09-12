@@ -1,6 +1,16 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE CPP #-}
 
+-- | Module    : Plegg
+-- Description : OpenBSD-specific security rubbish
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- This module ensures that when compiled on OpenBSD systems, Matel and
+-- MATELCLI support OpenBSD's @pledge(2)@ and @unveil(2)@.
 module Plegg where
 
 #ifdef openbsd_HOST_OS
