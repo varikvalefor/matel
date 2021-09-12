@@ -52,11 +52,11 @@ module Plegg where
       withCString perms $ \permsC ->
       unveil pathC permsC;
 #else
-  -- | @plegg@ does nothing; this executable is not compiled on OpenBSD.
+  -- | @plegg@ does nothing; this file is not compiled on OpenBSD.
   plegg :: IO ();
   plegg = return ();
 
-  -- | @univac@ does nothing; this executable is not compiled on
+  -- | @univac@ does nothing; this file is not compiled on
   -- OpenBSD.
   univac :: IO ();
   univac = return ();
