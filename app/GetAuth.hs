@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains @'getAuthorisationDetails'@ and
+-- | Module    : GetAuth
+-- Description : Matel's 'Auth'-fetching crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- This module contains @'getAuthorisationDetails'@ and
 -- @'configFilePath'@.
 --
 -- Although the function was previously contained within Metal.Auth,
