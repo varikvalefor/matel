@@ -457,6 +457,8 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   -- \^ @fromJust@ could be used... but when processsing Nothing,
   -- @fromJust@ would provide a relatively nondescriptive error message,
   -- and the author finds that nondescriptive error messages are crap.
+  -- As such, the author elects to use @fromMaybe err@ in favour of
+  -- @fromJust@.
   --
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
