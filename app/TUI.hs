@@ -1,4 +1,12 @@
--- | TUI contains some functions which Matel uses when drawing stuff to
+-- | Module    : TUI
+-- Description : Matel's main TUI crap
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : POSIX
+--
+-- TUI contains some functions which Matel uses when drawing stuff to
 -- the terminal.
 --
 -- Stuff is placed into TUI to ensure that Matel's source code is at
