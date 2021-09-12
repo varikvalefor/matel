@@ -343,14 +343,14 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 --
 -- An error message is provided iff an error is encountered.
 ban :: User
-     -- ^ A description of the user which should be banned
-     -> Room
-     -- ^ The room from which the user should be banned
-     -> String
-     -- ^ The reason for the banning of the user
-     -> Auth
-     -- ^ The authorisation information
-     -> IO (Maybe String);
+    -- ^ A description of the user which should be banned
+    -> Room
+    -- ^ The room from which the user should be banned
+    -> String
+    -- ^ The reason for the banning of the user
+    -> Auth
+    -- ^ The authorisation information
+    -> IO (Maybe String);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
   querr :: String
