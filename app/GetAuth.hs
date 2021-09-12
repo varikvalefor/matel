@@ -1,8 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | This module contains @'getAuthorisationDetails'@; although the
--- function was previously contained within Metal.Auth, Metal makes
--- no use of @getAuthorisationDetails@.
+-- | This module contains @'getAuthorisationDetails'@.
+--
+-- Although the function was previously contained within Metal.Auth,
+-- Metal makes no use of @getAuthorisationDetails@.
 module GetAuth (getAuthorisationDetails, configFilePath) where
 import Metal.Auth;
 import Metal.Base;
