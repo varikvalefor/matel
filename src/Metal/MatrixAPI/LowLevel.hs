@@ -39,7 +39,6 @@ import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
 import Network.HTTP.Simple;
-import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import Network.HTTP.Types.Header;
