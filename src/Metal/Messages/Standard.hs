@@ -14,7 +14,7 @@ import Metal.Messages.FileInfo;
 import Metal.Messages.EncryptedFile;
 
 -- | 'MessageType' is used to describe the types of the messages which
--- 'StdMess' records represent.  Documentation of this thing is visible
+-- 'StdMess' records represent.  Useful documentation of this thing is visible
 -- in the documentation of @'msgType'@; 'MessageType' is actually pretty
 -- useless alone.
 data MessageType = TextInnit
