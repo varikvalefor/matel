@@ -462,7 +462,8 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   err :: Stringth
   err = error "An unexpected error occurs!  The response code \
         \indicates success... but the body of the response lacks a \
-        \\"room_id\" field.";
+        \\"room_id\" field.\nThe homeserver could have broken \
+        \spectacularly, or createRoom could contain an error.";
 
 -- | @upload content filename a@ uploads the file whose content is
 -- @content@ to the homeserver of @a@.  @upload@ claims that the
