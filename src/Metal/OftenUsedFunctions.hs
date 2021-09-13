@@ -6,7 +6,7 @@
 -- Stability   : experimental
 -- Portability : portable
 --
--- | Metal.OftenUsedFunctions contains some functions which are used by
+-- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
 import Network.HTTP.Simple;
