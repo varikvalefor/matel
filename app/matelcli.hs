@@ -166,6 +166,8 @@ grab k a
     "early"  -> earlyMessagesFrom n room a >>= mapM_ print
     _        -> error "I'll grab you if you don't grab some sense."
   where
+  -- \| This variable refers to the number of messages which should be
+  -- fetched.
   n :: Integer
   n = fromMaybe (-42) $ readMaybe $ head k
   --
