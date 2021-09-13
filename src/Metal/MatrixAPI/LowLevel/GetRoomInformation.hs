@@ -18,14 +18,17 @@ import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.Auth;
+import Data.Aeson.Quick;
 import Control.Lens hiding ((<.>));
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
+import qualified Data.Aeson as A;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Lens as A;
 import qualified Data.ByteString as BS;
+import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
@@ -69,12 +72,19 @@ getEncryptionStatus :: Room
                     -- ^ The authorisation information which is used to
                     -- fetch the encryption status
                     -> IO Room;
-getEncryptionStatus room = process <.> rq room "/event/m.room.key"
+getEncryptionStatus room = process <.> rq room "/event/m.room_key"
   where
   process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
-    200 -> error "TODO: IMPLEMENT THIS THING!"
-    _   -> Def.room;
+    200 -> Def.room {publicKey = Just $ bd .! "{content:{session_key}"}
+    _   -> Def.room
+    where
+    bd = fromJust $ A.decode $ BSL.fromStrict $
+         getResponseBody response;
+         -- \^ @fromJust@ is used in favour of a relatively elegant
+         -- thing because @fromJust@ should always work here.  If
+         -- @fromJust@ does not work, then something has gone horribly,
+         -- horribly wrong.
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- equals a 'Room' record whose @members@ field is a list of the members
