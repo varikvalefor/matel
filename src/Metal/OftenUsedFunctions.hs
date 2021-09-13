@@ -16,6 +16,12 @@ import qualified Data.ByteString.Lazy as BSL;
 
 -- | @detroit k@ throws an @'error'@ such that a description of @k@ is
 -- written to the standard error.
+--
+-- To ensure that a decent amount of debug information is available if
+-- stuff breaks, where appropriate, @detroit@ should be used instead of
+-- some custom error-generating thing.  However, as implied by "where
+-- appropriate", custom error messages may be used to throw errors for
+-- non-'Response' data.
 detroit :: Response BS.ByteString -> a;
 detroit k = error $ "Thus spake the homeserver: " ++
             show (getResponseStatusCode k) ++ "; " ++
