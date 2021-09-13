@@ -30,7 +30,8 @@ detroit k = error $ "Thus spake the homeserver: " ++
 -- Compare with @'justRight'@.
 justLeft :: Either a b -> a;
 justLeft (Left a) = a;
-justLeft (Right _) = error "justLeft is applied to a value of type 'Right'!";
+justLeft (Right _) = error "justLeft is applied to a value of type \
+                     \'Right'!";
 
 -- | @justRight (Right k) == k@.  @justRight (Left g)@ throws an error.
 --
