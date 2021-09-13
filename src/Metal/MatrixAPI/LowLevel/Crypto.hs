@@ -14,13 +14,13 @@ module Metal.MatrixAPI.LowLevel.Crypto (
 ) where
 import Data.Maybe;
 import Metal.Base;
+import Crypto.Error;
 import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Crypto.PubKey.Curve25519 as X25519;
-import Crypto.Error;
 
 -- | @encryptWKey z pu pr@ encrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, outputting the resulting ciphertext.
