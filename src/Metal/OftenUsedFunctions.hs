@@ -14,8 +14,8 @@ import qualified Data.Text.Lazy as T;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
--- | @detroit k@ throws an @'error'@ such that a description of @k@ is written to the
--- standard error.
+-- | @detroit k@ throws an @'error'@ such that a description of @k@ is
+-- written to the standard error.
 detroit :: Response BS.ByteString -> a;
 detroit k = error $ "Thus spake the homeserver: " ++
             show (getResponseStatusCode k) ++ "; " ++
