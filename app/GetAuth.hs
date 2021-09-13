@@ -56,13 +56,13 @@ xOf :: Stringth
     -> Stringth
     -- ^ The text whose fields are searched
     -> Stringth;
-xOf query' cfg = T.drop n $ head $ filter isMatch $ T.lines cfg
+xOf query' cfg = T.drop queryLen $ head $ filter isMatch $ T.lines cfg
   where
   isMatch :: T.Text -> Bool
-  isMatch = (== query) . T.take n
+  isMatch = (== query) . T.take queryLen
   --
-  n :: Int
-  n = T.length query
+  queryLen :: Int
+  queryLen = T.length query
   --
   query :: Stringth
   query = T.append query' fieldSeparator
