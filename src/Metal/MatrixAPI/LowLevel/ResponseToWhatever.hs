@@ -31,9 +31,9 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
 -- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
 -- equivalent of @'responseToStringth' k@.
 responseToMaybe :: Response BS.ByteString -> Maybe String;
-responseToMaybe theResponse
-  | getResponseStatusCode theResponse == 200 = Nothing
-  | otherwise = Just $ T.unpack $ responseToStringth theResponse;
+responseToMaybe theResponse = case getResponseStatusCode theResponse of
+  200 -> Nothing
+  _   -> Just $ T.unpack $ responseToStringth theResponse;
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
@@ -43,7 +43,6 @@ responseToLeftRight :: Response BS.ByteString
                     -- ^ The 'Response' whose response code should be
                     -- reported
                     -> Either Stringth Stringth;
-responseToLeftRight k
-  | getResponseStatusCode k == 200 =
-    Right $ decodeUtf8 $ getResponseBody k
-  | otherwise = Left $ responseToStringth k;
+responseToLeftRight k = case getResponseStatusCode k of
+  200 -> Right $ decodeUtf8 $ getResponseBody k
+  _   -> Left $ responseToStringth k;
