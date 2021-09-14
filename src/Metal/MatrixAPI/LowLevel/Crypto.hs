@@ -37,7 +37,7 @@ encryptWKey :: ByteData
             -> PrivateKey
             -- ^ The private key of the sender of the encrypted thing
             -> IO CipherByteData;
-encryptWKey text pu pr = return $ T.pack [];
+encryptWKey text pu pr = error "encryptWKey is unimplemented.";
 
 -- | @decryptWKey z pu pr@ decrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, outputting the resulting cleartext.
