@@ -146,13 +146,13 @@ getRoomName :: Room
 getRoomName r = process <.> rq r "/state/m.room.name/"
   where
   process :: Response BS.ByteString -> Room
-  process k = Def.room {roomName = fromMaybe detroit $ extractName k}
+  process k = Def.room {roomName = fromMaybe kemo $ extractName k}
   --
   extractName :: Response BS.ByteString -> Maybe T.Text
   extractName k = getResponseBody k ^? A.key "name" . A._String
   --
-  detroit :: T.Text
-  detroit = error $ "A fairly goofy error is encountered.  The JSON " ++
+  kemo :: T.Text
+  kemo = error $ "A fairly goofy error is encountered.  The JSON " ++
             "value which the \"m.room.name\" request returns does " ++
             "NOT contain a \"name\" field.";
 
