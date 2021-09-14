@@ -46,8 +46,8 @@ req type_ headers query body auth = genRequest >>= httpBS
   addBody = setRequestBodyLBS body
   --
   addHeaders :: Request -> Request
-  addHeaders j = foldr (uncurry addRequestHeader) j h
-    where h = ("Authorization", authToken' auth):headers
+  addHeaders j = foldr (uncurry addRequestHeader) j headersToAdd
+    where headersToAdd = ("Authorization", authToken' auth):headers
   --
   prefix :: String
   prefix = show type_ ++ " https://" ++ homeserver auth ++ "/";
