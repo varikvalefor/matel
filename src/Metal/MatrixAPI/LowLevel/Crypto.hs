@@ -50,7 +50,7 @@ decryptWKey :: CipherByteData
             -> PrivateKey
             -- ^ The private key of the recipient of the encrypted thing
             -> ByteData;
-decryptWKey crip pu pr = T.pack [];
+decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 
 -- | @calcSecret a b@ is the shared secret key of @a@ and @b@.
 calcSecret :: PublicKey
