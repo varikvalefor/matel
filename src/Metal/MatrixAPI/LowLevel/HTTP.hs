@@ -33,7 +33,7 @@ req :: ReqType
     -> String
     -- ^ The path and query string of the request which should be sent
     -> BSL.ByteString
-    -- ^ The body of the "GET" request
+    -- ^ The body of the request
     -> Auth
     -- ^ The authorisation information of Matel's user
     -> IO (Response BS.ByteString);
