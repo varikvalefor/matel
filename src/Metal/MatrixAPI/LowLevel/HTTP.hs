@@ -10,6 +10,7 @@
 --
 -- This module contains @'req'@ and some stuff which supports @'req'@.
 module Metal.MatrixAPI.LowLevel.HTTP where
+import Data.Maybe;
 import Metal.Auth;
 import Metal.User;
 import Network.HTTP.Simple;
@@ -50,7 +51,8 @@ req type_ headers query body auth = genRequest >>= httpBS
     where headersToAdd = ("Authorization", authToken' auth):headers
   --
   prefix :: String
-  prefix = show type_ ++ " https://" ++ homeserver auth ++ "/";
+  prefix = show type_ ++ " " ++ fromJust (protocol auth) ++ "://"
+           ++ homeserver auth ++ "/";
 
 instance Show ReqType where
   show k = case k of
