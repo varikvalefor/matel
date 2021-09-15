@@ -12,7 +12,9 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 ## Semicolons
 Matel's source code contains some unnecessary semicolons.
 
-For all things which can be terminated by a semicolon without being broken _k_, _k_ should be terminated by a semicolon.
+Let _A_ denote the set of all things which can be terminated by semicolons without being broken.
+
+For all _k_ in _A_, _k_ should be terminated by a semicolon.
 
 An example of a poorly-placed semicolon is as follows:
 ```haskell
