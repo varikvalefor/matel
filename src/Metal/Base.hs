@@ -9,9 +9,6 @@
 -- Metal.Base contains the core data types of Metal.
 module Metal.Base where
 import qualified Data.Text as T;
-
--- DATATYPES -----------------------------------------------------------
-
 -- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
 -- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny
 -- Kissass".
