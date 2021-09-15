@@ -46,5 +46,10 @@ Matel is incomplete and currently useless.
 ### Using MATELCLI
 Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
 
+## Officially-Supported Systems
+OpenBSD is the primary operating system on which Matel is written and tested, although FreeBSD is used for some testing.
+
+VARIK is willing to implement support for other operating systems but cannot guarantee that arbitrary versions of Matel work on operating systems which are not officially supported.
+
 ## The Matel Room
 There exists a Matrix room such that this Matrix room is dedicated to Matel.  See The Matel Room <`#johnnykissassSuckupfest:matrix.org`>.
