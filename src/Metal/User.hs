@@ -28,6 +28,15 @@ data User = User {
   --
   -- Like @'password'@, @authToken@ is used only for the user of Matel.
   authToken :: String,
+  -- | @protocol k@, if present, describes the protocol which @k@ uses
+  -- to connect to the Matrix homeserver of @k@.
+  --
+  -- The standard values are "http" and "https".
+  --
+  -- This value is only officially used to determine the protocol which
+  -- Metal should use to contact the homeserver.  However, other uses of
+  -- this thing may be possible.
+  protocol :: Maybe String,
   -- | @displayname tpForMyBunghole@ equals the "display name" of
   -- @tpForMyBunghole@, e.g., "Johnny Kissass".
   displayname :: HumanReadableName

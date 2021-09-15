@@ -30,7 +30,8 @@ user = User {
   password = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!"
+  displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  protocol = Nothing
 };
 
 -- | @community@ is a default-valued 'Community' record.
