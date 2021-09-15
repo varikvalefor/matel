@@ -26,3 +26,7 @@ This semicolon is placed poorly because the "`where`" clause which follows the s
 For all functions _eee_, the line length of _eee_ should be less than or equal to ten (10).  This line length does _not_ include the "`where`" clauses which may be a part of _eee_; these things are considered to be separate functions.  But note that functions which contain many "`where`" clauses may be best broken into several separate functions.
 
 However, there does exist a function such that this function is long but cannot be broken into multiple functions.  Stet such functions.
+## File Length
+Let _A_ denote the set of all files which can reasonably be short.
+
+For all _f_ in _A_, the line count of _f_ should be less than or equal to 400.
