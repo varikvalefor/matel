@@ -41,7 +41,8 @@ getAuthorisationDetails = fmap configToUser $ T.readFile =<< configFilePath
     username = T.unpack $ xOf "username" cfg,
     password = xOf "password" cfg,
     homeserver = T.unpack $ xOf "homeserver" cfg,
-    authToken = T.unpack $ xOf "authtoken" cfg
+    authToken = T.unpack $ xOf "authtoken" cfg,
+    protocol = Just $ T.unpack $ xOf "protocol" cfg
   };
 
 -- | @configFilePath@ is the path of Matel's configuration file.

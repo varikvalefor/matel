@@ -39,6 +39,7 @@ For all lines of this file _g_, _g_ follows the format "[LABEL]: [CONTENT]".  Th
 * \<`password`, the password of the Matrix account which should be used\>
 * \<`homeserver`, the FQDN of the homeserver of the Matrix account which should be used\>
 * \<`authtoken`, the authorisation token which Matel uses to act on behalf of the user\>
+* \<`protocol`, the protocol which Matel/MATELCLI uses to contact the homeserver of the user\>
 #### Colour
 The colours of Matel's TUI can be changed through the editing of the `Colour` module, which is located at `app/Colour.hs`.  Like most other modules of Matel, `Colour` has decent documentation and can be modified reasonably easily.
 ### Using Matel
