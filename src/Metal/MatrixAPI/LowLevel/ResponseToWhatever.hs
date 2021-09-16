@@ -21,6 +21,11 @@ import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 
+-- | @responseToString k@ equals a 'String' which describes the status
+-- code of @k@.
+responseToString :: Response a -> String;
+responseToString = T.unpack. responseToStringth;
+
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
 responseToStringth :: Response a -> Stringth;
