@@ -20,10 +20,10 @@ import Metal.Encrypted;
 import Metal.FavoriteNoise;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
-import Metal.ResponseToWhatever;
 import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import qualified Data.ByteString as BS;
+import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
 
