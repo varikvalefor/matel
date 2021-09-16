@@ -23,6 +23,9 @@ import qualified Data.ByteString as BS;
 
 -- | @responseToString k@ equals a 'String' which describes the status
 -- code of @k@.
+--
+-- Adherence to the "Show" class is demanded to ensure that the bodies
+-- of input responses can be output.
 responseToString :: Show a
                  => Response a
                  -> String;
@@ -30,6 +33,9 @@ responseToString = T.unpack. responseToStringth;
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
+--
+-- Adherence to the "Show" class is demanded to ensure that the bodies
+-- of input responses can be output.
 responseToStringth :: Show a
                    => Response a
                    -> Stringth;
