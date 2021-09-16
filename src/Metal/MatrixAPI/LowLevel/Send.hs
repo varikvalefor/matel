@@ -20,6 +20,8 @@ import Metal.Encrypted;
 import Metal.FavoriteNoise;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
+import Metal.ResponseToWhatever;
+import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import qualified Data.ByteString as BS;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
@@ -57,6 +59,4 @@ sendEvent ev rm a = qenerateQuery >>= \querr ->
   process :: Response BS.ByteString -> Maybe ErrorCode
   process k = case getResponseStatusCode k of
     200 -> Nothing
-    _   -> Just $ "sendEvent: An error is returned.  Thus spake the \
-           \homeserver: " ++ show (getResponseStatusCode k) ++ "; " ++
-           show (getResponseBody k) ++ ".";
+    _   -> Just $ T.append "sendEvent: " $ responseToStringth k;
