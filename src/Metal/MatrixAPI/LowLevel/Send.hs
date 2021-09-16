@@ -59,4 +59,4 @@ sendEvent ev rm a = qenerateQuery >>= \querr ->
   process :: Response BS.ByteString -> Maybe ErrorCode
   process k = case getResponseStatusCode k of
     200 -> Nothing
-    _   -> Just $ T.append "sendEvent: " $ responseToStringth k;
+    _   -> Just $ "sendEvent: " ++ responseToString k;
