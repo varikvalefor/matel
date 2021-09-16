@@ -23,14 +23,14 @@ import qualified Data.ByteString as BS;
 
 -- | @responseToString k@ equals a 'String' which describes the status
 -- code of @k@.
-responseToString :: Response a -> String;
+responseToString :: Show a => Response a -> String;
 responseToString = T.unpack. responseToStringth;
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
-responseToStringth :: Response a -> Stringth;
+responseToStringth :: Show a => Response a -> Stringth;
 responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
-  show (getResponseStatusCode r) ++ ".";
+  show (getResponseStatusCode r) ++ "; " ++ show (getResponseBody r);
 
 -- | If the status code of @k@ equals @200@, then @responseToMaybe k@
 -- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
