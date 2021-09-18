@@ -124,7 +124,8 @@ send k a
   target = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> T.getContents >>= \content -> upload content (k !! 1) a >>=
+    "file"     -> T.getContents >>= \content ->
+                  upload content (k !! 1) a >>=
                   return . processError >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
