@@ -9,8 +9,9 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
+import Metal.Base;
 import Network.HTTP.Simple;
-import qualified Data.Text.Lazy as T;
+import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
@@ -57,7 +58,7 @@ justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
 -- | @processError (Left k)@ throws an error whose error message is @k@.
 -- | @processError (Right k) == k@.
 processError :: Either Stringth a -> a;
-processError = either (error . T.putStrLn) id;
+processError = either (error . T.unpack) id;
 
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
