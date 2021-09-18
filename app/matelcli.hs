@@ -125,7 +125,7 @@ send k a
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
     "file"     -> T.getContents >>= \c -> upload c (k !! 1) a >>=
-                  return . either (error . T.unpack) id >>= \uploadID ->
+                  return . processError >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
                     body = T.pack $ k !! 1,
