@@ -45,7 +45,8 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
 -- | If the status code of @k@ equals @200@, then @responseToMaybe k@
 -- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
 -- equivalent of @'responseToStringth' k@.
-responseToMaybe :: Response BS.ByteString
+responseToMaybe :: Show a
+                => Response a
                 -> Maybe String;
 responseToMaybe theResponse = case getResponseStatusCode theResponse of
   200 -> Nothing
