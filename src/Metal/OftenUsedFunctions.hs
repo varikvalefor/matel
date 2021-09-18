@@ -54,6 +54,11 @@ justRight (Left _) = error "justRight is applied to a value of type 'Left'!";
 (<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
 (<.>) a b c = a <$> b c;
 
+-- | @processError (Left k)@ throws an error whose error message is @k@.
+-- | @processError (Right k) == k@.
+processError :: Either Stringth a -> a;
+processError = either (error . T.putStrLn) id;
+
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
 class StringLike a where
