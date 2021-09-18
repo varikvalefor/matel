@@ -34,6 +34,7 @@ import Metal.Community;
 import Control.Concurrent;
 import System.Environment;
 import Control.Monad ((>=>));
+import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
 import Metal.OftenUsedFunctions;
@@ -123,7 +124,16 @@ send k a
   target = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> error "Sending files is unimplemented."
+    "file"     -> T.getContents >>= \c -> upload c (k !! 1) a >>=
+                  return . justRight >>= \uploadID ->
+                  return Def.stdMess {
+                    msgType = Attach,
+                    body = T.pack $ k !! 1,
+                    url = Just $ T.unpack uploadID,
+                    fileInfo = Just Def.fileInfo {
+                      mimetype = Just "text/plain"
+                    }
+                  }
     "notice"   -> T.getContents >>= \input ->
                   return Def.stdMess {body = input, msgType = Notice}
     "location" -> T.getContents >>= \input ->
