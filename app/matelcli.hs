@@ -359,7 +359,7 @@ messToHumanReadable k =
 -- from the standard input to the homeserver of @a@.  The homeserver
 -- is told that the filename of the uploaded file is @filename@.
 --
--- Users of @ooplawed@ should not that @ooplawed@ uploads UNENCRYPTED
+-- Users of @ooplawed@ should note that @ooplawed@ uploads UNENCRYPTED
 -- files.  @ooplawed@ should be TLS-protected but does not support
 -- end-to-end encryption.
 ooplawed :: [String]
