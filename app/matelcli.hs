@@ -142,8 +142,8 @@ send k a
                     geo_uri = Just $ T.pack $ k !! 1,
                     body = input
                   }
-    _          -> error $ "I ought to send you to the garbage " ++
-                  "disposal, shit-tits.  Read the fucking manual."
+    _          -> error "I ought to send you to the garbage disposal, \
+                  \ shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! n}
