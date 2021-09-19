@@ -39,6 +39,12 @@ module Metal.MatrixAPI.HighLevel (
   ban,
   unban,
   kick,
+  leave,
+  -- Metal.MatrixAPI.LowLevel.join and Control.Monad.join collide.
+  Metal.MatrixAPI.LowLevel.join,
+  sync,
+  loginPass,
+  upload,
   createRoom
 ) where
 import Metal.Auth;
