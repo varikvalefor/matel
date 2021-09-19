@@ -196,9 +196,9 @@ mkRead :: [String]
        -- ^ The authorisation information which is used to mark the
        -- message as having been read.
        -> IO ();
-mkRead [] _ = error "Someone should knock you upside the head a few \
+mkRead [] = error "Someone should knock you upside the head a few \
               \times, punk.  Dismissed.";
-mkRead k a = markRead Def.stdMess {boilerplate = boi} a >>= dispError
+mkRead k = markRead Def.stdMess {boilerplate = boi} >=> dispError
   where
   boi :: EventCommonFields
   boi = Def.eventCommonFields {eventId = head k};
