@@ -69,6 +69,8 @@ calcSecret pu pr = X25519.dh pu' pr'
   -- \^ This BS.ByteString typecast is necessary; if this typecast is
   -- not present, then GHC complains about the ambiguous typing of the
   -- argument of @X25519.secretKey@ and refuses to compile this module.
-  --
+
+  -- \| This use of @fromJust@ should be safe; if this @fromJust@ fails,
+  -- then something is probably horribly broken.
   yield :: CryptoFailable a -> a
   yield = fromJust . maybeCryptoError;
