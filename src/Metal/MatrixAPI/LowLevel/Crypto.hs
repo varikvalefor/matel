@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.MatrixAPI.LowLevel.Crypto
 -- Description : Cryptographic crap for Matrix
 -- Copyright   : (c) Varik Valefor, 2021
@@ -29,4 +31,10 @@ class CryptoThing a where
           -> a;
 
 instance CryptoThing StdMess where
-  decrypt ms pu pr = error "StdMess's decrypt is unimplemented.";
+  decrypt ct pu pr = case algorithm ct of
+    "m.olm.v1.curve25519-aes-sha2"
+      -> error "StdMess's Olm decryption is unimplemented."
+    "m.megolm.v1.aes-sha2"
+      -> error "StdMess's Megolm decryption is unimplemented."
+    _
+      -> error "Some weird, unrecognised algorithm is used.";
