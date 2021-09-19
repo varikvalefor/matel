@@ -7,7 +7,11 @@
 -- Portability : portable
 --
 -- This module contains miscellaneous cryptographic functions.
-module Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous where
+module Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous (
+  aes256CryptBS,
+  calcSecret,
+  genIVorKeyBS
+) where
 import Data.Maybe;
 import Metal.Base;
 import Crypto.Error;
