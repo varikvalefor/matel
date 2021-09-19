@@ -66,6 +66,9 @@ calcSecret pu pr = X25519.dh pu' pr'
   pu' = yield $ X25519.publicKey $ toBS pu
   --
   pr' = yield $ X25519.secretKey (fromString $ T.unpack pr :: BS.ByteString)
+  -- \^ This BS.ByteString typecast is necessary; if this typecast is
+  -- not present, then GHC complains about the ambiguous typing of the
+  -- argument of @X25519.secretKey@ and refuses to compile this module.
   --
   yield :: CryptoFailable a -> a
   yield = fromJust . maybeCryptoError;
