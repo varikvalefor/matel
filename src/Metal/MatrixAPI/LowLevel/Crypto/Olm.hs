@@ -50,3 +50,18 @@ decryptWKey :: CipherByteData
             -- ^ The private key of the recipient of the encrypted thing
             -> ByteData;
 decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
+
+-- | @hkdf a b c d@ is, according to the Olm specification, "the
+-- HMAC-based key derivation function with a salt value of @a@, input
+-- key material of @b@, context string @c@, and output keying material
+-- length of L bytes".
+hkdf :: ByteData
+     -- ^ The salt
+     -> ByteData
+     -- ^ The shared secret
+     -> ByteData
+     -- ^ The context string
+     -> Integer
+     -- ^ The byte-based length of the output keying material
+     -> ByteData;
+hkdf = error "hkdf is unimplemented.";
