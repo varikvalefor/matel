@@ -2,7 +2,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
--- | Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
+-- | Module    : Metal.MatrixAPI.LowLevel.Types
+-- Description : MatrixAPI.LowLevel's internal types
+-- Copyright   : (c) Varik Valefor, 2021
+-- License     : BSD-3-Clause
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : POSIX
+--
+-- Metal.MatrixAPI.LowLevel.Types contains the datatypes which are of
 -- use only within Metal.MatrixAPI.LowLevel.
 module Metal.MatrixAPI.LowLevel.Types where
 import Data.Aeson;
