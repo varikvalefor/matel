@@ -45,10 +45,9 @@ import qualified Metal.Default as Def;
 
 -- | Chicken chow mein main...
 main :: IO ();
-main =
-  univac >> plegg >>
-  getAuthorisationDetails >>= \aufFile ->
-    getArgs >>= flip determineAction aufFile;
+main = univac >> plegg >>
+       getAuthorisationDetails >>= \aufFile ->
+       getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
@@ -60,18 +59,18 @@ determineAction :: [String]
 determineAction [] a = error "I never thought that I would have a \
   \stress-induced heart attack by the age of forty, but you're making \
   \me rethink some things.";
-determineAction (command:stuff) a = case command of
-  "list"       -> list stuff a
-  "send"       -> send stuff a
-  "grab"       -> grab stuff a
-  "login"      -> logIn a
-  "markread"   -> mkRead stuff a
-  "sync"       -> eddySmith stuff a >>= T.putStrLn
-  "join"       -> runJoin stuff a
-  "leave"      -> runLeave stuff a
-  "kick"       -> runKick stuff a
-  "createroom" -> createRoom' stuff a
-  "upload"     -> ooplawed stuff a
+determineAction (command:stuff) = case command of
+  "list"       -> list stuff
+  "send"       -> send stuff
+  "grab"       -> grab stuff
+  "login"      -> logIn
+  "markread"   -> mkRead stuff
+  "sync"       -> eddySmith stuff >=> T.putStrLn
+  "join"       -> runJoin stuff
+  "leave"      -> runLeave stuff
+  "kick"       -> runKick stuff
+  "createroom" -> createRoom' stuff
+  "upload"     -> ooplawed stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -154,9 +153,10 @@ send k a
     destIndex :: Int
     destIndex | head k `elem` diargumentalStuff = 2
               | otherwise = 1;
-              -- This bit is necessary because the number of arguments of the
-              -- "send file" command is not equal to the number of arguments
-              -- of the "send text" and "send notice" commands.
+              -- This bit is necessary because the number of arguments
+              -- of the "send file" command is not equal to the number
+              -- of arguments of the "send text" and "send notice"
+              -- commands.
 
 -- | @grab@ is used to fetch and output the messages of a room.
 --
@@ -369,8 +369,7 @@ ooplawed :: [String]
          -> Auth
          -- ^ The authorisation information
          -> IO ();
-ooplawed (f:_) a = T.getContents >>= \c ->
-                   upload c f a >>= process
+ooplawed (f:_) a = T.getContents >>= \c -> upload c f a >>= process
   where
   process :: Either Stringth Stringth -> IO ()
   process = either (error . T.unpack) T.putStrLn;
