@@ -256,6 +256,10 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
 -- If the query returns a status code of 404, then @getDisplayName@
 -- assumes that the user has not set a display name and returns the
 -- input thing @k@ such that @displayname k == username k@.
+--
+-- Where K denotes the set of all errors which @getDisplayName@ can
+-- encounter, for all l in K, @getDisplayName@ encounters l iff a
+-- 'Left' 'String' which describes l is output.
 getDisplayName :: User
                -- ^ The user whose display name is fetched
                -> Auth
