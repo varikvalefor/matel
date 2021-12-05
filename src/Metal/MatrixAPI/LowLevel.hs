@@ -412,10 +412,10 @@ leave :: Room
       -> Auth
       -- ^ The authorisation information
       -> IO (Maybe String);
-leave r = responseToMaybe <.> TP.req TP.POST [] querr ""
+leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
   where
   querr :: String
-  querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/leave";
+  querr = "_matrix/client/r0/rooms/" ++ roomId lamersPalace ++ "/leave";
 
 -- | @createRoom r a@ attempts to create a Matrix room whose information
 -- matches the information of @a@.  If this attempt fails, then a
