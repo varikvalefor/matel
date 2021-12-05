@@ -57,7 +57,7 @@ xOf :: Stringth
     -> Stringth
     -- ^ The text whose fields are searched
     -> Stringth;
-xOf query' cfg = T.drop queryLen $ head $ filter isMatch $ T.lines cfg
+xOf query' = T.drop queryLen . head . filter isMatch . T.lines
   where
   isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take queryLen
