@@ -40,7 +40,7 @@ module Plegg where
     expose "/dev/random" "rx" >>
     -- \| Exposing this file  is necessary because if this thing is not
     -- exposed, then Matel has no reason to trust that the homeserver is
-    -- actually the homeserver, as opposed to being some lame-ass
+    -- actually the homeserver, as opposed to being some punk-ass
     -- credential sniffer.
     expose "/etc/ssl/cert.pem" "r"
     where
@@ -51,11 +51,11 @@ module Plegg where
       withCString perms $ \permsC ->
       unveil pathC permsC;
 #else
-  -- | @plegg@ does nothing; this file is not compiled on OpenBSD.
+  -- | @plegg@ does nothing; this module is not compiled on OpenBSD.
   plegg :: IO ();
   plegg = return ();
 
-  -- | @univac@ does nothing; this file is not compiled on OpenBSD.
+  -- | @univac@ does nothing; this module is not compiled on OpenBSD.
   univac :: IO ();
   univac = return ();
 #endif

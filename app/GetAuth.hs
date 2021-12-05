@@ -55,7 +55,7 @@ configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 xOf :: Stringth
     -- ^ The name of the field whose value is returned
     -> Stringth
-    -- ^ The text whose fields are searched
+    -- ^ The content of the configuration file whose fields are searched
     -> Stringth;
 xOf query' = T.drop queryLen . head . filter isMatch . T.lines
   where
