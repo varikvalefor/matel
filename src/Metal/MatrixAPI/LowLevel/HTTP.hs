@@ -22,7 +22,7 @@ import qualified Data.ByteString.Lazy as BSL;
 data ReqType = GET | POST | PUT;
 
 -- | @req type_ vx query body auth@ sends a HTTP request of type @type_@
--- to FQDN @homeserver auth@ such that @auth@ is used as the content of
+-- to FQDN @homeserver@ such that @auth@ is used as the content of
 -- the "Authorization" header of the request and the path and query
 -- string of this request are @query@.  Additionally, the headers which
 -- are specified in @vx@ are added to the request.
