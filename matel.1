@@ -24,6 +24,51 @@ may use
 .Xr matelcli 1
 or
 .Xr gomuks 1 .
+.Sh CONFIGURATION
+Before
+.Nm matel
+can be used,
+the configuration file of
+.Nm matel
+must be created.  This configuration file is stored in
+.Pa $HOME/.config/matel ,
+and each line conforms to the format
+.Dq field: content .
+.Pp
+Descriptions of the accepted lines of the
+.Nm matel
+configuration file are as follows:
+.Bl -ohang -offset Ds
+.It Em PROTOCOL
+The content of the
+.Dq protocol
+field is the protocol which should be used to communicate with the Matrix homeserver.
+Currently, only values of
+.Dq http
+and
+.Dq https
+are supported.  These values enable HTTP or HTTPS, respectively.
+.It Em HOMESERVER
+The content of the
+.Dq homeserver
+field is the FQDN of the homeserver of the user of
+.Nm matel .
+.It Em USERNAME
+The content of the
+.Dq username
+field is the MXID of Matel's user, e.g.,
+.Dq @varikvalefor:matrix.org .
+.It Em PASSWORD
+The content of the
+.Dq password
+field is the FQDN of the homeserver of the user of
+.Nm matel .
+.It Em AUTHTOKEN
+The content of the
+.Dq authtoken
+field is the authorisation token which is used to interact on behalf of the user of
+.Nm matelcli .
+.El
 .Sh LAYOUT
 .Ss CENTRAL PANE
 The central pane of the
