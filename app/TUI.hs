@@ -48,8 +48,8 @@ toScreen :: Winda
          -> Screen;
 toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 
--- | @temporaryMessage@ is a 'Winda' which is used to state that Matel
--- is currently pretty useless.
+-- | @temporaryMessage@ is a 'Winda' which states that Matel is
+-- currently pretty useless.
 --
 -- @temporaryMessage@ is removed only if Matel functions as intended.
 temporaryMessage :: Winda;
