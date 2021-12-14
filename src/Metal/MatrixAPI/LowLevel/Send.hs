@@ -20,7 +20,6 @@ import Metal.Encrypted;
 import Metal.FavoriteNoise;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
-import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
