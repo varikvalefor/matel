@@ -476,7 +476,24 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 --
 -- The 'Left' value of the output, if present, describes the error
 -- which occurs such that the file is not properly uploaded.
-upload :: Stringth
+--
+--
+--
+-- 'BSL.ByteString' is used instead of 'T.Text' because weird binary
+-- files sometimes make 'T.Text' blow up, which is a bit annoying.
+--
+-- VARIK suspects that 'T.Text'\'s problem is caused by fancy UTF-8
+-- parsing which attempts to interpret some nonsense as UTF-8 text,
+-- which leads to parsing errors, which leads to the \'splosions.
+--
+-- This problem is not really the fault of 'T.Text', as 'T.Text' is not
+-- meant to read binary files -- 'T.Text' contains _text_, as opposed to
+-- _strings of bytes_; read the name, foo -- Rather, this problem is the
+-- fault of the author of @upload@.
+--
+-- PROTIP: Using the most fitting tools prevents a decent number of
+-- problems.
+upload :: BSL.ByteString
        -- ^ The content of the file which should be uploaded
        -> String
        -- ^ The name of the file which should be uploaded
@@ -496,7 +513,7 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
   hdr = [("Content-Type", "text/plain")]
   --
   atch :: BSL.ByteString
-  atch = fromString $ T.unpack attachment
+  atch = attachment
   --
   qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++

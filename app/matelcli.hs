@@ -42,6 +42,7 @@ import qualified Data.Text as T;
 import Metal.MatrixAPI.HighLevel;
 import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
+import qualified Data.ByteString.Lazy as BSL;
 
 -- | Chicken chow mein main...
 main :: IO ();
@@ -123,7 +124,7 @@ send k a
   target = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> T.getContents >>= \content ->
+    "file"     -> BSL.getContents >>= \content ->
                   upload content (k !! 1) a >>=
                   return . processError >>= \uploadID ->
                   return Def.stdMess {
@@ -369,7 +370,7 @@ ooplawed :: [String]
          -> Auth
          -- ^ The authorisation information
          -> IO ();
-ooplawed (f:_) a = T.getContents >>= \c ->
+ooplawed (f:_) a = BSL.getContents >>= \c ->
                    upload c f a >>= process
   where
   process :: Either Stringth Stringth -> IO ()
