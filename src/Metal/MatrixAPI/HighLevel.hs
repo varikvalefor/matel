@@ -99,11 +99,11 @@ memberRooms :: Auth
             -- ^ The information which is used to authenticate Matel's
             -- user
             -> IO [Room];
-memberRooms a = joinedRooms a >>= maybeShowRms
+memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
   listRoomsMentioned :: Either Stringth [Room]
                      -> IO [Either Stringth Room]
-  listRoomsMentioned = either convS (mapM (flip getRoomInformation a))
+  listRoomsMentioned = either convS (mapM (flip getRoomInformation bugspray))
   --
   convS :: Stringth -> IO [Either Stringth Room]
   convS = return . return . Left
