@@ -153,9 +153,9 @@ idOrError = either (error . T.unpack) id;
 
 -- | @markRead k a@ marks @k@ as having been read.
 --
--- @markRead k a@ equals an IO-monadic @""@ if no problem is
--- encountered.  @markRead k a@ otherwise equals an explanation of the
--- problem.
+-- @markRead k a@ returns 'Nothing' if no problem is encountered.
+-- However, if a problem is encountered, then markRead k a@ 'Just'
+-- returns a description of this problem.
 --
 -- The @messageId@ field of @k@ must be defined and valid; if this field
 -- is not defined and valid, then Metal.MatrixAPI.HighLevel may be
