@@ -62,7 +62,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- Matrix client.
 --
 -- @stillUnfinishedStayTuned@ is removed when proper Matrix API support
--- is added to Matel.
+-- is added to Metal.
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
 
