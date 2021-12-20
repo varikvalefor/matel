@@ -54,7 +54,7 @@ sendEvent ev rm a = qenerateQuery >>= \querr ->
   where
   qenerateQuery :: IO String
   qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
-                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise;
+                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise
   --
   process :: Response BS.ByteString -> Maybe ErrorCode
   process k = case getResponseStatusCode k of
