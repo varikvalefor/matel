@@ -48,6 +48,12 @@ type Stringth = T.Text;
 -- e.g., "the message cannot be posted; the homeserver is off-line."
 type ErrorCode = [Char];
 
+-- | 'AlGoreRhythm's represent cryptographic systems, e.g., Olm and
+-- Megolm.
+data AlGoreRhythm = Olm
+                  | Megolm
+                  deriving (Eq);
+
 -- | For all 'MessageFmt' @x@, @x@ is a message type, as defined by the
 -- Matrix client-server specification.
 data MessageFmt = MatrixCusHTML

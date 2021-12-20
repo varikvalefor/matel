@@ -45,6 +45,7 @@ module Metal.MatrixAPI.HighLevel (
   sync,
   loginPass,
   upload,
+  send,
   createRoom
 ) where
 import Metal.Auth;
@@ -53,6 +54,7 @@ import Metal.Room;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
+import Metal.Encrypted;
 import Metal.Messages.Standard;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
@@ -169,3 +171,42 @@ markRead :: StdMess
          -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
 markRead _ _ = error "markRead is unimplemented.";
+
+-- | If the room which @r@ represents is encrypted, then @send e r@
+-- sends an encrypted @e@ to @r@.  @send e r@ otherwise sends the plain
+-- old @e@ to @r@.
+--
+-- In both cases, an error message is returned iff something goes _too_
+-- horribly wrong.
+send :: StdMess
+     -- ^ The message which is to be sent
+     -> Room
+     -- ^ The room to which the message is sent
+     -> Auth
+     -- ^ The authorisation garbage which is used to send the message...
+     -- blah, blah, blah, blah, blah... boilerplate crap...
+     -> IO (Maybe ErrorCode);
+send event italy a = maybeEncrypt >>= either blowUp jstdt
+  where
+  -- \| "Just send the damned thing!"
+  jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
+  maybeEncrypt :: IO (Either Stringth (Either StdMess Encrypted))
+  maybeEncrypt = getRoomInformation italy a >>= either (return . Left) (Right <.> process)
+  blowUp = return . Just . T.unpack
+  process dullards = if isEncrypted dullards
+                       -- \| These dullards can AT LEAST use
+                       -- encryption... allegedly.
+                       then Right <$> roomEncrypt event dullards
+                       -- \| man yall dullards cant even use encryption
+                       -- what a scam
+                       -- dang
+                       else Left <$> pure event;
+
+-- | @roomEncrypt m r@ returns an 'Encrypted' message which can be read
+-- by the authenticated members of @r@.
+roomEncrypt :: StdMess
+            -- ^ The message which should be encrypted
+            -> Room
+            -- ^ The room for which the message is encrypted
+            -> IO Encrypted;
+roomEncrypt = error "roomEncrypt is unimplemented.";

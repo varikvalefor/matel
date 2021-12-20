@@ -21,6 +21,7 @@ import Metal.FavoriteNoise;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import qualified Data.Aeson as A;
+import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.ByteString as BS;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;

@@ -39,8 +39,8 @@ import Metal.Messages.Standard;
 import Metal.EventCommonFields;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
-import Metal.MatrixAPI.HighLevel;
 import qualified Data.Text.IO as T;
+import Metal.MatrixAPI.HighLevel as H;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString.Lazy as BSL;
 
@@ -63,7 +63,7 @@ determineAction [] a = error "I never thought that I would have a \
   \me rethink some things.";
 determineAction (command:stuff) a = case command of
   "list"       -> list stuff a
-  "send"       -> send stuff a
+  "send"       -> Main.send stuff a
   "grab"       -> grab stuff a
   "login"      -> logIn a
   "markread"   -> mkRead stuff a
@@ -118,7 +118,7 @@ send k a
                    \see that I was wrong.  Really, I should be mad at \
                    \myself for apparently going insane by having some \
                    \faith in you."
-  | otherwise = target >>= \t -> sendEvent t dest a >>= dispError
+  | otherwise = target >>= \t -> H.send t dest a >>= dispError
   where
   target :: IO StdMess
   target = case head k of
