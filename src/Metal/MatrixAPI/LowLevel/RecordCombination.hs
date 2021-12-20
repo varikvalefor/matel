@@ -142,8 +142,20 @@ instance Combinable Encrypted where
     g :: Eq b => (Encrypted -> b) -> b
     g c = combineSingleValue c a b Def.encrypted;
 
--- | At this point, just read the source code of this function, which
--- is _very_ simple.
+-- | @combineSingleValue@ combines a field from 3 record type values
+-- into a single value.
+--
+-- Where @f@ is a field constructor and @a@ and @b@ are record values
+-- to which @f@ applies, and @c@ is a default-valued record whose type
+-- is the type of @a@ and @b@...
+--
+-- - @combineSingleValue f a b c == f a@ if @f a /= f b@ or
+-- @f a /= f d@.
+--
+-- - @combineSingleValue f a b c == f b@ if @f b /= f d@ and
+-- @f a == f d@.
+--
+-- @combineSingleValue f a b c@ otherwise equals @f d@.
 combineSingleValue :: Eq b
                    => (a -> b)
                    -- ^ The field constructor
