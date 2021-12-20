@@ -94,4 +94,4 @@ data StdMess = StdMess {
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
   boilerplate :: EventCommonFields
-} deriving (Eq, Read, Show);
+} deriving (Eq, Show);
