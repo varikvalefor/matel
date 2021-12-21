@@ -54,7 +54,7 @@ decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 -- | @hkdf a b c d@ is, according to the Olm specification, "the
 -- HMAC-based key derivation function with a salt value of @a@, input
 -- key material of @b@, context string @c@, and output keying material
--- length of L bytes".
+-- length of @d@ bytes".
 hkdf :: ByteData
      -- ^ The salt
      -> ByteData
