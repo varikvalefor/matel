@@ -30,7 +30,6 @@ import qualified Crypto.PubKey.Curve25519 as X25519;
 -- If @t@ is cleartext, then @aes256CryptBS t sk iv@ is the result of
 -- encrypting @t@ with the secret key @sk@ and the initialisation vector
 -- @sk@.
--- secret key @b@, returning the resulting ciphertext.
 aes256CryptBS :: BS.ByteString
               -- ^ The cleartext
               -> BS.ByteString
@@ -74,7 +73,12 @@ calcSecret pu pr = X25519.dh pu' pr'
   -- not present, then GHC complains about the ambiguous typing of the
   -- argument of @X25519.secretKey@ and refuses to compile this module.
 
-  -- \| This use of @fromJust@ should be safe; if this @fromJust@ fails,
-  -- then something is probably horribly broken.
+  -- \| Using @fromJust@ is the relatively clean approach.  However,
+  -- @fromJust@'s error messages are not known for being particularly
+  -- conducive to debugging; turning "fromJust is applied to Nothing"
+  -- into a auseful bug report as a layman is fairly difficult.
   yield :: CryptoFailable a -> a
-  yield = fromJust . maybeCryptoError;
+  yield = fromMaybe nothingMsg . maybeCryptoError
+  --
+  nothingMsg = error "Something goes horribly, horribly wrong.  \
+                     \maybeCryptoError is Nothing.";
