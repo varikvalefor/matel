@@ -14,21 +14,46 @@
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
 module Metal.MatrixAPI.LowLevel (
+  -- * Authorisation Crap
+  --
+  -- $authorisation
   loginPass,
+  -- * Synchronisation
   sync,
+  -- * Membership-Describing Stuff
+  --
+  -- $membershipDescribe
   joinedRooms,
   joinedSpaces,
   joinedComms,
+  -- * Membership-Defining Functions
+  --
+  -- $membershipDefine
   join,
-  getDisplayName,
   kick,
   leave,
   ban,
   unban,
+  -- * Display-Related Operations
+  --
+  -- $digitalDisplay
+  getDisplayName,
+  -- * Stuff what Creates Stuff
+  --
+  -- $ createsStuff
   createRoom,
   upload,
+  -- * Functions what Send Stuff
+  --
+  -- $spam
   module Metal.MatrixAPI.LowLevel.Send,
+  -- * Functions what Hide Stuff
+  --
+  -- $cryptoShit
   module Metal.MatrixAPI.LowLevel.Crypto,
+  -- * Functions what Describe Stuff
+  --
+  -- $genericDescribe
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
 import Metal.Auth;
@@ -65,6 +90,11 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- is added to Metal.
 stillUnfinishedStayTuned :: ();
 stillUnfinishedStayTuned = ();
+
+-- $authorisation
+--
+-- This section of this module contains some functions which perform
+-- authorisation-related tasks, e.g., fetching new authorisation tokens.
 
 -- | If @username k@ and @password k@ are defined, then @login k@
 -- fetches an authorisation token for Matrix user @k@.
@@ -130,6 +160,15 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
     -- However, the line length of the @maybe@-based equivalent is
     -- greater than the maximum line length of this cheesy thing.  Stet.
 
+-- $membershipDescribe
+--
+-- This section of this module contains functions which fetch lists of
+-- objects of which Matel's user is a member.
+--
+-- Although this module is called \"Metal.MatrixAPI.LowLevel\", most
+-- functions which are contained within this section should be
+-- _reasonably_ high-level.
+
 -- | @joinedRooms k@ sends the "joined_rooms" query to the homeserver of
 -- @k@, authenticating as @k@.
 --
@@ -186,6 +225,12 @@ joinedComms :: Auth
             -> IO (Either Stringth [Community]);
 joinedComms a = error "joinedComms is unimplemented.";
 
+-- $membershipDefine
+--
+-- This section of the module contains functions which define whether or
+-- not arbitrary Matrix users are members of arbitrary Matrix objects,
+-- e.g., rooms and spaces.
+
 -- | Where @a@ is the authorisation information of Matel's user, @i@ is
 -- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
 -- OF INVITE), and @t@ is a 'Room' whose @roomId@ value is appropriately
@@ -237,58 +282,6 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   --
   signature :: String
   signature = maybe "" (\(_,_,c) -> c) i;
-
--- | @getDisplayName@ implements the Matrix API's
--- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
--- command.
---
--- The first argument describes the user whose display name should be
--- fetched.  Only the @username@ field is used.
---
--- The second argument describes the user of Matel.  This value is used
--- to determine the FQDN of the server which should be queried.  Because
--- no actual authorisation information is used, only the @homeserver@
--- value must be specified.
---
--- If the query returns a status code of 200, then the resulting
--- @displayname@ is added to the input 'User' value and returned.
---
--- If the query returns a status code of 404, then @getDisplayName@
--- assumes that the user has not set a display name and returns the
--- input thing @k@ such that @displayname k == username k@.
---
--- Where K denotes the set of all errors which @getDisplayName@ can
--- encounter, for all l in K, @getDisplayName@ encounters l iff a
--- 'Left' 'String' which describes l is output.
-getDisplayName :: User
-               -- ^ The user whose display name is fetched
-               -> Auth
-               -- ^ The authorisation information of Matel's user, used
-               -- to determine the server which should be contacted
-               -> IO (Either String User);
-getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
-  where
-  querr :: String
-  querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
-  --
-  toDispName :: Response BS.ByteString -> Stringth
-  toDispName = dnr_displayname . fromJust . A.decode .
-               BSL.fromStrict . getResponseBody
-  --
-  processResponse :: Response BS.ByteString -> Either String User
-  processResponse r =
-    case getResponseStatusCode r of
-      200 -> Right Def.user {displayname = toDispName r}
-      404 -> Right Def.user {displayname = T.pack $ username u}
-      -- This "404" thing accounts for users whose display names are
-      -- undefined.
-      _   -> Left $ T.unpack $ responseToStringth r;
-      -- This case accounts for all situations which SHOULD NOT occur,
-      -- e.g., "this user does not exist" and "yo, the server done
-      -- broke".  Such responses should raise "red flags"; something has
-      -- gone wrong within this module, or the program which uses this
-      -- module is implemented poorly.  Alternatively, the homeserver
-      -- might just be a piece of crap.
 
 -- | @kick@ implements the Matrix API's
 -- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/kick@" command.
@@ -417,6 +410,69 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
   querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId lamersPalace ++ "/leave";
 
+-- $digitalDisplay
+--
+-- This section of this module contains functions which do things which
+-- are primarily display-related, as opposed to being totally
+-- utilitarian.
+
+-- | @getDisplayName@ implements the Matrix API's
+-- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
+-- command.
+--
+-- The first argument describes the user whose display name should be
+-- fetched.  Only the @username@ field is used.
+--
+-- The second argument describes the user of Matel.  This value is used
+-- to determine the FQDN of the server which should be queried.  Because
+-- no actual authorisation information is used, only the @homeserver@
+-- value must be specified.
+--
+-- If the query returns a status code of 200, then the resulting
+-- @displayname@ is added to the input 'User' value and returned.
+--
+-- If the query returns a status code of 404, then @getDisplayName@
+-- assumes that the user has not set a display name and returns the
+-- input thing @k@ such that @displayname k == username k@.
+--
+-- Where K denotes the set of all errors which @getDisplayName@ can
+-- encounter, for all l in K, @getDisplayName@ encounters l iff a
+-- 'Left' 'String' which describes l is output.
+getDisplayName :: User
+               -- ^ The user whose display name is fetched
+               -> Auth
+               -- ^ The authorisation information of Matel's user, used
+               -- to determine the server which should be contacted
+               -> IO (Either String User);
+getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
+  where
+  querr :: String
+  querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  --
+  toDispName :: Response BS.ByteString -> Stringth
+  toDispName = dnr_displayname . fromJust . A.decode .
+               BSL.fromStrict . getResponseBody
+  --
+  processResponse :: Response BS.ByteString -> Either String User
+  processResponse r =
+    case getResponseStatusCode r of
+      200 -> Right Def.user {displayname = toDispName r}
+      404 -> Right Def.user {displayname = T.pack $ username u}
+      -- This "404" thing accounts for users whose display names are
+      -- undefined.
+      _   -> Left $ T.unpack $ responseToStringth r;
+      -- This case accounts for all situations which SHOULD NOT occur,
+      -- e.g., "this user does not exist" and "yo, the server done
+      -- broke".  Such responses should raise "red flags"; something has
+      -- gone wrong within this module, or the program which uses this
+      -- module is implemented poorly.  Alternatively, the homeserver
+      -- might just be a piece of crap.
+
+-- $createsStuff
+--
+-- This section of the module contains some functions which are used to
+-- create or -- or just publish -- objects on Matrix.
+
 -- | @createRoom r a@ attempts to create a Matrix room whose information
 -- matches the information of @a@.  If this attempt fails, then a
 -- 'Stringth' which describes the failure is returned.  If all goes
@@ -477,7 +533,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- The 'Left' value of the output, if present, describes the error
 -- which occurs such that the file is not properly uploaded.
 --
---
+-- = On Using 'BSL.ByteString'
 --
 -- 'BSL.ByteString' is used instead of 'T.Text' because weird binary
 -- files sometimes make 'T.Text' blow up, which is a bit annoying.
@@ -518,3 +574,19 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
   qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++
        toString (urlEncode True $ fromString name);
+
+-- $spam
+--
+-- This section of the module contains the functions and whatnot which
+-- facilitate sending stuff to Matrix rooms.
+
+-- $cryptoShit
+--
+-- This section of the module contains functions which directly
+-- interface with Matrix's cryptographic protocols.
+
+-- $genericDescribe
+--
+-- This section of the module contains functions which describe things
+-- such that these descriptions can be used for utilitarian puroses, as
+-- opposed to being purely display-related.
