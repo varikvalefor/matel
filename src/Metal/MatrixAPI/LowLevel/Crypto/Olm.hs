@@ -22,7 +22,7 @@ import qualified Data.ByteString as BS;
 import qualified Crypto.PubKey.Curve25519 as X25519;
 
 -- | @encryptWKey z pu pr@ encrypts @z@ with the shared secret of public
--- key @pu@ and private key @pr@, outputting the resulting ciphertext.
+-- key @pu@ and private key @pr@, returning the resulting ciphertext.
 --
 -- @encryptWKey@ is IO-monadic because @encryptWKey@ uses functions
 -- which return pseudorandom stuff, e.g., the AES-256 keys which encrypt
