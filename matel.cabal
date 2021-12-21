@@ -46,7 +46,8 @@ library
     Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
   other-modules:
     -- The following modules export stuff which is of real use only
-    -- within Metal.MatrixAPI.LowLevel.
+    -- within Metal.MatrixAPI.LowLevel.  These modules are hidden
+    -- simply because these modules need not be exposed.
     Metal.MatrixAPI.LowLevel.Types
     Metal.MatrixAPI.LowLevel.Crypto
     Metal.MatrixAPI.LowLevel.ResponseToWhatever
