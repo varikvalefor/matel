@@ -16,6 +16,7 @@
 -- @getAuthorisationDetails@ is moved to this file to ensure that the
 -- complexity of Metal is minimised.
 module GetAuth (getAuthorisationDetails, configFilePath) where
+import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
 import Metal.User;
@@ -33,32 +34,57 @@ import qualified Metal.Default as Def;
 -- This authorisation-related information is read from
 -- @[HOME DIRECTORY]\/.config\/matel@, whose formatting is described in
 -- Matel's "README" file.
+--
+-- = Errors
+--
+-- If the Matel configuration file lacks a required field, e.g.,
+-- @password@, then @getAuthorisationDetails@ throws an error and
+-- halts and catches fire.
 getAuthorisationDetails :: IO Auth;
 getAuthorisationDetails = fmap configToUser $ T.readFile =<< configFilePath
   where
+  -- \| "Break if missing."
+  --
+  -- The first argument is the name of the field, and the second
+  -- argument is the value which the field 'Maybe' contains.
+  bim :: String -> Maybe a -> a
+  bim msg Nothing = error $ "The configuration file lacks a " ++
+                            show msg ++ "field."
+  bim msg (Just k) = k
+  --
   configToUser :: Stringth -> User
   configToUser cfg = Def.user {
-    username = T.unpack $ xOf "username" cfg,
-    password = xOf "password" cfg,
-    homeserver = T.unpack $ xOf "homeserver" cfg,
-    authToken = T.unpack $ xOf "authtoken" cfg,
-    protocol = Just $ T.unpack $ xOf "protocol" cfg
+    username = bim "username" $ T.unpack <$> xOf "username" cfg,
+    password = bim "password" $ xOf "password" cfg,
+    homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
+    authToken = fromMaybe "whatever" $ T.unpack <$> xOf "authtoken" cfg,
+    protocol = T.unpack <$> xOf "protocol" cfg
   };
 
 -- | @configFilePath@ is the path of Matel's configuration file.
 configFilePath :: IO FilePath;
 configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 
--- | @xOf a b@ equals the content of the field of @b@ whose name is @a@.
+-- | @xOf a b@ 'Just' equals the content of the field of @b@ whose name
+-- is @a@ if @b@ contains such a field.  $xOf a b@ otherwise equals
+-- 'Nothing'.
+--
+-- A 'Maybe' value is output because some requested fields may be
+-- legally absent from Matel's configuration file.  An example of
+-- such a field is @authtoken@.
 --
 -- @xOf@ is used to reduce the amount of boilerplate stuff.
 xOf :: Stringth
     -- ^ The name of the field whose value is returned
     -> Stringth
     -- ^ The content of the configuration file whose fields are searched
-    -> Stringth;
-xOf query' = T.drop queryLen . head . filter isMatch . T.lines
+    -> Maybe Stringth;
+xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   where
+  head' :: [a] -> Maybe a
+  head' [] = Nothing
+  head' j = Just $ head j
+  --
   isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take queryLen
   --
