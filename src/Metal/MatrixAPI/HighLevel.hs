@@ -24,18 +24,18 @@
 -- module's functions such that these functions do not simply break
 -- if such a change would benefit any users of this module.
 module Metal.MatrixAPI.HighLevel (
+  -- * Stuff-Fetching Functions
+  --
+  -- $stuffFetch
   recentMessagesFrom,
   earlyMessagesFrom,
   memberRooms,
   memberSpaces,
   memberComms,
+  -- * Stuff which is Imported from Metal.MatrixAPI.LowLevel
+  --
+  -- $stuffImport
   sendEvent,
-  markRead,
-  -- The following things are just imported from
-  -- Metal.MatrixAPI.LowLevel and exported exactly as these
-  -- functions appear in Metal.MatrixAPI.LowLevel because writing
-  -- wrappers for these functions would be a fairly pointless process;
-  -- these functions are already reasonably high-level.
   ban,
   unban,
   kick,
@@ -45,8 +45,12 @@ module Metal.MatrixAPI.HighLevel (
   sync,
   loginPass,
   upload,
+  createRoom,
+  -- * Stuff-Sending Functions
+  --
+  -- $ stuffSend
   send,
-  createRoom
+  markRead,
 ) where
 import Metal.Auth;
 import Metal.Base;
@@ -62,6 +66,23 @@ import qualified Data.Text as T;
 import qualified Data.Either as EE;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
+
+-- $stuffImport
+--
+-- This section of this module contains some functions which are
+-- imported from Metal.MatrixAPI.LowLevel.  These functions are
+-- exported exactly as these functions appear in
+-- Metal.MatrixAPI.LowLevel because writing wrappers for these
+-- functions would be a fairly pointless process; these functions
+-- are already reasonably high-level.
+
+-- Ain't nothin' here, foo'.  Can't you read?
+
+-- $stuffFetch
+--
+-- This section of the module contains some functions which gather
+-- information, e.g., lists of 'Rooms' of which Matel's user is a
+-- member.
 
 -- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
@@ -171,6 +192,11 @@ markRead :: StdMess
          -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
 markRead _ _ = error "markRead is unimplemented.";
+
+-- $stuffSend
+--
+-- This section of the module contains the functions of this module
+-- which are responsible for the sending of stuff, e.g., messages.
 
 -- | If the room which @r@ represents is encrypted, then @send e r@
 -- sends an encrypted @e@ to @r@.  @send e r@ otherwise sends the plain
