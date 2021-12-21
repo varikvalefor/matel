@@ -69,3 +69,6 @@ instance Show ReqType where
             -- to ensure that if some weird new ReqType is added without
             -- receiving a 'Show' instance, then a descriptive error may
             -- be thrown.
+            --
+            -- Additionally, keeping this thing implies being able to
+            -- keep a dumb joke.
