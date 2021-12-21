@@ -16,7 +16,7 @@ data Room = Room {
   -- | @roomId k@ is the "non-human-readable" identifier of @k@, e.g.,
   -- "!wnmjpIJcdaBNfOJrSw:matrix.org".
   roomId :: Identifier,
-  -- | @roomHid k@ is the "human-readable" identifier of @k@, e.g.,
+  -- | @roomHumanId k@ is the "human-readable" identifier of @k@, e.g.,
   -- "#johnnykissassSuckupfest:matrix.org".
   roomHumanId :: Identifier,
   -- | @roomName k@ is the display name of @k@, e.g., "Johnny Kissass's
