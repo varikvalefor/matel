@@ -52,6 +52,7 @@ module Metal.MatrixAPI.HighLevel (
   send,
   markRead,
 ) where
+import Data.Bool;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
@@ -132,17 +133,18 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   convS = return . return . Left
   --
   maybeShowRms :: Either Stringth [Room] -> IO [Room]
-  maybeShowRms = listRoomsMentioned >=> \t ->
-    if any EE.isLeft t
-      then error $ T.unpack $ justLeft $ head $ filter EE.isLeft t
-      -- \^ @filter EE.isLeft@ is used to ensure that the fetched 'Left'
-      -- value actually exists; some values may be 'Right'-valued.
-      -- An error is tossed because something has probably gone horribly
-      -- wrong if any 'Left' values are present.
-      -- VARIK is willing to modify @memberRooms@ such that
-      -- @memberRooms@ does not break at this point if any users of this
-      -- module would benefit from this change.
-      else return $ map justRight t;
+  maybeShowRms = listRoomsMentioned >=> bifsram
+  -- \| "Break if some rooms are missing."
+  bifsram :: [Either Stringth Room] -> IO [Room]
+  bifsram t = bool err (pure $ map justRight t) $ any EE.isLeft t
+    where err = error $ T.unpack $ justLeft $ head $ filter EE.isLeft t;
+    -- \^ @filter EE.isLeft@ is used to ensure that the fetched 'Left'
+    -- value actually exists; some values may be 'Right'-valued.
+    -- An error is tossed because something has probably gone horribly
+    -- wrong if any 'Left' values are present.
+    -- VARIK is willing to modify @memberRooms@ such that
+    -- @memberRooms@ does not break at this point if any users of this
+    -- module would benefit from this change.
 
 -- | @memberSpaces x@ equals a list of all spaces of which Matel's user,
 -- whose login information is contained within @x@, is a member.
