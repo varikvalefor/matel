@@ -310,16 +310,12 @@ runKick :: [String]
         -- The information which is used to authorise the kicking of the
         -- user
         -> IO ();
-runKick k a
-  | length k < 3 = error "I'll kick YOUR ass if you don't start giving \
-                   \me some actual directions."
-  | otherwise = kick user room (k !! 2) a >>= dispError
+runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
   where
-  user :: User
-  user = Def.user {username = k !! 0}
-  --
-  room :: Room
-  room = Def.room {roomId = k !! 1};
+  user = Def.user {username = uninat}
+  room = Def.room {roomId = cell};
+runKick _ = error "I'll kick YOUR ass if you don't start giving \
+                  \me some actual directions."
 
 -- | @createRoom [name_, topic_, permission_] a@ should create a Matrix
 -- room @k@ such that @roomName k == name_@ and @topic k == topic_@.  If
