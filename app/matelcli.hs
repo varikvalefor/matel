@@ -370,8 +370,7 @@ ooplawed :: [String]
          -> Auth
          -- ^ The authorisation information
          -> IO ();
-ooplawed (f:_) a = BSL.getContents >>= \c ->
-                   upload c f a >>= process
+ooplawed (f:_) a = BSL.getContents >>= \c -> upload c f a >>= process
   where
   process :: Either Stringth Stringth -> IO ()
   process = either (error . T.unpack) T.putStrLn;
