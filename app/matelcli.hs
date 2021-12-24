@@ -198,7 +198,7 @@ mkRead :: [String]
        -- message as having been read.
        -> IO ();
 mkRead [] = error "Someone should knock you upside the head a few \
-              \times, punk.  Dismissed.";
+                  \times, punk.  Dismissed.";
 mkRead k = markRead Def.stdMess {boilerplate = boi} >=> dispError
   where
   boi :: EventCommonFields
