@@ -258,8 +258,8 @@ runJoin :: [String]
         -- ^ The authorisation information of Matel's user
         -> IO ();
 runJoin [] a = error "Idiot!  How am I to join an unspecified room for \
-               \you?  My strength is simplicity.  I can't work with \
-               \this shit.";
+                     \you?  My strength is simplicity.  I can't work with \
+                     \this shit.";
 runJoin t a = join room inviteInfo a >>= dispError
   where
   room :: Room
