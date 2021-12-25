@@ -58,6 +58,9 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 
 instance ToJSON StdMess where
+  -- \| Using a "@case@" expression is mighty tempting.  However, using
+  -- a "@case@" expression does not facilitate treating 'TextInnit'
+  -- events as 'Notice' events are treated.
   toJSON k
       -- \| @m.notice@ messages are really just @m.text@ messages which
       -- are displayed a bit uniquely.  As such, @m.notice@ messages can
