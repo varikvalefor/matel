@@ -5,8 +5,44 @@
 .Nm matelcli
 .Nd command-line interface to the Matrix messaging service
 .Sh SYNOPSIS
-.Nm matelcli
-.Ar command argument
+.Nm matelcli list
+.Ar rooms | communities | spaces
+.Pp
+.Nm matelcli send
+.Ar text | notice
+.Ar roomId
+.Pp
+.Nm matelcli send file
+.Ar filePath roomId
+.Pp
+.Nm matelcli send location
+.Ar geoURI roomId
+.Pp
+.Nm matelcli grab
+.Ar n
+.Ar recent | first
+from
+.Ar roomId
+.Pp
+.Nm matelcli login
+.Pp
+.Nm matelcli sync
+.Pp
+.Nm matelcli join
+.Ar room
+.Op Ar inviter_id token signature
+.Pp
+.Nm matelcli leave
+.Ar roomId
+.Pp
+.Nm matelcli kick
+.Ar userId roomId
+.Pp
+.Nm matelcli createroom
+.Ar roomname topic permission
+.Pp
+.Nm matelcli upload
+.Ar filename
 .Sh DESCRIPTION
 .Nm matelcli
 is used to perform various Matrix-related tasks via a command-line
