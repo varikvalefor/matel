@@ -59,6 +59,9 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 
 instance ToJSON StdMess where
   toJSON k
+      -- \| @m.notice@ messages are really just @m.text@ messages which
+      -- are displayed a bit uniquely.  As such, @m.notice@ messages can
+      -- be handles mostly as @m.text@ events are handled.
     | msgType k `elem` [TextInnit, Notice] = object
       [
         "body" .= body k,
