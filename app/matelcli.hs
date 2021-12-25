@@ -144,7 +144,7 @@ send k a
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
-                  \ shit-tits.  Read the fucking manual."
+                        \ shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
