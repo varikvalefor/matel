@@ -171,12 +171,11 @@ grab :: [String]
      -> Auth
      -- ^ The authorisation information
      -> IO ();
-grab k a
-  | k == [] = error "Repent, motherfucker."
+grab (decino:eeyore:jd:mexicid:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
-  | otherwise = case k !! 1 of
+  | otherwise = case eeyore of
     "recent" -> recentMessagesFrom n room a >>= mapM_ print
     "early"  -> earlyMessagesFrom n room a >>= mapM_ print
     _        -> error "I'll grab you if you don't grab some sense."
@@ -184,10 +183,11 @@ grab k a
   -- \| This variable refers to the number of messages which should be
   -- fetched.
   n :: Integer
-  n = fromMaybe (-42) $ readMaybe $ head k
+  n = fromMaybe (-42) $ readMaybe decino
   --
   room :: Room
-  room = Def.room {roomId = k !! 3};
+  room = Def.room {roomId = mexicid};
+grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead [identifier] a@ marks the message whose identifier is
 -- @identifier@ as having been read if this message exists.  @a@ is used
@@ -200,10 +200,10 @@ mkRead :: [String]
        -> IO ();
 mkRead [] = error "Someone should knock you upside the head a few \
                   \times, punk.  Dismissed.";
-mkRead k = markRead Def.stdMess {boilerplate = boi} >=> dispError
+mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
   where
   boi :: EventCommonFields
-  boi = Def.eventCommonFields {eventId = head k};
+  boi = Def.eventCommonFields {eventId = eeee};
 
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
