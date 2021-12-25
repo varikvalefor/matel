@@ -58,9 +58,6 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 
 instance ToJSON StdMess where
-  -- \| Using a "@case@" expression is mighty tempting.  However, using
-  -- a "@case@" expression does not facilitate treating 'TextInnit'
-  -- events as 'Notice' events are treated.
   toJSON k
       -- \| @m.notice@ messages are really just @m.text@ messages which
       -- are displayed a bit uniquely.  As such, @m.notice@ messages can
@@ -70,26 +67,28 @@ instance ToJSON StdMess where
         "body" .= body k,
         "msgtype" .= show (msgType k)
       ]
-    | msgType k == Location = object
-      [
-        "body" .= body k,
-        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
-        "msgtype" .= show (msgType k)
-      ]
-    | msgType k == Attach = object
-      [
-        "body" .= body k,
-        "filename" .= filename k,
-        "info" .= object
+    | otherwise = case msgType k of
+      Location -> object
         [
-          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
-          "size" .= maybe (errorNoField "size") size (fileInfo k)
-        ],
-        "msgtype" .= show (msgType k),
-        "url" .= url k
-      ]
-    | otherwise = error $ "A proper error!  ToJSON does not account \
-      \for StdMess values of @msgType@ " ++ show (msgType k) ++ "."
+          "body" .= body k,
+          "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
+          "msgtype" .= show (msgType k)
+        ]
+      Attach -> object
+        [
+          "body" .= body k,
+          "filename" .= filename k,
+          "info" .= object
+          [
+            "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
+            "size" .= maybe (errorNoField "size") size (fileInfo k)
+          ],
+          "msgtype" .= show (msgType k),
+          "url" .= url k
+        ]
+      _ -> error $ "A proper error!  ToJSON does not account \
+                   \for StdMess values of @msgType@ " ++
+                   show (msgType k) ++ "."
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType k) ++
