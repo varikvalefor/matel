@@ -60,17 +60,17 @@ instance Event StdMess where
     process k = case getResponseStatusCode k of
       200 -> filter nonDef $ map toMessage $ toValue k .! "{chunk}"
       _   -> detroit k
-      where
-      toValue :: Response BS.ByteString -> Value
-      toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-                getResponseBody
-      --
-      nonDef :: StdMess -> Bool
-      nonDef = (/= Def.stdMess)
-      --
-      chunkMissing :: a
-      chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                     \fetchEvents: The \"chunk\" field is absent!"
+    --
+    toValue :: Response BS.ByteString -> Value
+    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
+              getResponseBody
+    --
+    nonDef :: StdMess -> Bool
+    nonDef = (/= Def.stdMess)
+    --
+    chunkMissing :: a
+    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
+                   \fetchEvents: The \"chunk\" field is absent!"
     --
     toMessage :: Value -> StdMess
     toMessage k = case theMessageType of
@@ -185,17 +185,17 @@ instance Event Encrypted where
     process k = case getResponseStatusCode k of
       200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
       _   -> detroit k
-      where
-      toValue :: Response BS.ByteString -> Value
-      toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-                getResponseBody
-      --
-      nonDef :: Encrypted -> Bool
-      nonDef = (/= Def.encrypted)
-      --
-      chunkMissing :: a
-      chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                     \fetchEvents: The \"chunk\" field is absent!"
+    --
+    toValue :: Response BS.ByteString -> Value
+    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
+              getResponseBody
+    --
+    nonDef :: Encrypted -> Bool
+    nonDef = (/= Def.encrypted)
+    --
+    chunkMissing :: a
+    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
+                   \fetchEvents: The \"chunk\" field is absent!"
     --
     toEncrypted :: Value -> Encrypted
     toEncrypted k = Def.encrypted {
