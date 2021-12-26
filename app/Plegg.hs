@@ -18,8 +18,12 @@ module Plegg where
   import Foreign.C.String (CString, withCString);
   import System.Directory;
 
-  foreign import ccall "unistd.h pledge" pledge :: CString -> Ptr [CString] -> IO Int;
-  foreign import ccall "unistd.h unveil" unveil :: CString -> CString -> IO Int;
+  foreign import ccall "unistd.h pledge" pledge :: CString
+                                                -> Ptr [CString]
+                                                -> IO Int;
+  foreign import ccall "unistd.h unveil" unveil :: CString
+                                                -> CString
+                                                -> IO Int;
 
   -- | @plegg@ is an extremely high-level interface to @pledge(2)@.  At
   -- this point, just read the source code.
