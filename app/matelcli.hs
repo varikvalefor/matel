@@ -154,9 +154,10 @@ send k a
     destIndex :: Int
     destIndex | head k `elem` diargumentalStuff = 2
               | otherwise = 1;
-              -- \^ This bit is necessary because the number of arguments of the
-              -- "send file" command is not equal to the number of arguments
-              -- of the "send text" and "send notice" commands.
+              -- \^ This bit is necessary because the number of
+              -- arguments of the "send file" command is not equal to
+              -- the number of arguments of the "send text" and "send
+              -- notice" commands.
 
 -- | @grab@ is used to fetch and output the messages of a room.
 --
