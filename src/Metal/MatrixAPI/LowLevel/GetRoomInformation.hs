@@ -64,7 +64,8 @@ getRoomInformation room a =
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
 -- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
--- to represent the encryption status of the room which @r@ represents.
+-- such that this 'Room' represents the encryption status of the room
+-- which @r@ represents.
 getEncryptionStatus :: Room
                     -- ^ The room whose encryption status should be
                     -- fetched
@@ -102,7 +103,11 @@ getMembers room = process <.> rq room "/members"
   where
   process :: Response BS.ByteString -> Either Stringth Room
   process response = case getResponseStatusCode response of
-    200 -> Right Def.room -- TODO: Implement this thing.  This "return nothing" thing is added because having the program break at this point can be a bit inconvenient.
+    200 -> Right Def.room
+           -- \^ TODO: Implement this thing.
+           --
+           -- This "return nothing" thing is added because having the
+           -- program break at this point can be a bit inconvenient.
     _   -> Left $ responseToStringth response;
 
 -- | Where @a@ is the authorisation information of the client,

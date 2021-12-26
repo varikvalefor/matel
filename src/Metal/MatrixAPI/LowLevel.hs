@@ -323,6 +323,8 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 -- | @ban@ implements the Matrix API's
 -- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/ban@" command.
 --
+-- An error message is provided iff an error is encountered.
+--
 -- The first argument describes the user which should be banned.  Only
 -- the @username@ field is used.
 --
@@ -334,8 +336,6 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 --
 -- The fourth argument is the authorisation information which is used
 -- to run the command.
---
--- An error message is provided iff an error is encountered.
 ban :: User
     -- ^ A description of the user which should be banned
     -> Room
