@@ -46,14 +46,16 @@ module Plegg (plegg, univac) where
     -- exposed, then Matel has no reason to trust that the homeserver is
     -- actually the homeserver, as opposed to being some punk-ass
     -- credential sniffer.
-    expose "/etc/ssl/cert.pem" "r"
-    where
-    expose :: String -> String -> IO ()
-    expose path perms =
-      throwErrnoIfMinus1_ "unveil hath fallen!" $
-      withCString path $ \pathC ->
-      withCString perms $ \permsC ->
-      unveil pathC permsC;
+    expose "/etc/ssl/cert.pem" "r";
+
+  -- | @expose path perms@ runs @unveil@ on the C path equivalents of
+  -- @path@ and @perms@.
+  expose :: String -> String -> IO ();
+  expose path perms =
+    throwErrnoIfMinus1_ "unveil hath fallen!" $
+    withCString path $ \pathC ->
+    withCString perms $ \permsC ->
+    unveil pathC permsC;
 #else
   -- | @plegg@ does nothing; this module is not compiled on OpenBSD.
   plegg :: IO ();
