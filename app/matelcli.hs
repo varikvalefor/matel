@@ -360,8 +360,8 @@ messToHumanReadable k =
 -- is told that the filename of the uploaded file is @filename@.
 --
 -- Users of @ooplawed@ should note that @ooplawed@ uploads UNENCRYPTED
--- files.  @ooplawed@ should be TLS-protected but does not support
--- end-to-end encryption.
+-- files.  When the @protocol@ is HTTPS, @ooplawed@ _is_ TLS-protected.
+-- However @ooplawed@ does _not_ support end-to-end encryption.
 ooplawed :: [String]
          -- ^ The @'tail'@ of the command-line arguments
          -> Auth
