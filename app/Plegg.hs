@@ -28,7 +28,7 @@ module Plegg (plegg, univac) where
   -- | @plegg@ is an extremely high-level interface to @pledge(2)@.  At
   -- this point, just read the source code.
   plegg :: IO ();
-  plegg = throwErrnoIfMinus1_ "pledge fails!" $
+  plegg = throwErrnoIfMinus1_ "pledge" $
           withCString "cpath wpath rpath inet dns stdio" $ \premises ->
           pledge premises nullPtr;
 
@@ -52,7 +52,7 @@ module Plegg (plegg, univac) where
   -- @path@ and @perms@.
   expose :: String -> String -> IO ();
   expose path perms =
-    throwErrnoIfMinus1_ "unveil hath fallen!" $
+    throwErrnoIfMinus1_ "unveil" $
     withCString path $ \pathC ->
     withCString perms $ \permsC ->
     unveil pathC permsC;
