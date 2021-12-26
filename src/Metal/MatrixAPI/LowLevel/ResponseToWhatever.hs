@@ -30,6 +30,10 @@ responseToString :: Show a
                  => Response a
                  -> String;
 responseToString = T.unpack. responseToStringth;
+-- \^ @responseToString@ is a wrapper for @responseToStringth@, as
+-- opposed to having @responseToStringth@ be a wrapper for
+-- @responseToString@, because as of 20211226, 'String' is mostly
+-- deprecated.
 
 -- | @responseToStringth k@ equals a 'Stringth' which describes the
 -- status code of @k@.
