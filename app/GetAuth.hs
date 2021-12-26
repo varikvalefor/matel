@@ -73,7 +73,7 @@ configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 -- legally absent from Matel's configuration file.  An example of
 -- such a field is @authtoken@.
 --
--- @xOf@ is used to reduce the amount of boilerplate stuff.
+-- @xOf@ reduces the amount of boilerplate stuff.
 xOf :: Stringth
     -- ^ The name of the field whose value is returned
     -> Stringth
