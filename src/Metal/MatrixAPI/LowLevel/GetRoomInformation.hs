@@ -157,9 +157,9 @@ getRoomName r = process <.> rq r "/state/m.room.name/"
   extractName k = getResponseBody k ^? A.key "name" . A._String
   --
   kemo :: T.Text
-  kemo = error $ "A fairly goofy error is encountered.  The JSON " ++
-            "value which the \"m.room.name\" request returns does " ++
-            "NOT contain a \"name\" field.";
+  kemo = error "A fairly goofy error is encountered.  The \
+               \\"m.room.name\" request returns a JSON value which \
+               \does NOT contain a \"name\" field.";
 
 -- | @rq room k a@ is the response to the authorised HTTP request
 -- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
