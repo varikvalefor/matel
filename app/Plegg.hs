@@ -42,7 +42,7 @@ module Plegg (plegg, univac) where
     -- exposed, then the entropy which is used to initiate TLS
     -- connections cannot be generated.
     expose "/dev/random" "rx" >>
-    -- \| Exposing this file  is necessary because if this thing is not
+    -- \| Exposing this file is necessary because if this thing is not
     -- exposed, then Matel has no reason to trust that the homeserver is
     -- actually the homeserver, as opposed to being some punk-ass
     -- credential sniffer.
