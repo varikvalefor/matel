@@ -11,7 +11,7 @@
 --
 -- This module ensures that when compiled on OpenBSD systems, Matel and
 -- MATELCLI support OpenBSD's @pledge(2)@ and @unveil(2)@.
-module Plegg where
+module Plegg (plegg, univac) where
 #ifdef openbsd_HOST_OS
   import Foreign (Ptr, nullPtr);
   import Foreign.C.Error (throwErrnoIfMinus1_);
