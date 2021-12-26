@@ -64,7 +64,8 @@ getRoomInformation room a =
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
 -- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
--- to represent the encryption status of the room which @r@ represents.
+-- such that this 'Room' represents the encryption status of the room
+-- which @r@ represents.
 getEncryptionStatus :: Room
                     -- ^ The room whose encryption status should be
                     -- fetched
