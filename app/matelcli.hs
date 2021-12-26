@@ -88,8 +88,7 @@ determineAction (command:stuff) a = case command of
 -- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
 -- specified in @a@ is a member.
 list :: [String] -> Auth -> IO ();
-list [] _ = error "Write an argument or be made sufficiently \
-            \brain-dead to never write arguments again.";
+list [] _ = error "You wimps suck.";
 list (k:_) a = case k of
   "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
   "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
