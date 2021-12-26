@@ -130,6 +130,12 @@ valueMImageToStdMess k = Def.stdMess {
   msgType = Image,
   body = con .! "{body}",
   fileInfo = Just Def.fileInfo {
+    -- \| (Using @(.?)@ for values which absolutely should exist) at
+    -- first glance seems a bit goofy.
+    --
+    -- However, using (.?) implies being able to handle some malformed
+    -- messages _and_ not needing to manually place values into the
+    -- 'Maybe' monad, which is nice.
     w = con .? "{info:{w}}",
     h = con .? "{info:{h}}",
     mimetype = con .? "{info:{mimetype}}",
@@ -165,6 +171,9 @@ valueMFileToStdMess :: Value
 valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
+  -- \| @filename@ should be present.  However, because @filename@ is
+  -- 'Maybe'-monadic and @(.?)@ reuturns an IO-monadic value, using
+  -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"
 };
