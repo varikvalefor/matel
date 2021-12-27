@@ -30,6 +30,11 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
 -- | For all 'Event' @A@, @A@ describes a Matrix room event.
 class Event a where
+  -- | @nonDef a@ iff @a@ is not a default-valued thing.
+  nonDef :: a
+         -- ^ The thing whose defaultness is determined
+         -> Bool
+
   -- | @fetchEvents n d k r a@ fetches @n@ events of type @msgType k@
   -- from the room which is specified in @r@.  The authorisation
   -- information which is specified in @a@ is used to authenticate the
@@ -54,6 +59,7 @@ class Event a where
               -> IO [a];
 
 instance Event StdMess where
+  nonDef = (/= Def.stdMess)
   fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> [StdMess]
@@ -64,9 +70,6 @@ instance Event StdMess where
     toValue :: Response BS.ByteString -> Value
     toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
               getResponseBody
-    --
-    nonDef :: StdMess -> Bool
-    nonDef = (/= Def.stdMess)
     --
     chunkMissing :: a
     chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
@@ -179,6 +182,7 @@ valueMFileToStdMess k = Def.stdMess {
 };
 
 instance Event Encrypted where
+  nonDef = (/= Def.encrypted)
   fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> [Encrypted]
@@ -189,9 +193,6 @@ instance Event Encrypted where
     toValue :: Response BS.ByteString -> Value
     toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
               getResponseBody
-    --
-    nonDef :: Encrypted -> Bool
-    nonDef = (/= Def.encrypted)
     --
     chunkMissing :: a
     chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
