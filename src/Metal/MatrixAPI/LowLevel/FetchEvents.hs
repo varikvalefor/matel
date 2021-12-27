@@ -196,7 +196,12 @@ instance Event Encrypted where
     chunkMissing :: a
     chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
                    \fetchEvents: The \"chunk\" field is absent!"
+    -- \| Using a "proper" @fromJSON@ thing is _possible_... but
+    -- involves a relatively great amount of effort and offers no real
+    -- advantage over using @(.!)@ and company.
     --
+    -- @(.!)@ and company, however, are advantageous primarily because
+    -- @(.!)@ and company are relatively reader-and-writer-friendly.
     toEncrypted :: Value -> Encrypted
     toEncrypted k = Def.encrypted {
       algorithm = ct .! "{algorithm}",
