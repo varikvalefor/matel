@@ -195,7 +195,7 @@ instance Event Encrypted where
     --
     chunkMissing :: a
     chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                   \fetchEvents: The \"chunk\" field is absent!"
+                         \fetchEvents: The \"chunk\" field is absent!"
     -- \| Using a "proper" @fromJSON@ thing is _possible_... but
     -- involves a relatively great amount of effort and offers no real
     -- advantage over using @(.!)@ and company.
