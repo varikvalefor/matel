@@ -72,24 +72,24 @@ instance Event StdMess where
     chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
                    \fetchEvents: The \"chunk\" field is absent!"
     --
-    toMessage :: Value -> StdMess
-    toMessage k = case theMessageType of
-      "m.text"     -> valueMTextToStdMess k
-      "m.notice"   -> (valueMTextToStdMess k) {msgType = Notice}
-      "m.image"    -> valueMImageToStdMess k
-      "m.location" -> valueMLocationToStdMess k
-      "m.file"     -> valueMFileToStdMess k
-      _            -> Def.stdMess
-      where
-      theMessageType :: String
-      theMessageType = k .! "{content:{msgtype}}"
-    --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.message%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
+
+-- | @toMessage k@ calls a functions which converts @k@ into a
+-- 'StdMess'.  Depending upon the \"type\" of @k@, any function of
+-- various functions may be called.
+toMessage :: Value -> StdMess;
+toMessage k = case (k .! "{content:{msgtype}}" :: String) of
+  "m.text"     -> valueMTextToStdMess k
+  "m.notice"   -> (valueMTextToStdMess k) {msgType = Notice}
+  "m.image"    -> valueMImageToStdMess k
+  "m.location" -> valueMLocationToStdMess k
+  "m.file"     -> valueMFileToStdMess k
+  _            -> Def.stdMess;
 
 -- | @valueToECF k@ describes the boilerplate portion of the Matrix
 -- message which @k@ represents.
