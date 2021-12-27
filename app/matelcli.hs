@@ -123,9 +123,7 @@ send k a
   target = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> BSL.getContents >>= \content ->
-                  upload content (k !! 1) a >>=
-                  return . processError >>= \uploadID ->
+    "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
                     body = T.pack $ k !! 1,
@@ -158,6 +156,23 @@ send k a
               -- arguments of the "send file" command is not equal to
               -- the number of arguments of the "send text" and "send
               -- notice" commands.
+
+-- | @uploadStdinGetID@ uploads some data which is read from the
+-- standard input to a homeserver, returning the URI of the uploaded
+-- file if everything goes according to plan.
+--
+-- If NOT(EVERYTHING GOES ACCORDING TO PLAN), then @uploadStdinGetID@
+-- probably just bursts into flame.
+uploadStdinGetID :: String
+                 -- ^ The name of the file which is uploaded
+                 -> Auth
+                 -- ^ The authorisation information which is used to
+                 -- upload the file
+                 -> IO Stringth;
+uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
+  where
+  uploadThing :: Auth -> IO (Either Stringth Stringth)
+  uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
 -- | @grab@ is used to fetch and output the messages of a room.
 --
@@ -367,7 +382,4 @@ ooplawed :: [String]
          -> Auth
          -- ^ The authorisation information
          -> IO ();
-ooplawed (f:_) a = BSL.getContents >>= \c -> upload c f a >>= process
-  where
-  process :: Either Stringth Stringth -> IO ()
-  process = either (error . T.unpack) T.putStrLn;
+ooplawed (f:_) = uploadStdinGetID f >=> T.putStrLn;
