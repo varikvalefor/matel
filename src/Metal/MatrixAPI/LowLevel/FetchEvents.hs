@@ -204,11 +204,11 @@ instance Event Encrypted where
     -- @(.!)@ and company are relatively reader-and-writer-friendly.
     toEncrypted :: Value -> Encrypted
     toEncrypted k = Def.encrypted {
-      algorithm = ct .! "{algorithm}",
-      ciphertext = ct .! "{ciphertext}",
-      device_id = ct .! "{device_id}",
-      sender_key = ct .! "{sender_key}",
-      session_id = ct .! "{session_id}",
+      algorithm   = ct .! "{algorithm}",
+      ciphertext  = ct .! "{ciphertext}",
+      device_id   = ct .! "{device_id}",
+      sender_key  = ct .! "{sender_key}",
+      session_id  = ct .! "{session_id}",
       boilerplate = valueToECF k
     } where
       ct :: Value
