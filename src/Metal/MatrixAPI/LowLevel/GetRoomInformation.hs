@@ -48,14 +48,14 @@ getRoomInformation :: Room
                    -> Auth
                    -- ^ The authorisation information
                    -> IO (Either Stringth Room);
-getRoomInformation room a =
-  getMembers room a >>= either (return . Left) evaluate
+getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   where
-  evaluate :: Room -> IO (Either Stringth Room)
-  evaluate g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
+  -- \| "@evil@" is an abbreviation of "@evaluate@".
+  evil :: Room -> IO (Either Stringth Room)
+  evil g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
   --
   fetchRoomValues :: IO [Room]
-  fetchRoomValues = mapConcurrently (\f -> f room a) functions
+  fetchRoomValues = mapConcurrently (\f -> f r a) functions
   -- \^ The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
