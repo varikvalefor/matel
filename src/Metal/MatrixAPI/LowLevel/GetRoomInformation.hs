@@ -99,7 +99,15 @@ getMembers :: Room
            -- ^ The authorisation information which is used to fetch
            -- the list of members
            -> IO (Either Stringth Room);
-getMembers room = process <.> rq room "/members"
+getMembers room a = pure $ Right room -- process <.> rq room "/members"
+  -- \^ This hack is grody.
+  --
+  -- This hack is created when @getMembers@ is broken such that
+  -- @getMembers@'s HTTP request always returns a 404 error and
+  -- @getMembers@ _always_ returns 'Left' values; as a result of this
+  -- brokenness, @getMembers@ is currently damn near useless.
+  --
+  -- A fix should be created... eventually.
   where
   process :: Response BS.ByteString -> Either Stringth Room
   process response = case getResponseStatusCode response of
