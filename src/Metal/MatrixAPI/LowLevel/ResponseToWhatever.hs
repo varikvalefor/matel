@@ -47,14 +47,14 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
   show (getResponseStatusCode r) ++ "; " ++ show (getResponseBody r);
 
 -- | If the status code of @k@ equals @200@, then @responseToMaybe k@
--- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
--- equivalent of @'responseToStringth' k@.
+-- equals 'Nothing'.  @responseToMaybe k@ otherwise equals
+-- @'responseToStringth' k@.
 responseToMaybe :: Show a
                 => Response a
-                -> Maybe String;
+                -> Maybe Stringth;
 responseToMaybe theResponse = case getResponseStatusCode theResponse of
   200 -> Nothing
-  _   -> Just $ T.unpack $ responseToStringth theResponse;
+  _   -> Just $ responseToStringth theResponse;
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.

@@ -88,7 +88,7 @@ type SharedSecret = Stringth;
 type Stringth = T.Text;
 -- | 'ErrorCode' is used to contain descriptions of functions' errors,
 -- e.g., "the message cannot be posted; the homeserver is off-line."
-type ErrorCode = [Char];
+type ErrorCode = T.Text;
 
 -- $highLevelDataTypes
 --

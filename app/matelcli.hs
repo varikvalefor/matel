@@ -226,7 +226,7 @@ mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
 -- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
 -- otherwise runs @error k@.
 dispError :: Maybe ErrorCode -> IO ();
-dispError = maybe (return ()) error;
+dispError = maybe (return ()) (error . T.unpack);
 
 -- | @logIn k@ generates an authorisation token for the user which is
 -- specified in @k@ and writes this authorisation token to the standard
@@ -356,8 +356,8 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   rm :: Room
   rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
   --
-  display :: Either String Room -> IO ()
-  display = either error (putStrLn . roomId);
+  display :: Either ErrorCode Room -> IO ()
+  display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable k@ is roughly equivalent to @show k@.
 -- However, VARIK finds that the readability of @messToHumanReadable k@
