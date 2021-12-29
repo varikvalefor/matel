@@ -28,7 +28,7 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | For all 'Event' @A@, @A@ describes a Matrix room event.
+-- | For all 'Event' @A@, @A@ represents a Matrix room event.
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
