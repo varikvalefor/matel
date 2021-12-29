@@ -354,7 +354,7 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
   rm :: Room
-  rm = Def.room {roomName = T.pack nm, topic = T.pack tpc}
+  rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
   --
   display :: Either String Room -> IO ()
   display = either error (putStrLn . roomId);
