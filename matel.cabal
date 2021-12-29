@@ -41,7 +41,6 @@ library
     Metal.Messages.FileInfo
     Metal.Messages.ThumbnailInfo
     Metal.Default
-    Metal.FavoriteNoise
     Metal.EventCommonFields
     Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
   other-modules:
