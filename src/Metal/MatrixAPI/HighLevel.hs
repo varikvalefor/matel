@@ -53,6 +53,7 @@ module Metal.MatrixAPI.HighLevel (
   markRead,
 ) where
 import Data.Bool;
+import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
@@ -221,7 +222,7 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
   maybeEncrypt :: IO (Either Stringth (Either StdMess Encrypted))
   maybeEncrypt = getRoomInformation italy a >>= either (return . Left) (Right <.> process)
   blowUp = return . Just . T.unpack
-  process dullards = if isEncrypted dullards
+  process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use
                        -- encryption... allegedly.
                        then Right <$> roomEncrypt event dullards
