@@ -122,8 +122,8 @@ valueMTextToStdMess :: Value
 valueMTextToStdMess k = Def.stdMess {
   body = k .! "{content:{body}}",
   fmtBody = k .? "{content:{formatted_body}}",
-  -- \^ The "formatted_body" field _should_ be
-  -- present... but _may_ not be present.
+  -- \^ The "formatted_body" field _should_ be present... but _may_ not
+  -- be present.
   boilerplate = valueToECF k
 };
 
