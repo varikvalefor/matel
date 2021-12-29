@@ -20,7 +20,7 @@ data Room = Room {
   -- "#johnnykissassSuckupfest:matrix.org".
   roomHumanId :: Identifier,
   -- | If @k@ has a display name, then @roomName k@ is 'Just' the
-  -- display name of @k@, e.g., "Johhny Kissass's Suck-Up Fest".
+  -- display name of @k@, e.g., "Johnny Kissass's Suck-Up Fest".
   -- @roomName k@ is otherwise 'Nothing'.
   roomName :: Maybe Stringth,
   -- | @members k@ is a list of the members of @k@.  Matel does not
