@@ -219,9 +219,9 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
-  maybeEncrypt :: IO (Either Stringth (Either StdMess Encrypted))
+  maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
   maybeEncrypt = getRoomInformation italy a >>= either (return . Left) (Right <.> process)
-  blowUp = return . Just . T.unpack
+  blowUp = return . Just
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use
                        -- encryption... allegedly.

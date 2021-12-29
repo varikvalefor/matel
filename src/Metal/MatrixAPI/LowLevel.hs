@@ -105,14 +105,14 @@ stillUnfinishedStayTuned = ();
 -- description of such an error.
 loginPass :: Auth
           -- ^ The authorisation information of Matel's user
-          -> IO (Either Stringth Stringth);
+          -> IO (Either ErrorCode Stringth);
 loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   where
   querr :: String
   querr = "_matrix/client/r0/login"
   --
   responseToLeftRight' :: Response BS.ByteString
-                       -> Either Stringth Stringth
+                       -> Either ErrorCode Stringth
   responseToLeftRight' j
     -- J
     | getResponseStatusCode j == 200 = Right $ bodyValue Q..! "{access_token}"
@@ -179,7 +179,7 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
-joinedRooms :: Auth -> IO (Either Stringth [Room]);
+joinedRooms :: Auth -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
@@ -207,7 +207,7 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- @spaceId@ bits are non-default.
 joinedSpaces :: Auth
              -- ^ The authorisation information of Matel's user
-             -> IO (Either Stringth [Space]);
+             -> IO (Either ErrorCode [Space]);
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
 -- | @joinedComms k@ sends the "not yet implemented" query to the
@@ -222,7 +222,7 @@ joinedSpaces a = error "joinedSpaces is unimplemented.";
 -- @spaceId@ bits are non-default.
 joinedComms :: Auth
             -- ^ The authorisation information of Matel's user
-            -> IO (Either Stringth [Community]);
+            -> IO (Either ErrorCode [Community]);
 joinedComms a = error "joinedComms is unimplemented.";
 
 -- $membershipDefine
@@ -249,7 +249,7 @@ join :: Room
      -- not public -- otherwise, 'Nothing'
      -> Auth
      -- ^ The authorisation information of Matel's user
-     -> IO (Maybe String);
+     -> IO (Maybe ErrorCode);
 join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   where
   querr :: String
@@ -307,7 +307,7 @@ kick :: User
      -- ^ The reason for the removal of the user
      -> Auth
      -- ^ The authorisation information
-     -> IO (Maybe String);
+     -> IO (Maybe ErrorCode);
 kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
   querr :: String
@@ -344,7 +344,7 @@ ban :: User
     -- ^ The reason for the banning of the user
     -> Auth
     -- ^ The authorisation information
-    -> IO (Maybe String);
+    -> IO (Maybe ErrorCode);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
   querr :: String
@@ -376,7 +376,7 @@ unban :: User
       -- ^ The room from which the user should be banned
       -> Auth
       -- ^ The authorisation information
-      -> IO (Maybe String);
+      -> IO (Maybe ErrorCode);
 unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
   querr :: String
@@ -404,7 +404,7 @@ leave :: Room
       -- ^ The room which should be left
       -> Auth
       -- ^ The authorisation information
-      -> IO (Maybe String);
+      -> IO (Maybe ErrorCode);
 leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
   where
   querr :: String
@@ -443,7 +443,7 @@ getDisplayName :: User
                -> Auth
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
-               -> IO (Either String User);
+               -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
   querr :: String
@@ -453,14 +453,14 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   toDispName = dnr_displayname . fromJust . A.decode .
                BSL.fromStrict . getResponseBody
   --
-  processResponse :: Response BS.ByteString -> Either String User
+  processResponse :: Response BS.ByteString -> Either ErrorCode User
   processResponse r =
     case getResponseStatusCode r of
       200 -> Right Def.user {displayname = toDispName r}
       404 -> Right Def.user {displayname = T.pack $ username u}
       -- This "404" thing accounts for users whose display names are
       -- undefined.
-      _   -> Left $ T.unpack $ responseToStringth r;
+      _   -> Left $ responseToStringth r;
       -- This case accounts for all situations which SHOULD NOT occur,
       -- e.g., "this user does not exist" and "yo, the server done
       -- broke".  Such responses should raise "red flags"; something has
@@ -490,7 +490,7 @@ createRoom :: Room
            -- be a public room.
            -> Auth
            -- ^ The information which is used to authorise the request
-           -> IO (Either String Room);
+           -> IO (Either ErrorCode Room);
 createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr :: String
@@ -504,10 +504,10 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
       "\"topic\": " ++ show (topic r) ++ "\n" ++
     "}"
   --
-  responseToEither :: Response BS.ByteString -> Either String Room
+  responseToEither :: Response BS.ByteString -> Either ErrorCode Room
   responseToEither resp = case getResponseStatusCode resp of
     200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
-    _   -> Left $ fromJust $ responseToMaybe resp
+    _   -> Left $ responseToStringth resp
   --
   roomIdOf :: BS.ByteString -> Identifier
   roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
@@ -555,10 +555,10 @@ upload :: BSL.ByteString
        -- ^ The name of the file which should be uploaded
        -> Auth
        -- ^ The authorisation information
-       -> IO (Either Stringth Stringth);
+       -> IO (Either ErrorCode Stringth);
 upload attachment name = process <.> TP.req TP.POST hdr qq atch
   where
-  process :: Response BS.ByteString -> Either Stringth Stringth
+  process :: Response BS.ByteString -> Either ErrorCode Stringth
   process k = case getResponseStatusCode k of
     200 -> Right $ fromJust $
              (Q..! "{content_uri}") <$>

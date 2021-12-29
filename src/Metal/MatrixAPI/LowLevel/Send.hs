@@ -19,6 +19,7 @@ import Metal.Room;
 import Metal.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
+import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Data.Aeson as A;
 import Metal.MatrixAPI.LowLevel.Types;
@@ -59,4 +60,4 @@ sendEvent ev rm a = qenerateQuery >>= \querr ->
   process :: Response BS.ByteString -> Maybe ErrorCode
   process k = case getResponseStatusCode k of
     200 -> Nothing
-    _   -> Just $ "sendEvent: " ++ responseToString k;
+    _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
