@@ -31,7 +31,8 @@ data Room = Room {
   topic :: Maybe Stringth,
   -- | @isEncrypted k@ iff encryption is enabled within @k@.
   isEncrypted :: Bool,
-  -- | @publicKey k@ equals the public key of @k@.  If @k@ is
-  -- unencrypted, then @publicKey k@ equals Nothing.
+  -- | If the room which @k@ represents is encrypted, then @publicKey k@
+  -- 'Just' equals the public key of @k@.  @publicKey k@ is otherwise
+  -- 'Nothing'.
   publicKey :: Maybe PublicKey
 } deriving (Eq, Read, Show);
