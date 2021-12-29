@@ -22,7 +22,6 @@ data Room = Room {
   -- | If @k@ has a display name, then @roomName k@ is 'Just' the
   -- display name of @k@, e.g., "Johhny Kissass's Suck-Up Fest".
   -- @roomName k@ is otherwise 'Nothing'.
-  -- Suck-Up Fest".
   roomName :: Maybe Stringth,
   -- | @members k@ is a list of the members of @k@.  Matel does not
   -- sort members according to any particular thing.
