@@ -162,7 +162,7 @@ getRoomName r = process <.> rq r "/state/m.room.name/"
                \does NOT contain a \"name\" field.";
 
 -- | @rq room k a@ is the response to the authorised HTTP request
--- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
+-- "GET https:\/\/[@homeserver a@]\/\_matrix\/client\/r0\/rooms\
 -- [@roomId room@]\/[@k@]".
 rq :: Room
    -- ^ The room which is the subject of the request
