@@ -100,6 +100,12 @@ valueToECF :: Value
            -- should be described
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
+  -- \| Using @(.?)@ here is _mostly_ a waste of time; the values which
+  -- @valueToECF@ fetches MUST be present.
+  --
+  -- VARIK finds that accounting for cheesy-ass homeservers which do not
+  -- adhere to Matrix's client-server API is a waste of time which
+  -- probably just leads to the addition of some damn ugly source code.
   sender = Def.user {username = k .! "{sender}"},
   destRoom = Def.room {roomId = k .! "{room_id}"},
   eventId = k .! "{event_id}",
