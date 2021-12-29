@@ -56,7 +56,6 @@ room = Room {
   roomName = Nothing,
   members = [user],
   topic = Nothing,
-  isEncrypted = False,
   publicKey = Nothing
 };
 

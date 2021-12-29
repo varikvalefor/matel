@@ -32,8 +32,6 @@ data Room = Room {
   -- | If @l@ has a topic, then @topic k@ 'Just' equals the topic of
   -- @l@.  @topic k@ is otherwise 'Nothing'.
   topic :: Maybe Stringth,
-  -- | @isEncrypted k@ iff encryption is enabled within @l@.
-  isEncrypted :: Bool,
   -- | If @l@ is encrypted, then @publicKey k@ 'Just' equals the public
   -- key of @l@.  @publicKey k@ is otherwise 'Nothing'.
   publicKey :: Maybe PublicKey

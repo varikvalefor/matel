@@ -86,7 +86,6 @@ instance Combinable Room where
     roomName = g roomName,
     members = g members,
     topic = g topic,
-    isEncrypted = g isEncrypted,
     publicKey = g publicKey
   } where
     g :: Eq b => (Room -> b) -> b
