@@ -82,7 +82,7 @@ instance Event StdMess where
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
 
--- | @toMessage k@ calls a functions which converts @k@ into a
+-- | @toMessage k@ calls a function which converts @k@ into a
 -- 'StdMess'.  Depending upon the \"type\" of @k@, any function of
 -- various functions may be called.
 toMessage :: Value -> StdMess;
