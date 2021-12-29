@@ -28,7 +28,7 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | For all 'Event' @A@, @A@ describes a Matrix room event.
+-- | For all 'Event' @A@, @A@ represents a Matrix room event.
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
@@ -36,9 +36,8 @@ class Event a where
          -> Bool
 
   -- | @fetchEvents n d k r a@ fetches @n@ events of type @msgType k@
-  -- from the room which is specified in @r@.  The authorisation
-  -- information which is specified in @a@ is used to authenticate the
-  -- query.
+  -- from the room which @r@ represents.  The authorisation information
+  -- which is specified in @a@ is used to authenticate the query.
   --
   -- If @d == 'b'@, then the @n@ most recent messages of @k@ are
   -- returned.  If @d == 'f'@, then the @n@ earliest messages of @k@ are
@@ -82,7 +81,7 @@ instance Event StdMess where
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
 
--- | @toMessage k@ calls a functions which converts @k@ into a
+-- | @toMessage k@ calls a function which converts @k@ into a
 -- 'StdMess'.  Depending upon the \"type\" of @k@, any function of
 -- various functions may be called.
 toMessage :: Value -> StdMess;
@@ -101,6 +100,12 @@ valueToECF :: Value
            -- should be described
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
+  -- \| Using @(.?)@ here is _mostly_ a waste of time; the values which
+  -- @valueToECF@ fetches MUST be present.
+  --
+  -- VARIK finds that accounting for cheesy-ass homeservers which do not
+  -- adhere to Matrix's client-server API is a waste of time which
+  -- probably just leads to the addition of some damn ugly source code.
   sender = Def.user {username = k .! "{sender}"},
   destRoom = Def.room {roomId = k .! "{room_id}"},
   eventId = k .! "{event_id}",
@@ -117,8 +122,8 @@ valueMTextToStdMess :: Value
 valueMTextToStdMess k = Def.stdMess {
   body = k .! "{content:{body}}",
   fmtBody = k .? "{content:{formatted_body}}",
-  -- \^ The "formatted_body" field _should_ be
-  -- present... but _may_ not be present.
+  -- \^ The "formatted_body" field _should_ be present... but _may_ not
+  -- be present.
   boilerplate = valueToECF k
 };
 
