@@ -8,12 +8,12 @@
 -- Portability : portable
 --
 -- Metal.Messages.Encrypted contains the source code of the
--- 'CryptoMess' record type.
+-- 'Encrypted' record type.
 module Metal.Encrypted where
 import Metal.Base;
 import Metal.EventCommonFields;
 
--- | For all 'CryptoMess' @k@, @k@ is an encrypted Matrix message.
+-- | For all 'Encrypted' @k@, @k@ represents an encrypted Matrix message.
 data Encrypted = Encrypted {
   -- | @ciphertext k@ is the actual encrypted bit of @k@.
   ciphertext :: Stringth,

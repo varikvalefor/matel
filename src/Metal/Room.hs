@@ -11,27 +11,30 @@ module Metal.Room where
 import Metal.Base;
 import Metal.User;
 
--- | For all 'Room' @k@, @k@ is a Matrix chatroom.
+-- | For all 'Room' @k@, @k@ represents a Matrix chatroom.
+--
+-- Within this documentation, let @l@ denote the Matrix room which @k@
+-- represents.
 data Room = Room {
-  -- | @roomId k@ is the "non-human-readable" identifier of @k@, e.g.,
+  -- | @roomId k@ is the "non-human-readable" identifier of @l@, e.g.,
   -- "!wnmjpIJcdaBNfOJrSw:matrix.org".
   roomId :: Identifier,
-  -- | @roomHumanId k@ is the "human-readable" identifier of @k@, e.g.,
+  -- | @roomHumanId k@ is the "human-readable" identifier of @l@, e.g.,
   -- "#johnnykissassSuckupfest:matrix.org".
   roomHumanId :: Identifier,
-  -- | If @k@ has a display name, then @roomName k@ is 'Just' the
-  -- display name of @k@, e.g., "Johhny Kissass's Suck-Up Fest".
+  -- | If @l@ has a display name, then @roomName k@ is 'Just' the
+  -- display name of @l@, e.g., "Johnny Kissass's Suck-Up Fest".
   -- @roomName k@ is otherwise 'Nothing'.
   roomName :: Maybe Stringth,
-  -- | @members k@ is a list of the members of @k@.  Matel does not
+  -- | @members k@ is a list of the members of @l@.  Matel does not
   -- sort members according to any particular thing.
   members :: [User],
-  -- | If @k@ has a topic, then @topic k@ 'Just' equals the topic of
-  -- @k@.  @topic k@ is otherwise 'Nothing'.
+  -- | If @l@ has a topic, then @topic k@ 'Just' equals the topic of
+  -- @l@.  @topic k@ is otherwise 'Nothing'.
   topic :: Maybe Stringth,
-  -- | @isEncrypted k@ iff encryption is enabled within @k@.
+  -- | @isEncrypted k@ iff encryption is enabled within @l@.
   isEncrypted :: Bool,
-  -- | @publicKey k@ equals the public key of @k@.  If @k@ is
-  -- unencrypted, then @publicKey k@ equals Nothing.
+  -- | If @l@ is encrypted, then @publicKey k@ 'Just' equals the public
+  -- key of @l@.  @publicKey k@ is otherwise 'Nothing'.
   publicKey :: Maybe PublicKey
 } deriving (Eq, Read, Show);
