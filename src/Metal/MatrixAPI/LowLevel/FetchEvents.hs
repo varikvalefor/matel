@@ -36,9 +36,8 @@ class Event a where
          -> Bool
 
   -- | @fetchEvents n d k r a@ fetches @n@ events of type @msgType k@
-  -- from the room which is specified in @r@.  The authorisation
-  -- information which is specified in @a@ is used to authenticate the
-  -- query.
+  -- from the room which @r@ represents.  The authorisation information
+  -- which is specified in @a@ is used to authenticate the query.
   --
   -- If @d == 'b'@, then the @n@ most recent messages of @k@ are
   -- returned.  If @d == 'f'@, then the @n@ earliest messages of @k@ are
