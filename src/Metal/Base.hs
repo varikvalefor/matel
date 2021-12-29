@@ -7,8 +7,38 @@
 -- Portability : portable
 --
 -- Metal.Base contains the core data types of Metal.
-module Metal.Base where
+module Metal.Base (
+  -- * High-Level Message-Data-Centric Stuff
+  --
+  -- $highLevelMessageDataCrap
+  Identifier,
+  HumanReadableName,
+  MessageText,
+  UNIXTime,
+  ByteData,
+  CipherByteData,
+  -- * Key Containment Types
+  --
+  -- $keyContainers
+  PublicKey,
+  PrivateKey,
+  SharedSecret,
+  -- * Consistency and Readability
+  --
+  -- $convenience
+  Stringth,
+  ErrorCode,
+  -- * High-Level Datatypes
+  AlGoreRhythm (..),
+  MessageFmt (..)
+) where
 import qualified Data.Text as T;
+
+-- $highLevelMessageDataCrap
+--
+-- This section of the module contains some type aliases essentially
+-- just improve the readability of Metal's source code.
+
 -- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
 -- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny
 -- Kissass".
@@ -35,18 +65,35 @@ type ByteData = Stringth;
 -- | For all 'CipherByteData' @k@, @k@ is an encrypted sequence of
 -- bytes.  The decrypted @k@ is of type 'ByteData'.
 type CipherByteData = Stringth;
+
+-- $keyContainers
+--
+-- This portion of the module contains datatypes which hold encryption
+-- keys.
+
 -- | For all 'PublicKey' @g@, @g@ is a public key.
 type PublicKey = Stringth;
 -- | For all 'PrivateKey' @g@, @g@ is a private key.
 type PrivateKey = Stringth;
 -- | For all 'SharedSecret' @k@, @k@ is a shared secret key.
 type SharedSecret = Stringth;
+
+-- $convenience
+--
+-- This portion of the module contains some type aliases which are added
+-- for the sake of readability and consistency.
+
 -- | 'Stringth' is equivalent to 'T.Text' and added only for the sake of
 -- convenience.
 type Stringth = T.Text;
 -- | 'ErrorCode' is used to contain descriptions of functions' errors,
 -- e.g., "the message cannot be posted; the homeserver is off-line."
 type ErrorCode = [Char];
+
+-- $highLevelDataTypes
+--
+-- This section of the module contains some high-level "proper"
+-- datatypes.
 
 -- | 'AlGoreRhythm's represent cryptographic systems, e.g., Olm and
 -- Megolm.
