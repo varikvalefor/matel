@@ -126,15 +126,10 @@ getTopic :: Room
 getTopic r = process <.> rq r "/state/m.room.topic/"
   where
   process :: Response BS.ByteString -> Room
-  process k = Def.room {topic = fromMaybe kemo $ extractTopic k}
+  process k = Def.room {topic = extractTopic k}
   --
   extractTopic :: Response BS.ByteString -> Maybe T.Text
-  extractTopic k = getResponseBody k ^? A.key "name" . A._String
-  --
-  kemo :: T.Text
-  kemo = error $ "A fairly goofy error is encountered.  The JSON " ++
-         "value which the \"m.room.topic\" request returns does " ++
-         "NOT contain a \"name\" field.";
+  extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
 -- | @getRoomName r a@ fetches the display name of the Matrix room whose
 -- room ID is @roomId r@.  The @'roomName'@ value of the output 'Room'
@@ -151,15 +146,10 @@ getRoomName :: Room
 getRoomName r = process <.> rq r "/state/m.room.name/"
   where
   process :: Response BS.ByteString -> Room
-  process k = Def.room {roomName = fromMaybe kemo $ extractName k}
+  process k = Def.room {roomName = extractName k}
   --
   extractName :: Response BS.ByteString -> Maybe T.Text
-  extractName k = getResponseBody k ^? A.key "name" . A._String
-  --
-  kemo :: T.Text
-  kemo = error "A fairly goofy error is encountered.  The \
-               \\"m.room.name\" request returns a JSON value which \
-               \does NOT contain a \"name\" field.";
+  extractName k = getResponseBody k ^? A.key "name" . A._String;
 
 -- | @rq room k a@ is the response to the authorised HTTP request
 -- "GET https:\/\/[@homeserver a@]\/\_matrix\/client\/v3\/rooms\

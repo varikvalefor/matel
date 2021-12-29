@@ -53,9 +53,9 @@ room :: Room;
 room = Room {
   roomId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   roomHumanId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  roomName = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  roomName = Nothing,
   members = [user],
-  topic = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  topic = Nothing,
   isEncrypted = False,
   publicKey = Nothing
 };

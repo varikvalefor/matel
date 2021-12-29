@@ -19,14 +19,17 @@ data Room = Room {
   -- | @roomHumanId k@ is the "human-readable" identifier of @k@, e.g.,
   -- "#johnnykissassSuckupfest:matrix.org".
   roomHumanId :: Identifier,
-  -- | @roomName k@ is the display name of @k@, e.g., "Johnny Kissass's
+  -- | If @k@ has a display name, then @roomName k@ is 'Just' the
+  -- display name of @k@, e.g., "Johhny Kissass's Suck-Up Fest".
+  -- @roomName k@ is otherwise 'Nothing'.
   -- Suck-Up Fest".
-  roomName :: Stringth,
+  roomName :: Maybe Stringth,
   -- | @members k@ is a list of the members of @k@.  Matel does not
   -- sort members according to any particular thing.
   members :: [User],
-  -- | @topic k@ equals the topic of @k@.
-  topic :: Stringth,
+  -- | If @k@ has a topic, then @topic k@ 'Just' equals the topic of
+  -- @k@.  @topic k@ is otherwise 'Nothing'.
+  topic :: Maybe Stringth,
   -- | @isEncrypted k@ iff encryption is enabled within @k@.
   isEncrypted :: Bool,
   -- | @publicKey k@ equals the public key of @k@.  If @k@ is
