@@ -89,7 +89,8 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- | @recentMessagesFrom n rm a@ fetches the @n@ most recent text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
--- @recentMessagesFrom@ is currently nonfunctional.
+-- @recentMessagesFrom@ currently does not support the fetching of
+-- encrypted messages.
 recentMessagesFrom :: Integer
                    -- ^ The number of messages which should be fetched
                    -> Room
@@ -103,7 +104,8 @@ recentMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 -- | @earlyMessagesFrom n rm a@ fetches the @n@ earliest text-based
 -- messages from rm, outputting the unencrypted/decrypted messages.
 --
--- @earlyMessagesFrom@ is currently nonfunctional.
+-- @earlyMessagesFrom@ currently does not support the fetching of
+-- encrypted messages.
 earlyMessagesFrom :: Integer
                   -- ^ The number of messages which should be fetched
                   -> Room
