@@ -258,7 +258,7 @@ eddySmith :: [String]
           -> Auth
           -- ^ The authorisation information of Matel's user
           -> IO Stringth;
-eddySmith t a = either (error . T.unpack) id <$> sync since a
+eddySmith t = either (error . T.unpack) id <.> sync since
   where
   since :: Maybe String
   since
