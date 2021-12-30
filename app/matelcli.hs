@@ -88,11 +88,11 @@ determineAction (command:stuff) a = case command of
 -- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
 -- specified in @a@ is a member.
 list :: [String] -> Auth -> IO ();
-list [] _ = error "You wimps suck.";
-list (k:_) a = case k of
-  "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
-  "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
-  "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
+list [] = error "You wimps suck.";
+list (k:_) = case k of
+  "rooms"       -> memberRooms >=> mapM_ (putStrLn . roomId)
+  "communities" -> memberComms >=> mapM_ (putStrLn . commId)
+  "spaces"      -> memberSpaces >=> mapM_ (putStrLn . spaceId)
   _             -> error "The police will be listing your injuries \
                    \if you don't stop inputting crap.";
 
@@ -117,10 +117,10 @@ send k a
                    \see that I was wrong.  Really, I should be mad at \
                    \myself for apparently going insane by having some \
                    \faith in you."
-  | otherwise = target >>= \t -> H.send t dest a >>= dispError
+  | otherwise = getTarget >>= \t -> H.send t dest a >>= dispError
   where
-  target :: IO StdMess
-  target = case head k of
+  getTarget :: IO StdMess
+  getTarget = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
     "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
@@ -258,7 +258,7 @@ eddySmith :: [String]
           -> Auth
           -- ^ The authorisation information of Matel's user
           -> IO Stringth;
-eddySmith t a = either (error . T.unpack) id <$> sync since a
+eddySmith t = either (error . T.unpack) id <.> sync since
   where
   since :: Maybe String
   since
@@ -272,10 +272,10 @@ runJoin :: [String]
         -> Auth
         -- ^ The authorisation information of Matel's user
         -> IO ();
-runJoin [] a = error "Idiot!  How am I to join an unspecified room for \
-                     \you?  My strength is simplicity.  I can't work \
-                     \with this shit.";
-runJoin t a = join room inviteInfo a >>= dispError
+runJoin [] = error "Idiot!  How am I to join an unspecified room for \
+                   \you?  My strength is simplicity.  I can't work \
+                   \with this shit.";
+runJoin t = join room inviteInfo >=> dispError
   where
   room :: Room
   room = Def.room {roomId = t !! 0}
