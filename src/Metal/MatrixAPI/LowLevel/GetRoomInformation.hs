@@ -40,9 +40,6 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- @getRoomInformation room a@ otherwise equals a description of the
 -- problem which is encountered when the "members" query is sent to the
 -- Matrix homeserver.
---
--- The "fetch the room members" portion of @getRoomInformation@ is
--- currently unimplemented and always returns @[]@ for existent rooms.
 getRoomInformation :: Room
                    -- ^ The room which should be described
                    -> Auth
