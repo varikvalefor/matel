@@ -117,10 +117,10 @@ send k a
                    \see that I was wrong.  Really, I should be mad at \
                    \myself for apparently going insane by having some \
                    \faith in you."
-  | otherwise = target >>= \t -> H.send t dest a >>= dispError
+  | otherwise = getTarget >>= \t -> H.send t dest a >>= dispError
   where
-  target :: IO StdMess
-  target = case head k of
+  getTarget :: IO StdMess
+  getTarget = case head k of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
     "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
