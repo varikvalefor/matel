@@ -272,10 +272,10 @@ runJoin :: [String]
         -> Auth
         -- ^ The authorisation information of Matel's user
         -> IO ();
-runJoin [] a = error "Idiot!  How am I to join an unspecified room for \
-                     \you?  My strength is simplicity.  I can't work \
-                     \with this shit.";
-runJoin t a = join room inviteInfo a >>= dispError
+runJoin [] = error "Idiot!  How am I to join an unspecified room for \
+                   \you?  My strength is simplicity.  I can't work \
+                   \with this shit.";
+runJoin t = join room inviteInfo >=> dispError
   where
   room :: Room
   room = Def.room {roomId = t !! 0}
