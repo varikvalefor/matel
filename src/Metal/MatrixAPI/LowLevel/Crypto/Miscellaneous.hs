@@ -76,7 +76,7 @@ calcSecret pu pr = X25519.dh pu' pr'
   -- \| Using @fromJust@ is the relatively clean approach.  However,
   -- @fromJust@'s error messages are not known for being particularly
   -- conducive to debugging; turning "fromJust is applied to Nothing"
-  -- into a auseful bug report as a layman is fairly difficult.
+  -- into a useful bug report as a layman is fairly difficult.
   yield :: CryptoFailable a -> a
   yield = fromMaybe nothingMsg . maybeCryptoError
   --
