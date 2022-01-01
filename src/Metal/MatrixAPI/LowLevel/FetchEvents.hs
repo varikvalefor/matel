@@ -66,14 +66,6 @@ instance Event StdMess where
       200 -> filter nonDef $ map toMessage $ toValue k .! "{chunk}"
       _   -> detroit k
     --
-    toValue :: Response BS.ByteString -> Value
-    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-              getResponseBody
-    --
-    chunkMissing :: a
-    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                   \fetchEvents: The \"chunk\" field is absent!"
-    --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
@@ -195,13 +187,6 @@ instance Event Encrypted where
       200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
       _   -> detroit k
     --
-    toValue :: Response BS.ByteString -> Value
-    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-              getResponseBody
-    --
-    chunkMissing :: a
-    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                         \fetchEvents: The \"chunk\" field is absent!"
     -- \| Using a "proper" @fromJSON@ thing is _possible_... but
     -- involves a relatively great amount of effort and offers no real
     -- advantage over using @(.!)@ and company.
@@ -226,3 +211,14 @@ instance Event Encrypted where
             \%5B%22m.room.encrypted%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
+
+-- | Where @merleHaggard@ is a 'Response' whose body contains a @chunk@
+-- object, @toValue merleHaggard@ is a 'Value' which represents the
+-- @chunk@ object which @merleHaggard@'s body contains.
+toValue :: Response BS.ByteString -> Value
+toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
+          getResponseBody
+  where
+  chunkMissing :: a
+  chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
+		 \fetchEvents: The \"chunk\" field is absent!";
