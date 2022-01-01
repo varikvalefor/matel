@@ -56,6 +56,7 @@ getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   -- directly access the Matrix API.
   fetchRoomValues :: IO [Room]
   fetchRoomValues = mapConcurrently (\f -> f r a) functions
+  --
   functions :: [Room -> Auth -> IO Room]
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
