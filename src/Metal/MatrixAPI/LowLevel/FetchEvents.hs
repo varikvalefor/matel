@@ -172,7 +172,7 @@ valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
   -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ reuturns an IO-monadic value, using
+  -- 'Maybe'-monadic and @(.?)@ reuturns a 'Maybe'-monadic value, using
   -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"
