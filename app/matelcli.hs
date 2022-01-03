@@ -111,13 +111,11 @@ send :: [String]
      -> Auth
      -- The information which is used to authenticate Matel's user
      -> IO ();
-send k a
-  | k == [] = error "I need some arguments, fat-ass."
-  | length k < 2 = error "I thought that you were improving.  I now \
-                   \see that I was wrong.  Really, I should be mad at \
-                   \myself for apparently going insane by having some \
-                   \faith in you."
-  | otherwise = getTarget >>= \t -> H.send t dest a >>= dispError
+send [] a = error "I need some arguments, fat-ass.";
+send [_] a = error "I thought that you were improving.  I now see that I \
+                   \was wrong.  Really, I should be mad at myself for \
+                   \apparently going insane by having some faith in you.";
+send k a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case head k of
