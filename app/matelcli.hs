@@ -58,21 +58,21 @@ determineAction :: [String]
                 -> Auth
                 -- ^ Matel user's authorisation information
                 -> IO ();
-determineAction [] a = error "I never thought that I would have a \
+determineAction [] = error "I never thought that I would have a \
   \stress-induced heart attack by the age of forty, but you're making \
   \me rethink some things.";
-determineAction (command:stuff) a = case command of
-  "list"       -> list stuff a
-  "send"       -> Main.send stuff a
-  "grab"       -> grab stuff a
-  "login"      -> logIn a
-  "markread"   -> mkRead stuff a
-  "sync"       -> eddySmith stuff a >>= T.putStrLn
-  "join"       -> runJoin stuff a
-  "leave"      -> runLeave stuff a
-  "kick"       -> runKick stuff a
-  "createroom" -> createRoom' stuff a
-  "upload"     -> ooplawed stuff a
+determineAction (command:stuff) = case command of
+  "list"       -> list stuff
+  "send"       -> Main.send stuff
+  "grab"       -> grab stuff
+  "login"      -> logIn
+  "markread"   -> mkRead stuff
+  "sync"       -> eddySmith stuff >=> T.putStrLn
+  "join"       -> runJoin stuff
+  "leave"      -> runLeave stuff
+  "kick"       -> runKick stuff
+  "createroom" -> createRoom' stuff
+  "upload"     -> ooplawed stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
