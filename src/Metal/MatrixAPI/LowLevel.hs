@@ -538,7 +538,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 --
 -- VARIK suspects that 'T.Text'\'s problem is caused by fancy UTF-8
 -- parsing which attempts to interpret some nonsense as UTF-8 text,
--- which leads to parsing errors, which leads to the \'splosions.
+-- which leads to parsing errors, which lead to the \'splosions.
 --
 -- This problem is not really the fault of 'T.Text', as 'T.Text' is not
 -- meant to read binary files -- 'T.Text' contains _text_, as opposed to

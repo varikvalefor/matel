@@ -28,7 +28,8 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | For all 'Event' @A@, @A@ represents a Matrix room event.
+-- | For all 'Event' @A@, values of type @A@ represents a Matrix room
+-- event.
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
@@ -172,7 +173,7 @@ valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
   -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ reuturns an IO-monadic value, using
+  -- 'Maybe'-monadic and @(.?)@ reuturns a 'Maybe'-monadic value, using
   -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"

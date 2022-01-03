@@ -253,7 +253,7 @@ logIn = loginPass >=> either busticate addAndDisplay
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String]
-          -- ^ The @matelcli@ command, e.g., "@sync bullshit@"
+          -- ^ The arguments of the @matelcli@ command
           -> Auth
           -- ^ The authorisation information of Matel's user
           -> IO Stringth;
@@ -315,10 +315,9 @@ runLeave _ = error "You'd best leave... or stop giving me \
 -- @reason@.  If @reason == []@, then no reason is supplied.
 runKick :: [String]
         -- ^ The first 3 elements of this list are the room ID of the
-        -- room from which the user should be removed, the reason for
-        -- the removal of this user, and the reason for the removal of
-        -- this user.  If the third element equals @""@, then no reason
-        -- is supplied.
+        -- room from which the user should be removed, and the reason
+        -- for the removal of this user.  If the third element equals
+        -- @""@, then no reason is supplied.
         -> Auth
         -- The information which is used to authorise the kicking of the
         -- user
