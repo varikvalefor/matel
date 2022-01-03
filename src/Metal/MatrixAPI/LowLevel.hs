@@ -152,13 +152,10 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
   querr = "_matrix/client/r0/sync"
   --
   syncreq :: BSL.ByteString
-  syncreq
-    | isNothing since = ""
-    | otherwise = fromString $
-      "{\"since\": \"" ++ fromJust since ++ "\"}";
-    -- \^ Using this thing instead of @maybe@ looks a bit cheesy.
-    -- However, the line length of the @maybe@-based equivalent is
-    -- greater than the maximum line length of this cheesy thing.  Stet.
+  syncreq = maybe "" encapsulate since
+  --
+  encapsulate :: String -> BSL.ByteString
+  encapsulate teavea = fromString $ "{\"since\": \"" ++ teavea ++ "\"}";
 
 -- $membershipDescribe
 --
