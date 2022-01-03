@@ -180,11 +180,12 @@ joinedRooms :: Auth -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
-  processResponse response
-    | getResponseStatusCode response == 200 = Right $ map toRoom $
-      (Q..! "{joined_rooms}") $ fromJust $ Q.decode $ BSL.fromStrict $
-      getResponseBody response
-    | otherwise = Left $ responseToStringth response
+  processResponse r = case getResponseStatusCode r of
+    200 -> Right $ extractRooms $ BSL.fromStrict $ getResponseBody r
+    _   -> Left $ responseToStringth r
+  --
+  extractRooms :: BSL.ByteString -> [Room]
+  extractRooms = map toRoom . (Q..! "{joined_rooms}") . fromJust . Q.decode
   --
   querr :: String
   querr = "_matrix/client/r0/joined_rooms"
