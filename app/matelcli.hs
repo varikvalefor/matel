@@ -254,7 +254,7 @@ logIn = loginPass >=> either busticate addAndDisplay
 -- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
 -- "sync" query whose "since" value equals @t !! 1@.
 eddySmith :: [String]
-          -- ^ The @matelcli@ command, e.g., "@sync bullshit@"
+          -- ^ The arguments of the @matelcli@ command
           -> Auth
           -- ^ The authorisation information of Matel's user
           -> IO Stringth;
