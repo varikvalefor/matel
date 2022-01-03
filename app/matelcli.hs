@@ -21,6 +21,7 @@
 module Main where
 import Plegg;
 import GetAuth;
+import Data.Bool;
 import Text.Read;
 import Data.Maybe;
 import Metal.Base;
@@ -259,9 +260,7 @@ eddySmith :: [String]
 eddySmith t = either (error . T.unpack) id <.> sync since
   where
   since :: Maybe String
-  since
-    | t == [] = Nothing
-    | otherwise = Just $ head t;
+  since = bool Nothing (Just $ head t) $ t == [];
 
 -- | @runJoin@ is a relatively command-line-friendly wrapper for 'join'.
 runJoin :: [String]
