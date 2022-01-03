@@ -9,8 +9,8 @@ import Metal.Messages.ThumbnailInfo;
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
---
--- For all 'FileInfo' @k@, @k@ describes a file of some sort.
+
+-- | For all 'FileInfo' @k@, @k@ describes a file of some sort.
 data FileInfo = FileInfo {
   -- | @size k@ is the byte-based length of the file which @k@
   -- describes.

@@ -21,6 +21,7 @@
 module Main where
 import Plegg;
 import GetAuth;
+import Data.Bool;
 import Text.Read;
 import Data.Maybe;
 import Metal.Base;
@@ -58,21 +59,21 @@ determineAction :: [String]
                 -> Auth
                 -- ^ Matel user's authorisation information
                 -> IO ();
-determineAction [] a = error "I never thought that I would have a \
+determineAction [] = error "I never thought that I would have a \
   \stress-induced heart attack by the age of forty, but you're making \
   \me rethink some things.";
-determineAction (command:stuff) a = case command of
-  "list"       -> list stuff a
-  "send"       -> Main.send stuff a
-  "grab"       -> grab stuff a
-  "login"      -> logIn a
-  "markread"   -> mkRead stuff a
-  "sync"       -> eddySmith stuff a >>= T.putStrLn
-  "join"       -> runJoin stuff a
-  "leave"      -> runLeave stuff a
-  "kick"       -> runKick stuff a
-  "createroom" -> createRoom' stuff a
-  "upload"     -> ooplawed stuff a
+determineAction (command:stuff) = case command of
+  "list"       -> list stuff
+  "send"       -> Main.send stuff
+  "grab"       -> grab stuff
+  "login"      -> logIn
+  "markread"   -> mkRead stuff
+  "sync"       -> eddySmith stuff >=> T.putStrLn
+  "join"       -> runJoin stuff
+  "leave"      -> runLeave stuff
+  "kick"       -> runKick stuff
+  "createroom" -> createRoom' stuff
+  "upload"     -> ooplawed stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -111,13 +112,11 @@ send :: [String]
      -> Auth
      -- The information which is used to authenticate Matel's user
      -> IO ();
-send k a
-  | k == [] = error "I need some arguments, fat-ass."
-  | length k < 2 = error "I thought that you were improving.  I now \
-                   \see that I was wrong.  Really, I should be mad at \
-                   \myself for apparently going insane by having some \
-                   \faith in you."
-  | otherwise = getTarget >>= \t -> H.send t dest a >>= dispError
+send [] a = error "I need some arguments, fat-ass.";
+send [_] a = error "I thought that you were improving.  I now see that I \
+                   \was wrong.  Really, I should be mad at myself for \
+                   \apparently going insane by having some faith in you.";
+send k a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case head k of
@@ -261,9 +260,7 @@ eddySmith :: [String]
 eddySmith t = either (error . T.unpack) id <.> sync since
   where
   since :: Maybe String
-  since
-    | t == [] = Nothing
-    | otherwise = Just $ head t;
+  since = bool Nothing (Just $ head t) $ t == [];
 
 -- | @runJoin@ is a relatively command-line-friendly wrapper for 'join'.
 runJoin :: [String]
@@ -348,9 +345,9 @@ createRoom' [] = error "";
 -- The error message in question might not be particularly enlightening,
 -- but reading the manual page should yield the desired enlightenment.
 createRoom' [_] = error "Your one-word demands are starting to piss me \
-                  \off.";
+                        \off.";
 createRoom' [_,_] = error "Should I just assume that you want to make \
-                    \all of your communications public?";
+                          \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
   rm :: Room
