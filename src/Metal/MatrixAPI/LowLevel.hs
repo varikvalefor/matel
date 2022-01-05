@@ -554,7 +554,7 @@ upload :: BSL.ByteString
        -> Auth
        -- ^ The authorisation information
        -> IO (Either ErrorCode Stringth);
-upload attachment name = process <.> TP.req TP.POST hdr qq atch
+upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   where
   process :: Response BS.ByteString -> Either ErrorCode Stringth
   process k = case getResponseStatusCode k of
@@ -565,9 +565,6 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
-  --
-  atch :: BSL.ByteString
-  atch = attachment
   --
   qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++
