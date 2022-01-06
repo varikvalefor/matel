@@ -221,7 +221,7 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- = Output
 --
 -- If the fetching of the list of spaces works fine, then this list of
--- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
+-- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' 'ErrorCode' which
 -- describes the problem which occurs is returned.
 --
 -- = Notes
