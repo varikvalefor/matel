@@ -662,5 +662,5 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
 -- $genericDescribe
 --
 -- This section of the module contains functions which describe things
--- such that these descriptions can be used for utilitarian puroses, as
+-- such that these descriptions can be used for utilitarian purposes, as
 -- opposed to being purely display-related.
