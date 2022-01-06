@@ -120,7 +120,7 @@ valueToECF k = EventCommonFields {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.text@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMTextToStdMess :: Value
                     -- ^ The representation of the message which should
@@ -135,7 +135,7 @@ valueMTextToStdMess k = Def.stdMess {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.image@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMImageToStdMess :: Value
                      -- ^ The representation of the message which should
@@ -163,7 +163,7 @@ valueMImageToStdMess k = Def.stdMess {
   con = k .! "{content}";
 
 -- | Where @k@ represents a @m.room.message@ of message type
--- @m.location@, @valueMTextToStdMess@ is a 'StdMess' which should be
+-- @m.location@, @valueMTextToStdMess k@ is a 'StdMess' which should be
 -- equivalent to @k@.
 valueMLocationToStdMess :: Value
                         -- ^ The representation of the message which
@@ -177,7 +177,7 @@ valueMLocationToStdMess k = Def.stdMess {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.file@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMFileToStdMess :: Value
                     -- ^ The representation of the message which should
