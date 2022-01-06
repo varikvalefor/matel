@@ -387,7 +387,7 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 -- = Output
 --
 -- If some error, e.g., "hey, lard-ass, you can't ban the admin if you
--- yourself have banned", is encountered, then a description of this
+-- yourself are banned", is encountered, then a description of this
 -- error is 'Just' output.  Otherwise, 'Nothing' is returned.
 ban :: User
     -- ^ A description of the user which should be banned
