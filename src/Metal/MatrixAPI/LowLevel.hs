@@ -210,7 +210,7 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   toRoom :: String -> Room
   toRoom k = Def.room {roomId = k};
 
--- | @joinedSpaces@ fetches a list of the 'Spaces' of which Matel's user
+-- | @joinedSpaces@ fetches a list of the 'Space's of which Matel's user
 -- is a member.
 --
 -- = Arguments
