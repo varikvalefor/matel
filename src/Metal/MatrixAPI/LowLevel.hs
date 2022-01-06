@@ -144,13 +144,19 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
 -- | @sync@ accesses the Matrix "sync" function, returning the result
 -- of this synchronisation.
 --
--- @sync Nothing g@ runs a parameterless "sync".
--- For all other @k@, @sync k g@ sends a "sync" query to Matrix such
--- that the "since" parameter of this query equals @fromJust k@.
+-- = Arguments
 --
--- The 'Right' value of @sync k g@ equals the raw output of the "sync"
--- command.  The 'Left' value of @sync k g@ exists only if an error is
--- present... and equals a description of such an error.
+-- If 'Just', the first argument is the "since" parameter of the "sync"
+-- request which is sent to the Matrix homeserver.  If this bit is
+-- 'Nothing', then no "since" parameter is sent.
+--
+-- The second argument is _still_ just authorisation stuff.
+--
+-- = Output
+--
+-- If everything goes according to plan, then the raw body of the "sync"
+-- response is 'Right'ly returned.  Otherwise, a description of some
+-- breakage is returned as a 'Left' 'Stringth'.
 sync :: Maybe String
      -- ^ The desired value of the query's "since" field
      -> Auth
