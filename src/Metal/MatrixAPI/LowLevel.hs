@@ -530,7 +530,7 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 --
 -- If the second argument is "private", then a private room is created.
 -- If the second argument is "public", then a public room is created.
--- If the second argument is of some other value, then an error is 
+-- If the second argument is of some other value, then an error is
 -- probably encountered such that the desired room is not created.
 --
 -- The third argument is the authorisation information of Matel's user.
@@ -600,7 +600,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- authorisation garbage which is used to actually upload the file.
 --
 -- = Output
--- 
+--
 -- If the uploading is a success, then the MXC URI of the uploaded file
 -- is 'Right'ly output.
 --
