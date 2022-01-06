@@ -176,13 +176,20 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 -- functions which are contained within this section should be
 -- _reasonably_ high-level.
 
--- | @joinedRooms k@ sends the "joined_rooms" query to the homeserver of
--- @k@, authenticating as @k@.
+-- | @joinedRooms@ returns a list of which Matel's user is a member...
+-- or an 'ErrorCode'.
 --
--- The 'Right' value of @joinedRooms k g@ equals the authorisation
--- token which results from signing in to Matrix.  The 'Left' value of
--- @joinedRooms k@ exists only if an error is present... and equals a
--- description of such an error.
+-- = Arguments
+--
+-- The first and only argument is the authorisation information of
+-- Matel's user.
+--
+-- = Output
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Room's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
+-- describes the problem which occurs is returned.
+--
+-- = Notes
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
@@ -203,13 +210,21 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   toRoom :: String -> Room
   toRoom k = Def.room {roomId = k};
 
--- | @joinedSpaces k@ sends the "not yet implemented" query to the
--- homeserver of @k@, authenticating as @k@.
+-- | @joinedSpaces@ fetches a list of the 'Spaces' of which Matel's user
+-- is a member.
 --
--- The 'Right' value of @joinedRooms k g@ equals a list of the 'Space's
--- which Matel's user has joined.  The 'Left' value of @joinedRooms k@
--- exists only if an error is present... and equals a description of
--- this error.
+-- = Arguments
+--
+-- The first and only argument is the authorisation information of
+-- Matel's user.
+--
+-- = Output
+--
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
+-- describes the problem which occurs is returned.
+--
+-- = Notes
 --
 -- The output 'Space' records are NOT completely filled; only the
 -- @spaceId@ bits are non-default.
@@ -218,16 +233,25 @@ joinedSpaces :: Auth
              -> IO (Either ErrorCode [Space]);
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
--- | @joinedComms k@ sends the "not yet implemented" query to the
--- homeserver of @k@, authenticating as @k@.
+-- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
+--- which Matel's user is a member.
 --
--- The 'Right' value of @joinedComms k g@ equals a list of the Matrix
--- communities which Matel's user has joined. The 'Left' value of
--- @joinedComms k@ exists only if an error is present... and equals a
--- description of this error.
+-- = Arguments
 --
--- The output 'Community' records are NOT completely filled; only the
--- @spaceId@ bits are non-default.
+-- The first and only argument is the authorisation information of
+-- Matel's user.
+--
+-- = Output
+--
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Commnunity's -- again, eugh -- is 'Right'ly returned.  Otherwise, a
+-- 'Left' ErrorCode' which describes the problem which occurs is
+-- returned.
+--
+-- = Notes
+--
+-- The output 'Space' records are NOT completely filled; only the
+-- @commId@ bits are non-default.
 joinedComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO (Either ErrorCode [Community]);
