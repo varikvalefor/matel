@@ -593,7 +593,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- uploaded.
 --
 -- The second argument is the name of the file which is to be uploaded.
--- Tbhis argument can be the current name of the file or just the
+-- This argument can be the current name of the file or just the
 -- desired name of the file.
 --
 -- The third argument is -- as the reader hopefully guessed -- the
