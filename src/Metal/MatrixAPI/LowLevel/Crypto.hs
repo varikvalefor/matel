@@ -25,7 +25,7 @@ class CryptoThing a where
           -> PublicKey
           -- ^ The public key of the receiver
           -> PrivateKey
-          -- ^ The privatre key of the sender
+          -- ^ The private key of the sender
           -> AlGoreRhythm
           -- ^ The algorithm which is used to encrypt the thing
           -> IO Encrypted
