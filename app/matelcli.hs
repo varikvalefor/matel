@@ -95,11 +95,27 @@ determineAction (command:stuff) a = case command of
 -- If the first element of the first argument is "communities", then the
 -- communities of which the specified user is a member are listed.
 --
+-- === "Yo, Why Is this Thing a List?"
+--
+-- Demanding that a singleton list\* is input seems a bit ridiculous at
+-- first glance.  However, handling the extraction of command line
+-- arguments within @list@ implies being able to have a _somewhat_ short
+-- @'determineAction'@, which is nice.
+--
+-- \*Technically, the list _can_ have multiple elements.
+--
 -- == Second Argument
 --
 -- The second argument is the authorisation information of the user
 -- whose joined things are listed.  This user is _probably_ also the
 -- user of @matelcli@.
+--
+-- = On Using a List Input
+--
+-- Demanding that a list is inpout for a monargumental function at
+-- first glance seems a bit ridiculous.  However, handling the
+-- extraction of command line arguments within @list@ implies being
+-- able to have a _somewhat_ short  @'determineAction'@, which is nice.
 list :: [String] -> Auth -> IO ();
 list [] = error "You wimps suck.";
 list (k:_) = case k of
