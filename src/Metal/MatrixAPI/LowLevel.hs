@@ -98,13 +98,6 @@ stillUnfinishedStayTuned = ();
 
 -- | @login@ generates a new authorisation token for Matel's user.
 --
--- = Arguments
---
--- The first and only argument is an 'Auth' record whose @username@ and
--- @password@ fields must be defined and valid.  An authorisation token
--- is hopefully generated for the account which this 'Auth' record
--- describes.
---
 -- = Output
 --
 -- If an authorisation token is successfully generated, then this
@@ -113,7 +106,8 @@ stillUnfinishedStayTuned = ();
 -- If something fails such that no authorisation token can be nabbed,
 -- then a 'Left' 'ErrorCode' which describes this failure is returned.
 loginPass :: Auth
-          -- ^ The authorisation information of Matel's user
+          -- ^ This bit is the authorisation information of the user for
+          -- which an authorisation token is generated.
           -> IO (Either ErrorCode Stringth);
 loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   where
@@ -144,23 +138,17 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
 -- | @sync@ accesses the Matrix "sync" function, returning the result
 -- of this synchronisation.
 --
--- = Arguments
---
--- If 'Just', the first argument is the "since" parameter of the "sync"
--- request which is sent to the Matrix homeserver.  If this bit is
--- 'Nothing', then no "since" parameter is sent.
---
--- The second argument is _still_ just authorisation stuff.
---
 -- = Output
 --
 -- If everything goes according to plan, then the raw body of the "sync"
 -- response is 'Right'ly returned.  Otherwise, a description of some
 -- breakage is returned as a 'Left' 'Stringth'.
 sync :: Maybe String
-     -- ^ The desired value of the query's "since" field
+     -- ^ If a "since" value should be attached, then this value is
+     -- 'Just' this "since" value.  This value should otherwise be
+     -- 'Nothing'.
      -> Auth
-     -- ^ The authorisation deets
+     -- ^ This argument is _still_ just authorisation stuff.
      -> IO (Either Stringth Stringth);
 sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
   where
@@ -185,11 +173,6 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 -- | @joinedRooms@ returns a list of which Matel's user is a member...
 -- or an 'ErrorCode'.
 --
--- = Arguments
---
--- The first and only argument is the authorisation information of
--- Matel's user.
---
 -- = Output
 -- If the fetching of the list of spaces works fine, then this list of
 -- 'Room's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
@@ -199,7 +182,10 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
-joinedRooms :: Auth -> IO (Either ErrorCode [Room]);
+joinedRooms :: Auth
+            -- ^ This bit is the authorisation information of the user
+            -- whose joined rooms are listed.
+            -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
@@ -219,11 +205,6 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- | @joinedSpaces@ fetches a list of the 'Space's of which Matel's user
 -- is a member.
 --
--- = Arguments
---
--- The first and only argument is the authorisation information of
--- Matel's user.
---
 -- = Output
 --
 -- If the fetching of the list of spaces works fine, then this list of
@@ -235,17 +216,13 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- The output 'Space' records are NOT completely filled; only the
 -- @spaceId@ bits are non-default.
 joinedSpaces :: Auth
-             -- ^ The authorisation information of Matel's user
+             -- ^ This argument is the authorisation information of the
+             -- user whose joined spaces are listed.
              -> IO (Either ErrorCode [Space]);
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
 --- which Matel's user is a member.
---
--- = Arguments
---
--- The first and only argument is the authorisation information of
--- Matel's user.
 --
 -- = Output
 --
@@ -259,7 +236,8 @@ joinedSpaces a = error "joinedSpaces is unimplemented.";
 -- The output 'Space' records are NOT completely filled; only the
 -- @commId@ bits are non-default.
 joinedComms :: Auth
-            -- ^ The authorisation information of Matel's user
+            -- ^ This value is the authorisation information of the user
+            -- whose joined communities are listed.
             -> IO (Either ErrorCode [Community]);
 joinedComms a = error "joinedComms is unimplemented.";
 
@@ -271,21 +249,6 @@ joinedComms a = error "joinedComms is unimplemented.";
 
 -- | @join@ is used to join Matrix rooms.
 --
--- = Arguments
---
--- The first argument is a representation of the Matrix room which
--- Matel's user should join.
---
--- If the room which is joined is public, then the second argument
--- should probably be 'Nothing'.  If the room which should be joined
--- is private _and_ Matel's user receives an invitation to this Matrix
--- room, then the second argument should Just' be a 3-tuple of
--- a description of the user which sends the invitation to Matel's user,
--- the state key of the invitation, and the signature of the invitation.
---
--- As usual, he third argument is the authorisation information of
--- Matel's user.
---
 -- = Output
 --
 -- If the command is successful, then the output is Nothing.  The output
@@ -293,11 +256,16 @@ joinedComms a = error "joinedComms is unimplemented.";
 join :: Room
      -- ^ The 'Room' which should be joined
      -> Maybe (User, String, String)
-     -- ^ The user which sends the invite, the state key of the invite,
-     -- and the signature of the invite, respectively, if the room is
-     -- not public -- otherwise, 'Nothing'
+     -- ^ If the room which should be joined is public, then this value
+     -- should be 'Nothing'.
+     --
+     -- If the room which should be joined is _private_, then this value
+     -- is a 3-tuple of a description of the user which sends an (invite
+     -- to the room) @bk@ to the authenticated user, this invite's state
+     -- key, and the signature of this invite.
      -> Auth
-     -- ^ The authorisation information of Matel's user
+     -- ^ This value is the authorisation information of the user which
+     -- joins the specified room.
      -> IO (Maybe ErrorCode);
 join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   where
@@ -334,32 +302,22 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
 
 -- | @kick@ is used to non-permanently remove users from Matrix rooms.
 --
--- = Arguments
---
--- The first argument describes the user which should be kicked.  Only
--- the @username@ field is used.
---
--- The second argument describes the room from which the user should be
--- removed.  Only the @roomId@ field is used.
---
--- The third argument is the reason for the user's removal, e.g., "Your
--- e-mail addresses offend me."
---
--- The fourth argument is the authorisation information which is used
--- to run the command.
---
 -- = Output
 --
 -- If an error is encountered, then a description of this error is
 -- 'Just' returned.  Otherwise, an IO-monadic 'Nothing' is output.
 kick :: User
-     -- ^ A description of the user which should be "kicked"
+     -- ^ This thing represents the user which is to be kicked.  Only
+     -- the @username@ field of this record is used.
      -> Room
-     -- ^ The room from which the user should be removed
+     -- ^ This value is a representation of the Matrix room from which
+     -- the specified user is removed.  Only the @roomId@ value is used.
      -> String
-     -- ^ The reason for the removal of the user
+     -- ^ This bit is the reason for the removal of the user, e.g.,
+     -- "Your e-mail addresses offend me."
      -> Auth
-     -- ^ The authorisation information
+     -- ^ The final argument is the authorisation information of the
+     -- user which attempts to kick the other user.
      -> IO (Maybe ErrorCode);
 kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
@@ -376,33 +334,23 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 -- | @ban@ is used to "permanently" remove Matrix users from Matrix
 -- rooms.
 --
--- = Arguments
---
--- The first argument describes the user which should be banned.  Only
--- the @username@ field is used.
---
--- The second argument describes the room from which the user should be
--- banned.  Only the @roomId@ field is used.
---
--- The third argument is the reason for the banning of the user, e.g.,
--- "Your e-mail addresses offend me."
---
--- The fourth argument is the authorisation information which is used
--- to run the command.
---
 -- = Output
 --
 -- If some error, e.g., "hey, lard-ass, you can't ban the admin if you
 -- yourself are banned", is encountered, then a description of this
 -- error is 'Just' output.  Otherwise, 'Nothing' is returned.
 ban :: User
-    -- ^ A description of the user which should be banned
+    -- ^ This value represents the user which should be banned.
+    -- @username@ is the only value which is used.
     -> Room
-    -- ^ The room from which the user should be banned
+    -- ^ This record represents the room from which the user is banned.
+    -- @roomId@ is the only value which is used.
     -> String
-    -- ^ The reason for the banning of the user
+    -- ^ This bit is the justification for the banning of the user,
+    -- e.g., "this dude killed me".
     -> Auth
-    -- ^ The authorisation information
+    -- ^ This argument is the authorisation information of the user
+    -- which kicks the other user.
     -> IO (Maybe ErrorCode);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
@@ -418,28 +366,21 @@ ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
 
 -- | @unban@ is used to reverse users' being @ban@ned.
 --
--- = Arguments
---
--- The first argument describes the user which should be unbanned.  Only
--- the @username@ field is used.
---
--- The second argument describes the room from which the user should be
--- unbanned.  Only the @roomId@ field is used.
---
--- The third argument is the authorisation information which is used
--- to run the command.
---
 -- = Output
 --
 -- If some error, e.g., "yo, tubby, you can't un-ban yourself", is
 -- encountered, then a description of this error is 'Just' output.
 -- Otherwise, 'Nothing' is returned.
 unban :: User
-      -- ^ A description of the user which should be banned
+      -- ^ This argument represents the Matrix user which should be
+      -- un-banned.  @username@ is the only value which is used.
       -> Room
-      -- ^ The room from which the user should be banned
+      -- ^ This bit represents the Matrix room from which the
+      -- aforementioned Matrix user should be un-banned. @roomId@ is
+      -- the only value which is used.
       -> Auth
-      -- ^ The authorisation information
+      -- ^ This record is the authorisation information of the user
+      -- which un-bans the other user.
       -> IO (Maybe ErrorCode);
 unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
@@ -454,23 +395,17 @@ unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
 
 -- | @leave@ is used to leave Matrix rooms.
 --
--- = Arguments
---
--- The first argument specifies the room which the user leaves.  Only
--- the @roomId@ value must be defined.
---
--- The second argument is the authorisation information which is used to
--- actually leave the room.
---
 -- = Output
 --
 -- If an error is encountered, then an 'ErrorCode' which describes
 -- this error is 'Just' output.  If no error is encountered, then
 -- 'Nothing' is returned.
 leave :: Room
-      -- ^ The room which should be left
+      -- ^ This argument represents the room which the user should
+      -- leave.  @roomId@ is the only value which is used.
       -> Auth
-      -- ^ The authorisation information
+      -- ^ This bit is the authorisation information of the user which
+      -- leaves the room.
       -> IO (Maybe ErrorCode);
 leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
   where
@@ -486,20 +421,6 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 -- | @getDisplayName@ implements the Matrix API's
 -- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
 -- command.
---
--- = Arguments
---
--- == First Argument
---
--- The first argument describes the user whose display name should be
--- fetched.  Only the @username@ field is used.
---
--- == Second Argument
---
--- The second argument describes the user of Matel.  This value is used
--- to determine the FQDN of the server which should be queried.  Because
--- no actual authorisation information is used, only the @homeserver@
--- value must be specified.
 --
 -- = Output
 --
@@ -518,8 +439,15 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 -- encounter, for all l in K, @getDisplayName@ encounters l iff a
 -- 'Left' 'String' which describes l is output.
 getDisplayName :: User
-               -- ^ The user whose display name is fetched
+               -- ^ This argument describes the user whose display name
+               -- should be fetched.  @username@ is the only field which
+               -- is actually used.
                -> Auth
+               -- ^ The second argument describes the user of Matel.
+               -- This value is used to determine the FQDN of the server
+               -- which should be queried.  Because no actual
+               -- authorisation information is used, @homeserver@ is the
+               -- only field which is actually used.
                -- ^ The authorisation information of Matel's user, used
                -- to determine the server which should be contacted
                -> IO (Either ErrorCode User);
@@ -553,18 +481,6 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 
 -- | @createRoom@ is used to create new Matrix rooms.
 --
--- = Arguments
---
--- The first argument is a description of the room which is to be
--- created.
---
--- If the second argument is "private", then a private room is created.
--- If the second argument is "public", then a public room is created.
--- If the second argument is of some other value, then an error is
--- probably encountered such that the desired room is not created.
---
--- The third argument is the authorisation information of Matel's user.
---
 -- = Output
 --
 -- If all goes well, then a 'Left' 'Room' value whose @roomId@ is the ID
@@ -574,15 +490,21 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
+           -- The @roomName@ and @topic@ values should be defined.
            -> String
            -- ^ This bit describes whether the room should be private or
            -- public.
            --
-           -- This value equals "private" iff the room should be
-           -- private.  This value equals "public" iff the room should
-           -- be a public room.
+           -- If this value is "public", then a public room is created.
+           --
+           -- If this value is "private", then a private room is
+           -- created.
+           --
+           -- If this value is some other thing, then @createRoom@
+           -- probably just 'splodes.
            -> Auth
-           -- ^ The information which is used to authorise the request
+           -- ^ This bit is the authorisation information of the account
+           -- which creates the new room.
            -> IO (Either ErrorCode Room);
 createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
@@ -617,18 +539,6 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 
 -- | @upload@ is used to upload files to the homeserver of Matel's user.
 --
--- = Arguments
---
--- The first argument is the content of the file which is to be
--- uploaded.
---
--- The second argument is the name of the file which is to be uploaded.
--- This argument can be the current name of the file or just the
--- desired name of the file.
---
--- The third argument is -- as the reader hopefully guessed -- the
--- authorisation garbage which is used to actually upload the file.
---
 -- = Output
 --
 -- If the uploading is a success, then the MXC URI of the uploaded file
@@ -654,11 +564,15 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- PROTIP: Using the most fitting tools prevents a decent number of
 -- problems.
 upload :: BSL.ByteString
-       -- ^ The content of the file which should be uploaded
+       -- ^ This bit is the content of the file which is to be uploaded.
        -> String
-       -- ^ The name of the file which should be uploaded
+       -- The second argument is the name of the file which is to be
+       -- uploaded.  This argument can be the current name of the file
+       -- or just the desired name of the file.
        -> Auth
-       -- ^ The authorisation information
+       -- ^ This argument is -- as the reader hopefully guessed -- the
+       -- authorisation garbage which is used to actually upload the
+       -- file.
        -> IO (Either ErrorCode Stringth);
 upload attachment name = process <.> TP.req TP.POST hdr qq atch
   where
