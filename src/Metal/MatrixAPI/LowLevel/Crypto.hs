@@ -15,9 +15,8 @@ import Metal.Base;
 import Metal.Encrypted;
 import Metal.Messages.Standard;
 
--- | For all CryptoThing @a@, for all @a@ @b@, there exists a function
--- @decrypt@ such that @decrypt b@ is a value @a@ which represents the
--- unencrypted @b@.
+-- | For all CryptoThing @a@, @a@ represents a Matix event which can
+-- be encrypted.
 class CryptoThing a where
   -- | @encrypt a pk sk@ encrypts @a@ using a shared secret which is
   -- calculated using the public key @pk@ and the secret key @sk@.
@@ -26,7 +25,7 @@ class CryptoThing a where
           -> PublicKey
           -- ^ The public key of the receiver
           -> PrivateKey
-          -- ^ The privatre key of the sender
+          -- ^ The private key of the sender
           -> AlGoreRhythm
           -- ^ The algorithm which is used to encrypt the thing
           -> IO Encrypted
