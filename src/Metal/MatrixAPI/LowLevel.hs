@@ -449,8 +449,6 @@ getDisplayName :: User
                -- which should be queried.  Because no actual
                -- authorisation information is used, @homeserver@ is the
                -- only field which is actually used.
-               -- ^ The authorisation information of Matel's user, used
-               -- to determine the server which should be contacted
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
