@@ -13,7 +13,7 @@
 -- @matelcli@ is written such that for all text-based features of Matel
 -- @k@, @matelcli@ is capable of doing @k@.
 --
--- The user-facing documentation/specification of the user interface is
+-- The user-facing documentation/specification of @matelcli@ is
 -- available in @matelcli@'s manual page, which is by default located at
 -- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
 -- is only of particular interest to men who wish to modify @matelcli@
