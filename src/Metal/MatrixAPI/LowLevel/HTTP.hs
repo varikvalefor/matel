@@ -21,22 +21,25 @@ import qualified Data.ByteString.Lazy as BSL;
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
 data ReqType = GET | POST | PUT;
 
--- | @req type_ vx query body auth@ sends a HTTP request of type @type_@
--- to FQDN @homeserver@ such that @auth@ is used as the content of
--- the "Authorization" header of the request and the path and query
--- string of this request are @query@.  Additionally, the headers which
--- are specified in @vx@ are added to the request.
+-- | @req@ sends a standardised HTTP request, returning the resulting
+-- response.
 req :: ReqType
-    -- ^ The type of request which should be sent
+    -- ^ This bit specifies the type of request which is sent.
     -> [(HeaderName, BS.ByteString)]
-    -- ^ The additional header name/header value pairs which the request
-    -- should bear
+    -- ^ This bit is a list of headers which are added to the HTTP
+    -- request.
+    --
+    -- For any element of this list @t@, @fst t@ is the name of some
+    -- header, and @snd t@ is the content of this same header.
     -> String
-    -- ^ The path and query string of the request which should be sent
+    -- ^ This bit is the concatenation of the path, a question mark, and
+    -- the query string of the HTTP request.
     -> BSL.ByteString
-    -- ^ The body of the request
+    -- ^ This bit is the body of the request.
     -> Auth
-    -- ^ The authorisation information of Matel's user
+    -- ^ This argument is the authorisation information of Matel's user.
+    -- This authorisation information is used to generate an
+    -- "Authorization" header.
     -> IO (Response BS.ByteString);
 req type_ headers query body auth = genRequest >>= httpBS
   where
