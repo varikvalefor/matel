@@ -28,21 +28,35 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | For all 'Event' @A@, values of type @A@ represents a Matrix room
--- event.
+-- | For all 'Event' @A@, for all values @t@ of type @A@, @t@
+-- represents a Matrix room event.
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
          -- ^ The thing whose defaultness is determined
          -> Bool
 
-  -- | @fetchEvents n d k r a@ fetches @n@ events of type @msgType k@
-  -- from the room which @r@ represents.  The authorisation information
-  -- which is specified in @a@ is used to authenticate the query.
+  -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
   --
-  -- If @d == 'b'@, then the @n@ most recent messages of @k@ are
-  -- returned.  If @d == 'f'@, then the @n@ earliest messages of @k@ are
-  -- returned.
+  -- = Arguments
+  --
+  -- The first argument is the number of events which should be nabbed.
+  --
+  -- If the second argument is @\'f\'@, then the @n@ earliest messages
+  -- are grabbed.  If the second argument is @\'b\'@, then the @n@ most
+  -- recent messages are grabbed.
+  --
+  -- The third argument represents the Matrix room from which the events
+  -- are fetched.  Only the @roomId@ field of this record must be
+  -- non-default.
+  --
+  -- The fourth argument is the authorisation information of Matel's
+  -- user.
+  --
+  -- = Processing
+  --
+  -- If the fetching of events fails for some reason, then an error is
+  -- which hopefully describes this failure is thrown.
   fetchEvents :: Integer
               -- ^ The number of events which should be fetched
               -> Char
@@ -106,7 +120,7 @@ valueToECF k = EventCommonFields {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.text@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMTextToStdMess :: Value
                     -- ^ The representation of the message which should
@@ -121,7 +135,7 @@ valueMTextToStdMess k = Def.stdMess {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.image@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMImageToStdMess :: Value
                      -- ^ The representation of the message which should
@@ -149,7 +163,7 @@ valueMImageToStdMess k = Def.stdMess {
   con = k .! "{content}";
 
 -- | Where @k@ represents a @m.room.message@ of message type
--- @m.location@, @valueMTextToStdMess@ is a 'StdMess' which should be
+-- @m.location@, @valueMTextToStdMess k@ is a 'StdMess' which should be
 -- equivalent to @k@.
 valueMLocationToStdMess :: Value
                         -- ^ The representation of the message which
@@ -163,7 +177,7 @@ valueMLocationToStdMess k = Def.stdMess {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.file@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMFileToStdMess :: Value
                     -- ^ The representation of the message which should
