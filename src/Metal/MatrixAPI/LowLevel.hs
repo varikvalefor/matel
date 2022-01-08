@@ -445,6 +445,7 @@ getDisplayName :: User
                -- is actually used.
                -> Auth
                -- ^ This argument describes the user of Matel.
+               --
                -- This value is used to determine the FQDN of the server
                -- which should be queried.  Because no actual
                -- authorisation information is used, @homeserver@ is the
