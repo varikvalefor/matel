@@ -60,8 +60,9 @@ determineAction :: [String]
                 -- ^ Matel user's authorisation information
                 -> IO ();
 determineAction [] = error "I never thought that I would have a \
-  \stress-induced heart attack by the age of forty, but you're making \
-  \me rethink some things.";
+                           \stress-induced heart attack by the age of \
+                           \forty, but you're making me rethink some \
+                           \things.";
 determineAction (command:stuff) = case command of
   "list"       -> list stuff
   "send"       -> Main.send stuff
