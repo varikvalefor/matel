@@ -120,12 +120,14 @@ determineAction (command:stuff) = case command of
 -- able to have a _somewhat_ short  @'determineAction'@, which is nice.
 list :: [String] -> Auth -> IO ();
 list [] = error "You wimps suck.";
-list (k:_) = case k of
-  "rooms"       -> memberRooms >=> mapM_ (putStrLn . roomId)
-  "communities" -> memberComms >=> mapM_ (putStrLn . commId)
-  "spaces"      -> memberSpaces >=> mapM_ (putStrLn . spaceId)
-  _             -> error "The pathologists will be listing your \
-                   \injuries if you don't stop inputting crap.";
+list (k:_) = memberXIds >=> mapM_ putStrLn
+  where
+  memberXIds = case k of
+    "rooms"       -> map roomId <.> memberRooms
+    "communities" -> map commId <.> memberComms
+    "spaces"      -> map spaceId <.> memberSpaces
+    _             -> error "The pathologists will be listing your \
+                     \injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 --
