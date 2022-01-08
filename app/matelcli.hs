@@ -106,8 +106,8 @@ list (k:_) = case k of
   "rooms"       -> memberRooms >=> mapM_ (putStrLn . roomId)
   "communities" -> memberComms >=> mapM_ (putStrLn . commId)
   "spaces"      -> memberSpaces >=> mapM_ (putStrLn . spaceId)
-  _             -> error "The police will be listing your injuries \
-                   \if you don't stop inputting crap.";
+  _             -> error "The pathologists will be listing your \
+                   \injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 --
