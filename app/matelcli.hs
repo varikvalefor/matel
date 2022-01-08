@@ -67,7 +67,7 @@ determineAction (command:stuff) = case command of
   "list"       -> list stuff
   "send"       -> Main.send stuff
   "grab"       -> grab stuff
-  "login"      -> logIn
+  "login"      -> logIn >=> T.putStrLn
   "markread"   -> mkRead stuff
   "sync"       -> eddySmith stuff >=> T.putStrLn
   "join"       -> runJoin stuff
@@ -278,21 +278,21 @@ dispError = maybe (return ()) (error . T.unpack);
 -- | @logIn k@ generates an authorisation token for the user which is
 -- specified in @k@ and writes this authorisation token to the standard
 -- output.
-logIn :: Auth -> IO ();
+logIn :: Auth -> IO T.Text;
 logIn = loginPass >=> either busticate addAndDisplay
   where
-  addAndDisplay :: T.Text -> IO ();
+  addAndDisplay :: T.Text -> IO T.Text
   addAndDisplay toke = configFilePath >>= \path ->
                        T.readFile path >>= \phile ->
-                       T.putStrLn toke >>
-                       T.writeFile path (addToken phile toke)
+                       T.writeFile path (addToken phile toke) >>
+                       return toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
                         filter ((/= "authtoken: ") . T.take 11) $
                         T.lines phile
   --
-  busticate :: T.Text -> IO ()
+  busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
 
 -- | @eddySmith@ is a command-line-friendly wrapper for @'sync'@.
