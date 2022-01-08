@@ -315,7 +315,7 @@ kick :: User
      -- the specified user is removed.  Only the @roomId@ value is used.
      -> String
      -- ^ This bit is the reason for the removal of the user, e.g.,
-     -- "Your e-mail addresses offend me."
+     -- "[y]our e-mail addresses offend me."
      -> Auth
      -- ^ The final argument is the authorisation information of the
      -- user which attempts to kick the other user.
