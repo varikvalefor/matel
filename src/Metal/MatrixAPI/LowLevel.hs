@@ -174,6 +174,7 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 -- or an 'ErrorCode'.
 --
 -- = Output
+--
 -- If the fetching of the list of spaces works fine, then this list of
 -- 'Room's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
 -- describes the problem which occurs is returned.
