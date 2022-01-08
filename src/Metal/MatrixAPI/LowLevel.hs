@@ -444,7 +444,7 @@ getDisplayName :: User
                -- should be fetched.  @username@ is the only field which
                -- is actually used.
                -> Auth
-               -- ^ The second argument describes the user of Matel.
+               -- ^ This argument describes the user of Matel.
                -- This value is used to determine the FQDN of the server
                -- which should be queried.  Because no actual
                -- authorisation information is used, @homeserver@ is the
