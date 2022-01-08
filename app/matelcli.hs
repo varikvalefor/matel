@@ -79,14 +79,27 @@ determineAction (command:stuff) a = case command of
 -- | The "list" command is used to list stuff, e.g., rooms of which the
 -- user is a member.
 --
--- @list ["rooms"] a@ lists the Matrix rooms of which the user who is
--- specified in @a@ is a member.
+-- = Arguments
 --
--- @list ["communities"] a@ lists the Matrix communities of which the
--- user who is specified in @a@ is a member.
+-- == First Argument
 --
--- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
--- specified in @a@ is a member.
+-- The first argument specifies the type of the things which should be
+-- listed.  Only the first element of this list is used.
+--
+-- If the first element of the first argument is "rooms", then the rooms
+-- of which the specified user is a member are listed.
+--
+-- If the first element of the first argument is "spaces", then the
+-- spaces of which the specified user is a member are listed.
+--
+-- If the first element of the first argument is "communities", then the
+-- communities of which the specified user is a member are listed.
+--
+-- == Second Argument
+--
+-- The second argument is the authorisation information of the user
+-- whose joined things are listed.  This user is _probably_ also the
+-- user of @matelcli@.
 list :: [String] -> Auth -> IO ();
 list [] = error "You wimps suck.";
 list (k:_) = case k of
