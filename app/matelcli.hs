@@ -231,7 +231,7 @@ grab :: [String]
      -> Auth
      -- ^ The authorisation information
      -> IO ();
-grab (decino:eeyore:jd:mexicid:_) a
+grab (decino:eeyore:jd:mexico:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
@@ -246,7 +246,7 @@ grab (decino:eeyore:jd:mexicid:_) a
   n = fromMaybe (-42) $ readMaybe decino
   --
   room :: Room
-  room = Def.room {roomId = mexicid};
+  room = Def.room {roomId = mexico};
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead [identifier] a@ marks the message whose identifier is
