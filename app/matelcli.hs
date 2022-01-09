@@ -409,9 +409,9 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   display :: Either ErrorCode Room -> IO ()
   display = either (error . T.unpack) (putStrLn . roomId);
 
--- | @messToHumanReadable k@ is roughly equivalent to @show k@.
--- However, VARIK finds that the readability of @messToHumanReadable k@
--- is greater than the readability of @show k@.
+-- | @messToHumanReadable@ is roughly equivalent to @show@.  However,
+-- VARIK finds that the readability of @messToHumanReadable@'s output
+-- is greater than the readability of @show@'s output.
 messToHumanReadable :: StdMess
                     -- ^ The message which should be described
                     -> String;
