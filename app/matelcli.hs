@@ -295,17 +295,16 @@ runJoin :: [String]
         -- ^ This argument contains the command-line arguments of the
         -- @join@ command.  This thing should be a 1-list or a 4-list.
         --
-        -- If the first argument is a 1-list, then this 1-list simply
+        -- If thids argument is a 1-list, then this 1-list simply
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
-        -- If the first argument is a 4-list, indicating that some user
+        -- If this argument is a 4-list, indicating that some user
         -- has actively invited Matel's user to the Matrix room which
         -- should be joined, then this 4-list contains, in order, the
         -- internal Matrix ID of the room which is joined, the state key
         -- of some invitation which Matel's user receives, and the
         -- signature of this invite.
-        -- @["!UxQFGskJBlUowxdIxQ:tapenet.org"]@
         -> Auth
         -- ^ This thing, as ever, is the standard bullshit authorisation
         -- crap.
