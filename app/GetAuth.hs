@@ -41,7 +41,7 @@ import qualified Metal.Default as Def;
 -- @password@, then @getAuthorisationDetails@ throws an error and
 -- halts and catches fire.
 getAuthorisationDetails :: IO Auth;
-getAuthorisationDetails = fmap configToUser $ T.readFile =<< configFilePath
+getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
   where
   -- \| "Break if missing."
   --
@@ -52,8 +52,8 @@ getAuthorisationDetails = fmap configToUser $ T.readFile =<< configFilePath
                             show msg ++ "field."
   bim msg (Just k) = k
   --
-  configToUser :: Stringth -> User
-  configToUser cfg = Def.user {
+  cfgToUser :: Stringth -> User
+  cfgToUser cfg = Def.user {
     username = bim "username" $ T.unpack <$> xOf "username" cfg,
     password = bim "password" $ xOf "password" cfg,
     homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
