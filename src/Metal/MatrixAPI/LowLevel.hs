@@ -566,7 +566,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 upload :: BSL.ByteString
        -- ^ This bit is the content of the file which is to be uploaded.
        -> String
-       -- The second argument is the name of the file which is to be
+       -- ^ This argument is the name of the file which is to be
        -- uploaded.  This argument can be the current name of the file
        -- or just the desired name of the file.
        -> Auth
