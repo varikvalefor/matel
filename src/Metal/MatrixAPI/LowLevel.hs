@@ -223,7 +223,7 @@ joinedSpaces :: Auth
 joinedSpaces a = error "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
---- which Matel's user is a member.
+-- which Matel's user is a member.
 --
 -- = Output
 --
