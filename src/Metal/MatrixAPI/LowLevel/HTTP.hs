@@ -21,25 +21,36 @@ import qualified Data.ByteString.Lazy as BSL;
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
 data ReqType = GET | POST | PUT;
 
--- | @req@ sends a standardised HTTP request, returning the resulting
--- response.
+-- | @req@ sends a standardised HTTP request, returning the response to
+-- this HTTP request.
 req :: ReqType
-    -- ^ This bit specifies the type of request which is sent.
+    -- ^ This bit is a representation of the type of HTTP request which
+    -- is sent.
     -> [(HeaderName, BS.ByteString)]
-    -- ^ This bit is a list of headers which are added to the HTTP
-    -- request.
+    -- ^ This argument contains any additional values which are added to
+    -- the HTTP request.
     --
-    -- For any element of this list @t@, @fst t@ is the name of some
-    -- header, and @snd t@ is the content of this same header.
+    -- For all elements of this list @t@, @t@ represents a HTTP header
+    -- whose name is @fst t@ and whose value is @snd t@.
+    -- should bear
     -> String
-    -- ^ This bit is the concatenation of the path, a question mark, and
-    -- the query string of the HTTP request.
+    -- ^ This argument is the concatenation of the path of the HTTP
+    -- request which should be sent, a question mark, and the query
+    -- string of the request which should be sent.
     -> BSL.ByteString
-    -- ^ This bit is the body of the request.
+    -- ^ This argument is the body of the HTTP request which should
+    -- be sent.
     -> Auth
-    -- ^ This argument is the authorisation information of Matel's user.
-    -- This authorisation information is used to generate an
-    -- "Authorization" header.
+    -- ^ This argument contains authorisation information.
+    --
+    -- If a request which demands an authorisation token is to be sent,
+    -- then the @authToken@ field must be defined.
+    --
+    -- If some other request is sent, then the @username@ and @password@
+    -- values should _probably_ be defined.
+    --
+    -- In both cases, the @protocol@ and @homeserver@ values must be
+    -- defined and valid.
     -> IO (Response BS.ByteString);
 req type_ headers query body auth = genRequest >>= httpBS
   where
