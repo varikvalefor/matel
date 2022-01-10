@@ -33,7 +33,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
-         -- ^ The thing whose defaultness is determined
+         -- ^ This record is the record whose defaultness is determined.
          -> Bool
 
   -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
