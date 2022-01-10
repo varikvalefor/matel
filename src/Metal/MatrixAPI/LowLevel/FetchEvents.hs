@@ -38,38 +38,30 @@ class Event a where
 
   -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
   --
-  -- = Arguments
-  --
-  -- The first argument is the number of events which should be nabbed.
-  --
-  -- If the second argument is @\'f\'@, then the @n@ earliest messages
-  -- are grabbed.  If the second argument is @\'b\'@, then the @n@ most
-  -- recent messages are grabbed.
-  --
-  -- The third argument represents the Matrix room from which the events
-  -- are fetched.  Only the @roomId@ field of this record must be
-  -- non-default.
-  --
-  -- The fourth argument is the authorisation information of Matel's
-  -- user.
-  --
   -- = Processing
   --
   -- If the fetching of events fails for some reason, then an error is
   -- which hopefully describes this failure is thrown.
   fetchEvents :: Integer
-              -- ^ The number of events which should be fetched
+              -- ^ This argument is the number of messages which should
+              -- be fetched.
               -> Char
-              -- ^ The direction of the fetching -- 'b' fetches messages
-              -- which are sent recently, and 'f' fetches messages
-              -- which are sent most early
+              -- ^ This bit refers to the direction in which messages
+              -- should be fetched.
+              --
+              -- If this argument is \'b\', then @n@ events which are
+              -- most recently sent should be returned.
+              --
+              -- If this argument is \'f\', then the @n@ events which
+              -- are earliest sent should be returned.
               -> a
-              -- ^ The type of event which should be fetched
+              -- ^ The type of this argument is the type of events which
+              -- should be returned.
               -> Room
-              -- ^ The room from which events should be fetched
+              -- ^ This argument represents the room from which events
+              -- are fetched.
               -> Auth
-              -- ^ The authorisation information which is used to
-              -- authenticate the query
+              -- ^ This argument is the same old authorisation stuff.
               -> IO [a];
 
 instance Event StdMess where
@@ -103,8 +95,8 @@ toMessage k = case (k .! "{content:{msgtype}}" :: String) of
 -- | @valueToECF k@ describes the boilerplate portion of the Matrix
 -- message which @k@ represents.
 valueToECF :: Value
-           -- ^ A representation of the message whose boilerplate crap
-           -- should be described
+           -- ^ This value is a representation of the message whose
+           -- boilerplate junk should be described.
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
   -- \| Using @(.?)@ here is _mostly_ a waste of time; the values which
@@ -123,8 +115,8 @@ valueToECF k = EventCommonFields {
 -- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMTextToStdMess :: Value
-                    -- ^ The representation of the message which should
-                    -- become a 'StdMess'
+                    -- ^ This value represents the message which should
+                    -- become a 'StdMess'.
                     -> StdMess;
 valueMTextToStdMess k = Def.stdMess {
   body = k .! "{content:{body}}",
@@ -166,8 +158,8 @@ valueMImageToStdMess k = Def.stdMess {
 -- @m.location@, @valueMTextToStdMess k@ is a 'StdMess' which should be
 -- equivalent to @k@.
 valueMLocationToStdMess :: Value
-                        -- ^ The representation of the message which
-                        -- should become a 'StdMess'
+                        -- ^ This bit represents the message which
+                        -- should be represented as a 'StdMess'.
                         -> StdMess;
 valueMLocationToStdMess k = Def.stdMess {
   msgType = Location,
@@ -180,8 +172,8 @@ valueMLocationToStdMess k = Def.stdMess {
 -- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMFileToStdMess :: Value
-                    -- ^ The representation of the message which should
-                    -- become a 'StdMess'
+                    -- ^ This thing represents the message which should
+                    -- become a 'StdMess'.
                     -> StdMess;
 valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
