@@ -97,12 +97,12 @@ list :: [String]
      -- Demanding that a singleton list\* is input seems a bit
      -- ridiculous at first glance.  However, handling the extraction of
      -- command line arguments within @list@ implies being able to have
-     -- a _somewhat_ short @'determineAction'@, which is nice.
+     -- a /somewhat/ short @'determineAction'@, which is nice.
      --
-     -- \*Technically, the list _can_ have multiple elements.
+     -- \*Technically, the list /can/ have multiple elements.
      -> Auth
      -- ^ This argument is the authorisation information of the user
-     -- whose joined things are listed.  This user is _probably_ also
+     -- whose joined things are listed.  This user is /probably/ also
      -- the user of @matelcli@.
      -> IO ();
 list [] = error "You wimps suck.";
@@ -359,7 +359,7 @@ runKick :: [String]
         -- for the removal of this user.  If the third element equals
         -- @""@, then no reason is supplied.
         -> Auth
-        -- This argument is _still_ the same old authorisation stuff.
+        -- This argument is /still/ the same old authorisation stuff.
         -- user
         -> IO ();
 runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
@@ -424,8 +424,8 @@ messToHumanReadable k =
 -- = Uploading Unencrypted Files
 --
 -- Users of @ooplawed@ should note that @ooplawed@ uploads UNENCRYPTED
--- files.  When the @protocol@ is HTTPS, @ooplawed@ _is_ TLS-protected.
--- However, @ooplawed@ does _not_ support "true" end-to-end encryption.
+-- files.  When the @protocol@ is HTTPS, @ooplawed@ /is/ TLS-protected.
+-- However, @ooplawed@ does /not/ support "true" end-to-end encryption.
 ooplawed :: [String]
          -- The first element of this list is the desired name of the
          -- uploaded file.  No other elements of this list are actually
