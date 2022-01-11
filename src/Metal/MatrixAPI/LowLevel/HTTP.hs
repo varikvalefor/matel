@@ -47,7 +47,7 @@ req :: ReqType
     -- then the @authToken@ field must be defined.
     --
     -- If some other request is sent, then the @username@ and @password@
-    -- values should _probably_ be defined.
+    -- values should /probably/ be defined.
     --
     -- In both cases, the @protocol@ and @homeserver@ values must be
     -- defined and valid.
