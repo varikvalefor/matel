@@ -301,7 +301,7 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   signature :: String
   signature = maybe "" (\(_,_,c) -> c) i;
 
--- | @kick@ is used to non-permanently remove users from Matrix rooms.
+-- | @kick@ non-permanently removes users from Matrix rooms.
 --
 -- = Output
 --
@@ -332,8 +332,7 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
       "\"reason\": " ++ show m ++ "\n" ++
     "}";
 
--- | @ban@ is used to "permanently" remove Matrix users from Matrix
--- rooms.
+-- | @ban@ "permanently" removes Matrix users from Matrix rooms.
 --
 -- = Output
 --
