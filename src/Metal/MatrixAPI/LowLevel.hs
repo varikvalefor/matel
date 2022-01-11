@@ -148,7 +148,7 @@ sync :: Maybe String
      -- 'Just' this "since" value.  This value should otherwise be
      -- 'Nothing'.
      -> Auth
-     -- ^ This argument is _still_ just authorisation stuff.
+     -- ^ This argument is /still/ just authorisation stuff.
      -> IO (Either Stringth Stringth);
 sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
   where
@@ -168,7 +168,7 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 --
 -- Although this module is called \"Metal.MatrixAPI.LowLevel\", most
 -- functions which are contained within this section should be
--- _reasonably_ high-level.
+-- /reasonably/ high-level.
 
 -- | @joinedRooms@ returns a list of which Matel's user is a member...
 -- or an 'ErrorCode'.
@@ -260,7 +260,7 @@ join :: Room
      -- ^ If the room which should be joined is public, then this value
      -- should be 'Nothing'.
      --
-     -- If the room which should be joined is _private_, then this value
+     -- If the room which should be joined is /private/, then this value
      -- is a 3-tuple of a description of the user which sends an (invite
      -- to the room) @bk@ to the authenticated user, this invite's state
      -- key, and the signature of this invite.
@@ -557,8 +557,8 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- which leads to parsing errors, which lead to the \'splosions.
 --
 -- This problem is not really the fault of 'T.Text', as 'T.Text' is not
--- meant to read binary files -- 'T.Text' contains _text_, as opposed to
--- _strings of bytes_; read the name, foo' -- rather, this problem is
+-- meant to read binary files -- 'T.Text' contains /text/, as opposed to
+-- /strings of bytes/; read the name, foo' -- rather, this problem is
 -- the fault of the author of @upload@.
 --
 -- PROTIP: Using the most fitting tools prevents a decent number of
