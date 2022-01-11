@@ -99,7 +99,7 @@ valueToECF :: Value
            -- boilerplate junk should be described.
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
-  -- \| Using @(.?)@ here is _mostly_ a waste of time; the values which
+  -- \| Using @(.?)@ here is /mostly/ a waste of time; the values which
   -- @valueToECF@ fetches MUST be present.
   --
   -- VARIK finds that accounting for cheesy-ass homeservers which do not
@@ -121,7 +121,7 @@ valueMTextToStdMess :: Value
 valueMTextToStdMess k = Def.stdMess {
   body = k .! "{content:{body}}",
   fmtBody = k .? "{content:{formatted_body}}",
-  -- \^ The "formatted_body" field _should_ be present... but _may_ not
+  -- \^ The "formatted_body" field /should/ be present... but /may/ not
   -- be present.
   boilerplate = valueToECF k
 };
@@ -141,7 +141,7 @@ valueMImageToStdMess k = Def.stdMess {
     -- first glance seems a bit goofy.
     --
     -- However, using (.?) implies being able to handle some malformed
-    -- messages _and_ not needing to manually place values into the
+    -- messages /and/ not needing to manually place values into the
     -- 'Maybe' monad, which is nice.
     w = con .? "{info:{w}}",
     h = con .? "{info:{h}}",
@@ -194,7 +194,7 @@ instance Event Encrypted where
       200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
       _   -> detroit k
     --
-    -- \| Using a "proper" @fromJSON@ thing is _possible_... but
+    -- \| Using a "proper" @fromJSON@ thing is /possible/... but
     -- involves a relatively great amount of effort and offers no real
     -- advantage over using @(.!)@ and company.
     --
