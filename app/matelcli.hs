@@ -77,8 +77,7 @@ determineAction (command:stuff) = case command of
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
--- | The "list" command is used to list stuff, e.g., rooms of which the
--- user is a member.
+-- | @list@ implements the "list" command.
 list :: [String]
      -- ^ The first argument specifies the type of the things which
      -- should be listed.  The first element of the list is the only
