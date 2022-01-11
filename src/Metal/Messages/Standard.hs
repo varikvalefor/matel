@@ -18,12 +18,23 @@ import Metal.Messages.EncryptedFile;
 -- visible in the documentation of @'msgType'@; 'MessageType' is
 -- actually pretty useless alone.
 data MessageType = TextInnit
+                   -- ^ 'TextInnit' represents the Matrix API's
+                   -- @m.text@.
                  | Image
+                   -- ^ 'Image' represents the Matrix API's @m.image@.
                  | Attach
+                   -- ^ 'Attach' represents the Matrix API's @m.file@.
                  | Sticker
+                   -- ^ 'Attach' represents the Matrix API's
+                   -- @m.sticker@.
                  | Notice
+                   -- ^ 'Notice' represents the Matrix API's @m.notice@.
                  | Location
+                   -- ^ 'Location' represents the Matrix API's
+                   -- @m.location@.
                  | Video
+                   -- ^ 'Video' represents the Matrix API's
+                   -- @m.video@.
   deriving (Eq, Read);
 
 instance Show MessageType where
