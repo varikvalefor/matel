@@ -537,7 +537,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
         \\"room_id\" field.\nThe homeserver could have broken \
         \spectacularly, or createRoom could contain an error.";
 
--- | @upload@ is used to upload files to the homeserver of Matel's user.
+-- | @upload@ uploads files to the homeserver of Matel's user.
 --
 -- = Output
 --
