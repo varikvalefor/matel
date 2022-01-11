@@ -72,8 +72,9 @@ data StdMess = StdMess {
   msgType :: MessageType,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
-  -- | @fmtBody k@ is the value of the "@formatted_body@" field of the
-  -- JSON equivalent of @k@.
+  -- | If @k@ represents a message which is formatted using HTML, then
+  -- @fmtBody k@ is the value of the "@formatted_body@" field of the
+  -- JSON equivalent of @k@.  @fmtBody k@ is otherwise 'Nothing'.
   fmtBody :: Maybe MessageText,
   -- | @fmt k@ equals the content of the "format" field of the source of
   -- @k@.
@@ -87,7 +88,7 @@ data StdMess = StdMess {
   -- should otherwise equal 'Nothing'.
   geo_uri :: Maybe Stringth,
   -- | If @k@ primarily serves as the container of a URL, then @url k@
-  -- is this URL.
+  -- is 'Just' this URL.  @url k@ is otherwise 'Nothing'.
   url :: Maybe String,
   -- | If @k@ contains a file and the original filename of the file
   -- which @k@ contains is known, then @filename@ is the original
