@@ -25,7 +25,7 @@ data User = User {
   -- | @homeserver k@ equals the FQDN of the homeserver of @l@.
   --
   -- This value should only be used to determine the FQDN of the server
-  -- to which API requests should be sent; Metal does _not_ guarantee
+  -- to which API requests should be sent; Metal does /not/ guarantee
   -- that for all 'User' @k@, @homeserver k@ is a non-default value.
   homeserver :: String,
   -- | @authToken k@ equals the authorisation token of @l@.
