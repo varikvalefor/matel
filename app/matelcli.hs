@@ -371,7 +371,7 @@ runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
 runKick _ = error "I'll kick YOUR ass if you don't start giving \
                   \me some actual directions."
 
--- | @createRoom'@ is used to create new Matrix rooms.
+-- | @createRoom'@ creates new Matrix rooms.
 --
 -- = Processing
 --
