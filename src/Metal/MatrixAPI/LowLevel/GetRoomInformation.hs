@@ -33,9 +33,9 @@ import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | @getRoomInformation room a@ returns a 'Room'-based representation of
--- the Matrix room whose internal Matrix ID is specified within @room@
--- if the "members" API query works.
+-- | @getRoomInformation room a@ returns a 'Room'-based representation
+-- of the Matrix room whose internal Matrix ID is specified within
+-- @room@ if the "members" API query works.
 --
 -- @getRoomInformation room a@ otherwise returns a description of the
 -- problem which is encountered when the "members" query is sent to the
