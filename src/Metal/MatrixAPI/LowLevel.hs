@@ -479,7 +479,7 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 -- This section of the module contains some functions which are used to
 -- create or -- or just publish -- objects on Matrix.
 
--- | @createRoom@ is used to create new Matrix rooms.
+-- | @createRoom@ creates new Matrix rooms.
 --
 -- = Output
 --
