@@ -128,7 +128,7 @@ send :: [String]
      -- directs to this file is sent to the Matrix room whose internal ID
      -- is @foo@.
      -> Auth
-     -- The information which is used to authenticate Matel's user
+     -- This argument is the authorisation information.
      -> IO ();
 send [] a = error "I need some arguments, fat-ass.";
 send [_] a = error "I thought that you were improving.  I now see that I \
