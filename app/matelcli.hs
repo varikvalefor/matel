@@ -114,17 +114,19 @@ list (k:_) = case k of
                    \injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
---
--- Via the account which is described in @n@,
--- @send ["text", foo] n@ sends a message whose body is the standard
--- input to the chatroom whose internal Matrix ID is @foo@.
---
--- Via the account which is described in @n@,
--- @send ["file", k, foo] n@ sends a message whose attachment is
--- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String]
      -- ^ This bit is the ['String']-based command-line arguments of
      -- @matelcli@, e.g., @["text", "!hskonBonfjiIefqLUV:matrix.org"]@.
+     --
+     -- If this value matches the pattern @["text", foo]@, then a
+     -- text-based message whose body is read from the standard is sent
+     -- to the Matrix room whose internal Matrix room ID is @foo@.
+     --
+     -- If this value matches the pattern @["file", filename, foo]@, then
+     -- the content of a file is read from the standard input.  This file
+     -- is uploaded to Matel's user's homeserver as @k@, and a link which
+     -- directs to this file is sent to the Matrix room whose internal ID
+     -- is @foo@.
      -> Auth
      -- The information which is used to authenticate Matel's user
      -> IO ();
