@@ -413,7 +413,8 @@ createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
 -- VARIK finds that the readability of @messToHumanReadable@'s output
 -- is greater than the readability of @show@'s output.
 messToHumanReadable :: StdMess
-                    -- ^ The message which should be described
+                    -- ^ This argument is the message whose
+                    -- "human-readable" representation is desired.
                     -> String;
 messToHumanReadable k =
   "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
