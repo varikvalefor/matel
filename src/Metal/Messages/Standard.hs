@@ -95,7 +95,7 @@ data StdMess = StdMess {
   url :: Maybe String,
   -- | If @k@ contains a file and the original filename of the file
   -- which @k@ contains is known, then @filename@ is the original
-  -- filename of the file which @k@ describes.  @file k@ otherwise
+  -- filename of the file which @k@ describes.  @filename k@ otherwise
   -- equals 'Nothing'.
   filename :: Maybe String,
   -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
