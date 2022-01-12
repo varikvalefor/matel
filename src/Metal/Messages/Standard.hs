@@ -76,7 +76,7 @@ data StdMess = StdMess {
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
   -- | If @k@ represents a message which is formatted using HTML, then
-  -- @fmtBody k@ is the value of the "@formatted_body@" field of the
+  -- @fmtBody k@ is 'Just' the value of the "@formatted_body@" field of the
   -- JSON equivalent of @k@.  @fmtBody k@ is otherwise 'Nothing'.
   fmtBody :: Maybe MessageText,
   -- | @fmt k@ equals the content of the "format" field of the source of
