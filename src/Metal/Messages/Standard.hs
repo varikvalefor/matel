@@ -99,7 +99,7 @@ data StdMess = StdMess {
   -- equals 'Nothing'.
   filename :: Maybe String,
   -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
-  -- originally encrypted, then @file k@ is the content of the file
+  -- originally encrypted, then @file k@ is 'Just' the content of the file
   -- which @k@ describes.  @file k@ otherwise equals 'Nothing'.
   file :: Maybe EncryptedFile,
   -- | If @k@ mentions a file, then @fileInfo k@ contains some
