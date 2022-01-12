@@ -102,7 +102,7 @@ data StdMess = StdMess {
   -- originally encrypted, then @file k@ is 'Just' the content of the
   -- file which @k@ describes.  @file k@ otherwise equals 'Nothing'.
   file :: Maybe EncryptedFile,
-  -- | If @k@ mentions a file, then @fileInfo k@ contains some
+  -- | If @k@ mentions a file, then @fileInfo k@ 'Just' contains some
   -- information regarding the file which @k@ describes.  @fileInfo k@
   -- otherwise equals 'Nothing'.
   fileInfo :: Maybe FileInfo,
