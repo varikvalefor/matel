@@ -17,6 +17,9 @@ import Metal.Messages.EncryptedFile;
 -- 'StdMess' records represent.  Useful documentation of this thing is
 -- visible in the documentation of @'msgType'@; 'MessageType' is
 -- actually pretty useless alone.
+--
+-- For all 'MessageType' @a@, @show a@ is the Matrix API JSON enum value
+-- which is equivalent to @a@.
 data MessageType = TextInnit
                    -- ^ 'TextInnit' represents the Matrix API's
                    -- @m.text@.
