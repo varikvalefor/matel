@@ -86,7 +86,7 @@ data StdMess = StdMess {
   -- Per the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
   fmt :: MessageFmt,
-  -- | If @'msgType' k == 'Location'@, then @geo_uri k@ is the
+  -- | If @'msgType' k == 'Location'@, then @geo_uri k@ is 'Just' the
   -- coordinates of the location which @k@ describes.  @geo_uri k@
   -- should otherwise equal 'Nothing'.
   geo_uri :: Maybe Stringth,
