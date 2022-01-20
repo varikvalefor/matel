@@ -14,7 +14,6 @@
 module Metal.MatrixAPI.LowLevel.GetRoomInformation (
   getRoomInformation
 ) where
-import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.Auth;
@@ -77,15 +76,10 @@ getEncryptionStatus room = process <.> rq room "/event/m.room_key"
   where
   process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
-    200 -> Def.room {publicKey = Just $ bd .! "{content:{session_key}"}
+    200 -> Def.room {publicKey = fmap (.! "{content:{session_key}") bd}
     _   -> Def.room
     where
-    bd = fromJust $ A.decode $ BSL.fromStrict $
-         getResponseBody response;
-         -- \^ @fromJust@ is used in favour of a relatively elegant
-         -- thing because @fromJust@ should always work here.  If
-         -- @fromJust@ does not work, then something has gone horribly,
-         -- horribly wrong.
+    bd = A.decode $ BSL.fromStrict $ getResponseBody response;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- equals a 'Room' record whose @members@ field is a list of the members
