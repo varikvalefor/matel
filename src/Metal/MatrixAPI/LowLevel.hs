@@ -539,21 +539,21 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   --
   responseToEither :: Response BS.ByteString -> Either ErrorCode Room
   responseToEither resp = case getResponseStatusCode resp of
-    200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
+    200 -> roomWithId <$> roomIdOf (getResponseBody resp)
     _   -> Left $ responseToStringth resp
   --
-  roomIdOf :: BS.ByteString -> Identifier
-  roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
-  -- \^ @fromJust@ could be used... but when processing Nothing,
-  -- @fromJust@ would provide a relatively nondescriptive error message,
-  -- and VARIK finds that nondescriptive error messages are crap.  As
-  -- such, VARIK elects to use @fromMaybe err@ instead of @fromJust@.
+  roomWithId :: Identifier -> Room
+  roomWithId rid = Def.room {roomId = rid}
+  --
+  roomIdOf :: BS.ByteString -> Either Stringth Identifier
+  roomIdOf = toEither . (T.unpack <.> (^? A.key "room_id" . A._String))
+    where toEither = maybe (Left err) Right
   --
   err :: Stringth
-  err = error "An unexpected error occurs!  The response code \
-        \indicates success... but the body of the response lacks a \
-        \\"room_id\" field.\nThe homeserver could have broken \
-        \spectacularly, or createRoom could contain an error.";
+  err = "An unexpected error occurs!  The response code indicates \
+        \success... but the body of the response lacks a \"room_id\" \
+        \field.\nThe homeserver could have broken spectacularly, or \
+        \createRoom could contain an error.";
 
 -- | @upload@ uploads files to the homeserver of Matel's user.
 --
