@@ -11,6 +11,7 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
+import Data.Bool;
 import Metal.Base;
 import Text.StringRandom;
 import Network.HTTP.Simple;
@@ -93,3 +94,12 @@ instance StringLike T.Text where
 -- pseudorandom sequences should be sufficient.
 favoriteNoise :: IO String;
 favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
+
+-- | If @x !! n@ exists, then @x !? n@ is 'Just' @x !! n@.  Otherwise,
+-- @x !? n@ is 'Nothing'.
+(!?) :: [a]
+     -- ^ This thing is the list from which an element may be fetched.
+     -> Int
+     -- ^ This bit is the index of the element which may be fetchd.
+     -> Maybe a;
+(!?) xs n = bool Nothing (Just $ xs !! n) $ length xs > n;
