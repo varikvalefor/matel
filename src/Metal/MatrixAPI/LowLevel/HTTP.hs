@@ -21,22 +21,36 @@ import qualified Data.ByteString.Lazy as BSL;
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
 data ReqType = GET | POST | PUT;
 
--- | @req type_ vx query body auth@ sends a HTTP request of type @type_@
--- to FQDN @homeserver@ such that @auth@ is used as the content of
--- the "Authorization" header of the request and the path and query
--- string of this request are @query@.  Additionally, the headers which
--- are specified in @vx@ are added to the request.
+-- | @req@ sends a standardised HTTP request, returning the response to
+-- this HTTP request.
 req :: ReqType
-    -- ^ The type of request which should be sent
+    -- ^ This bit is a representation of the type of HTTP request which
+    -- is sent.
     -> [(HeaderName, BS.ByteString)]
-    -- ^ The additional header name/header value pairs which the request
+    -- ^ This argument contains any additional values which are added to
+    -- the HTTP request.
+    --
+    -- For all elements of this list @t@, @t@ represents a HTTP header
+    -- whose name is @fst t@ and whose value is @snd t@.
     -- should bear
     -> String
-    -- ^ The path and query string of the request which should be sent
+    -- ^ This argument is the concatenation of the path of the HTTP
+    -- request which should be sent, a question mark, and the query
+    -- string of the request which should be sent.
     -> BSL.ByteString
-    -- ^ The body of the request
+    -- ^ This argument is the body of the HTTP request which should
+    -- be sent.
     -> Auth
-    -- ^ The authorisation information of Matel's user
+    -- ^ This argument contains authorisation information.
+    --
+    -- If a request which demands an authorisation token is to be sent,
+    -- then the @authToken@ field must be defined.
+    --
+    -- If some other request is sent, then the @username@ and @password@
+    -- values should /probably/ be defined.
+    --
+    -- In both cases, the @protocol@ and @homeserver@ values must be
+    -- defined and valid.
     -> IO (Response BS.ByteString);
 req type_ headers query body auth = genRequest >>= httpBS
   where

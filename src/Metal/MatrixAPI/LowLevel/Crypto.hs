@@ -18,26 +18,43 @@ import Metal.Messages.Standard;
 -- | For all CryptoThing @a@, @a@ represents a Matix event which can
 -- be encrypted.
 class CryptoThing a where
-  -- | @encrypt a pk sk@ encrypts @a@ using a shared secret which is
-  -- calculated using the public key @pk@ and the secret key @sk@.
+  -- | @encrypt@ encrypts a Matrix event, returning the resulting
+  -- 'Encrypted' event.
   encrypt :: a
-          -- ^ The thing what should be encrypted
+          -- ^ This argument is a representation of the Matrix event
+          -- which should be encrypted.
           -> PublicKey
-          -- ^ The public key of the receiver
+          -- ^ This argument is the public key of the user for whom the
+          -- event should be encrypted.
           -> PrivateKey
-          -- ^ The private key of the sender
+          -- ^ This bit is the private ket of the user which encrypts
+          -- the Matrix event.
           -> AlGoreRhythm
-          -- ^ The algorithm which is used to encrypt the thing
+          -- ^ This argument represents the ratchet which is used to
+          -- encrypt the message.
+          --
+          -- = Possible Values
+          --
+          -- If this value is 'Olm', then the Olm ratchet, which is
+          -- documented at
+          -- <https://gitlab.matrix.org/matrix-org/olm/-/blob/master/docs/olm.md>,
+          -- is used.
+          --
+          -- If this value is 'Megolm', then the Megolm ratchet, which
+          -- is documented at
+          -- <https://gitlab.matrix.org/matrix-org/olm/-/blob/master/docs/megolm.md>,
+          -- is used.
           -> IO Encrypted
-  -- | @decrypt a pu pr@ decrypts the ciphertext @a@ with the shared
-  -- secret which is calculated using the public key @pu@ and the
-  -- private key @pr@.
+  -- | @decrypt@ decrypts an 'Encrypted' Matrix event, outputting the
+  -- decrypted event.
   decrypt :: Encrypted
-          -- ^ The thing which should be decrypted
+          -- ^ This bit represents the event which should be decrypted.
           -> PublicKey
-          -- ^ The public key of the sender
+          -- ^ This thing is the public key of the user which encrypts
+          -- the event.
           -> PrivateKey
-          -- ^ The private key of the receiver
+          -- ^ This argument is the private key of the user for whom
+          -- the message is encrypted.
           -> a;
 
 instance CryptoThing StdMess where

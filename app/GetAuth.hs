@@ -26,7 +26,7 @@ import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
 
--- | @getAuthorisationDetails@ equals a 'User' value which contains
+-- | @getAuthorisationDetails@ returns a 'User' value which contains
 -- information which is used to authenticate Matel's user, e.g., the
 -- homeserver to which requests should be sent, as well as the username
 -- of Matel's user.

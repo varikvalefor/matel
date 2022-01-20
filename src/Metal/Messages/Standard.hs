@@ -17,13 +17,27 @@ import Metal.Messages.EncryptedFile;
 -- 'StdMess' records represent.  Useful documentation of this thing is
 -- visible in the documentation of @'msgType'@; 'MessageType' is
 -- actually pretty useless alone.
+--
+-- For all 'MessageType' @a@, @show a@ is the Matrix API JSON enum value
+-- which is equivalent to @a@.
 data MessageType = TextInnit
+                   -- ^ 'TextInnit' represents the Matrix API's
+                   -- @m.text@.
                  | Image
+                   -- ^ 'Image' represents the Matrix API's @m.image@.
                  | Attach
+                   -- ^ 'Attach' represents the Matrix API's @m.file@.
                  | Sticker
+                   -- ^ 'Attach' represents the Matrix API's
+                   -- @m.sticker@.
                  | Notice
+                   -- ^ 'Notice' represents the Matrix API's @m.notice@.
                  | Location
+                   -- ^ 'Location' represents the Matrix API's
+                   -- @m.location@.
                  | Video
+                   -- ^ 'Video' represents the Matrix API's
+                   -- @m.video@.
   deriving (Eq, Read);
 
 instance Show MessageType where
@@ -61,8 +75,9 @@ data StdMess = StdMess {
   msgType :: MessageType,
   -- | @body k@ equals the unencrypted body of @k@.
   body :: MessageText,
-  -- | @fmtBody k@ is the value of the "@formatted_body@" field of the
-  -- JSON equivalent of @k@.
+  -- | If @k@ represents a message which is formatted using HTML, then
+  -- @fmtBody k@ is 'Just' the value of the "@formatted_body@" field of
+  -- the JSON equivalent of @k@.  @fmtBody k@ is otherwise 'Nothing'.
   fmtBody :: Maybe MessageText,
   -- | @fmt k@ equals the content of the "format" field of the source of
   -- @k@.
@@ -71,23 +86,23 @@ data StdMess = StdMess {
   -- Per the Matrix specification as of 20210605, @fmt k@ may only equal
   -- 'MatrixCusHTML'.
   fmt :: MessageFmt,
-  -- | If @'msgType' k == 'Location'@, then @geo_uri k@ is the
+  -- | If @'msgType' k == 'Location'@, then @geo_uri k@ is 'Just' the
   -- coordinates of the location which @k@ describes.  @geo_uri k@
   -- should otherwise equal 'Nothing'.
   geo_uri :: Maybe Stringth,
   -- | If @k@ primarily serves as the container of a URL, then @url k@
-  -- is this URL.
+  -- is 'Just' this URL.  @url k@ is otherwise 'Nothing'.
   url :: Maybe String,
   -- | If @k@ contains a file and the original filename of the file
   -- which @k@ contains is known, then @filename@ is the original
-  -- filename of the file which @k@ describes.  @file k@ otherwise
+  -- filename of the file which @k@ describes.  @filename k@ otherwise
   -- equals 'Nothing'.
   filename :: Maybe String,
   -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
-  -- originally encrypted, then @file k@ is the content of the file
-  -- which @k@ describes.  @file k@ otherwise equals 'Nothing'.
+  -- originally encrypted, then @file k@ is 'Just' the content of the
+  -- file which @k@ describes.  @file k@ otherwise equals 'Nothing'.
   file :: Maybe EncryptedFile,
-  -- | If @k@ mentions a file, then @fileInfo k@ contains some
+  -- | If @k@ mentions a file, then @fileInfo k@ 'Just' contains some
   -- information regarding the file which @k@ describes.  @fileInfo k@
   -- otherwise equals 'Nothing'.
   fileInfo :: Maybe FileInfo,
