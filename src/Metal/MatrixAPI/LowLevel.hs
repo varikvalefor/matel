@@ -463,10 +463,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   processResponse r = case getResponseStatusCode r of
     200 -> Right Def.user {displayname = toDispName r}
     404 -> Right Def.user {displayname = T.pack $ username u}
-    -- This "404" thing accounts for users whose display names are
+    -- \^ This "404" thing accounts for users whose display names are
     -- undefined.
     _   -> Left $ responseToStringth r;
-    -- This case accounts for all situations which SHOULD NOT occur,
+    -- \^ This case accounts for all situations which SHOULD NOT occur,
     -- e.g., "this user does not exist" and "yo, the server done
     -- broke".  Such responses should raise "red flags"; something has
     -- gone wrong within this module, or the program which uses this
