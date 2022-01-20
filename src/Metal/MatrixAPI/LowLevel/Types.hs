@@ -58,37 +58,36 @@ deriveJSON defaultOptions {fieldLabelModifier = drop 8} ''UserIdentifier;
 deriveJSON defaultOptions {fieldLabelModifier = drop 4} ''DisplayNameResponse;
 
 instance ToJSON StdMess where
-  toJSON k
-      -- \| @m.notice@ messages are really just @m.text@ messages which
-      -- are displayed a bit uniquely.  As such, @m.notice@ messages can
-      -- be handles mostly as @m.text@ events are handled.
-    | msgType k `elem` [TextInnit, Notice] = object
+  toJSON k = case msgType k of
+    -- \| @m.notice@ messages are really just @m.text@ messages which
+    -- are displayed a bit uniquely.  As such, @m.notice@ messages can
+    -- be handles mostly as @m.text@ events are handled.
+    m | m `elem` [TextInnit, Notice] -> object
       [
         "body" .= body k,
         "msgtype" .= show (msgType k)
       ]
-    | otherwise = case msgType k of
-      Location -> object
+    Location -> object
+      [
+        "body" .= body k,
+        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
+        "msgtype" .= show (msgType k)
+      ]
+    Attach -> object
+      [
+        "body" .= body k,
+        "filename" .= filename k,
+        "info" .= object
         [
-          "body" .= body k,
-          "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri k),
-          "msgtype" .= show (msgType k)
-        ]
-      Attach -> object
-        [
-          "body" .= body k,
-          "filename" .= filename k,
-          "info" .= object
-          [
-            "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
-            "size" .= maybe (errorNoField "size") size (fileInfo k)
-          ],
-          "msgtype" .= show (msgType k),
-          "url" .= url k
-        ]
-      _ -> error $ "A proper error!  ToJSON does not account \
-                   \for StdMess values of @msgType@ " ++
-                   show (msgType k) ++ "."
+          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo k),
+          "size" .= maybe (errorNoField "size") size (fileInfo k)
+        ],
+        "msgtype" .= show (msgType k),
+        "url" .= url k
+      ]
+    _ -> error $ "A proper error!  ToJSON does not account \
+                 \for StdMess values of @msgType@ " ++
+                 show (msgType k) ++ "."
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType k) ++

@@ -23,19 +23,22 @@ import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Crypto.PubKey.Curve25519 as X25519;
 
--- | If @t@ is ciphertext, then @aes256CryptBS t sk iv@ is the result of
--- decrypting @t@ with the secret key @sk@ and the initialisation vector
--- @sk@.
---
--- If @t@ is cleartext, then @aes256CryptBS t sk iv@ is the result of
--- encrypting @t@ with the secret key @sk@ and the initialisation vector
--- @sk@.
+-- | @aes256CryptBS@ encrypts or decrypts a value in accordance with
+-- AES-256.
 aes256CryptBS :: BS.ByteString
-              -- ^ The cleartext
+              -- ^ This value is the thing which should be encrypted
+              -- or decrypted.
+              --
+              -- If this value is encrypted, then the decrypted version
+              -- of this value is output.
+              --
+              -- If this value is unencrypted, then the encrypted
+              -- version of this value is output.
               -> BS.ByteString
-              -- ^ The 32-byte secret key
+              -- ^ This thing is the secret key which is used to encrypt
+              -- or decrypt the input text.
               -> BS.ByteString
-              -- ^ The 32-byte initialisation vector
+              -- ^ This bit is the initialisation vector.
               -> BS.ByteString;
 aes256CryptBS t sk iv = ctrCombine cipher (fromJust $ makeIV iv) t
   where
@@ -53,13 +56,14 @@ aes256CryptBS t sk iv = ctrCombine cipher (fromJust $ makeIV iv) t
 genIVorKeyBS :: IO BS.ByteString;
 genIVorKeyBS = getRandomBytes $ blockSize (undefined :: AES256);
 
--- | @calcSecret a b@ is the shared secret key of @a@ and @b@.
+-- | @calcSecret@ calculates a shared secret key.
 calcSecret :: PublicKey
-           -- ^ The public key of the recipient of the data with which
-           -- the resulting shared secret is encrypted
+           -- ^ This argument is the public X25519 key of the recipient
+           -- of the data which is encrypted using the output shared secret.
            -> PrivateKey
-           -- ^ The private key of the sender of the data with which the
-           -- resulting shared secret is encrypted
+           -- ^ This value is the private X25519 key of the sender of
+           -- the data with which is encrypted using the output shared
+           -- secret.
            -> X25519.DhSecret;
 calcSecret pu pr = X25519.dh pu' pr'
   where

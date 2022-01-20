@@ -89,62 +89,43 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- | @recentMessagesFrom@ fetches the messages which are most recently
 -- sent to a Matrix room.
 --
--- = Arguments
---
--- The first argument is the number of messages which should be output.
---
--- The second argument represents the Matrix room from which messages
--- are grabbed.
---
--- The third argument is the same old authorisation bullshit.
---
 -- = Lack of Support for Encrypted Messages
 --
 -- @recentMessagesFrom@ currently does not support the fetching of
 -- encrypted messages.
 recentMessagesFrom :: Integer
-                   -- ^ The number of messages which should be fetched
+                   -- ^ This argument is the number of messages which
+                   -- are fetched.
                    -> Room
-                   -- ^ The room from which the messages should be
+                   -- ^ This argument specifies the Matrix room whose
+                   -- messages are fetched.
                    -- fetched
                    -> Auth
-                   -- ^ Authorisation crap
+                   -- ^ This argument is the same old authorisation
+                   -- bullshit.
                    -> IO [StdMess];
 recentMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @earlyMessagesFrom@ fetches the messages which are first sent to a
 -- Matrix room.
 --
--- = Arguments
---
--- The first argument is the number of messages which should be output.
---
--- The second argument represents the Matrix room from which messages
--- are grabbed.
---
--- The third argument is the same old authorisation bullshit.
---
 -- = Lack of Support for Encrypted Messages
 --
 -- @earlyMessagesFrom@ currently does not support the fetching of
 -- encrypted messages.
 earlyMessagesFrom :: Integer
-                  -- ^ The number of messages which should be fetched
+                  -- ^ This argument is the number of messages which
+                  -- should be fetched.
                   -> Room
-                  -- ^ The room from which messages should be fetched
+                  -- ^ This argument represents the Matrix room from
+                  -- which messages are nabbed.
                   -> Auth
-                  -- ^ The authorisation details with which messages are
-                  -- fetched
+                  -- ^ This bit is the same old authorisation bullshit.
                   -> IO [StdMess];
 earlyMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @memberRooms@ nabs a list of rooms of which Matel's user is a
 -- member.
---
--- = Arguments
---
--- The first -- and only -- argument is the authorisation information of
--- Matel's user.
 --
 -- = Output
 --
@@ -157,8 +138,8 @@ earlyMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 -- request the removal of this error functionality if this error
 -- functionality is found to be inconvenient.
 memberRooms :: Auth
-            -- ^ The information which is used to authenticate Matel's
-            -- user
+            -- ^ This argument is the authorisation information of
+            -- the user.
             -> IO [Room];
 memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
@@ -183,18 +164,8 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
     -- @memberRooms@ does not break at this point if any users of this
     -- module would benefit from this change.
 
--- | @memberSpaces@ fetches a list of the 'Space's of which Matel's user
--- is a member.
---
--- = Arguments
---
--- The first and only argument is the authorisation information of the
--- user of Matel.
---
--- = Output
---
--- The output of @memberSpaces@ is an IO-monadic list of 'Space's of
--- which Matel's user is a member.
+-- | @memberSpaces@ returns a list of the 'Space's of which a user is a
+-- member.
 --
 -- = Exception Handling
 --
@@ -202,23 +173,15 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
 -- to request the removal of this error functionality if this error
 -- functionality is found to be inconvenient.
 memberSpaces :: Auth
-             -- ^ The authorisation information of the Matrix user,
-             -- probably Matel's user, whose joined spaces should be
-             -- fetched
+             -- ^ This bit is the authorisation information of the
+             -- Matrix user whose joined spaces should be fetched.
+             --
+             -- This user is PROBABLY the user of Matel.
              -> IO [Space];
 memberSpaces = idOrError <.> joinedSpaces;
 
--- | @memberComms@ outputs a list of the 'Community's --
--- EEUUUAAaaARGH -- of which Matel's user is a member.
---
--- = Arguments
---
--- The only argument is the authorisation information of Matel's user.
---
--- = Output
---
--- The output is an IO-monadic list of 'Community's -- again,
--- EEUUUAAaaARGH -- of which Matel's user is a member.
+-- | @memberComms@ returns a list of the 'Community's --
+-- EEUUUAAaaARGH -- of which a user is a member.
 --
 -- = Exception Handling
 --
@@ -226,7 +189,8 @@ memberSpaces = idOrError <.> joinedSpaces;
 -- request the removal of this error functionality if this error
 -- functionality is found to be inconvenient.
 memberComms :: Auth
-            -- ^ The authorisation information of Matel's user
+            -- ^ This bit is the authorisation information of the user
+            -- whose 'Community's -- again, EEUUUAAaaARGH -- are listed.
             -> IO [Community];
 memberComms = idOrError <.> joinedComms;
 
@@ -235,20 +199,9 @@ memberComms = idOrError <.> joinedComms;
 idOrError :: Either Stringth a -> a;
 idOrError = either (error . T.unpack) id;
 
--- | @markRead@ is used to mark messages as having been read.
+-- | @markRead@ marks messages as having been read.
 --
 -- @markRead@ is currently nonfunctional.
---
--- = Arguments
---
--- The first argument is a representation of the message which is to
--- be marked as "read".  The @messageId@ field of this argument MUST
--- be defined and valid; if the field is not defined and valid, then
--- @markRead@ may be reduced to a small pile of leaf-rolling weevils.
--- But such behaviour is not guaranteed.
---
--- The second argument is the authorisation stuff which has already
--- been documentated 87956 times.
 --
 -- = Output
 --
@@ -257,9 +210,16 @@ idOrError = either (error . T.unpack) id;
 -- However, if a problem is encountered, then @markRead@ 'Just' returns
 -- a description of this problem.
 markRead :: StdMess
-         -- ^ The message which should become "read"
+         -- ^ This argument represents the message which should be
+         -- marked as having been "read". 
+         --
+         -- The @messageId@ field of this argument MUST be defined and
+         -- valid; if @messageId@ is undefined or invalid, then
+         -- @markRead@ may be reduced to a small pile of leaf-rolling
+         -- weevils.  But such behaviour is not guaranteed.
          -> Auth
-         -- ^ Authorisation crap
+         -- This bit is the authorisation stuff which has already been
+         -- documentated 87956 times.
          -> IO (Maybe ErrorCode);
 markRead _ _ = error "markRead is unimplemented.";
 
@@ -268,29 +228,24 @@ markRead _ _ = error "markRead is unimplemented.";
 -- This section of the module contains the functions of this module
 -- which are responsible for the sending of stuff, e.g., messages.
 
--- | @send@ is used to send messages to encrypted and unencrypted Matrix
--- rooms.
+-- | @send@ sends messages to encrypted and unencrypted Matrix rooms.
 --
--- = Arguments
+-- = Encryption
 --
--- The first argument represents the message which is to be sent to the
--- Matrix room.  If the destination room is encrypted, then an encrypted
--- version of the message which this argument represents is sent.
--- Otherwise, the unencrypted version of this message is sent.
---
--- The second argument represents the Matrix room to which the message
--- is sent.  Only the @roomId@ field must be non-default.
---
--- The third argument is authorisation crap.
+-- If the room to which the message is sent is encrypted, then an
+-- encrypted version of this message is sent to the room.  Otherwise, a
+-- mostly unaltered version of the message is sent.
 --
 -- = Output
 --
 -- If an error is encountered, then 'Just' a description of this error
 -- is returned.  Otherwise, 'Nothing' is returned.
 send :: StdMess
-     -- ^ The message which is to be sent
+     -- ^ This argument is a representation of the message which is to
+     -- be sent.
      -> Room
-     -- ^ The room to which the message is sent
+     -- ^ This argument specifies the Matrix room to which the message
+     -- should be sent.  Only the @roomId@ field must be non-default.
      -> Auth
      -- ^ The authorisation garbage which is used to send the message...
      -- blah, blah, blah, blah, blah... boilerplate crap...
@@ -311,11 +266,11 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
                        -- dang
                        else Left <$> pure event;
 
--- | @roomEncrypt m r@ returns an 'Encrypted' message which can be read
--- by the authenticated members of @r@.
+-- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess
-            -- ^ The message which should be encrypted
+            -- ^ This bit is the message which should be encrypted.
             -> Room
-            -- ^ The room for which the message is encrypted
+            -- ^ This argument specifies the room for which the message
+            -- should be encrypted.
             -> IO Encrypted;
 roomEncrypt = error "roomEncrypt is unimplemented.";

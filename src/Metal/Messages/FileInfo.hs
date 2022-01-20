@@ -1,7 +1,3 @@
-module Metal.Messages.FileInfo where
-import Metal.Messages.EncryptedFile;
-import Metal.Messages.ThumbnailInfo;
-
 -- | Module    : Metal.Messages.FileInfo
 -- Description : File information crap
 -- Copyright   : (c) Varik Valefor, 2021
@@ -9,6 +5,11 @@ import Metal.Messages.ThumbnailInfo;
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
+--
+-- This module contains 'FileInfo'.
+module Metal.Messages.FileInfo where
+import Metal.Messages.EncryptedFile;
+import Metal.Messages.ThumbnailInfo;
 
 -- | For all 'FileInfo' @k@, @k@ describes a file of some sort.
 data FileInfo = FileInfo {

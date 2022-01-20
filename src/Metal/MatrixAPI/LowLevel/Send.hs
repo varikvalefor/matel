@@ -28,6 +28,7 @@ import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
 
+-- | Types whose values represent Matrix events belong to 'Event'.
 class Event a where
   -- | @eventType k@ is a Matrix-friendly representation of the event
   -- type of @k@, e.g., @"m.message"@.
@@ -39,16 +40,18 @@ instance Event StdMess where
 instance Event Encrypted where
   eventType _ = "m.room.encrypted";
 
--- | @sendEvent ev rm a@ only if @ev@ is sent to room @rm@ via @a@...
--- or an error message is returned.
+-- | @sendEvent@ sends the specified 'Event' to the specified Matrix
+-- room.
 sendEvent :: Event a
           => A.ToJSON a
           => a
-          -- ^ The event which should be sent
+          -- ^ This value is the 'Event' which should be sent.
           -> Room
-          -- ^ The room to which the event should be sent
+          -- ^ This value is a representation of the Matrix room to
+          -- which the aforementioned 'Event' should be sent.
           -> Auth
-          -- ^ The authorisation crap which is used to send the event
+          -- ^ This value is the authorisation information which is
+          -- used to actually send the 'Event'.
           -> IO (Maybe ErrorCode);
 sendEvent ev rm a = qenerateQuery >>= sendQuery
   where
