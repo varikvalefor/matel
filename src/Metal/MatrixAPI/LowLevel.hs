@@ -122,11 +122,16 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   responseToLeftRight' :: Response BS.ByteString
                        -> Either ErrorCode Stringth
   responseToLeftRight' j = case getResponseStatusCode j of
-    200 -> Right $ bodyValue j Q..! "{access_token}"
+    200 -> mayB2Eit $ (Q..! "{access_token}") <$> bodyValue j
     _   -> responseToLeftRight j
+  --  
+  mayB2Eit :: Maybe Stringth -> Either ErrorCode Stringth
+  mayB2Eit = maybe (Left invalidBodyMsg) Right
+  invalidBodyMsg = "loginPass: The body of the response cannot be \
+                \parsed as valid JSON."
   --
-  bodyValue :: Response BS.ByteString -> Q.Value
-  bodyValue = fromJust . Q.decode . BSL.fromStrict . getResponseBody
+  bodyValue :: Response BS.ByteString -> Maybe Q.Value
+  bodyValue = Q.decode . BSL.fromStrict . getResponseBody
   --
   logreq :: BSL.ByteString
   logreq = fromString $
