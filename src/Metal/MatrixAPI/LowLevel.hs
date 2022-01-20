@@ -201,11 +201,14 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse r = case getResponseStatusCode r of
-    200 -> Right $ extractRooms $ BSL.fromStrict $ getResponseBody r
+    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
     _   -> Left $ responseToStringth r
   --
-  extractRooms :: BSL.ByteString -> [Room]
-  extractRooms = map toRoom . (Q..! "{joined_rooms}") . fromJust . Q.decode
+  toEither :: Maybe [Room] -> Either ErrorCode [Room]
+  toEither = maybe (Left "joinedRooms: Decoding fails!") Right
+  --
+  maybeRooms :: BSL.ByteString -> Maybe [Room]
+  maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
   --
   querr :: String
   querr = "_matrix/client/r0/joined_rooms"
