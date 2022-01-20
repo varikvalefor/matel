@@ -288,10 +288,7 @@ eddySmith :: [String]
           -- This argument, as ever, is the boring boilerplate
           -- authorisation information.
           -> IO Stringth;
-eddySmith t = either (error . T.unpack) id <.> sync since
-  where
-  since :: Maybe String
-  since = bool Nothing (Just $ head t) $ t == [];
+eddySmith t = either (error . T.unpack) id <.> sync (listToMaybe t);
 
 -- | @runJoin@ is a relatively command-line-friendly wrapper for
 -- @'join'@.
