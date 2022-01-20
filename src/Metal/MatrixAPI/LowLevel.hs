@@ -664,10 +664,17 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   where
   process :: Response BS.ByteString -> Either ErrorCode Stringth
   process k = case getResponseStatusCode k of
-    200 -> Right $ fromJust $
-             (Q..! "{content_uri}") <$>
-             Q.decode (BSL.fromStrict $ getResponseBody k)
+    200 -> procJSON $ Q.decode $ BSL.fromStrict $ getResponseBody k
     _   -> responseToLeftRight k
+  --
+  procJSON :: Maybe Q.Value -> Either ErrorCode Stringth
+  procJSON Nothing = Left "upload: The JSON response lacks a valid \
+                          \\"body\" field."
+  procJSON (Just k) = maybe badCUri Right $ k Q..! "{content_uri}"
+  --
+  badCUri :: Either ErrorCode Stringth
+  badCUri = error "The response body lacks a valid \"content_uri\" \
+                  \field."
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
