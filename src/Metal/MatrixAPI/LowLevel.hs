@@ -237,7 +237,7 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 joinedSpaces :: Auth
              -- ^ The authorisation information of Matel's user
              -> IO (Either ErrorCode [Space]);
-joinedSpaces a = error "joinedSpaces is unimplemented.";
+joinedSpaces a = pure $ Left "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
 --- which Matel's user is a member.
@@ -261,7 +261,7 @@ joinedSpaces a = error "joinedSpaces is unimplemented.";
 joinedComms :: Auth
             -- ^ The authorisation information of Matel's user
             -> IO (Either ErrorCode [Community]);
-joinedComms a = error "joinedComms is unimplemented.";
+joinedComms a = pure $ Left "joinedComms is unimplemented.";
 
 -- $membershipDefine
 --
