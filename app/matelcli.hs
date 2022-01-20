@@ -157,6 +157,10 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
+                    -- \| Using @listToMaybe@ SHOULD be unnecessary, as
+                    -- @k@ SHOULD NOT be @null@.  However, using
+                    -- @listToMaybe@ implies not needing to manually
+                    -- place @head k@ into the 'Maybe' monad.
                     geo_uri = T.pack <$> listToMaybe k,
                     body = input
                   }
