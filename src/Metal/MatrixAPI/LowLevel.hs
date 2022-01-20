@@ -673,8 +673,8 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   procJSON (Just k) = maybe badCUri Right $ k Q..! "{content_uri}"
   --
   badCUri :: Either ErrorCode Stringth
-  badCUri = error "The response body lacks a valid \"content_uri\" \
-                  \field."
+  badCUri = Left "The response body lacks a valid \"content_uri\" \
+                 \field."
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
