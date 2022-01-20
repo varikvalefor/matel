@@ -364,7 +364,7 @@ ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
       "\"reason\": " ++ show m ++ "\n" ++
     "}";
 
--- | @unban@ reverses users' being @ban@ned.
+-- | @unban@ reverses users' being @'ban'@ned.
 --
 -- = Output
 --
