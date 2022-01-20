@@ -468,14 +468,19 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   querr :: String
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
-  toDispName :: Response BS.ByteString -> Stringth
-  toDispName = dnr_displayname . fromJust . A.decode .
+  toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
+  toDispName = toEither . (dnr_displayname <.> A.decode) .
                BSL.fromStrict . getResponseBody
   --
-
+  toEither :: Maybe Stringth -> Either ErrorCode Stringth
+  toEither = maybe (Left failedDecodeMsg) Right
+  --
+  failedDecodeMsg :: Stringth
+  failedDecodeMsg = "getDisplayName: The decoding process fails."
+  --
   processResponse :: Response BS.ByteString -> Either ErrorCode User
   processResponse r = case getResponseStatusCode r of
-    200 -> Right Def.user {displayname = toDispName r}
+    200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
     404 -> Right Def.user {displayname = T.pack $ username u}
     -- \^ This "404" thing accounts for users whose display names are
     -- undefined.
