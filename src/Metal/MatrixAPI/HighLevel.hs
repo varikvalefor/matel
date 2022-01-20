@@ -300,16 +300,17 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
   maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
-  maybeEncrypt = getRoomInformation italy a >>= either (return . Left) (Right <.> process)
+  maybeEncrypt = getRoomInformation italy a >>= either (pure . Left) process
   blowUp = return . Just
+  encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use
                        -- encryption... allegedly.
-                       then Right <$> roomEncrypt event dullards
+                       then encryptFor dullards
                        -- \| man yall dullards cant even use encryption
                        -- what a scam
                        -- dang
-                       else Left <$> pure event;
+                       else pure $ Right $ Left event;
 
 -- | @roomEncrypt m r@ returns an 'Encrypted' message which can be read
 -- by the authenticated members of @r@.
@@ -317,5 +318,5 @@ roomEncrypt :: StdMess
             -- ^ The message which should be encrypted
             -> Room
             -- ^ The room for which the message is encrypted
-            -> IO Encrypted;
-roomEncrypt = error "roomEncrypt is unimplemented.";
+            -> IO (Either ErrorCode Encrypted);
+roomEncrypt _ _ = pure $ Left "roomEncrypt is unimplemented.";
