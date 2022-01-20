@@ -54,10 +54,6 @@ library
     Metal.MatrixAPI.LowLevel.RecordCombination
     Metal.MatrixAPI.LowLevel.FetchEvents
     Metal.MatrixAPI.LowLevel.HTTP
-    -- The following modules export stuff which is re-exported by
-    -- Metal.MatrixAPI.HighLevel.  These modules are hidden because the
-    -- exposure of these modules would be largely redundant.
-    Metal.MatrixAPI.LowLevel.Send
   other-extensions:
     OverloadedStrings
     TemplateHaskell

@@ -14,6 +14,10 @@
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
 module Metal.MatrixAPI.LowLevel (
+  -- * Classes
+  --
+  -- $classes
+  Event(..),
   -- * Authorisation Crap
   --
   -- $authorisation
@@ -46,7 +50,7 @@ module Metal.MatrixAPI.LowLevel (
   -- * Functions what Send Stuff
   --
   -- $spam
-  module Metal.MatrixAPI.LowLevel.Send,
+  sendEvent,
   -- * Functions what Hide Stuff
   --
   -- $cryptoShit
@@ -63,13 +67,14 @@ import Metal.User;
 import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
+import Metal.Encrypted;
 import Network.HTTP.Simple;
+import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import Network.HTTP.Types.Header;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
-import Metal.MatrixAPI.LowLevel.Send;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
@@ -459,6 +464,7 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   toDispName = dnr_displayname . fromJust . A.decode .
                BSL.fromStrict . getResponseBody
   --
+
   processResponse :: Response BS.ByteString -> Either ErrorCode User
   processResponse r = case getResponseStatusCode r of
     200 -> Right Def.user {displayname = toDispName r}
@@ -599,6 +605,32 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
 -- This section of the module contains the functions and whatnot which
 -- facilitate sending stuff to Matrix rooms.
 
+-- | @sendEvent@ sends the specified 'Event' to the specified Matrix
+-- room.
+sendEvent :: Event a
+          => A.ToJSON a
+          => a
+          -- ^ This value is the 'Event' which should be sent.
+          -> Room
+          -- ^ This value is a representation of the Matrix room to
+          -- which the aforementioned 'Event' should be sent.
+          -> Auth
+          -- ^ This value is the authorisation information which is
+          -- used to actually send the 'Event'.
+          -> IO (Maybe ErrorCode);
+sendEvent ev rm a = qenerateQuery >>= sendQuery
+  where
+  sendQuery ::  String -> IO (Maybe ErrorCode)
+  sendQuery querr = process <$> TP.req TP.PUT [] querr (A.encode ev) a
+  --
+  qenerateQuery :: IO String
+  qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
+                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise
+  --
+  process :: Response BS.ByteString -> Maybe ErrorCode
+  process k = case getResponseStatusCode k of
+    200 -> Nothing
+    _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
 -- $cryptoShit
 --
 -- This section of the module contains functions which directly
@@ -609,3 +641,19 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
 -- This section of the module contains functions which describe things
 -- such that these descriptions can be used for utilitarian purposes, as
 -- opposed to being purely display-related.
+
+-- $classes
+--
+-- This section contains classes which are relevant only to this module.
+
+-- | Types whose values represent Matrix events belong to 'Event'.
+class Event a where
+  -- | @eventType k@ is a Matrix-friendly representation of the event
+  -- type of @k@, e.g., @"m.message"@.
+  eventType :: a -> String;
+
+instance Event StdMess where
+  eventType _ = "m.room.message";
+
+instance Event Encrypted where
+  eventType _ = "m.room.encrypted";
