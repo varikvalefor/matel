@@ -261,7 +261,7 @@ markRead :: StdMess
          -> Auth
          -- ^ Authorisation crap
          -> IO (Maybe ErrorCode);
-markRead _ _ = error "markRead is unimplemented.";
+markRead _ _ = pure $ Just "markRead is unimplemented.";
 
 -- $stuffSend
 --
