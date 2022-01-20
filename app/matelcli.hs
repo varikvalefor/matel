@@ -157,7 +157,7 @@ send k a = getTarget >>= \t -> H.send t dest a >>= dispError
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
-                    geo_uri = Just $ T.pack $ k !! 1,
+                    geo_uri = T.pack <$> k !? 1,
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
