@@ -28,6 +28,7 @@ import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
 
+-- | Types whose values represent Matrix events belong to 'Event'.
 class Event a where
   -- | @eventType k@ is a Matrix-friendly representation of the event
   -- type of @k@, e.g., @"m.message"@.
