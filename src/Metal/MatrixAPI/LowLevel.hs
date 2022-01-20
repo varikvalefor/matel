@@ -670,18 +670,14 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   pj :: Maybe Q.Value -> Either ErrorCode Stringth
   pj = maybe noBody (maybe badCUri Right . (Q..! "{content_uri}"))
   --
-  noBody :: Either ErrorCode Stringth
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
-  --
-  badCUri :: Either ErrorCode Stringth
   badCUri = Left "The response body lacks a valid \"content_uri\" \
                  \field."
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
   --
-  qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++
        toString (urlEncode True $ fromString name);
 
