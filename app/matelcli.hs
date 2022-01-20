@@ -137,16 +137,16 @@ send [] a = error "I need some arguments, fat-ass.";
 send [_] a = error "I thought that you were improving.  I now see that I \
                    \was wrong.  Really, I should be mad at myself for \
                    \apparently going insane by having some faith in you.";
-send k a = getTarget >>= \t -> H.send t dest a >>= dispError
+send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
-  getTarget = case head k of
+  getTarget = case msgtype of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
+    "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
-                    body = T.pack $ k !! 1,
+                    body = T.pack $ head k,
                     url = Just $ T.unpack uploadID,
                     fileInfo = Just Def.fileInfo {
                       mimetype = Just "text/plain"
@@ -157,7 +157,7 @@ send k a = getTarget >>= \t -> H.send t dest a >>= dispError
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
-                    geo_uri = T.pack <$> k !? 1,
+                    geo_uri = T.pack <$> listToMaybe k,
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
