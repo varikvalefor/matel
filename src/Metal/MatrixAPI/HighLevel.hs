@@ -164,13 +164,8 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
     -- @memberRooms@ does not break at this point if any users of this
     -- module would benefit from this change.
 
--- | @memberSpaces@ fetches a list of the 'Space's of which Matel's user
--- is a member.
---
--- = Output
---
--- The output of @memberSpaces@ is an IO-monadic list of 'Space's of
--- which Matel's user is a member.
+-- | @memberSpaces@ returns a list of the 'Space's of which a user is a
+-- member.
 --
 -- = Exception Handling
 --
@@ -185,13 +180,8 @@ memberSpaces :: Auth
              -> IO [Space];
 memberSpaces = idOrError <.> joinedSpaces;
 
--- | @memberComms@ outputs a list of the 'Community's --
--- EEUUUAAaaARGH -- of which Matel's user is a member.
---
--- = Output
---
--- The output is an IO-monadic list of 'Community's -- again,
--- EEUUUAAaaARGH -- of which Matel's user is a member.
+-- | @memberComms@ returns a list of the 'Community's --
+-- EEUUUAAaaARGH -- of which a user is a member.
 --
 -- = Exception Handling
 --
@@ -200,8 +190,7 @@ memberSpaces = idOrError <.> joinedSpaces;
 -- functionality is found to be inconvenient.
 memberComms :: Auth
             -- ^ This bit is the authorisation information of the user
-            -- whose 'Community's -- all right, this joke is getting
-            -- old -- are listed.
+            -- whose 'Community's -- again, EEUUUAAaaARGH -- are listed.
             -> IO [Community];
 memberComms = idOrError <.> joinedComms;
 
@@ -210,7 +199,7 @@ memberComms = idOrError <.> joinedComms;
 idOrError :: Either Stringth a -> a;
 idOrError = either (error . T.unpack) id;
 
--- | @markRead@ is used to mark messages as having been read.
+-- | @markRead@ marks messages as having been read.
 --
 -- @markRead@ is currently nonfunctional.
 --
@@ -239,8 +228,7 @@ markRead _ _ = error "markRead is unimplemented.";
 -- This section of the module contains the functions of this module
 -- which are responsible for the sending of stuff, e.g., messages.
 
--- | @send@ is used to send messages to encrypted and unencrypted Matrix
--- rooms.
+-- | @send@ sends messages to encrypted and unencrypted Matrix rooms.
 --
 -- = Encryption
 --
@@ -278,7 +266,7 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
                        -- dang
                        else Left <$> pure event;
 
--- | @roomEncrypt@ is used to encrypt messages for Matrix rooms.
+-- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess
             -- ^ This bit is the message which should be encrypted.
             -> Room
