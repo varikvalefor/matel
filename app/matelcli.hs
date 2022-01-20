@@ -60,13 +60,14 @@ determineAction :: [String]
                 -- ^ Matel user's authorisation information
                 -> IO ();
 determineAction [] = error "I never thought that I would have a \
-  \stress-induced heart attack by the age of forty, but you're making \
-  \me rethink some things.";
+                           \stress-induced heart attack by the age of \
+                           \forty, but you're making me rethink some \
+                           \things.";
 determineAction (command:stuff) = case command of
   "list"       -> list stuff
   "send"       -> Main.send stuff
   "grab"       -> grab stuff
-  "login"      -> logIn
+  "login"      -> logIn >=> T.putStrLn
   "markread"   -> mkRead stuff
   "sync"       -> eddySmith stuff >=> T.putStrLn
   "join"       -> runJoin stuff
@@ -106,12 +107,14 @@ list :: [String]
      -- the user of @matelcli@.
      -> IO ();
 list [] = error "You wimps suck.";
-list (k:_) = case k of
-  "rooms"       -> memberRooms >=> mapM_ (putStrLn . roomId)
-  "communities" -> memberComms >=> mapM_ (putStrLn . commId)
-  "spaces"      -> memberSpaces >=> mapM_ (putStrLn . spaceId)
-  _             -> error "The pathologists will be listing your \
-                   \injuries if you don't stop inputting crap.";
+list (k:_) = memberXIds >=> mapM_ putStrLn
+  where
+  memberXIds = case k of
+    "rooms"       -> map roomId <.> memberRooms
+    "communities" -> map commId <.> memberComms
+    "spaces"      -> map spaceId <.> memberSpaces
+    _             -> error "The pathologists will be listing your \
+                     \injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
 send :: [String]
@@ -207,7 +210,7 @@ grab :: [String]
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
-grab (decino:eeyore:jd:mexicid:_) a
+grab (decino:eeyore:jd:mexico:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
@@ -222,7 +225,7 @@ grab (decino:eeyore:jd:mexicid:_) a
   n = fromMaybe (-42) $ readMaybe decino
   --
   room :: Room
-  room = Def.room {roomId = mexicid};
+  room = Def.room {roomId = mexico};
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
@@ -252,21 +255,21 @@ dispError = maybe (return ()) (error . T.unpack);
 logIn :: Auth
       -- ^ This bit is the authorisation information of the user for
       -- which an authorisation token is generated.
-      -> IO ();
+      -> IO T.Text;
 logIn = loginPass >=> either busticate addAndDisplay
   where
-  addAndDisplay :: T.Text -> IO ();
+  addAndDisplay :: T.Text -> IO T.Text
   addAndDisplay toke = configFilePath >>= \path ->
                        T.readFile path >>= \phile ->
-                       T.putStrLn toke >>
-                       T.writeFile path (addToken phile toke)
+                       T.writeFile path (addToken phile toke) >>
+                       return toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
                         filter ((/= "authtoken: ") . T.take 11) $
                         T.lines phile
   --
-  busticate :: T.Text -> IO ()
+  busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
 
 -- | @eddySmith@ is a command-line-friendly wrapper for @'sync'@.

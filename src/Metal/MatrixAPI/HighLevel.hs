@@ -221,7 +221,7 @@ markRead :: StdMess
          -- This bit is the authorisation stuff which has already been
          -- documentated 87956 times.
          -> IO (Maybe ErrorCode);
-markRead _ _ = error "markRead is unimplemented.";
+markRead _ _ = pure $ Just "markRead is unimplemented.";
 
 -- $stuffSend
 --
@@ -255,16 +255,17 @@ send event italy a = maybeEncrypt >>= either blowUp jstdt
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
   maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
-  maybeEncrypt = getRoomInformation italy a >>= either (return . Left) (Right <.> process)
+  maybeEncrypt = getRoomInformation italy a >>= either (pure . Left) process
   blowUp = return . Just
+  encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use
                        -- encryption... allegedly.
-                       then Right <$> roomEncrypt event dullards
+                       then encryptFor dullards
                        -- \| man yall dullards cant even use encryption
                        -- what a scam
                        -- dang
-                       else Left <$> pure event;
+                       else pure $ Right $ Left event;
 
 -- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess
@@ -272,5 +273,5 @@ roomEncrypt :: StdMess
             -> Room
             -- ^ This argument specifies the room for which the message
             -- should be encrypted.
-            -> IO Encrypted;
-roomEncrypt = error "roomEncrypt is unimplemented.";
+            -> IO (Either ErrorCode Encrypted);
+roomEncrypt _ _ = pure $ Left "roomEncrypt is unimplemented.";

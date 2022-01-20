@@ -220,7 +220,7 @@ joinedSpaces :: Auth
              -- ^ This argument is the authorisation information of the
              -- user whose joined spaces are listed.
              -> IO (Either ErrorCode [Space]);
-joinedSpaces a = error "joinedSpaces is unimplemented.";
+joinedSpaces a = pure $ Left "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
 -- which Matel's user is a member.
@@ -240,7 +240,7 @@ joinedComms :: Auth
             -- ^ This value is the authorisation information of the user
             -- whose joined communities are listed.
             -> IO (Either ErrorCode [Community]);
-joinedComms a = error "joinedComms is unimplemented.";
+joinedComms a = pure $ Left "joinedComms is unimplemented.";
 
 -- $membershipDefine
 --
@@ -573,22 +573,24 @@ upload :: BSL.ByteString
        -- authorisation garbage which is used to actually upload the
        -- file.
        -> IO (Either ErrorCode Stringth);
-upload attachment name = process <.> TP.req TP.POST hdr qq atch
+upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   where
   process :: Response BS.ByteString -> Either ErrorCode Stringth
   process k = case getResponseStatusCode k of
-    200 -> Right $ fromJust $
-             (Q..! "{content_uri}") <$>
-             Q.decode (BSL.fromStrict $ getResponseBody k)
+    200 -> pj $ Q.decode $ BSL.fromStrict $ getResponseBody k
     _   -> responseToLeftRight k
+  -- \| "pj" is an abbreviation of "procJSON".
+  pj :: Maybe Q.Value -> Either ErrorCode Stringth
+  pj = maybe noBody (maybe badCUri Right . (Q..! "{content_uri}"))
+  --
+  noBody = Left "upload: The JSON response lacks a valid \"body\" \
+                \field."
+  badCUri = Left "The response body lacks a valid \"content_uri\" \
+                 \field."
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
   --
-  atch :: BSL.ByteString
-  atch = attachment
-  --
-  qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++
        toString (urlEncode True $ fromString name);
 
