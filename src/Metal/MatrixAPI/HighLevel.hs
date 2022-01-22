@@ -89,6 +89,13 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- | @recentMessagesFrom@ fetches the messages which are most recently
 -- sent to a Matrix room.
 --
+-- = Output
+--
+-- If the messages are fetched correctly, then these messages are
+-- returned as a 'Right' ['StdMess'].
+-- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
+-- is returned.
+--
 -- = Lack of Support for Encrypted Messages
 --
 -- @recentMessagesFrom@ currently does not support the fetching of
@@ -103,11 +110,18 @@ recentMessagesFrom :: Integer
                    -> Auth
                    -- ^ This argument is the same old authorisation
                    -- bullshit.
-                   -> IO [StdMess];
+                   -> IO (Either ErrorCode [StdMess]);
 recentMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @earlyMessagesFrom@ fetches the messages which are first sent to a
 -- Matrix room.
+--
+-- = Output
+--
+-- If the messages are fetched correctly, then these messages are
+-- returned as a 'Right' ['StdMess'].
+-- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
+-- is returned.
 --
 -- = Lack of Support for Encrypted Messages
 --
@@ -121,7 +135,7 @@ earlyMessagesFrom :: Integer
                   -- which messages are nabbed.
                   -> Auth
                   -- ^ This bit is the same old authorisation bullshit.
-                  -> IO [StdMess];
+                  -> IO (Either ErrorCode [StdMess]);
 earlyMessagesFrom n = fetchEvents n 'b' Def.stdMess;
 
 -- | @memberRooms@ nabs a list of rooms of which Matel's user is a

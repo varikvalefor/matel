@@ -13,15 +13,16 @@
 -- @'fetchEvents'@.
 module Metal.MatrixAPI.LowLevel.FetchEvents (fetchEvents) where
 import Metal.Auth;
+import Metal.Base;
 import Metal.Room;
 import Metal.User;
-import Data.Maybe;
 import Metal.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Metal.Messages.FileInfo;
 import Metal.EventCommonFields;
 import Metal.Messages.Standard;
+import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
@@ -38,10 +39,11 @@ class Event a where
 
   -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
   --
-  -- = Processing
+  -- = Output
   --
-  -- If the fetching of events fails for some reason, then an error is
-  -- which hopefully describes this failure is thrown.
+  -- If everything goes according to plan, then a list of the desired
+  -- Matrix events is 'Right'ly returned.  If just the most 'Left'-field
+  -- shit happens, then a description of this happening is returned.
   fetchEvents :: Integer
               -- ^ This argument is the number of messages which should
               -- be fetched.
@@ -62,16 +64,18 @@ class Event a where
               -- are fetched.
               -> Auth
               -- ^ This argument is the same old authorisation stuff.
-              -> IO [a];
+              -> IO (Either ErrorCode [a]);
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
   fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
-    process :: Response BS.ByteString -> [StdMess]
+    process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toMessage $ toValue k .! "{chunk}"
-      _   -> detroit k
+      200 -> extractMessages . (.! "{chunk}") <$> toValue k
+      _   -> Left $ T.pack $ detroit' k
+    extractMessages :: [Value] -> [StdMess]
+    extractMessages = filter nonDef . map toMessage
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
@@ -189,10 +193,13 @@ instance Event Encrypted where
   nonDef = (/= Def.encrypted)
   fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
     where
-    process :: Response BS.ByteString -> [Encrypted]
+    process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
-      _   -> detroit k
+      200 -> extractEncrypted . (.! "{chunk}") <$> toValue k
+      _   -> Left $ T.pack $ detroit' k
+    --
+    extractEncrypted :: [Value] -> [Encrypted]
+    extractEncrypted = filter nonDef . map toEncrypted
     --
     -- \| Using a "proper" @fromJSON@ thing is /possible/... but
     -- involves a relatively great amount of effort and offers no real
@@ -219,13 +226,17 @@ instance Event Encrypted where
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
 
--- | Where @merleHaggard@ is a 'Response' whose body contains a @chunk@
--- object, @toValue merleHaggard@ is a 'Value' which represents the
--- @chunk@ object which @merleHaggard@'s body contains.
-toValue :: Response BS.ByteString -> Value
-toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-          getResponseBody
+-- | Where @merleHaggard@ is a 'Response' whose body contains a
+-- "@chunk@" object, @toValue merleHaggard@ is 'Either' the content of
+-- the "@chunk@" object of this response or an 'ErrorCode' which
+-- indicates that this response lacks a "@chunk@" field for some stupid
+-- reason.
+toValue :: Response BS.ByteString -> Either ErrorCode Value
+toValue = maybeToEither . decode . BSL.fromStrict . getResponseBody
   where
-  chunkMissing :: a
-  chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-		 \fetchEvents: The \"chunk\" field is absent!";
+  maybeToEither :: Maybe Value -> Either ErrorCode Value
+  maybeToEither = maybe (Left chunkMissing) Right
+  --
+  chunkMissing :: ErrorCode
+  chunkMissing = "Metal.MatrixAPI.LowLevel.FetchEvents.\
+                 \fetchEvents: The \"chunk\" field is absent!";
