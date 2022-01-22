@@ -28,9 +28,13 @@ import qualified Data.ByteString.Lazy as BSL;
 -- appropriate", custom error messages may be used to throw errors for
 -- non-'Response' data.
 detroit :: Response BS.ByteString -> a;
-detroit k = error $ "Thus spake the homeserver: " ++
-            show (getResponseStatusCode k) ++ "; " ++
-            show (getResponseBody k) ++ ".";
+detroit = error . detroit';
+
+-- | @detroit' k@ displays the status code and body of @k@.
+detroit' :: Response BS.ByteString -> String;
+detroit' k = "Thus spake the homeserver: " ++
+             show (getResponseStatusCode k) ++ "; " ++
+             show (getResponseBody k) ++ ".";
 
 -- | @justLeft (Left k) == k@.  @justLeft (Right g)@ throws an error.
 --
