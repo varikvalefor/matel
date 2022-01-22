@@ -620,6 +620,12 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
 
 -- | @sendEvent@ sends the specified 'Event' to the specified Matrix
 -- room.
+--
+-- = Output
+--
+-- If the message is successfully sent, then 'Nothing' is returned.  Otherwise,
+-- a description of whatever problem @sendEvent@ encounters is 'Just'ly
+-- returned.
 sendEvent :: Event a
           => A.ToJSON a
           => a

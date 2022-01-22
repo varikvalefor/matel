@@ -17,7 +17,7 @@ description:   Matel is a currently incomplete Haskell-based Matrix
                The guidelines for contributing to Matel and for
                submitting bug reports are visible in README.md.
 bug-reports:   http://github.com/varikvalefor/matel/issues
-license:       BSD-3-Clause
+license:       Unlicense
 author:        Varik Valefor
 maintainer:    varikvalefor@aol.com
 copyright:     (c) Varik Valefor 2021.
