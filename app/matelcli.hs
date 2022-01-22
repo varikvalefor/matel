@@ -283,13 +283,13 @@ logIn = loginPass >=> either busticate addAndDisplay
 -- The output is the verbatim body of the homeserver's response to the
 -- "sync" request.
 eddySmith :: [String]
-          -- This argument determines the "since" value which is
+          -- ^ This argument determines the "since" value which is
           -- attached to the "sync" request.  If this argument is @[]@,
           -- then no "since" value is attached.  If this argument is
           -- some other thing, then the first element of this argument
           -- is used as the "since" value of the sync request.
           -> Auth
-          -- This argument, as ever, is the boring boilerplate
+          -- ^ This argument, as ever, is the boring boilerplate
           -- authorisation information.
           -> IO Stringth;
 eddySmith t = either (error . T.unpack) id <.> sync (listToMaybe t);
@@ -346,8 +346,8 @@ runLeave :: [String]
          -- just making this thing use a ['String'] facilitates writing
          -- a clean @'determineAction'@.
          -> Auth
-         -- This argument is the authorisation information which is used
-         -- to actually leave the specified room.
+         -- ^ This argument is the authorisation information which is
+         -- used to actually leave the specified room.
          -> IO ();
 runLeave (x:_) = leave Def.room {roomId = x} >=> dispError;
 runLeave _ = error "You'd best leave... or stop giving me \
@@ -365,7 +365,7 @@ runKick :: [String]
         -- for the removal of this user.  If the third element equals
         -- @""@, then no reason is supplied.
         -> Auth
-        -- This argument is /still/ the same old authorisation stuff.
+        -- ^ This argument is /still/ the same old authorisation stuff.
         -- user
         -> IO ();
 runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
@@ -434,7 +434,7 @@ messToHumanReadable k =
 -- files.  When the @protocol@ is HTTPS, @ooplawed@ /is/ TLS-protected.
 -- However, @ooplawed@ does /not/ support "true" end-to-end encryption.
 ooplawed :: [String]
-         -- The first element of this list is the desired name of the
+         -- ^ The first element of this list is the desired name of the
          -- uploaded file.  No other elements of this list are actually
          -- used.
          -> Auth
