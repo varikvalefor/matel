@@ -165,7 +165,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
           -> Either Stringth [StdMess]
   combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
   timestamp :: StdMess -> UNIXTime
-  timestamp = origin_server_ts . MS.boilerplate 
+  timestamp = origin_server_ts . MS.boilerplate;
 
 -- | @earlyMessagesFrom@ fetches the messages which are first sent to a
 -- Matrix room.
