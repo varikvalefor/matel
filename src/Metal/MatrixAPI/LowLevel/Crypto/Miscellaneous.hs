@@ -23,8 +23,9 @@ import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Crypto.PubKey.Curve25519 as X25519;
 
--- | @aes256CryptBS@ encrypts or decrypts a value in accordance with
--- AES-256.
+-- | @aes256CryptBS@ 'Just' encrypts or decrypts a value in accordance
+-- with AES-256... unless something goes wrong, in which case 'Nothing'
+-- is output.
 aes256CryptBS :: BS.ByteString
               -- ^ This value is the thing which should be encrypted
               -- or decrypted.
@@ -39,8 +40,8 @@ aes256CryptBS :: BS.ByteString
               -- or decrypt the input text.
               -> BS.ByteString
               -- ^ This bit is the initialisation vector.
-              -> BS.ByteString;
-aes256CryptBS t sk iv = ctrCombine cipher (fromJust $ makeIV iv) t
+              -> Maybe BS.ByteString;
+aes256CryptBS t sk iv = (\ndl -> ctrCombine cipher ndl t) <$> makeIV iv
   where
   -- \| A HOPEFULLY INTERESTING NOTE: Unlike many other type
   -- specifications which exist within the "@where@" clauses of Metal,
