@@ -53,6 +53,7 @@ module Metal.MatrixAPI.HighLevel (
   markRead,
 ) where
 import Data.Bool;
+import Data.List;
 import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
@@ -61,11 +62,12 @@ import Metal.Space;
 import Control.Monad;
 import Metal.Community;
 import Metal.Encrypted;
-import Metal.Messages.Standard;
+import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
 import qualified Data.Either as EE;
+import Metal.Messages.Standard as MS;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
 
@@ -111,7 +113,59 @@ recentMessagesFrom :: Integer
                    -- ^ This argument is the same old authorisation
                    -- bullshit.
                    -> IO (Either ErrorCode [StdMess]);
-recentMessagesFrom n = fetchEvents n 'b' Def.stdMess;
+recentMessagesFrom = flip fetchMessages 'b';
+
+-- | @fetchMessages@ fetches encrypted and unencrypted messages.
+--
+-- = Output
+--
+-- If the messages are fetched correctly, then the output is a
+-- 'Right'-valued list of the decrypted and unencrypted messages which
+-- are fetched.  Otherwise, the output is a 'Left' 'ErrorCode' which
+-- describes the problem which prevents the fetching of messages.
+fetchMessages :: Integer
+              -- ^ This bit is the number of messages which are fetched.
+              -> Char
+              -- ^ This bit represents the direction in which messages
+              -- are fetched.
+              --
+              -- If this argument equals @\'b\'@, then the most recent
+              -- messages are fetched.
+              --
+              -- If this argument equals @\'f\'@, then the earliest
+              -- messages are fetched.
+              -> Room
+              -- ^ This argument represents the room whose messages
+              -- are fetched.
+              --
+              -- The @roomId@ value must be defined.
+              -> Auth
+              -- ^ This bit is the same old authorisation junk.
+              -> IO (Either ErrorCode [StdMess]);
+fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
+  where
+  grabUnencrypted :: IO (Either ErrorCode [StdMess])
+  grabUnencrypted = fetchEvents n dir Def.stdMess r a
+  -- \| @grabDecrypted@ can output a list of 'StdMess' records because
+  -- @grabDecrypted@ handles the decryption of 'Encrypted' messages.
+  grabDecrypted :: IO (Either Stringth [StdMess])
+  grabDecrypted = fmap (>>= decryptAll) grabEncrypted
+  --
+  grabEncrypted :: IO (Either Stringth [Encrypted])
+  grabEncrypted = fetchEvents n dir Def.encrypted r a
+  -- \| @decryptAll j@ 'Right'ly returns a null list because having
+  -- @fetchMessages@ break at this point can be a bit annoying.
+  --
+  -- TODO: IMPLEMENT PROPER DECRYPTION.
+  decryptAll :: [Encrypted] -> Either ErrorCode [StdMess]
+  decryptAll _ = Right []
+  --
+  combin8 :: Either Stringth [StdMess]
+          -> Either Stringth [StdMess]
+          -> Either Stringth [StdMess]
+  combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
+  timestamp :: StdMess -> UNIXTime
+  timestamp = origin_server_ts . MS.boilerplate 
 
 -- | @earlyMessagesFrom@ fetches the messages which are first sent to a
 -- Matrix room.
@@ -136,7 +190,7 @@ earlyMessagesFrom :: Integer
                   -> Auth
                   -- ^ This bit is the same old authorisation bullshit.
                   -> IO (Either ErrorCode [StdMess]);
-earlyMessagesFrom n = fetchEvents n 'b' Def.stdMess;
+earlyMessagesFrom = flip fetchMessages 'f';
 
 -- | @memberRooms@ nabs a list of rooms of which Matel's user is a
 -- member.
