@@ -137,16 +137,16 @@ send [] a = error "I need some arguments, fat-ass.";
 send [_] a = error "I thought that you were improving.  I now see that I \
                    \was wrong.  Really, I should be mad at myself for \
                    \apparently going insane by having some faith in you.";
-send k a = getTarget >>= \t -> H.send t dest a >>= dispError
+send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
-  getTarget = case head k of
+  getTarget = case msgtype of
     "text"     -> T.getContents >>= \input ->
                   return Def.stdMess {body = input}
-    "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
+    "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
-                    body = T.pack $ k !! 1,
+                    body = T.pack $ head k,
                     url = Just $ T.unpack uploadID,
                     fileInfo = Just Def.fileInfo {
                       mimetype = Just "text/plain"
@@ -157,7 +157,11 @@ send k a = getTarget >>= \t -> H.send t dest a >>= dispError
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
-                    geo_uri = Just $ T.pack $ k !! 1,
+                    -- \| Using @listToMaybe@ SHOULD be unnecessary, as
+                    -- @k@ SHOULD NOT be @null@.  However, using
+                    -- @listToMaybe@ implies not needing to manually
+                    -- place @head k@ into the 'Maybe' monad.
+                    geo_uri = T.pack <$> listToMaybe k,
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
@@ -170,7 +174,7 @@ send k a = getTarget >>= \t -> H.send t dest a >>= dispError
     diargumentalStuff = ["file", "location"]
     --
     destIndex :: Int
-    destIndex | head k `elem` diargumentalStuff = 2
+    destIndex | msgtype `elem` diargumentalStuff = 2
               | otherwise = 1;
               -- \^ This bit is necessary because the number of
               -- arguments of the "send file" command is not equal to
@@ -288,10 +292,7 @@ eddySmith :: [String]
           -- This argument, as ever, is the boring boilerplate
           -- authorisation information.
           -> IO Stringth;
-eddySmith t = either (error . T.unpack) id <.> sync since
-  where
-  since :: Maybe String
-  since = bool Nothing (Just $ head t) $ t == [];
+eddySmith t = either (error . T.unpack) id <.> sync (listToMaybe t);
 
 -- | @runJoin@ is a relatively command-line-friendly wrapper for
 -- @'join'@.

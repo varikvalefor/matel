@@ -122,11 +122,16 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   responseToLeftRight' :: Response BS.ByteString
                        -> Either ErrorCode Stringth
   responseToLeftRight' j = case getResponseStatusCode j of
-    200 -> Right $ bodyValue j Q..! "{access_token}"
+    200 -> mayB2Eit $ (Q..! "{access_token}") <$> bodyValue j
     _   -> responseToLeftRight j
+  --  
+  mayB2Eit :: Maybe Stringth -> Either ErrorCode Stringth
+  mayB2Eit = maybe (Left invalidBodyMsg) Right
+  invalidBodyMsg = "loginPass: The body of the response cannot be \
+                \parsed as valid JSON."
   --
-  bodyValue :: Response BS.ByteString -> Q.Value
-  bodyValue = fromJust . Q.decode . BSL.fromStrict . getResponseBody
+  bodyValue :: Response BS.ByteString -> Maybe Q.Value
+  bodyValue = Q.decode . BSL.fromStrict . getResponseBody
   --
   logreq :: BSL.ByteString
   logreq = fromString $
@@ -196,11 +201,14 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
   processResponse :: Response BS.ByteString -> Either Stringth [Room]
   processResponse r = case getResponseStatusCode r of
-    200 -> Right $ extractRooms $ BSL.fromStrict $ getResponseBody r
+    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
     _   -> Left $ responseToStringth r
   --
-  extractRooms :: BSL.ByteString -> [Room]
-  extractRooms = map toRoom . (Q..! "{joined_rooms}") . fromJust . Q.decode
+  toEither :: Maybe [Room] -> Either ErrorCode [Room]
+  toEither = maybe (Left "joinedRooms: Decoding fails!") Right
+  --
+  maybeRooms :: BSL.ByteString -> Maybe [Room]
+  maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
   --
   querr :: String
   querr = "_matrix/client/r0/joined_rooms"
@@ -460,14 +468,19 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   querr :: String
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
-  toDispName :: Response BS.ByteString -> Stringth
-  toDispName = dnr_displayname . fromJust . A.decode .
+  toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
+  toDispName = toEither . (dnr_displayname <.> A.decode) .
                BSL.fromStrict . getResponseBody
   --
-
+  toEither :: Maybe Stringth -> Either ErrorCode Stringth
+  toEither = maybe (Left failedDecodeMsg) Right
+  --
+  failedDecodeMsg :: Stringth
+  failedDecodeMsg = "getDisplayName: The decoding process fails."
+  --
   processResponse :: Response BS.ByteString -> Either ErrorCode User
   processResponse r = case getResponseStatusCode r of
-    200 -> Right Def.user {displayname = toDispName r}
+    200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
     404 -> Right Def.user {displayname = T.pack $ username u}
     -- \^ This "404" thing accounts for users whose display names are
     -- undefined.
@@ -526,21 +539,21 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   --
   responseToEither :: Response BS.ByteString -> Either ErrorCode Room
   responseToEither resp = case getResponseStatusCode resp of
-    200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
+    200 -> roomWithId <$> roomIdOf (getResponseBody resp)
     _   -> Left $ responseToStringth resp
   --
-  roomIdOf :: BS.ByteString -> Identifier
-  roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
-  -- \^ @fromJust@ could be used... but when processing Nothing,
-  -- @fromJust@ would provide a relatively nondescriptive error message,
-  -- and VARIK finds that nondescriptive error messages are crap.  As
-  -- such, VARIK elects to use @fromMaybe err@ instead of @fromJust@.
+  roomWithId :: Identifier -> Room
+  roomWithId rid = Def.room {roomId = rid}
+  --
+  roomIdOf :: BS.ByteString -> Either Stringth Identifier
+  roomIdOf = toEither . (T.unpack <.> (^? A.key "room_id" . A._String))
+    where toEither = maybe (Left err) Right
   --
   err :: Stringth
-  err = error "An unexpected error occurs!  The response code \
-        \indicates success... but the body of the response lacks a \
-        \\"room_id\" field.\nThe homeserver could have broken \
-        \spectacularly, or createRoom could contain an error.";
+  err = "An unexpected error occurs!  The response code indicates \
+        \success... but the body of the response lacks a \"room_id\" \
+        \field.\nThe homeserver could have broken spectacularly, or \
+        \createRoom could contain an error.";
 
 -- | @upload@ uploads files to the homeserver of Matel's user.
 --

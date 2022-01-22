@@ -11,10 +11,10 @@
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
 module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
-import Data.Maybe;
 import Metal.Room;
 import Metal.User;
 import Metal.Space;
+import Control.Monad;
 import Metal.Community;
 import Metal.Encrypted as En;
 import Metal.EventCommonFields;
@@ -194,8 +194,4 @@ combineSingleMaybeRecord :: Combinable b
                          -- ^ The second record whose field may be
                          -- sacrificed or chimaera'd
                          -> Maybe b
-combineSingleMaybeRecord c a b
-  | isNothing (c a) && isNothing (c b) = c a
-  | isNothing (c a) = c b
-  | isNothing (c b) = c a
-  | otherwise = Just $ combine (fromJust $ c a) (fromJust $ c b);
+combineSingleMaybeRecord c a b = liftM2 combine (c a) (c b);
