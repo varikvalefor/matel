@@ -3,7 +3,7 @@
 -- | Module    : Metal.HighLevel
 -- Description : Metal's high-level Matrix API stuff
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable

@@ -2,7 +2,7 @@
 -- Description : Metal's datatype what represents encrypted events
 --               of the Matrix instant messaging service
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable

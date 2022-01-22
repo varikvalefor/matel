@@ -1,7 +1,7 @@
 -- | Module    : Metal.Messages.Standard
 -- Description : Unencrypted/decrypted message type
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
