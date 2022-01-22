@@ -3,7 +3,7 @@
 -- | Module    : Main
 -- Description : Business end of MATELCLI
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable

@@ -1,7 +1,7 @@
 -- | Module    : Metal.Messages.EncryptedFile
 -- Description : Encrypted file attachment record type
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable

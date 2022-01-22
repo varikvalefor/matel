@@ -1,7 +1,7 @@
 -- | Module    : Metal.Space
 -- Description : Metal's representation of the Matrix space
 -- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
