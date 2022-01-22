@@ -146,8 +146,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   where
   grabUnencrypted :: IO (Either ErrorCode [StdMess])
   grabUnencrypted = fetchEvents n dir Def.stdMess r a
-  -- \| @grabDecrypted@ can output a list of 'StdMess' records because
-  -- @grabDecrypted@ handles the decryption of 'Encrypted' messages.
+  --
   grabDecrypted :: IO (Either Stringth [StdMess])
   grabDecrypted = fmap (>>= decryptAll) grabEncrypted
   --
