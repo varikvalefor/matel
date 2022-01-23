@@ -47,10 +47,11 @@ import qualified Data.ByteString.Lazy as BSL;
 
 -- | Chicken chow mein main...
 main :: IO ();
-main =
-  univac >> plegg >>
-  getAuthorisationDetails >>= \aufFile ->
-    getArgs >>= flip determineAction aufFile;
+main = ensureSecurity >> doStuff
+  where
+  ensureSecurity = univac >> plegg
+  doStuff = getAuthorisationDetails >>= runWithAuth
+  runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
