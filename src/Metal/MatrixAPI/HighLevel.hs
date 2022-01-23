@@ -147,10 +147,10 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   grabUnencrypted :: IO (Either ErrorCode [StdMess])
   grabUnencrypted = fetchEvents n dir Def.stdMess r a
   --
-  grabDecrypted :: IO (Either Stringth [StdMess])
+  grabDecrypted :: IO (Either ErrorCode [StdMess])
   grabDecrypted = fmap (>>= decryptAll) grabEncrypted
   --
-  grabEncrypted :: IO (Either Stringth [Encrypted])
+  grabEncrypted :: IO (Either ErrorCode [Encrypted])
   grabEncrypted = fetchEvents n dir Def.encrypted r a
   -- \| @decryptAll j@ 'Right'ly returns a null list because having
   -- @fetchMessages@ break at this point can be a bit annoying.
@@ -159,9 +159,9 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   decryptAll :: [Encrypted] -> Either ErrorCode [StdMess]
   decryptAll _ = Right []
   --
-  combin8 :: Either Stringth [StdMess]
-          -> Either Stringth [StdMess]
-          -> Either Stringth [StdMess]
+  combin8 :: Either ErrorCode [StdMess]
+          -> Either ErrorCode [StdMess]
+          -> Either ErrorCode [StdMess]
   combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
   --
   timestamp :: StdMess -> UNIXTime
@@ -211,17 +211,17 @@ memberRooms :: Auth
             -> IO [Room];
 memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
-  listRoomsMentioned :: Either Stringth [Room]
-                     -> IO [Either Stringth Room]
+  listRoomsMentioned :: Either ErrorCode [Room]
+                     -> IO [Either ErrorCode Room]
   listRoomsMentioned = either convS (mapM (flip getRoomInformation bugspray))
   --
-  convS :: Stringth -> IO [Either Stringth Room]
+  convS :: ErrorCode -> IO [Either ErrorCode Room]
   convS = return . return . Left
   --
-  maybeShowRms :: Either Stringth [Room] -> IO [Room]
+  maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
   maybeShowRms = listRoomsMentioned >=> bifsram
   -- \| "Break if some rooms are missing."
-  bifsram :: [Either Stringth Room] -> IO [Room]
+  bifsram :: [Either ErrorCode Room] -> IO [Room]
   bifsram t = bool err (pure $ map justRight t) $ any EE.isLeft t
     where err = error $ T.unpack $ justLeft $ head $ filter EE.isLeft t;
     -- \^ @filter EE.isLeft@ is used to ensure that the fetched 'Left'
@@ -264,7 +264,7 @@ memberComms = idOrError <.> joinedComms;
 
 -- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
 -- whose message is @k@.
-idOrError :: Either Stringth a -> a;
+idOrError :: Either ErrorCode a -> a;
 idOrError = either (error . T.unpack) id;
 
 -- | @markRead@ marks messages as having been read.
