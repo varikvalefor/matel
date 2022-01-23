@@ -271,8 +271,11 @@ logIn = loginPass >=> either busticate addAndDisplay
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
-                        filter ((/= "authtoken: ") . T.take 11) $
+                        filter (not . beginsWith "authToken: ") $
                         T.lines phile
+  --
+  beginsWith :: T.Text -> T.Text -> Bool
+  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
