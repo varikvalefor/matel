@@ -174,12 +174,10 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
     diargumentalStuff = ["file", "location"]
     --
     destIndex :: Int
-    destIndex | msgtype `elem` diargumentalStuff = 2
-              | otherwise = 1;
-              -- \^ This bit is necessary because the number of
-              -- arguments of the "send file" command is not equal to
-              -- the number of arguments of the "send text" and "send
-              -- notice" commands.
+    destIndex = bool 2 1 $ msgtype `elem` diargumentalStuff
+    -- \^ This bit is necessary because the number of arguments of the
+    -- "send file" command is not equal to the number of arguments of
+    -- the "send text" and "send notice" commands.
 
 -- | @uploadStdinGetID@ uploads some data which is read from the
 -- standard input to a homeserver, returning the URI of the uploaded
