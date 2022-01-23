@@ -78,8 +78,7 @@ getEncryptionStatus room = process <.> rq room "/event/m.room_key"
   process response = case getResponseStatusCode response of
     200 -> Def.room {publicKey = fmap (.! "{content:{session_key}") bd}
     _   -> Def.room
-    where
-    bd = A.decode $ BSL.fromStrict $ getResponseBody response;
+    where bd = A.decode $ BSL.fromStrict $ getResponseBody response;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- equals a 'Room' record whose @members@ field is a list of the members
