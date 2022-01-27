@@ -180,8 +180,8 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 -- functions which are contained within this section should be
 -- /reasonably/ high-level.
 
--- | @joinedRooms@ returns a list of which Matel's user is a member...
--- or an 'ErrorCode'.
+-- | @joinedRooms@ returns a list of 'Room's of which Matel's user is a
+-- member... or an 'ErrorCode'.
 --
 -- = Output
 --
