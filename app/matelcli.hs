@@ -264,10 +264,11 @@ logIn :: Auth
 logIn = loginPass >=> either busticate addAndDisplay
   where
   addAndDisplay :: T.Text -> IO T.Text
-  addAndDisplay toke = configFilePath >>= \path ->
-                       T.readFile path >>= \phile ->
-                       T.writeFile path (addToken phile toke) >>
-                       return toke
+  addAndDisplay toke = configFilePath >>= processPath
+    where
+    processPath path = T.readFile path >>= writeAndReturn path
+    writeAndReturn path phile = writeAppended >> pure phile
+      where writeAppended = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = withNewToken $ withoutOldToken phile
