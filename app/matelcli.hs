@@ -91,8 +91,9 @@ list :: [String]
      -- If the first element of this dingus is "spaces", then the spaces
      -- of which the specified user is a member are listed.
      --
-     -- If the first element of the first argument is "communities", then the
-     -- communities of which the specified user is a member are listed.
+     -- If the first element of the first argument is "communities",
+     -- then the communities of which the specified user is a member are
+     -- listed.
      --
      -- = "Yo, Why Is this Thing a List?"
      --
