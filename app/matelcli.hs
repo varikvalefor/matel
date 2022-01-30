@@ -203,7 +203,7 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either Stringth Stringth)
+  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
 -- | @grab@ is used to fetch and output the messages of a room.
