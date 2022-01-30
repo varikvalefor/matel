@@ -219,18 +219,23 @@ grab (decino:eeyore:jd:mexico:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
-  | otherwise = case eeyore of
-    "recent" -> recentMessagesFrom n room a >>= mapM_ print
-    "early"  -> earlyMessagesFrom n room a >>= mapM_ print
-    _        -> error "I'll grab you if you don't grab some sense."
+  | otherwise = nabMessages n destination a >>= mapM_ print
   where
+  nabMessages :: Integer
+              -> Room
+              -> Auth
+              -> IO (Either ErrorCode [StdMess])
+  nabMessages = case eeyore of
+    "recent" -> recentMessagesFrom
+    "early"  -> earlyMessagesFrom
+    _        -> error "I'll grab you if you don't grab some sense."
   -- \| This variable refers to the number of messages which should be
   -- fetched.
   n :: Integer
   n = fromMaybe (-42) $ readMaybe decino
   --
-  room :: Room
-  room = Def.room {roomId = mexico};
+  destination :: Room
+  destination = Def.room {roomId = mexico};
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
