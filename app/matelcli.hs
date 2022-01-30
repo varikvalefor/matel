@@ -431,10 +431,11 @@ messToHumanReadable :: StdMess
                     -- ^ This argument is the message whose
                     -- "human-readable" representation is desired.
                     -> String;
-messToHumanReadable k =
-  "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
-  username (sender $ boilerplate k) ++ " sends the following " ++
-  show (msgType k) ++ ": " ++ show (body k);
+messToHumanReadable k = timespec ++ name ++ sendIntro ++ show (body k)
+  where
+  timespec = "At " ++ show (origin_server_ts $ boilerplate k) ++ ", "
+  name = username $ sender $ boilerplate k
+  sendIntro = " sends the following " ++ show (msgType k) ++ ": ";
 
 -- | @ooplawed@ uploads a file which is read from the standard input to
 -- the homeserver of Matel's user.
