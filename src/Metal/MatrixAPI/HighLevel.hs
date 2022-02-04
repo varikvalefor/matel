@@ -62,11 +62,11 @@ import Metal.Space;
 import Control.Monad;
 import Metal.Community;
 import Metal.Encrypted;
+import Data.Either as EE;
 import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
-import qualified Data.Either as EE;
 import Metal.Messages.Standard as MS;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
@@ -147,10 +147,10 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   grabUnencrypted :: IO (Either ErrorCode [StdMess])
   grabUnencrypted = fetchEvents n dir Def.stdMess r a
   --
-  grabDecrypted :: IO (Either Stringth [StdMess])
+  grabDecrypted :: IO (Either ErrorCode [StdMess])
   grabDecrypted = fmap (>>= decryptAll) grabEncrypted
   --
-  grabEncrypted :: IO (Either Stringth [Encrypted])
+  grabEncrypted :: IO (Either ErrorCode [Encrypted])
   grabEncrypted = fetchEvents n dir Def.encrypted r a
   -- \| @decryptAll j@ 'Right'ly returns a null list because having
   -- @fetchMessages@ break at this point can be a bit annoying.
@@ -159,9 +159,9 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   decryptAll :: [Encrypted] -> Either ErrorCode [StdMess]
   decryptAll _ = Right []
   --
-  combin8 :: Either Stringth [StdMess]
-          -> Either Stringth [StdMess]
-          -> Either Stringth [StdMess]
+  combin8 :: Either ErrorCode [StdMess]
+          -> Either ErrorCode [StdMess]
+          -> Either ErrorCode [StdMess]
   combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
   --
   timestamp :: StdMess -> UNIXTime
@@ -211,26 +211,21 @@ memberRooms :: Auth
             -> IO [Room];
 memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
-  listRoomsMentioned :: Either Stringth [Room]
-                     -> IO [Either Stringth Room]
-  listRoomsMentioned = either convS (mapM (flip getRoomInformation bugspray))
+  listRoomsMentioned :: Either ErrorCode [Room]
+                     -> IO (Either ErrorCode [Room])
+  listRoomsMentioned  = either (pure . Left) actuallyNab
   --
-  convS :: Stringth -> IO [Either Stringth Room]
-  convS = return . return . Left
+  actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
+  actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
+  -- \| "dl" is an abbreviation of "de-list".
+  dl :: [Either ErrorCode Room] -> Either ErrorCode [Room]
+  dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j
   --
-  maybeShowRms :: Either Stringth [Room] -> IO [Room]
-  maybeShowRms = listRoomsMentioned >=> bifsram
+  maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
+  maybeShowRms = bifsram <.> listRoomsMentioned
   -- \| "Break if some rooms are missing."
-  bifsram :: [Either Stringth Room] -> IO [Room]
-  bifsram t = bool err (pure $ map justRight t) $ any EE.isLeft t
-    where err = error $ T.unpack $ justLeft $ head $ filter EE.isLeft t;
-    -- \^ @filter EE.isLeft@ is used to ensure that the fetched 'Left'
-    -- value actually exists; some values may be 'Right'-valued.
-    -- An error is tossed because something has probably gone horribly
-    -- wrong if any 'Left' values are present.
-    -- VARIK is willing to modify @memberRooms@ such that
-    -- @memberRooms@ does not break at this point if any users of this
-    -- module would benefit from this change.
+  bifsram :: Either ErrorCode [Room] -> [Room]
+  bifsram = either (error . T.unpack) id
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
@@ -264,7 +259,7 @@ memberComms = idOrError <.> joinedComms;
 
 -- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
 -- whose message is @k@.
-idOrError :: Either Stringth a -> a;
+idOrError :: Either ErrorCode a -> a;
 idOrError = either (error . T.unpack) id;
 
 -- | @markRead@ marks messages as having been read.
@@ -318,13 +313,12 @@ send :: StdMess
      -- ^ The authorisation garbage which is used to send the message...
      -- blah, blah, blah, blah, blah... boilerplate crap...
      -> IO (Maybe ErrorCode);
-send event italy a = maybeEncrypt >>= either blowUp jstdt
+send event italy a = maybeEncrypt >>= either (pure . pure) jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
   maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
   maybeEncrypt = getRoomInformation italy a >>= either (pure . Left) process
-  blowUp = return . Just
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use

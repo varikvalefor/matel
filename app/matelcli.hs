@@ -47,10 +47,11 @@ import qualified Data.ByteString.Lazy as BSL;
 
 -- | Chicken chow mein main...
 main :: IO ();
-main =
-  univac >> plegg >>
-  getAuthorisationDetails >>= \aufFile ->
-    getArgs >>= flip determineAction aufFile;
+main = ensureSecurity >> doStuff
+  where
+  ensureSecurity = univac >> plegg
+  doStuff = getAuthorisationDetails >>= runWithAuth
+  runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ is used to determine the action which should be
 -- taken by @matelcli@, e.g., listing stuff or sending a message.
@@ -90,8 +91,9 @@ list :: [String]
      -- If the first element of this dingus is "spaces", then the spaces
      -- of which the specified user is a member are listed.
      --
-     -- If the first element of the first argument is "communities", then the
-     -- communities of which the specified user is a member are listed.
+     -- If the first element of the first argument is "communities",
+     -- then the communities of which the specified user is a member are
+     -- listed.
      --
      -- = "Yo, Why Is this Thing a List?"
      --
@@ -174,12 +176,10 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
     diargumentalStuff = ["file", "location"]
     --
     destIndex :: Int
-    destIndex | msgtype `elem` diargumentalStuff = 2
-              | otherwise = 1;
-              -- \^ This bit is necessary because the number of
-              -- arguments of the "send file" command is not equal to
-              -- the number of arguments of the "send text" and "send
-              -- notice" commands.
+    destIndex = bool 2 1 $ msgtype `elem` diargumentalStuff
+    -- \^ This bit is necessary because the number of arguments of the
+    -- "send file" command is not equal to the number of arguments of
+    -- the "send text" and "send notice" commands.
 
 -- | @uploadStdinGetID@ uploads some data which is read from the
 -- standard input to a homeserver, returning the URI of the uploaded
@@ -202,7 +202,7 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either Stringth Stringth)
+  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
 -- | @grab@ is used to fetch and output the messages of a room.
@@ -218,18 +218,23 @@ grab (decino:eeyore:jd:mexico:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
-  | otherwise = case eeyore of
-    "recent" -> recentMessagesFrom n room a >>= mapM_ print
-    "early"  -> earlyMessagesFrom n room a >>= mapM_ print
-    _        -> error "I'll grab you if you don't grab some sense."
+  | otherwise = nabMessages n destination a >>= mapM_ print
   where
+  nabMessages :: Integer
+              -> Room
+              -> Auth
+              -> IO (Either ErrorCode [StdMess])
+  nabMessages = case eeyore of
+    "recent" -> recentMessagesFrom
+    "early"  -> earlyMessagesFrom
+    _        -> error "I'll grab you if you don't grab some sense."
   -- \| This variable refers to the number of messages which should be
   -- fetched.
   n :: Integer
   n = fromMaybe (-42) $ readMaybe decino
   --
-  room :: Room
-  room = Def.room {roomId = mexico};
+  destination :: Room
+  destination = Def.room {roomId = mexico};
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
@@ -263,15 +268,20 @@ logIn :: Auth
 logIn = loginPass >=> either busticate addAndDisplay
   where
   addAndDisplay :: T.Text -> IO T.Text
-  addAndDisplay toke = configFilePath >>= \path ->
-                       T.readFile path >>= \phile ->
-                       T.writeFile path (addToken phile toke) >>
-                       return toke
+  addAndDisplay toke = configFilePath >>= processPath
+    where
+    processPath path = T.readFile path >>= writeAndReturn path
+    writeAndReturn path phile = writeAppended >> pure phile
+      where writeAppended = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
-  addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
-                        filter ((/= "authtoken: ") . T.take 11) $
-                        T.lines phile
+  addToken phile toke = withNewToken $ withoutOldToken phile
+    where
+    withoutOldToken = filter (not . beginsWith "authToken: ") . T.lines
+    withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
+  --
+  beginsWith :: T.Text -> T.Text -> Bool
+  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
@@ -420,10 +430,11 @@ messToHumanReadable :: StdMess
                     -- ^ This argument is the message whose
                     -- "human-readable" representation is desired.
                     -> String;
-messToHumanReadable k =
-  "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
-  username (sender $ boilerplate k) ++ " sends the following " ++
-  show (msgType k) ++ ": " ++ show (body k);
+messToHumanReadable k = timespec ++ name ++ sendIntro ++ show (body k)
+  where
+  timespec = "At " ++ show (origin_server_ts $ boilerplate k) ++ ", "
+  name = username $ sender $ boilerplate k
+  sendIntro = " sends the following " ++ show (msgType k) ++ ": ";
 
 -- | @ooplawed@ uploads a file which is read from the standard input to
 -- the homeserver of Matel's user.
