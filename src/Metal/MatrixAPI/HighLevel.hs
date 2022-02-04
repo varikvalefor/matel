@@ -162,7 +162,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   combin8 :: Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
-  combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
+  combin8 = liftM2 (sortOn timestamp .: (++))
   --
   timestamp :: StdMess -> UNIXTime
   timestamp = origin_server_ts . MS.boilerplate;
