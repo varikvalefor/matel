@@ -143,8 +143,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
-    "text"     -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input}
+    "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
     "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
