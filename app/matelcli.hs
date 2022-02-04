@@ -280,7 +280,7 @@ logIn = loginPass >=> either busticate addAndDisplay
     withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
   --
   beginsWith :: T.Text -> T.Text -> Bool
-  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
+  beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
