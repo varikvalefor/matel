@@ -221,7 +221,7 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   maybeShowRms = bifsram <.> either (pure . Left) actuallyNab
   -- \| "Break if some rooms are missing."
   bifsram :: Either ErrorCode [Room] -> [Room]
-  bifsram = either (error . T.unpack) id
+  bifsram = either (error . T.unpack) id;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
