@@ -222,8 +222,8 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- = Output
 --
 -- If the fetching of the list of spaces works fine, then this list of
--- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' 'ErrorCode' which
--- describes the problem which occurs is returned.
+-- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' 'ErrorCode'
+-- which describes the problem which occurs is returned.
 --
 -- = Notes
 --
@@ -623,9 +623,9 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
 --
 -- = Output
 --
--- If the message is successfully sent, then 'Nothing' is returned.  Otherwise,
--- a description of whatever problem @sendEvent@ encounters is 'Just'ly
--- returned.
+-- If the message is successfully sent, then 'Nothing' is returned.
+-- Otherwise, a description of whatever problem @sendEvent@ encounters
+-- is 'Just'ly returned.
 sendEvent :: Event a
           => A.ToJSON a
           => a
