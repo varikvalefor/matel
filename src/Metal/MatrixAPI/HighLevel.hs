@@ -211,10 +211,6 @@ memberRooms :: Auth
             -> IO [Room];
 memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
-  listRoomsMentioned :: Either ErrorCode [Room]
-                     -> IO (Either ErrorCode [Room])
-  listRoomsMentioned  = either (pure . Left) actuallyNab
-  --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
   actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
   -- \| "dl" is an abbreviation of "de-list".
@@ -222,7 +218,7 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j
   --
   maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
-  maybeShowRms = bifsram <.> listRoomsMentioned
+  maybeShowRms = bifsram <.> either (pure . Left) actuallyNab
   -- \| "Break if some rooms are missing."
   bifsram :: Either ErrorCode [Room] -> [Room]
   bifsram = either (error . T.unpack) id
