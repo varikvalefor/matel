@@ -143,8 +143,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
-    "text"     -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input}
+    "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
     "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
@@ -271,8 +270,8 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended >> pure phile
-      where writeAppended = T.writeFile path $ addToken phile toke
+    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = withNewToken $ withoutOldToken phile
@@ -281,7 +280,7 @@ logIn = loginPass >=> either busticate addAndDisplay
     withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
   --
   beginsWith :: T.Text -> T.Text -> Bool
-  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
+  beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;

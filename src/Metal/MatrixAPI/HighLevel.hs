@@ -162,7 +162,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   combin8 :: Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
-  combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
+  combin8 = liftM2 (sortOn timestamp .: (++))
   --
   timestamp :: StdMess -> UNIXTime
   timestamp = origin_server_ts . MS.boilerplate;
@@ -211,10 +211,6 @@ memberRooms :: Auth
             -> IO [Room];
 memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   where
-  listRoomsMentioned :: Either ErrorCode [Room]
-                     -> IO (Either ErrorCode [Room])
-  listRoomsMentioned  = either (pure . Left) actuallyNab
-  --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
   actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
   -- \| "dl" is an abbreviation of "de-list".
@@ -222,10 +218,10 @@ memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
   dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j
   --
   maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
-  maybeShowRms = bifsram <.> listRoomsMentioned
+  maybeShowRms = bifsram <.> either (pure . Left) actuallyNab
   -- \| "Break if some rooms are missing."
   bifsram :: Either ErrorCode [Room] -> [Room]
-  bifsram = either (error . T.unpack) id
+  bifsram = either (error . T.unpack) id;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
