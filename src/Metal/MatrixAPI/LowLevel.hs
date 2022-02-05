@@ -481,16 +481,16 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   processResponse :: Response BS.ByteString -> Either ErrorCode User
   processResponse r = case getResponseStatusCode r of
     200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
-    404 -> Right Def.user {displayname = T.pack $ username u}
-    -- \^ This "404" thing accounts for users whose display names are
+    -- \| This "404" thing accounts for users whose display names are
     -- undefined.
-    _   -> Left $ responseToStringth r;
-    -- \^ This case accounts for all situations which SHOULD NOT occur,
+    404 -> Right Def.user {displayname = T.pack $ username u}
+    -- \| This case accounts for all situations which SHOULD NOT occur,
     -- e.g., "this user does not exist" and "yo, the server done
     -- broke".  Such responses should raise "red flags"; something has
     -- gone wrong within this module, or the program which uses this
     -- module is implemented poorly.  Alternatively, the homeserver
     -- might just be a piece of crap.
+    _   -> Left $ responseToStringth r;
 
 -- $createsStuff
 --
