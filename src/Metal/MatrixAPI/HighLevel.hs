@@ -205,8 +205,6 @@ memberRooms :: Auth
             -> IO (Either ErrorCode [Room]);
 memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
   where
-  nabIfSuccessful :: Either ErrorCode [Room]
-                  -> IO (Either ErrorCode [Room])
   nabIfSuccessful = either (pure . Left) actuallyNab
   --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
