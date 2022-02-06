@@ -217,7 +217,7 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
--- 
+--
 -- = Output
 --
 -- If everything goes according to plan, then the list is 'Right'ly
@@ -233,7 +233,7 @@ memberSpaces = joinedSpaces;
 
 -- | @memberComms@ returns a list of the 'Community's --
 -- EEUUUAAaaARGH -- of which Matel's user is a member.
--- 
+--
 -- = Output
 --
 -- If everything goes according to plan, then the list is 'Right'ly
@@ -257,7 +257,7 @@ memberComms = joinedComms;
 -- a description of this problem.
 markRead :: StdMess
          -- ^ This argument represents the message which should be
-         -- marked as having been "read". 
+         -- marked as having been "read".
          --
          -- The @messageId@ field of this argument MUST be defined and
          -- valid; if @messageId@ is undefined or invalid, then
