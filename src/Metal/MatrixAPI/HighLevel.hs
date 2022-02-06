@@ -66,7 +66,6 @@ import Data.Either as EE;
 import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
-import qualified Data.Text as T;
 import Metal.Messages.Standard as MS;
 import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
@@ -197,66 +196,54 @@ earlyMessagesFrom = flip fetchMessages 'f';
 --
 -- = Output
 --
--- The output is an IO-monadic list of the 'Rooms' of which Matel's user
--- is a member.
---
--- = Exception Handling
---
--- @memberRooms@ may throw an error and burst into flames.  Feel free to
--- request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- The output is an 'Either' an IO-monadic list of the 'Room's of which
+-- Matel's user is a member or a reason for the output's not being such
+-- a list.
 memberRooms :: Auth
             -- ^ This argument is the authorisation information of
             -- the user.
-            -> IO [Room];
-memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
+            -> IO (Either ErrorCode [Room]);
+memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
   where
+  nabIfSuccessful :: Either ErrorCode [Room]
+                  -> IO (Either ErrorCode [Room])
+  nabIfSuccessful = either (pure . Left) actuallyNab
+  --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
   actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
   -- \| "dl" is an abbreviation of "de-list".
   dl :: [Either ErrorCode Room] -> Either ErrorCode [Room]
-  dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j
-  --
-  maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
-  maybeShowRms = bifsram <.> either (pure . Left) actuallyNab
-  -- \| "Break if some rooms are missing."
-  bifsram :: Either ErrorCode [Room] -> [Room]
-  bifsram = either (error . T.unpack) id;
+  dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
+-- 
+-- = Output
 --
--- = Exception Handling
---
--- @memberSpaces@ may throw an error and burst into flames.  Feel free
--- to request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- If everything goes according to plan, then the list is 'Right'ly
+-- returned.  If something fails, then a 'Left' 'ErrorCode' which
+-- describes this failure is returned.
 memberSpaces :: Auth
              -- ^ This bit is the authorisation information of the
              -- Matrix user whose joined spaces should be fetched.
              --
              -- This user is PROBABLY the user of Matel.
-             -> IO [Space];
-memberSpaces = idOrError <.> joinedSpaces;
+             -> IO (Either ErrorCode [Space]);
+memberSpaces = joinedSpaces;
 
 -- | @memberComms@ returns a list of the 'Community's --
--- EEUUUAAaaARGH -- of which a user is a member.
+-- EEUUUAAaaARGH -- of which Matel's user is a member.
+-- 
+-- = Output
 --
--- = Exception Handling
---
--- @memberComms@ may throw an error and burst into flames.  Feel free to
--- request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- If everything goes according to plan, then the list is 'Right'ly
+-- returned.  If something fails, then a 'Left' 'ErrorCode' which
+-- describes this failure is returned.
 memberComms :: Auth
             -- ^ This bit is the authorisation information of the user
             -- whose 'Community's -- again, EEUUUAAaaARGH -- are listed.
-            -> IO [Community];
-memberComms = idOrError <.> joinedComms;
-
--- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
--- whose message is @k@.
-idOrError :: Either ErrorCode a -> a;
-idOrError = either (error . T.unpack) id;
+            -> IO (Either ErrorCode [Community]);
+memberComms = joinedComms;
 
 -- | @markRead@ marks messages as having been read.
 --
