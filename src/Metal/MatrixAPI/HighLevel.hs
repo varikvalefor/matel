@@ -309,12 +309,12 @@ send :: StdMess
      -- ^ The authorisation garbage which is used to send the message...
      -- blah, blah, blah, blah, blah... boilerplate crap...
      -> IO (Maybe ErrorCode);
-send event italy a = maybeEncrypt >>= either (pure . pure) jstdt
+send event italy a = maybeCrp >>= either (pure . pure) jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
-  maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
-  maybeEncrypt = getRoomInformation italy a >>= either (pure . Left) process
+  maybeCrp :: IO (Either ErrorCode (Either StdMess Encrypted))
+  maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use
