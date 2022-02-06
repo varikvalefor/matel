@@ -60,7 +60,8 @@ genIVorKeyBS = getRandomBytes $ blockSize (undefined :: AES256);
 -- | @calcSecret@ calculates a shared secret key.
 calcSecret :: PublicKey
            -- ^ This argument is the public X25519 key of the recipient
-           -- of the data which is encrypted using the output shared secret.
+           -- of the data which is encrypted using the output shared
+           -- secret.
            -> PrivateKey
            -- ^ This value is the private X25519 key of the sender of
            -- the data with which is encrypted using the output shared
