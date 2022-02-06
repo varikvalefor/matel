@@ -111,10 +111,11 @@ list :: [String]
 list [] = error "You wimps suck.";
 list (k:_) = memberXIds >=> mapM_ putStrLn
   where
+  possibly f = either (error . T.unpack) (map f)
   memberXIds = case k of
-    "rooms"       -> map roomId <.> memberRooms
-    "communities" -> map commId <.> memberComms
-    "spaces"      -> map spaceId <.> memberSpaces
+    "rooms"       -> possibly roomId <.> memberRooms
+    "communities" -> possibly commId <.> memberComms
+    "spaces"      -> possibly spaceId <.> memberSpaces
     _             -> error "The pathologists will be listing your \
                      \injuries if you don't stop inputting crap.";
 
