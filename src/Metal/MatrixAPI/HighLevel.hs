@@ -213,6 +213,8 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
 -- | If @k@ contains a 'Left' value, then the first such 'Left' value
 -- is returned.  @k@ is otherwise a 'Right' list of the values which
 -- @k@'s 'Either's contain.
+--
+-- "@dl@" is an abbreviation of "de-list".
 dl :: [Either a b] -> Either a [b];
 dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 
