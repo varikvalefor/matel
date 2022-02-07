@@ -208,10 +208,13 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
   nabIfSuccessful = either (pure . Left) actuallyNab
   --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
-  actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
-  -- \| "dl" is an abbreviation of "de-list".
-  dl :: [Either ErrorCode Room] -> Either ErrorCode [Room]
-  dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
+  actuallyNab = dl <.> mapM (flip getRoomInformation bugspray);
+
+-- | If @k@ contains a 'Left' value, then the first such 'Left' value
+-- is returned.  @k@ is otherwise a 'Right' list of the values which
+-- @k@'s 'Either's contain.
+dl :: [Either a b] -> Either a [b];
+dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
