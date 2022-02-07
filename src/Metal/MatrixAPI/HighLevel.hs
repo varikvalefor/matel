@@ -151,12 +151,9 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   --
   grabEncrypted :: IO (Either ErrorCode [Encrypted])
   grabEncrypted = fetchEvents n dir Def.encrypted r a
-  -- \| @decryptAll j@ 'Right'ly returns a null list because having
-  -- @fetchMessages@ break at this point can be a bit annoying.
   --
-  -- TODO: IMPLEMENT PROPER DECRYPTION.
   decryptAll :: [Encrypted] -> Either ErrorCode [StdMess]
-  decryptAll _ = Right []
+  decryptAll = dl . map (decrypt a)
   --
   combin8 :: Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
