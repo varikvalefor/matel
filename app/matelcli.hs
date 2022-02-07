@@ -168,7 +168,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
-                        \ shit-tits.  Read the fucking manual."
+                        \shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
