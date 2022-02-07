@@ -139,7 +139,7 @@ send [] a = error "I need some arguments, fat-ass.";
 send [_] a = error "I thought that you were improving.  I now see that I \
                    \was wrong.  Really, I should be mad at myself for \
                    \apparently going insane by having some faith in you.";
-send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
+send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
