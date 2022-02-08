@@ -8,7 +8,7 @@
 -- Stability   : unstable
 -- Portability : portable
 --
--- Metal.MatrixAPI.LowLevel.Crypto contains high-level cryptographic
+-- Metal.MatrixAPI.LowLevel.Crypto contains mid-level cryptographic
 -- crap.
 module Metal.MatrixAPI.LowLevel.Crypto where
 import Metal.Base;
