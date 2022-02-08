@@ -31,13 +31,19 @@ import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | @getRoomInformation room a@ returns a 'Room'-based representation
--- of the Matrix room whose internal Matrix ID is specified within
--- @room@ if the "members" API query works.
+-- | @getRoomInformation@ fetches information regarding the specified
+-- Matrix room.
 --
--- @getRoomInformation room a@ otherwise returns a description of the
--- problem which is encountered when the "members" query is sent to the
--- Matrix homeserver.
+-- Information which is fetched includes the encryption information
+-- regarding the Matrix room, the topic of the Matrix room, and the
+-- display name of the Matrix room.
+--
+-- = Output
+--
+-- If the information regarding the specified room is /successfully/
+-- grabbed, then this information is returned as a 'Right' 'User.  If
+-- some breakage occurs, then a description of this breakage is returned
+-- as a 'Left' 'ErrorCode'.
 getRoomInformation :: Room
                    -- ^ This argument represents the room which should
                    -- be described.

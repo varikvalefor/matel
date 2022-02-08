@@ -391,7 +391,7 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 
 -- | @getDisplayName@ implements the Matrix API's
 -- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
--- command.
+-- command, fetching the username of the specified 'User'.
 --
 -- = Output
 --

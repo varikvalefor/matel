@@ -262,6 +262,11 @@ dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) (error . T.unpack);
 
 -- | @logIn@ generates authorisation tokens.
+--
+-- If the authorisation token is generated successfully, then @logIn@
+-- adds this authorisation token to @$PATH/.config/matel@, writes the
+-- authorisation token to the standard output, and returns this
+-- authorisation token.  @logIn@ otherwise 'splodes.
 logIn :: Auth
       -- ^ This bit is the authorisation information of the user for
       -- which an authorisation token is generated.
