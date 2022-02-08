@@ -21,7 +21,6 @@ import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
 import Metal.OftenUsedFunctions;
-import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
 import qualified Metal.Default as Def;
