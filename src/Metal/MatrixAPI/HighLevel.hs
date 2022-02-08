@@ -144,13 +144,13 @@ fetchMessages :: Integer
 fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   where
   grabUnencrypted :: IO (Either ErrorCode [StdMess])
-  grabUnencrypted = fetchEvents n dir Def.stdMess r a
+  grabUnencrypted = fetchEvents n dir r a
   --
   grabDecrypted :: IO (Either ErrorCode [StdMess])
   grabDecrypted = fmap (>>= dl . map (decrypt a)) grabEncrypted
   --
   grabEncrypted :: IO (Either ErrorCode [Encrypted])
-  grabEncrypted = fetchEvents n dir Def.encrypted r a
+  grabEncrypted = fetchEvents n dir r a
   --
   combin8 :: Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
