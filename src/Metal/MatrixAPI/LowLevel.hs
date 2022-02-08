@@ -604,8 +604,8 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   --
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
-  badCUri = Left "The response body lacks a valid \"content_uri\" \
-                 \field."
+  badCUri = Left "upload: The response body lacks a valid \
+                 \\"content_uri\" field."
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
