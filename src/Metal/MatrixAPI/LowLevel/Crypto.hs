@@ -14,6 +14,7 @@ module Metal.MatrixAPI.LowLevel.Crypto where
 import Metal.Base;
 import Metal.Encrypted;
 import Metal.Messages.Standard;
+import Metal.OftenUsedFunctions;
 
 -- | For all CryptoThing @a@, @a@ represents a Matix event which can
 -- be encrypted.
@@ -47,6 +48,12 @@ class CryptoThing a where
           -> IO Encrypted
   -- | @decrypt@ decrypts an 'Encrypted' Matrix event, outputting the
   -- decrypted event.
+  --
+  -- = Output
+  --
+  -- If the decryption is successful, then the decrypted thing is
+  -- 'Right'ly output.  If the decryption is unsuccessful, then the
+  -- reason for the lack of success is output as a 'Left' 'ErrorCode'.
   decrypt :: Encrypted
           -- ^ This bit represents the event which should be decrypted.
           -> PublicKey
@@ -55,14 +62,17 @@ class CryptoThing a where
           -> PrivateKey
           -- ^ This argument is the private key of the user for whom
           -- the message is encrypted.
-          -> a;
+          -> Either ErrorCode a;
 
 instance CryptoThing StdMess where
   encrypt = error "encrypt is unimplemented."
   decrypt ct pu pr = case algorithm ct of
     "m.olm.v1.curve25519-aes-sha2"
-      -> error "StdMess's Olm decryption is unimplemented."
+      -> bork "StdMess's Olm decryption is unimplemented."
     "m.megolm.v1.aes-sha2"
-      -> error "StdMess's Megolm decryption is unimplemented."
+      -> bork "StdMess's Megolm decryption is unimplemented."
     _
-      -> error "Some weird, unrecognised algorithm is used.";
+      -> bork "Some weird, unrecognised algorithm is used."
+    where
+    bork = Left . fromString . (preface ++)
+    preface = "Metal.MatrixAPI.LowLevel.Crypto: ";
