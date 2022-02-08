@@ -111,10 +111,11 @@ list :: [String]
 list [] = error "You wimps suck.";
 list (k:_) = memberXIds >=> mapM_ putStrLn
   where
+  possibly f = either (error . T.unpack) (map f)
   memberXIds = case k of
-    "rooms"       -> map roomId <.> memberRooms
-    "communities" -> map commId <.> memberComms
-    "spaces"      -> map spaceId <.> memberSpaces
+    "rooms"       -> possibly roomId <.> memberRooms
+    "communities" -> possibly commId <.> memberComms
+    "spaces"      -> possibly spaceId <.> memberSpaces
     _             -> error "The pathologists will be listing your \
                      \injuries if you don't stop inputting crap.";
 
@@ -136,15 +137,15 @@ send :: [String]
      -- ^ This argument is the authorisation information.
      -> IO ();
 send [] a = error "I need some arguments, fat-ass.";
-send [_] a = error "I thought that you were improving.  I now see that I \
-                   \was wrong.  Really, I should be mad at myself for \
-                   \apparently going insane by having some faith in you.";
+send [_] a = error "I thought that you were improving.  I now see that \
+                   \I was wrong.  Really, I should be mad at myself \
+                   \for apparently going insane by having some faith \
+                   \in you.";
 send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
-    "text"     -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input}
+    "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
     "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
@@ -167,7 +168,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
-                        \ shit-tits.  Read the fucking manual."
+                        \shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
@@ -276,8 +277,8 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended >> pure phile
-      where writeAppended = T.writeFile path $ addToken phile toke
+    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = withNewToken $ withoutOldToken phile
@@ -286,7 +287,7 @@ logIn = loginPass >=> either busticate addAndDisplay
     withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
   --
   beginsWith :: T.Text -> T.Text -> Bool
-  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
+  beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;

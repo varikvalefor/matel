@@ -18,6 +18,11 @@ import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
+-- | @(.:)@ is a function composition operator.  The type signature and
+-- source code are the best possible documentation.
+(.:) :: (c -> d) -> (a -> b -> c) -> a -> b -> d;
+(.:) g f a b = g $ f a b;
+
 -- | @detroit' k@ displays the status code and body of @k@.
 detroit' :: Response BS.ByteString -> String;
 detroit' k = "Thus spake the homeserver: " ++
