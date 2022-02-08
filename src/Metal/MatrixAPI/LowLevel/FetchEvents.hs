@@ -56,9 +56,6 @@ class Event a where
               --
               -- If this argument is \'f\', then the @n@ events which
               -- are earliest sent should be returned.
-              -> a
-              -- ^ The type of this argument is the type of events which
-              -- should be returned.
               -> Room
               -- ^ This argument represents the room from which events
               -- are fetched.
@@ -68,7 +65,7 @@ class Event a where
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
@@ -191,7 +188,7 @@ valueMFileToStdMess k = Def.stdMess {
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
