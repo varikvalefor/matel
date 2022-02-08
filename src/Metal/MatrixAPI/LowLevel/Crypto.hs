@@ -21,6 +21,12 @@ import Metal.OftenUsedFunctions;
 class CryptoThing a where
   -- | @encrypt@ encrypts a Matrix event, returning the resulting
   -- 'Encrypted' event.
+  --
+  -- = Output
+  --
+  -- If the encryption is successful, then the encrypted message is
+  -- 'Right'ly output.  If something halts and catches fire, then a
+  -- description of this fire is returned as a 'Left' 'ErrorCode'.
   encrypt :: a
           -- ^ This argument is a representation of the Matrix event
           -- which should be encrypted.
@@ -45,7 +51,7 @@ class CryptoThing a where
           -- is documented at
           -- <https://gitlab.matrix.org/matrix-org/olm/-/blob/master/docs/megolm.md>,
           -- is used.
-          -> IO Encrypted
+          -> IO (Either ErrorCode Encrypted)
   -- | @decrypt@ decrypts an 'Encrypted' Matrix event, outputting the
   -- decrypted event.
   --
@@ -65,7 +71,10 @@ class CryptoThing a where
           -> Either ErrorCode a;
 
 instance CryptoThing StdMess where
-  encrypt = error "encrypt is unimplemented."
+  encrypt _ _ _ _ = pure $ bork "encrypt is unimplemented."
+    where
+    bork = Left . fromString . (preface ++)
+    preface = "Metal.MatrixAPI.LowLevel.Crypto: "
   decrypt ct pu pr = case algorithm ct of
     "m.olm.v1.curve25519-aes-sha2"
       -> bork "StdMess's Olm decryption is unimplemented."
