@@ -10,7 +10,7 @@
 --
 -- Metal.MatrixAPI.LowLevel.Crypto contains high-level cryptographic
 -- crap.
-module Metal.MatrixAPI.LowLevel.Crypto where
+module Metal.MatrixAPI.LowLevel.Crypto (CryptoThing(..)) where
 import Metal.Base;
 import Metal.Encrypted;
 import Metal.Messages.Standard;
