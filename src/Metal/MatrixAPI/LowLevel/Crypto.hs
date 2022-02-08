@@ -71,17 +71,22 @@ class CryptoThing a where
           -> Either ErrorCode a;
 
 instance CryptoThing StdMess where
-  encrypt _ _ _ _ = pure $ bork "encrypt is unimplemented."
-    where
-    bork = Left . fromString . (preface ++)
-    preface = "Metal.MatrixAPI.LowLevel.Crypto: "
+  encrypt _ _ _ _ = pure $ bork "encrypt is unimplemented.";
   decrypt ct pu pr = case algorithm ct of
     "m.olm.v1.curve25519-aes-sha2"
       -> bork "StdMess's Olm decryption is unimplemented."
     "m.megolm.v1.aes-sha2"
       -> bork "StdMess's Megolm decryption is unimplemented."
     _
-      -> bork "Some weird, unrecognised algorithm is used."
-    where
-    bork = Left . fromString . (preface ++)
-    preface = "Metal.MatrixAPI.LowLevel.Crypto: ";
+      -> bork "Some weird, unrecognised algorithm is used.";
+
+-- | @bork@ generates converts relatively bare-bones error messages
+-- into relatively descriptive error messages.
+--
+-- @bork@ really just prepends the name of this module to the input
+-- error message.
+bork :: String
+     -- ^ This thing is the error message to which the name of this
+     -- module should be prepended.
+     -> Either ErrorCode a;
+bork = Left . fromString . ("Metal.MatrixAPI.LowLevel.Crypto: " ++);
