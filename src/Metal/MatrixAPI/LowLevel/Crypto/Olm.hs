@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.LowLevel.MatrixAPI.Crypto.Olm
 -- Description : Implementation of Olm cryptographic protocol
 -- Copyright   : (c) Varik Valefor, 2021
@@ -43,7 +45,7 @@ encryptWKey :: ByteData
             -> PrivateKey
             -- ^ The private key of the sender of the encrypted thing
             -> IO (Either ErrorCode CipherByteData);
-encryptWKey _ _ _ = pure $ Left $ fromString "encryptWKey is unimplemented.";
+encryptWKey _ _ _ = pure $ Left "encryptWKey is unimplemented.";
 
 -- | @decryptWKey z pu pr@ decrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, outputting the resulting cleartext.
@@ -63,7 +65,7 @@ decryptWKey :: CipherByteData
             -> PrivateKey
             -- ^ The private key of the recipient of the encrypted thing
             -> Either ErrorCode ByteData;
-decryptWKey _ _ _ = Left $ fromString "decryptWKey is unimplemented.";
+decryptWKey _ _ _ = Left "decryptWKey is unimplemented.";
 
 -- | @hkdf a b c d@ is, according to the Olm specification, "the
 -- HMAC-based key derivation function with a salt value of @a@, input
@@ -89,4 +91,4 @@ hkdf :: ByteData
      -> Integer
      -- ^ The byte-based length of the output keying material
      -> Either ErrorCode ByteData;
-hkdf _ _ _ _ = Left $ fromString "hkdf is unimplemented.";
+hkdf _ _ _ _ = Left "hkdf is unimplemented.";
