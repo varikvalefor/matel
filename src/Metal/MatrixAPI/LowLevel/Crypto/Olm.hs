@@ -59,6 +59,13 @@ decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 -- The wording of this documentation is a bit weird because the Olm
 -- specification's documentation of the function which @hkdf@ implements
 -- is a bit weird.
+--
+-- = Output
+--
+-- If the key derivation is successful, then a 'ByteData'-based
+-- representation of the generated keying material is returned.
+-- Otherwise, a 'Left' 'ErrorCode' which describes some sort of
+-- error is output.
 hkdf :: ByteData
      -- ^ The salt
      -> ByteData
@@ -67,5 +74,5 @@ hkdf :: ByteData
      -- ^ The context string
      -> Integer
      -- ^ The byte-based length of the output keying material
-     -> ByteData;
-hkdf = error "hkdf is unimplemented.";
+     -> Either ErrorCode ByteData;
+hkdf _ _ _ _ = Left $ fromString "hkdf is unimplemented.";
