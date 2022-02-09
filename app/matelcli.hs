@@ -177,7 +177,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
     diargumentalStuff = ["file", "location"]
     --
     destIndex :: Int
-    destIndex = bool 2 1 $ msgtype `elem` diargumentalStuff
+    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
     -- the "send text" and "send notice" commands.
