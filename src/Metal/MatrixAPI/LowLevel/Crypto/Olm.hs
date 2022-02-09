@@ -42,14 +42,21 @@ encryptWKey text pu pr = error "encryptWKey is unimplemented.";
 -- key @pu@ and private key @pr@, outputting the resulting cleartext.
 --
 -- @decryptWKey@ is currently nonfunctional.
+--
+-- = Output
+--
+-- If the decryption is successful, then the 'ByteData'-based
+-- representation of the cleartext is returned.  If something breaks,
+-- then a description of this breakage is output as a 'Left'
+-- 'ErrorCode'.
 decryptWKey :: CipherByteData
             -- ^ The ciphertext which should be decrypted
             -> PublicKey
             -- ^ The public key of the sender of the encrypted thing
             -> PrivateKey
             -- ^ The private key of the recipient of the encrypted thing
-            -> ByteData;
-decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
+            -> Either ErrorCode ByteData;
+decryptWKey _ _ _ = Left $ fromString "decryptWKey is unimplemented.";
 
 -- | @hkdf a b c d@ is, according to the Olm specification, "the
 -- HMAC-based key derivation function with a salt value of @a@, input
