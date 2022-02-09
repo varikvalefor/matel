@@ -24,19 +24,26 @@ import qualified Crypto.PubKey.Curve25519 as X25519;
 -- | @encryptWKey z pu pr@ encrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, returning the resulting ciphertext.
 --
+-- @encryptWKey@ is currently nonfunctional.
+--
+-- = Output
+--
+-- If the encryption is successful, then the 'CipherByteData' which
+-- represents the encrypted message is returned.  Otherwise, a 'Left'
+-- 'ErrorCode' which explains the error which @encryptWKey@ encounters
+-- is output.
+--
 -- @encryptWKey@ is IO-monadic because @encryptWKey@ uses functions
 -- which return pseudorandom stuff, e.g., the AES-256 keys which encrypt
 -- the actual data.
---
--- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
             -- ^ The plaintext which should be encrypted
             -> PublicKey
             -- ^ The public key of the recipient of the encrypted thing
             -> PrivateKey
             -- ^ The private key of the sender of the encrypted thing
-            -> IO CipherByteData;
-encryptWKey text pu pr = error "encryptWKey is unimplemented.";
+            -> IO (Either ErrorCode CipherByteData);
+encryptWKey _ _ _ = pure $ Left $ fromString "encryptWKey is unimplemented.";
 
 -- | @decryptWKey z pu pr@ decrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, outputting the resulting cleartext.
