@@ -30,11 +30,13 @@ import qualified Crypto.PubKey.Curve25519 as X25519;
 --
 -- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
-            -- ^ The plaintext which should be encrypted
+            -- ^ This valut is the cleartext which should be encrypted.
             -> PublicKey
-            -- ^ The public key of the recipient of the encrypted thing
+            -- ^ This value is the public key of the desired recipient
+            -- of the ciphertext.
             -> PrivateKey
-            -- ^ The private key of the sender of the encrypted thing
+            -- ^ This thing is the private key of the user which creates
+            -- the ciphertext.
             -> IO CipherByteData;
 encryptWKey text pu pr = error "encryptWKey is unimplemented.";
 
@@ -43,11 +45,13 @@ encryptWKey text pu pr = error "encryptWKey is unimplemented.";
 --
 -- @decryptWKey@ is currently nonfunctional.
 decryptWKey :: CipherByteData
-            -- ^ The ciphertext which should be decrypted
+            -- ^ This value is the ciphertext which should be decrypted.
             -> PublicKey
-            -- ^ The public key of the sender of the encrypted thing
+            -- ^ This thing is the public key of the user which creates
+            -- the ciphertext which should be decrypted.
             -> PrivateKey
-            -- ^ The private key of the recipient of the encrypted thing
+            -- ^ This thing is the private key of the user for which the
+            -- data is encrypted.
             -> ByteData;
 decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 
@@ -60,12 +64,13 @@ decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 -- specification's documentation of the function which @hkdf@ implements
 -- is a bit weird.
 hkdf :: ByteData
-     -- ^ The salt
+     -- ^ This argument is the salt.
      -> ByteData
-     -- ^ The shared secret
+     -- ^ This argument is the shared secret.
      -> ByteData
-     -- ^ The context string
+     -- ^ This value is the context string.
      -> Integer
-     -- ^ The byte-based length of the output keying material
+     -- ^ This argument is the byte-based length of the output keying
+     -- material.  Blame the specification.
      -> ByteData;
 hkdf = error "hkdf is unimplemented.";
