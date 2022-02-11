@@ -460,7 +460,8 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
-           -- The @roomName@ and @topic@ values should be defined.
+           -- The @roomName@ and @topic@ values SHOULD be defined... but
+           -- are technically not required.
            -> String
            -- ^ This bit describes whether the room should be private or
            -- public.
@@ -480,11 +481,16 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr = "_matrix/client/r0/createRoom"
   bod = fromString $
-    "{\n\t" ++
-      "\"visibility\": " ++ show publcty ++ ",\n" ++
-      "\"name\": " ++ show (roomName r) ++ ",\n" ++
-      "\"topic\": " ++ show (topic r) ++ "\n" ++
+    "{" ++
+      "\"visibility\": " ++ show publcty ++
+      maybeKVP "name" roomName ++
+      maybeKVP "topic" topic ++
     "}"
+  maybeKVP jf fc = maybe "" ((" ," ++) . toKVP jf) (fc r)
+  --
+  toKVP :: String -> T.Text -> String
+  toKVP header vl = show header ++ ": " ++ show vl
+  --
   responseToEither resp = case getResponseStatusCode resp of
     200 -> roomWithId <$> roomIdOf (getResponseBody resp)
     _   -> Left $ responseToStringth resp
