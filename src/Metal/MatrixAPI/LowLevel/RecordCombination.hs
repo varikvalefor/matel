@@ -19,7 +19,6 @@ import Metal.Community;
 import Metal.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.ThumbnailInfo;
 import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
