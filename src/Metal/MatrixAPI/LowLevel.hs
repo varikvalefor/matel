@@ -207,7 +207,7 @@ joinedSpaces :: Auth
              -- ^ This argument is the authorisation information of the
              -- user whose joined spaces are listed.
              -> IO (Either ErrorCode [Space]);
-joinedSpaces a = pure $ Left "joinedSpaces is unimplemented.";
+joinedSpaces _ = pure $ Left "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
 -- which Matel's user is a member.
@@ -227,7 +227,7 @@ joinedComms :: Auth
             -- ^ This value is the authorisation information of the user
             -- whose joined communities are listed.
             -> IO (Either ErrorCode [Community]);
-joinedComms a = pure $ Left "joinedComms is unimplemented.";
+joinedComms _ = pure $ Left "joinedComms is unimplemented.";
 
 -- $membershipDefine
 --
