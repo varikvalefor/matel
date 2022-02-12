@@ -11,7 +11,6 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
-import Data.Bool;
 import Text.StringRandom;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
