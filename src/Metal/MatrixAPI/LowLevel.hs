@@ -70,7 +70,7 @@ import Metal.User;
 import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;

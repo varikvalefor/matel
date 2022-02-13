@@ -12,7 +12,7 @@
 -- crap.
 module Metal.MatrixAPI.LowLevel.Crypto (CryptoThing(..)) where
 import Metal.Base;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 

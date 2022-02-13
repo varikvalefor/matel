@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | Module    : Metal.Encrypted
+-- | Module    : Metal.Messages.Encrypted
 -- Description : Metal's datatype what represents encrypted events
 --               of the Matrix instant messaging service
 -- Copyright   : (c) Varik Valefor, 2021
@@ -11,7 +11,7 @@
 --
 -- Metal.Messages.Encrypted contains the source code of the
 -- 'Encrypted' record type.
-module Metal.Encrypted where
+module Metal.Messages.Encrypted where
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
