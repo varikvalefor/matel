@@ -115,7 +115,7 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
     _   -> responseToLeftRight j
   mayB2Eit = maybe (Left invalidBodyMsg) Right
   invalidBodyMsg = "loginPass: The body of the response cannot be \
-                \parsed as valid JSON."
+                   \parsed as valid JSON."
   bodyValue = Q.decode . BSL.fromStrict . getResponseBody
   logreq = fromString $
     "{\n\t" ++
