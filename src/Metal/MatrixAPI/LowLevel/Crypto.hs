@@ -72,7 +72,7 @@ class CryptoThing a where
 
 instance CryptoThing StdMess where
   encrypt _ _ _ _ = pure $ bork "encrypt is unimplemented.";
-  decrypt ct pu pr = case algorithm ct of
+  decrypt ct _ _ = case algorithm ct of
     "m.olm.v1.curve25519-aes-sha2"
       -> bork "StdMess's Olm decryption is unimplemented."
     "m.megolm.v1.aes-sha2"
