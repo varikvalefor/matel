@@ -16,7 +16,7 @@ import Metal.User;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted as En;
+import Metal.Messages.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.Standard as S;

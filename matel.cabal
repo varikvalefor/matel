@@ -35,7 +35,7 @@ library
     Metal.OftenUsedFunctions
     Metal.MatrixAPI.HighLevel
     Metal.MatrixAPI.LowLevel
-    Metal.Encrypted
+    Metal.Messages.Encrypted
     Metal.Messages.Standard
     Metal.Messages.EncryptedFile
     Metal.Messages.FileInfo
