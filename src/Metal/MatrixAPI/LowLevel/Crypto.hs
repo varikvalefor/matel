@@ -8,7 +8,7 @@
 -- Stability   : unstable
 -- Portability : portable
 --
--- Metal.MatrixAPI.LowLevel.Crypto contains high-level cryptographic
+-- Metal.MatrixAPI.LowLevel.Crypto contains mid-level cryptographic
 -- crap.
 module Metal.MatrixAPI.LowLevel.Crypto (CryptoThing(..)) where
 import Metal.Base;
@@ -34,7 +34,7 @@ class CryptoThing a where
           -- ^ This argument is the public key of the user for whom the
           -- event should be encrypted.
           -> PrivateKey
-          -- ^ This bit is the private ket of the user which encrypts
+          -- ^ This bit is the private key of the user which encrypts
           -- the Matrix event.
           -> AlGoreRhythm
           -- ^ This argument represents the ratchet which is used to

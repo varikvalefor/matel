@@ -36,7 +36,7 @@ data Encrypted = Encrypted {
 } deriving (Eq, Read, Show);
 
 -- This 'ToJSON' instance is placed into this file because GHC complains
--- about "orphan types" if this instance is placed into
+-- about "orphan instances" if this instance is placed into
 -- "Metal.MatrixAPI.LowLevel.Types".
 instance ToJSON Encrypted where
   toJSON enk = object
