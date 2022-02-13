@@ -13,6 +13,9 @@
 --
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
+--
+-- The reader should note that this module is currently unfinished and
+-- /CANNOT/ access all functionalities of the Matrix API.
 module Metal.MatrixAPI.LowLevel (
   -- * Classes
   --
@@ -85,14 +88,6 @@ import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
-
--- | @stillUnfinishedStayTuned@ exists only if Matel is useless as a
--- Matrix client.
---
--- @stillUnfinishedStayTuned@ is removed when proper Matrix API support
--- is added to Metal.
-stillUnfinishedStayTuned :: ();
-stillUnfinishedStayTuned = ();
 
 -- $authorisation
 --
