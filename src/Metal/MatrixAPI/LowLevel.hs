@@ -353,10 +353,8 @@ unban :: User
 unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
-  unbanRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ "\n" ++
-    "}";
+  unbanRq = fromString ur'
+  ur' = unwords ["{", "\"user_id\":", show $ username tarjay, "}"];
 
 -- | @leave@ is used to leave Matrix rooms.
 --
