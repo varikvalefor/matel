@@ -10,16 +10,23 @@
 --
 -- Metal.MatrixAPI.LowLevel.Crypto contains mid-level cryptographic
 -- crap.
-module Metal.MatrixAPI.LowLevel.Crypto where
+module Metal.MatrixAPI.LowLevel.Crypto (CryptoThing(..)) where
 import Metal.Base;
 import Metal.Encrypted;
 import Metal.Messages.Standard;
+import Metal.OftenUsedFunctions;
 
 -- | For all CryptoThing @a@, @a@ represents a Matix event which can
 -- be encrypted.
 class CryptoThing a where
   -- | @encrypt@ encrypts a Matrix event, returning the resulting
   -- 'Encrypted' event.
+  --
+  -- = Output
+  --
+  -- If the encryption is successful, then the encrypted message is
+  -- 'Right'ly output.  If something halts and catches fire, then a
+  -- description of this fire is returned as a 'Left' 'ErrorCode'.
   encrypt :: a
           -- ^ This argument is a representation of the Matrix event
           -- which should be encrypted.
@@ -44,9 +51,15 @@ class CryptoThing a where
           -- is documented at
           -- <https://gitlab.matrix.org/matrix-org/olm/-/blob/master/docs/megolm.md>,
           -- is used.
-          -> IO Encrypted
+          -> IO (Either ErrorCode Encrypted)
   -- | @decrypt@ decrypts an 'Encrypted' Matrix event, outputting the
   -- decrypted event.
+  --
+  -- = Output
+  --
+  -- If the decryption is successful, then the decrypted thing is
+  -- 'Right'ly output.  If the decryption is unsuccessful, then the
+  -- reason for the lack of success is output as a 'Left' 'ErrorCode'.
   decrypt :: Encrypted
           -- ^ This bit represents the event which should be decrypted.
           -> PublicKey
@@ -55,14 +68,25 @@ class CryptoThing a where
           -> PrivateKey
           -- ^ This argument is the private key of the user for whom
           -- the message is encrypted.
-          -> a;
+          -> Either ErrorCode a;
 
 instance CryptoThing StdMess where
-  encrypt = error "encrypt is unimplemented."
-  decrypt ct pu pr = case algorithm ct of
+  encrypt _ _ _ _ = pure $ bork "encrypt is unimplemented.";
+  decrypt ct _ _ = case algorithm ct of
     "m.olm.v1.curve25519-aes-sha2"
-      -> error "StdMess's Olm decryption is unimplemented."
+      -> bork "StdMess's Olm decryption is unimplemented."
     "m.megolm.v1.aes-sha2"
-      -> error "StdMess's Megolm decryption is unimplemented."
+      -> bork "StdMess's Megolm decryption is unimplemented."
     _
-      -> error "Some weird, unrecognised algorithm is used.";
+      -> bork "Some weird, unrecognised algorithm is used.";
+
+-- | @bork@ generates converts relatively bare-bones error messages
+-- into relatively descriptive error messages.
+--
+-- @bork@ really just prepends the name of this module to the input
+-- error message.
+bork :: String
+     -- ^ This thing is the error message to which the name of this
+     -- module should be prepended.
+     -> Either ErrorCode a;
+bork = Left . fromString . ("Metal.MatrixAPI.LowLevel.Crypto: " ++);
