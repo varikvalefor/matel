@@ -173,10 +173,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
     where
-    diargumentalStuff :: [String]
     diargumentalStuff = ["file", "location"]
-    --
-    destIndex :: Int
     destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
@@ -203,7 +200,6 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
 -- | @grab@ is used to fetch and output the messages of a room.
@@ -221,10 +217,6 @@ grab (decino:eeyore:jd:mexico:_) a
                    \  0 is not a natural number, anyway."
   | otherwise = nabMessages n destination a >>= mapM_ print
   where
-  nabMessages :: Integer
-              -> Room
-              -> Auth
-              -> IO (Either ErrorCode [StdMess])
   nabMessages = case eeyore of
     "recent" -> recentMessagesFrom
     "early"  -> earlyMessagesFrom
@@ -423,10 +415,7 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
                           \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm :: Room
   rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
-  --
-  display :: Either ErrorCode Room -> IO ()
   display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable@ is roughly equivalent to @show@.  However,
