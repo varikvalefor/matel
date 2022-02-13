@@ -13,6 +13,9 @@
 --
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
+--
+-- The reader should note that this module is currently unfinished and
+-- /CANNOT/ access all functionalities of the Matrix API.
 module Metal.MatrixAPI.LowLevel (
   -- * Classes
   --
@@ -72,7 +75,6 @@ import Network.HTTP.Simple;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
-import Network.HTTP.Types.Header;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
 import Metal.MatrixAPI.LowLevel.Types;
@@ -80,21 +82,12 @@ import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
-import Metal.MatrixAPI.LowLevel.Crypto;
 import Network.HTTP.Types.URI (urlEncode);
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
-
--- | @stillUnfinishedStayTuned@ exists only if Matel is useless as a
--- Matrix client.
---
--- @stillUnfinishedStayTuned@ is removed when proper Matrix API support
--- is added to Metal.
-stillUnfinishedStayTuned :: ();
-stillUnfinishedStayTuned = ();
 
 -- $authorisation
 --
@@ -209,7 +202,7 @@ joinedSpaces :: Auth
              -- ^ This argument is the authorisation information of the
              -- user whose joined spaces are listed.
              -> IO (Either ErrorCode [Space]);
-joinedSpaces a = pure $ Left "joinedSpaces is unimplemented.";
+joinedSpaces _ = pure $ Left "joinedSpaces is unimplemented.";
 
 -- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
 -- which Matel's user is a member.
@@ -229,7 +222,7 @@ joinedComms :: Auth
             -- ^ This value is the authorisation information of the user
             -- whose joined communities are listed.
             -> IO (Either ErrorCode [Community]);
-joinedComms a = pure $ Left "joinedComms is unimplemented.";
+joinedComms _ = pure $ Left "joinedComms is unimplemented.";
 
 -- $membershipDefine
 --

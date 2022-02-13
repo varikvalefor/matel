@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Encrypted
 -- Description : Metal's datatype what represents encrypted events
 --               of the Matrix instant messaging service
@@ -10,6 +12,8 @@
 -- Metal.Messages.Encrypted contains the source code of the
 -- 'Encrypted' record type.
 module Metal.Encrypted where
+import Data.Aeson;
+import Data.Maybe;
 import Metal.Base;
 import Metal.EventCommonFields;
 
@@ -30,3 +34,16 @@ data Encrypted = Encrypted {
   -- contain.
   boilerplate :: EventCommonFields
 } deriving (Eq, Read, Show);
+
+-- This 'ToJSON' instance is placed into this file because GHC complains
+-- about "orphan types" if this instance is placed into
+-- "Metal.MatrixAPI.LowLevel.Types".
+instance ToJSON Encrypted where
+  toJSON enk = object
+    [
+      "algorithm" .= algorithm enk,
+      "ciphertext" .= ciphertext enk,
+      "sender_key" .= sender_key enk,
+      "device_id" .= fromMaybe "" (device_id enk),
+      "session_id" .= fromMaybe "" (session_id enk)
+    ];
