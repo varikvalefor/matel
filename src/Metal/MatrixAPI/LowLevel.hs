@@ -94,7 +94,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- This section of this module contains some functions which perform
 -- authorisation-related tasks, e.g., fetching new authorisation tokens.
 
--- | @login@ generates a new authorisation token for Matel's user.
+-- | @loginPass@ generates a new authorisation token for Matel's user.
 --
 -- = Output
 --
