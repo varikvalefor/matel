@@ -27,6 +27,7 @@ module Metal.MatrixAPI.HighLevel (
   -- * Stuff-Fetching Functions
   --
   -- $stuffFetch
+  fetchMessages,
   recentMessagesFrom,
   earlyMessagesFrom,
   memberRooms,
