@@ -16,10 +16,9 @@ import Metal.User;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted as En;
+import Metal.Messages.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.ThumbnailInfo;
 import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
@@ -58,6 +57,7 @@ instance Combinable User where
     password = g password,
     homeserver = g homeserver,
     authToken = g authToken,
+    protocol = g protocol,
     displayname = g displayname
   } where
     g :: Eq b => (User -> b) -> b

@@ -177,7 +177,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
     diargumentalStuff = ["file", "location"]
     --
     destIndex :: Int
-    destIndex = bool 2 1 $ msgtype `elem` diargumentalStuff
+    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
     -- the "send text" and "send notice" commands.
@@ -424,7 +424,10 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
   rm :: Room
-  rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
+  --
+  toMaybe :: String -> Maybe Stringth
+  toMaybe k = bool (Just $ T.pack k) Nothing $ null k
   --
   display :: Either ErrorCode Room -> IO ()
   display = either (error . T.unpack) (putStrLn . roomId);

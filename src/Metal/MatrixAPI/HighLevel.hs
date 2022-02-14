@@ -61,13 +61,12 @@ import Metal.Room;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Either as EE;
 import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
 import Metal.Messages.Standard as MS;
-import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
 
 -- $stuffImport

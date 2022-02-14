@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.LowLevel.MatrixAPI.Crypto.Olm
 -- Description : Implementation of Olm cryptographic protocol
 -- Copyright   : (c) Varik Valefor, 2021
@@ -24,11 +26,18 @@ import qualified Crypto.PubKey.Curve25519 as X25519;
 -- | @encryptWKey z pu pr@ encrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, returning the resulting ciphertext.
 --
+-- @encryptWKey@ is currently nonfunctional.
+--
+-- = Output
+--
+-- If the encryption is successful, then the 'CipherByteData' which
+-- represents the encrypted message is returned.  Otherwise, a 'Left'
+-- 'ErrorCode' which explains the error which @encryptWKey@ encounters
+-- is output.
+--
 -- @encryptWKey@ is IO-monadic because @encryptWKey@ uses functions
 -- which return pseudorandom stuff, e.g., the AES-256 keys which encrypt
 -- the actual data.
---
--- @encryptWKey@ is currently nonfunctional.
 encryptWKey :: ByteData
             -- ^ This valut is the cleartext which should be encrypted.
             -> PublicKey
@@ -37,13 +46,20 @@ encryptWKey :: ByteData
             -> PrivateKey
             -- ^ This thing is the private key of the user which creates
             -- the ciphertext.
-            -> IO CipherByteData;
-encryptWKey text pu pr = error "encryptWKey is unimplemented.";
+            -> IO (Either ErrorCode CipherByteData);
+encryptWKey _ _ _ = pure $ Left "encryptWKey is unimplemented.";
 
 -- | @decryptWKey z pu pr@ decrypts @z@ with the shared secret of public
 -- key @pu@ and private key @pr@, outputting the resulting cleartext.
 --
 -- @decryptWKey@ is currently nonfunctional.
+--
+-- = Output
+--
+-- If the decryption is successful, then the 'ByteData'-based
+-- representation of the cleartext is returned.  If something breaks,
+-- then a description of this breakage is output as a 'Left'
+-- 'ErrorCode'.
 decryptWKey :: CipherByteData
             -- ^ This value is the ciphertext which should be decrypted.
             -> PublicKey
@@ -52,8 +68,8 @@ decryptWKey :: CipherByteData
             -> PrivateKey
             -- ^ This thing is the private key of the user for which the
             -- data is encrypted.
-            -> ByteData;
-decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
+            -> Either ErrorCode ByteData;
+decryptWKey _ _ _ = Left "decryptWKey is unimplemented.";
 
 -- | @hkdf a b c d@ is, according to the Olm specification, "the
 -- HMAC-based key derivation function with a salt value of @a@, input
@@ -63,6 +79,13 @@ decryptWKey crip pu pr = error "decryptWKey is unimplemented.";
 -- The wording of this documentation is a bit weird because the Olm
 -- specification's documentation of the function which @hkdf@ implements
 -- is a bit weird.
+--
+-- = Output
+--
+-- If the key derivation is successful, then a 'ByteData'-based
+-- representation of the generated keying material is returned.
+-- Otherwise, a 'Left' 'ErrorCode' which describes some sort of
+-- error is output.
 hkdf :: ByteData
      -- ^ This argument is the salt.
      -> ByteData
@@ -72,5 +95,5 @@ hkdf :: ByteData
      -> Integer
      -- ^ This argument is the byte-based length of the output keying
      -- material.  Blame the specification.
-     -> ByteData;
-hkdf = error "hkdf is unimplemented.";
+     -> Either ErrorCode ByteData;
+hkdf _ _ _ _ = Left "hkdf is unimplemented.";

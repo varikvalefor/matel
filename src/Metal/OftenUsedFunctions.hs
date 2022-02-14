@@ -11,7 +11,6 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
-import Data.Bool;
 import Text.StringRandom;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
@@ -36,11 +35,9 @@ detroit' k = "Thus spake the homeserver: " ++
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
 class StringLike a where
-  -- | For all 'StringLike' values @a@, @fromString a@ is a 'String'
-  -- which is equivalent to @a@.
+  -- | fromString a@ is a 'String' which is equivalent to @a@.
   toString :: a -> String
-  -- | For all 'StringLike' types @a@, @fromString k :: a@ is an 'a'
-  -- value which is equivalent to @k@.
+  -- | @fromString k :: a@ is an 'a' value which is equivalent to @k@.
   fromString :: String -> a
 
 instance StringLike BSL.ByteString where

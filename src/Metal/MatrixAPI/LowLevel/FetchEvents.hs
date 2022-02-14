@@ -16,7 +16,7 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Metal.Messages.FileInfo;
