@@ -157,13 +157,16 @@ instance Combinable Encrypted where
 -- @combineSingleValue f a b c@ otherwise equals @f d@.
 combineSingleValue :: Eq b
                    => (a -> b)
-                   -- ^ The field constructor
+                   -- ^ This value is the field constructor of the field
+                   -- whose values should be analysed.
                    -> a
-                   -- ^ The first record whose value might be used
+                   -- ^ This value is the first record whose specified
+                   -- field value may be used.
                    -> a
-                   -- ^ The second record whose value might be used
+                   -- ^ This value is the second record whose specified
+                   -- field value may be used.
                    -> a
-                   -- ^ The default record
+                   -- ^ This value is a default-valued record.
                    -> b;
 combineSingleValue c a b d
   | c a == c b = c a
@@ -186,12 +189,13 @@ combineSingleValue c a b d
 combineSingleMaybeRecord :: Combinable b
                          => Eq b
                          => (a -> Maybe b)
-                         -- ^ The field constructor
+                         -- ^ This value is the field constuctor of the
+                         -- field whose values should be analysed.
                          -> a
-                         -- ^ The first record whose field may be
-                         -- sacrificed or chimaera'd
+                         -- ^ This value is the first record whose
+                         -- specified field may be junked or used.
                          -> a
-                         -- ^ The second record whose field may be
-                         -- sacrificed or chimaera'd
+                         -- ^ This value is the second record whose
+                         -- specified field may be junked or used.
                          -> Maybe b
 combineSingleMaybeRecord c a b = liftM2 combine (c a) (c b);
