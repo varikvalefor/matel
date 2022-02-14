@@ -223,6 +223,8 @@ dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
 --
+-- @memberSpaces@ is really just a synonym of 'joinedSpaces'.
+--
 -- = Output
 --
 -- If everything goes according to plan, then the list is 'Right'ly
