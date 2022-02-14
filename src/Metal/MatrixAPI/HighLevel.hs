@@ -96,10 +96,11 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @recentMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 recentMessagesFrom :: Integer
                    -- ^ This argument is the number of messages which
                    -- are fetched.
@@ -170,10 +171,11 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @earlyMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 earlyMessagesFrom :: Integer
                   -- ^ This argument is the number of messages which
                   -- should be fetched.
