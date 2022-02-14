@@ -94,7 +94,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- This section of this module contains some functions which perform
 -- authorisation-related tasks, e.g., fetching new authorisation tokens.
 
--- | @login@ generates a new authorisation token for Matel's user.
+-- | @loginPass@ generates a new authorisation token for Matel's user.
 --
 -- = Output
 --
@@ -411,8 +411,8 @@ getDisplayName :: User
                --
                -- This value is used to determine the FQDN of the server
                -- which should be queried.  Because no actual
-               -- authorisation information is used, @homeserver@ is the
-               -- only field which is actually used.
+               -- authorisation information is needed, @homeserver@ is
+               -- the only field which is actually used.
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
