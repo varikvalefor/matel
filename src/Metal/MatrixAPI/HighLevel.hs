@@ -114,7 +114,7 @@ recentMessagesFrom :: Integer
 recentMessagesFrom = flip fetchMessages 'b';
 
 -- | @fetchMessages@ fetches encrypted and unencrypted messages,
--- automatically handling the decryption of the encrypted messages.
+-- transparently decrypting the encrypted messages.
 --
 -- = Output
 --
