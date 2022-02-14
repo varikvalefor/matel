@@ -467,12 +467,12 @@ createRoom :: Room
 createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr = "_matrix/client/r0/createRoom"
-  bod = fromString $
-    "{" ++
-      "\"visibility\": " ++ show publcty ++
-      maybeKVP "name" roomName ++
-      maybeKVP "topic" topic ++
-    "}"
+  bod = fromString $ unwords ["{", visStat, namStat, topStat, "}"]
+  --
+  visStat = "\"visibility\": " ++ show publcty
+  namStat = maybeKVP "name" roomName
+  topStat = maybeKVP "topic" topic
+  --
   maybeKVP jf fc = maybe "" ((" ," ++) . toKVP jf) (fc r)
   --
   toKVP :: String -> T.Text -> String
