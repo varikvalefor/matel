@@ -113,7 +113,8 @@ recentMessagesFrom :: Integer
                    -> IO (Either ErrorCode [StdMess]);
 recentMessagesFrom = flip fetchMessages 'b';
 
--- | @fetchMessages@ fetches encrypted and unencrypted messages.
+-- | @fetchMessages@ fetches encrypted and unencrypted messages,
+-- automatically handling the decryption of the encrypted messages.
 --
 -- = Output
 --
