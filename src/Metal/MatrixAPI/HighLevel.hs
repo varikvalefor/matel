@@ -123,6 +123,12 @@ recentMessagesFrom = flip fetchMessages 'b';
 -- 'Right'-valued list of the decrypted and unencrypted messages which
 -- are fetched.  Otherwise, the output is a 'Left' 'ErrorCode' which
 -- describes the problem which prevents the fetching of messages.
+--
+-- = Incompleteness
+--
+-- @fetchMessages@'s decryption stuff is incomplete.  @fetchMessages@
+-- currently throws a 'Left' value when @fetchMessages@ attempts to
+-- decrypt encrypted messages.
 fetchMessages :: Integer
               -- ^ This bit is the number of messages which are fetched.
               -> Char
