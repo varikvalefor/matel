@@ -411,8 +411,8 @@ getDisplayName :: User
                --
                -- This value is used to determine the FQDN of the server
                -- which should be queried.  Because no actual
-               -- authorisation information is needed, @homeserver@ is the
-               -- only field which is actually used.
+               -- authorisation information is needed, @homeserver@ is
+               -- the only field which is actually used.
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
