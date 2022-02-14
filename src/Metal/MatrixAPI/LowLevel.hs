@@ -297,11 +297,9 @@ kick :: User
 kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
-  kickRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  kickRq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "\"user_id\": " ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
 -- | @ban@ "permanently" removes Matrix users from Matrix rooms.
 --
