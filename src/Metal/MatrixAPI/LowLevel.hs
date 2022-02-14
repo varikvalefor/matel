@@ -326,11 +326,9 @@ ban :: User
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
-  banReq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "user_id\":" ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
 -- | @unban@ reverses users' being @'ban'@ned.
 --
