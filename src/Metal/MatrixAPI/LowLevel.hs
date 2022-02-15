@@ -323,9 +323,9 @@ ban :: User
     -> IO (Maybe ErrorCode);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
-  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
+  querr = "_matrix/client/v3/rooms/" ++ roomId rome ++ "/ban"
   banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
-  st_user_id = "user_id\":" ++ show (username tarjay)
+  st_user_id = "\"user_id\":" ++ show (username tarjay)
   st_reason = "\"reason\": " ++ show m;
 
 -- | @unban@ reverses users' being @'ban'@ned.
