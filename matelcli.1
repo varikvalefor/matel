@@ -43,6 +43,11 @@ from
 .Pp
 .Nm matelcli upload
 .Ar filename
+.Pp
+.Nm matelcli ban
+.Ar username
+.Ar roomid
+.Ar reason
 .Sh DESCRIPTION
 .Nm matelcli
 is used to perform various Matrix-related tasks via a command-line
@@ -285,6 +290,19 @@ the created room is written to the standard output.
 .Pp
 If something breaks, then a description of the breakage is written to
 the standard error.
+.Sh BANNING USERS
+.Nm matelcli ban
+.Ar username
+.Ar roomid
+.Ar reason
+bans the user whose username is
+.Ar username
+from the Matrix room whose room ID is
+.Ar roomid ,
+justifying this action with explanation
+.Ar reason Ns ...
+if the user which attempts to run this command has the appropriate
+privileges.
 .Sh UPLOADING FILES
 .Nm matelcli upload
 .Ar filename
