@@ -115,7 +115,7 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
     _   -> responseToLeftRight j
   mayB2Eit = maybe (Left invalidBodyMsg) Right
   invalidBodyMsg = "loginPass: The body of the response cannot be \
-                \parsed as valid JSON."
+                   \parsed as valid JSON."
   bodyValue = Q.decode . BSL.fromStrict . getResponseBody
   logreq = fromString $
     "{\n\t" ++
@@ -297,11 +297,9 @@ kick :: User
 kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
-  kickRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  kickRq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "\"user_id\": " ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
 -- | @ban@ "permanently" removes Matrix users from Matrix rooms.
 --
@@ -326,11 +324,9 @@ ban :: User
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
-  banReq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "user_id\":" ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
 -- | @unban@ reverses users' being @'ban'@ned.
 --
@@ -353,10 +349,8 @@ unban :: User
 unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
-  unbanRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ "\n" ++
-    "}";
+  unbanRq = fromString ur'
+  ur' = unwords ["{", "\"user_id\":", show $ username tarjay, "}"];
 
 -- | @leave@ is used to leave Matrix rooms.
 --
@@ -473,12 +467,12 @@ createRoom :: Room
 createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr = "_matrix/client/r0/createRoom"
-  bod = fromString $
-    "{" ++
-      "\"visibility\": " ++ show publcty ++
-      maybeKVP "name" roomName ++
-      maybeKVP "topic" topic ++
-    "}"
+  bod = fromString $ unwords ["{", visStat, namStat, topStat, "}"]
+  --
+  visStat = "\"visibility\": " ++ show publcty
+  namStat = maybeKVP "name" roomName
+  topStat = maybeKVP "topic" topic
+  --
   maybeKVP jf fc = maybe "" ((" ," ++) . toKVP jf) (fc r)
   --
   toKVP :: String -> T.Text -> String
