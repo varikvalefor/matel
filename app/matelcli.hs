@@ -76,6 +76,7 @@ determineAction (command:stuff) = case command of
   "kick"       -> runKick stuff
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
+  "ban"        -> blam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -205,6 +206,30 @@ uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
   uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
+
+-- | @blam@ bans users... if the proper authorisation information is
+-- had.
+blam :: [String]
+     -- ^ This thing is a 3-list of the non-authorisation-related
+     -- arguments which are passed to @ban@.
+     --
+     -- The first argument is the MXID of the user which should be
+     -- banned.
+     --
+     -- The second argument is the room from which the user is forcibly
+     -- removed.
+     --
+     -- The third argument is the justification for the removal of the
+     -- user, e.g., "yo, this dude stole my fuckin' 'nanners."
+     -> Auth
+     -- ^ This thing is the authorisation information of the account
+     -- which is used to ban the /other/ user account.
+     -> IO ();
+blam [] = error "The \"blam\" command demands some arguments, tubby.";
+blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
