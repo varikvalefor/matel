@@ -40,8 +40,10 @@ main =
 -- @fetchData@ is currently unimplemented.  @fetchData k@ just sends a
 -- placeholder message to @k@.
 fetchData :: MVar Winda
-          -- ^ The variable which is used to communicate with the TUI
+          -- ^ This argument is the thing which is used to communicate
+          -- with the TUI.
           -> Auth
-          -- ^ The authorisation deets
+          -- ^ This argument is the authorisation information which is
+          -- used to actually access Matrix.
           -> IO ();
 fetchData v a = putMVar v temporaryMessage;
