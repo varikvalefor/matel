@@ -229,7 +229,7 @@ blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
   where
   u = Def.user {username = u'}
   r = Def.room {roomId = r'};
-blam _ = error "The \"blam\" command demands 3 arguments, tubby.";
+blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
