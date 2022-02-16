@@ -31,6 +31,7 @@ user = User {
   homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  keyring = Nothing,
   protocol = Nothing
 };
 
