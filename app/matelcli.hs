@@ -274,9 +274,7 @@ mkRead :: [String]
 mkRead [] = error "Someone should knock you upside the head a few \
                   \times, punk.  Dismissed.";
 mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
-  where
-  boi :: EventCommonFields
-  boi = Def.eventCommonFields {eventId = eeee};
+  where boi = Def.eventCommonFields {eventId = eeee};
 
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
