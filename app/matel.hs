@@ -34,8 +34,8 @@ main =
   newEmptyMVar >>= \comVar ->
   forkIO (fetchData comVar aufFile) >> summonTUI comVar;
 
--- | For all 'MVar' 'Winda' @k@, @fetchData k@ collects data from
--- Matrix, parses this data appropriately, and outputs this data to @k@.
+-- | @fetchData k@ collects data from Matrix, parses this data
+-- appropriately, and outputs this data to @k@.
 --
 -- @fetchData@ is currently unimplemented.  @fetchData k@ just sends a
 -- placeholder message to @k@.
