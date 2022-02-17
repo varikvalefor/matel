@@ -593,7 +593,7 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
 --
 -- = Meat and Potatoes
 --
--- Keep looking.  @decrypt@ just selects and runs an approprate
+-- Keep looking.  @decrypt@ just selects and runs an appropriate
 -- decryption function; "true" decryption logic is /not/ contained
 -- within the definition of @decrypt@.
 decrypt :: Auth
