@@ -243,9 +243,10 @@ join :: Room
      -- should be 'Nothing'.
      --
      -- If the room which should be joined is /private/, then this value
-     -- is a 3-tuple of a description of the user which sends an (invite
-     -- to the room) @bk@ to the authenticated user, this invite's state
-     -- key, and the signature of this invite.
+     -- is 'Just' a 3-tuple @(a,b,c)@, where @a@ is a description of the
+     -- user which sends an (invite to the room) @bk@ to the
+     -- authenticated @b@ is the state key of the aforementioned invite,
+     -- and @c@ is the signature of the aforementioned invite.
      -> Auth
      -- ^ This value is the authorisation information of the user which
      -- joins the specified room.
