@@ -440,10 +440,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 --
 -- = Output
 --
--- If all goes well, then a 'Left' 'Room' value whose @roomId@ is the ID
+-- If all goes well, then a 'Right' 'Room' value whose @roomId@ is the ID
 -- of the new room is returned.
 --
--- If something 'splodes, then a 'Right' 'ErrorCode' which describes the
+-- If something 'splodes, then a 'Left' 'ErrorCode' which describes the
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
