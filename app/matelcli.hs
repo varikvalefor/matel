@@ -53,8 +53,8 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
                 -- ^ The input @matelcli@ command
                 -> Auth
@@ -233,10 +233,16 @@ blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
-     -- ^ This argument is a 4-list of the number of messages which are
-     -- fetched, "early" or "recent", an unused thing, and the internal
-     -- Matrix ID of the Matrix room from which the messages are
-     -- fetched.
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     -- fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
