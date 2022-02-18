@@ -53,8 +53,8 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
                 -- ^ The input @matelcli@ command
                 -> Auth
