@@ -117,7 +117,7 @@ data StdMess = StdMess {
 } deriving (Eq, Show);
 
 -- This 'ToJSON' instance is placed into this file because GHC complains
--- about "orphan types" if this instance is placed into
+-- about "orphan instances" if this instance is placed into
 -- "Metal.MatrixAPI.LowLevel.Types".
 instance ToJSON StdMess where
   toJSON s = case msgType s of

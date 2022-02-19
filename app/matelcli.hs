@@ -53,8 +53,8 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
                 -- ^ The input @matelcli@ command
                 -> Auth
@@ -76,6 +76,7 @@ determineAction (command:stuff) = case command of
   "kick"       -> runKick stuff
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
+  "ban"        -> blam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -202,12 +203,42 @@ uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
+-- | @blam@ bans users... if the proper authorisation information is
+-- had.
+blam :: [String]
+     -- ^ This thing is a 3-list of the non-authorisation-related
+     -- arguments which are passed to @ban@.
+     --
+     -- The first argument is the MXID of the user which should be
+     -- banned.
+     --
+     -- The second argument is the room from which the user is forcibly
+     -- removed.
+     --
+     -- The third argument is the justification for the removal of the
+     -- user, e.g., "yo, this dude stole my fuckin' 'nanners."
+     -> Auth
+     -- ^ This thing is the authorisation information of the account
+     -- which is used to ban the /other/ user account.
+     -> IO ();
+blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
+
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
-     -- ^ This argument is a 4-list of the number of messages which are
-     -- fetched, "early" or "recent", an unused thing, and the internal
-     -- Matrix ID of the Matrix room from which the messages are
-     -- fetched.
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     -- fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
@@ -415,7 +446,10 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
                           \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
+  toMaybe :: String -> Maybe Stringth
+  toMaybe k = bool (Just $ T.pack k) Nothing $ null k
+  --
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
   display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable@ is roughly equivalent to @show@.  However,

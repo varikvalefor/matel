@@ -180,7 +180,7 @@ valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
   -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ reuturns a 'Maybe'-monadic value, using
+  -- 'Maybe'-monadic and @(.?)@ returns a 'Maybe'-monadic value, using
   -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"
@@ -220,7 +220,7 @@ instance Event Encrypted where
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.encrypted%22%5D%7D" ++
-            -- \^ "Yo, only select the unencrypted stuff."
+            -- \^ "Yo, only select the encrypted stuff."
             "&dir=" ++ [d];
 
 -- | Where @merleHaggard@ is a 'Response' whose body contains a

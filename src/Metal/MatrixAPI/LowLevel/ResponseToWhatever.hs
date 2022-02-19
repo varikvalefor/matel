@@ -61,8 +61,8 @@ responseToMaybe theResponse = case getResponseStatusCode theResponse of
 -- @responseToLeftRight k@ otherwise equals a 'Stringth' which contains
 -- the status code of @k@.
 responseToLeftRight :: Response BS.ByteString
-                    -- ^ The 'Response' whose response code should be
-                    -- reported
+                    -- ^ This value is the 'Response' whose diagnostic
+                    -- crap should be reported.
                     -> Either Stringth Stringth;
 responseToLeftRight k = case getResponseStatusCode k of
   200 -> Right $ decodeUtf8 $ getResponseBody k
