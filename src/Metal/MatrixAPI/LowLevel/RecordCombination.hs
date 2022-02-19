@@ -190,7 +190,7 @@ combineSingleValue c a b d
 combineSingleMaybeRecord :: Combinable b
                          => Eq b
                          => (a -> Maybe b)
-                         -- ^ This value is the field constuctor of the
+                         -- ^ This value is the field constructor of the
                          -- field whose values should be analysed.
                          -> a
                          -- ^ This value is the first record whose

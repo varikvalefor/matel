@@ -243,9 +243,10 @@ join :: Room
      -- should be 'Nothing'.
      --
      -- If the room which should be joined is /private/, then this value
-     -- is a 3-tuple of a description of the user which sends an (invite
-     -- to the room) @bk@ to the authenticated user, this invite's state
-     -- key, and the signature of this invite.
+     -- is 'Just' a 3-tuple @(a,b,c)@, where @a@ is a description of the
+     -- user which sends an (invite to the room) @bk@ to the
+     -- authenticated @b@ is the state key of the aforementioned invite,
+     -- and @c@ is the signature of the aforementioned invite.
      -> Auth
      -- ^ This value is the authorisation information of the user which
      -- joins the specified room.
@@ -323,9 +324,9 @@ ban :: User
     -> IO (Maybe ErrorCode);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
-  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
+  querr = "_matrix/client/v3/rooms/" ++ roomId rome ++ "/ban"
   banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
-  st_user_id = "user_id\":" ++ show (username tarjay)
+  st_user_id = "\"user_id\":" ++ show (username tarjay)
   st_reason = "\"reason\": " ++ show m;
 
 -- | @unban@ reverses users' being @'ban'@ned.
@@ -440,10 +441,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 --
 -- = Output
 --
--- If all goes well, then a 'Left' 'Room' value whose @roomId@ is the ID
+-- If all goes well, then a 'Right' 'Room' value whose @roomId@ is the ID
 -- of the new room is returned.
 --
--- If something 'splodes, then a 'Right' 'ErrorCode' which describes the
+-- If something 'splodes, then a 'Left' 'ErrorCode' which describes the
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
@@ -593,7 +594,7 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
 --
 -- = Meat and Potatoes
 --
--- Keep looking.  @decrypt@ just selects and runs an approprate
+-- Keep looking.  @decrypt@ just selects and runs an appropriate
 -- decryption function; "true" decryption logic is /not/ contained
 -- within the definition of @decrypt@.
 decrypt :: Auth

@@ -53,8 +53,8 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
                 -- ^ The input @matelcli@ command
                 -> Auth
@@ -174,10 +174,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
     where
-    diargumentalStuff :: [String]
     diargumentalStuff = ["file", "location"]
-    --
-    destIndex :: Int
     destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
@@ -204,7 +201,6 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
 -- | @blam@ bans users... if the proper authorisation information is
@@ -233,10 +229,16 @@ blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
-     -- ^ This argument is a 4-list of the number of messages which are
-     -- fetched, "early" or "recent", an unused thing, and the internal
-     -- Matrix ID of the Matrix room from which the messages are
-     -- fetched.
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     -- fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
@@ -246,10 +248,6 @@ grab (decino:eeyore:jd:mexico:_) a
                    \  0 is not a natural number, anyway."
   | otherwise = nabMessages n destination a >>= mapM_ print
   where
-  nabMessages :: Integer
-              -> Room
-              -> Auth
-              -> IO (Either ErrorCode [StdMess])
   nabMessages = case eeyore of
     "recent" -> recentMessagesFrom
     "early"  -> earlyMessagesFrom
@@ -448,13 +446,10 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
                           \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm :: Room
-  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
-  --
   toMaybe :: String -> Maybe Stringth
   toMaybe k = bool (Just $ T.pack k) Nothing $ null k
   --
-  display :: Either ErrorCode Room -> IO ()
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
   display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable@ is roughly equivalent to @show@.  However,
