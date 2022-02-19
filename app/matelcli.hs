@@ -77,6 +77,7 @@ determineAction (command:stuff) = case command of
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
   "ban"        -> blam stuff
+  "unban"      -> deblam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -226,6 +227,27 @@ blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
   u = Def.user {username = u'}
   r = Def.room {roomId = r'};
 blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
+
+-- | @deblam@ un-bans users... if the proper authorisation is had.
+deblam :: [String]
+       -- ^ This thing is a 2-list of the arguments which are tossed
+       -- to @unban@.
+       --
+       -- The first element of this list is the MXID of the user which
+       -- should be un-banned.
+       --
+       -- The second element of this list is the ID of the room @k@
+       -- such that the specified user should no longer be banned from
+       -- @k@.
+       -> Auth
+       -- ^ This argument is the authorisation information which is...
+       -- the reader probably "knows the deal".
+       -> IO ();
+deblam (u':r':_) = unban u r >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+deblam _ = error "The \"unban\" command demands 2 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
