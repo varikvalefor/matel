@@ -48,6 +48,10 @@ from
 .Ar username
 .Ar roomid
 .Ar reason
+.Pp
+.Nm matelcli unban
+.Ar username
+.Ar roomid
 .Sh DESCRIPTION
 .Nm matelcli
 performs various Matrix-related tasks via a command-line
@@ -302,6 +306,16 @@ from the Matrix room whose room ID is
 justifying this action with explanation
 .Ar reason Ns ...
 if the user which attempts to run this command has the appropriate
+privileges.
+.Sh UN-BANNING USERS
+.Nm matelcli unban
+.Ar username
+.Ar roomid
+un-bans the user whose username is
+.Ar username
+from the Matrix room whose room ID is
+.Ar roomid Ns ...
+if the user which attempts to un-ban the user has the appropriate
 privileges.
 .Sh UPLOADING FILES
 .Nm matelcli upload
