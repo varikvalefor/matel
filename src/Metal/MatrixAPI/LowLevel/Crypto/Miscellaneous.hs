@@ -1,6 +1,6 @@
 -- | Module    : Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
 -- Description : Miscellaneous cryptographic functions
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
