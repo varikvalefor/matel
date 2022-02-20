@@ -58,6 +58,7 @@ instance Combinable User where
     homeserver = g homeserver,
     authToken = g authToken,
     protocol = g protocol,
+    keyring = g keyring,
     displayname = g displayname
   } where
     g :: Eq b => (User -> b) -> b
