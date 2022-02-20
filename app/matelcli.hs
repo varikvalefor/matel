@@ -503,3 +503,4 @@ ooplawed :: [String]
          -- ^ Authorisation information... ZZZ...
          -> IO ();
 ooplawed (f:_) = uploadStdinGetID f >=> T.putStrLn;
+ooplawed _ = error "Hey, dummy, \"upload\" demands 1 argument.";
