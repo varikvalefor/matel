@@ -451,12 +451,17 @@ runKick _ = error "I'll kick YOUR ass if you don't start giving \
 -- ID of this Matrix room is written to the standard output.  If
 -- something violently falls apart, then an error is thrown.
 createRoom' :: [String]
-            -- ^ This argument is a 3-list whose elements, in order, are
-            -- the display name of the Matrix room which should be
-            -- created, the topic message of the Matrix room which
-            -- should be created, and "private" or "public", depending
-            -- upon whether the new Matrix room should be private or
-            -- public.
+            -- ^ This argument is a 3-list whose elements, are as
+            -- follows:
+            --
+            -- 1. The display name of the Matrix room which should be
+            --    created
+            --
+            -- 2. The topic message of the Matrix room which should be
+            --    created
+            --
+            -- 3. Depending upon whether the new room should be private
+            --    or public, "private" or "public", respectively
             -> Auth
             -- ^ This argument is a very imaginative representation of
             -- a turtle... or just the same old authorisation bullshit.
