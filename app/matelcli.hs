@@ -365,10 +365,9 @@ runJoin :: [String]
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
-        -- If this argument is a 4-list, indicating that some user
-        -- has actively invited Matel's user to the Matrix room which
-        -- should be joined, then the elements of this 4-list are as
-        -- follows:
+        -- If some user has sent an invitation which permits joining
+        -- the room which should be joined, then this argument should be
+        -- a 4-list whose elements are as follows:
         --
         -- 1. The internal matrix ID of the room which the user should
         -- join
