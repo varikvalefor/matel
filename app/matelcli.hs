@@ -367,10 +367,18 @@ runJoin :: [String]
         --
         -- If this argument is a 4-list, indicating that some user
         -- has actively invited Matel's user to the Matrix room which
-        -- should be joined, then this 4-list contains, in order, the
-        -- internal Matrix ID of the room which is joined, the state key
-        -- of some invitation which Matel's user receives, and the
-        -- signature of this invite.
+        -- should be joined, then the elements of this 4-list are as
+        -- follows:
+        --
+        -- 1. The internal matrix ID of the room which the user should
+        -- join
+        --
+        -- 2. The username of the user which sends the invite to the
+        --    user which should join the room
+        --
+        -- 3. The state key of the invitation which the user receives
+        --
+        -- 4. The signature of the invite which is sent
         -> Auth
         -- ^ This thing, as ever, is the standard bullshit authorisation
         -- crap.
