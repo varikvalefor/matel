@@ -577,6 +577,7 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
   process k = case getResponseStatusCode k of
     200 -> Nothing
     _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
+
 -- $cryptoShit
 --
 -- This section of the module contains functions which directly
