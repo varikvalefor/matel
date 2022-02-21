@@ -56,9 +56,11 @@ main = ensureSecurity >> doStuff
 -- | @determineAction@ determines the action which should be taken by
 -- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
-                -- ^ The input @matelcli@ command
+                -- ^ This argument is the @matelcli@ command, as read
+                -- from @argc@.
                 -> Auth
-                -- ^ Matel user's authorisation information
+                -- ^ This argument is the authorisation information of
+                -- the user of Matel.
                 -> IO ();
 determineAction [] = error "I never thought that I would have a \
                            \stress-induced heart attack by the age of \
