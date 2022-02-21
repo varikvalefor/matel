@@ -597,11 +597,11 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
 -- Keep looking.  @decrypt@ just selects and runs an appropriate
 -- decryption function; "true" decryption logic is /not/ contained
 -- within the definition of @decrypt@.
-decrypt :: Auth
+decrypt :: Encrypted
+        -- ^ This record is the message which is to be decrypted.
+        -> Auth
         -- ^ This value contains the authorisation information of the
         -- user for whom the input message is encrypted.
-        -> Encrypted
-        -- ^ This record is the message which is to be decrypted.
         -> Either ErrorCode StdMess;
 decrypt _ _ = Left "decrypt is unimplemented.";
 
