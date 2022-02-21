@@ -85,14 +85,7 @@ xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   head' [] = Nothing
   head' j = Just $ head j
   --
-  isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take queryLen
-  --
-  queryLen :: Int
   queryLen = T.length query
-  --
-  query :: Stringth
   query = T.append query' fieldSeparator
-  --
-  fieldSeparator :: Stringth
   fieldSeparator = ": ";
