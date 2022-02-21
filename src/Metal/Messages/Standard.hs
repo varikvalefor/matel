@@ -1,3 +1,6 @@
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.Standard
 -- Description : Unencrypted/decrypted message type
 -- Copyright   : (c) Varik Valefor, 2021
@@ -8,7 +11,9 @@
 --
 -- Metal.Messages.Standard contains the 'StdMess' record type.
 module Metal.Messages.Standard where
+import Data.Aeson;
 import Metal.Base;
+import Data.Maybe;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.EncryptedFile;
@@ -41,7 +46,7 @@ data MessageType = TextInnit
   deriving (Eq, Read);
 
 instance Show MessageType where
-  show k = case k of
+  show = \case
     TextInnit -> "m.text"
     Image     -> "m.image"
     Attach    -> "m.file"
@@ -110,3 +115,42 @@ data StdMess = StdMess {
   -- fields which all event types should contain.
   boilerplate :: EventCommonFields
 } deriving (Eq, Show);
+
+-- This 'ToJSON' instance is placed into this file because GHC complains
+-- about "orphan instances" if this instance is placed into
+-- "Metal.MatrixAPI.LowLevel.Types".
+instance ToJSON StdMess where
+  toJSON s = case msgType s of
+    -- \| @m.notice@ messages are really just @m.text@ messages which
+    -- are displayed a bit uniquely.  As such, @m.notice@ messages can
+    -- be handles mostly as @m.text@ events are handled.
+    m | m `elem` [TextInnit, Notice] -> object
+      [
+        "body" .= body s,
+        "msgtype" .= show (msgType s)
+      ]
+    Location -> object
+      [
+        "body" .= body s,
+        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri s),
+        "msgtype" .= show (msgType s)
+      ]
+    Attach -> object
+      [
+        "body" .= body s,
+        "filename" .= filename s,
+        "info" .= object
+        [
+          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo s),
+          "size" .= maybe (errorNoField "size") size (fileInfo s)
+        ],
+        "msgtype" .= show (msgType s),
+        "url" .= Metal.Messages.Standard.url s
+      ]
+    _ -> error $ "A proper error!  ToJSON does not account \
+                 \for StdMess values of @msgType@ " ++
+                 show (msgType s) ++ "."
+    where
+    errorNoField :: String -> a
+    errorNoField j = error $ "This " ++ show (msgType s) ++
+                     " lacks a " ++ show j ++ "field!";

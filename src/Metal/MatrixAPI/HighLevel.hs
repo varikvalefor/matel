@@ -61,14 +61,12 @@ import Metal.Room;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Either as EE;
 import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
-import qualified Data.Text as T;
 import Metal.Messages.Standard as MS;
-import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
 
 -- $stuffImport
@@ -98,10 +96,11 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @recentMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 recentMessagesFrom :: Integer
                    -- ^ This argument is the number of messages which
                    -- are fetched.
@@ -115,7 +114,8 @@ recentMessagesFrom :: Integer
                    -> IO (Either ErrorCode [StdMess]);
 recentMessagesFrom = flip fetchMessages 'b';
 
--- | @fetchMessages@ fetches encrypted and unencrypted messages.
+-- | @fetchMessages@ fetches encrypted and unencrypted messages,
+-- transparently decrypting the encrypted messages.
 --
 -- = Output
 --
@@ -123,6 +123,12 @@ recentMessagesFrom = flip fetchMessages 'b';
 -- 'Right'-valued list of the decrypted and unencrypted messages which
 -- are fetched.  Otherwise, the output is a 'Left' 'ErrorCode' which
 -- describes the problem which prevents the fetching of messages.
+--
+-- = Incompleteness
+--
+-- @fetchMessages@'s decryption stuff is incomplete.  @fetchMessages@
+-- currently throws a 'Left' value when @fetchMessages@ attempts to
+-- decrypt encrypted messages.
 fetchMessages :: Integer
               -- ^ This bit is the number of messages which are fetched.
               -> Char
@@ -145,24 +151,18 @@ fetchMessages :: Integer
 fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   where
   grabUnencrypted :: IO (Either ErrorCode [StdMess])
-  grabUnencrypted = fetchEvents n dir Def.stdMess r a
+  grabUnencrypted = fetchEvents n dir r a
   --
   grabDecrypted :: IO (Either ErrorCode [StdMess])
-  grabDecrypted = fmap (>>= decryptAll) grabEncrypted
+  grabDecrypted = fmap (>>= dl . map (decrypt a)) grabEncrypted
   --
   grabEncrypted :: IO (Either ErrorCode [Encrypted])
-  grabEncrypted = fetchEvents n dir Def.encrypted r a
-  -- \| @decryptAll j@ 'Right'ly returns a null list because having
-  -- @fetchMessages@ break at this point can be a bit annoying.
-  --
-  -- TODO: IMPLEMENT PROPER DECRYPTION.
-  decryptAll :: [Encrypted] -> Either ErrorCode [StdMess]
-  decryptAll _ = Right []
+  grabEncrypted = fetchEvents n dir r a
   --
   combin8 :: Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
           -> Either ErrorCode [StdMess]
-  combin8 b = fmap (sortOn timestamp) . liftM2 (++) b
+  combin8 = liftM2 (sortOn timestamp .: (++))
   --
   timestamp :: StdMess -> UNIXTime
   timestamp = origin_server_ts . MS.boilerplate;
@@ -177,10 +177,11 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @earlyMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 earlyMessagesFrom :: Integer
                   -- ^ This argument is the number of messages which
                   -- should be fetched.
@@ -197,70 +198,59 @@ earlyMessagesFrom = flip fetchMessages 'f';
 --
 -- = Output
 --
--- The output is an IO-monadic list of the 'Rooms' of which Matel's user
--- is a member.
---
--- = Exception Handling
---
--- @memberRooms@ may throw an error and burst into flames.  Feel free to
--- request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- The output is an 'Either' an IO-monadic list of the 'Room's of which
+-- Matel's user is a member or a reason for the output's not being such
+-- a list.
 memberRooms :: Auth
             -- ^ This argument is the authorisation information of
             -- the user.
-            -> IO [Room];
-memberRooms bugspray = joinedRooms bugspray >>= maybeShowRms
+            -> IO (Either ErrorCode [Room]);
+memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
   where
-  listRoomsMentioned :: Either ErrorCode [Room]
-                     -> IO (Either ErrorCode [Room])
-  listRoomsMentioned  = either (pure . Left) actuallyNab
+  nabIfSuccessful = either (pure . Left) actuallyNab
   --
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
-  actuallyNab = dl <.> mapM (flip getRoomInformation bugspray)
-  -- \| "dl" is an abbreviation of "de-list".
-  dl :: [Either ErrorCode Room] -> Either ErrorCode [Room]
-  dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j
-  --
-  maybeShowRms :: Either ErrorCode [Room] -> IO [Room]
-  maybeShowRms = bifsram <.> listRoomsMentioned
-  -- \| "Break if some rooms are missing."
-  bifsram :: Either ErrorCode [Room] -> [Room]
-  bifsram = either (error . T.unpack) id
+  actuallyNab = dl <.> mapM (flip getRoomInformation bugspray);
+
+-- | If @k@ contains a 'Left' value, then the first such 'Left' value
+-- is returned.  @k@ is otherwise a 'Right' list of the values which
+-- @k@'s 'Either's contain.
+--
+-- "@dl@" is an abbreviation of "de-list".
+dl :: [Either a b] -> Either a [b];
+dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
 --
--- = Exception Handling
+-- @memberSpaces@ is really just a synonym of 'joinedSpaces'.
 --
--- @memberSpaces@ may throw an error and burst into flames.  Feel free
--- to request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- = Output
+--
+-- If everything goes according to plan, then the list is 'Right'ly
+-- returned.  If something fails, then a 'Left' 'ErrorCode' which
+-- describes this failure is returned.
 memberSpaces :: Auth
              -- ^ This bit is the authorisation information of the
              -- Matrix user whose joined spaces should be fetched.
              --
              -- This user is PROBABLY the user of Matel.
-             -> IO [Space];
-memberSpaces = idOrError <.> joinedSpaces;
+             -> IO (Either ErrorCode [Space]);
+memberSpaces = joinedSpaces;
 
 -- | @memberComms@ returns a list of the 'Community's --
--- EEUUUAAaaARGH -- of which a user is a member.
+-- EEUUUAAaaARGH -- of which Matel's user is a member.
 --
--- = Exception Handling
+-- = Output
 --
--- @memberComms@ may throw an error and burst into flames.  Feel free to
--- request the removal of this error functionality if this error
--- functionality is found to be inconvenient.
+-- If everything goes according to plan, then the list is 'Right'ly
+-- returned.  If something fails, then a 'Left' 'ErrorCode' which
+-- describes this failure is returned.
 memberComms :: Auth
             -- ^ This bit is the authorisation information of the user
             -- whose 'Community's -- again, EEUUUAAaaARGH -- are listed.
-            -> IO [Community];
-memberComms = idOrError <.> joinedComms;
-
--- | @idOrError (Right k) == k@.  @idOrError (Left k)@ throws an 'error'
--- whose message is @k@.
-idOrError :: Either ErrorCode a -> a;
-idOrError = either (error . T.unpack) id;
+            -> IO (Either ErrorCode [Community]);
+memberComms = joinedComms;
 
 -- | @markRead@ marks messages as having been read.
 --
@@ -274,7 +264,7 @@ idOrError = either (error . T.unpack) id;
 -- a description of this problem.
 markRead :: StdMess
          -- ^ This argument represents the message which should be
-         -- marked as having been "read". 
+         -- marked as having been "read".
          --
          -- The @messageId@ field of this argument MUST be defined and
          -- valid; if @messageId@ is undefined or invalid, then
@@ -313,12 +303,12 @@ send :: StdMess
      -- ^ The authorisation garbage which is used to send the message...
      -- blah, blah, blah, blah, blah... boilerplate crap...
      -> IO (Maybe ErrorCode);
-send event italy a = maybeEncrypt >>= either (pure . pure) jstdt
+send event italy a = maybeCrp >>= either (pure . pure) jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
-  maybeEncrypt :: IO (Either ErrorCode (Either StdMess Encrypted))
-  maybeEncrypt = getRoomInformation italy a >>= either (pure . Left) process
+  maybeCrp :: IO (Either ErrorCode (Either StdMess Encrypted))
+  maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
                        -- \| These dullards can AT LEAST use

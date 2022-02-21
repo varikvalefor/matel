@@ -21,7 +21,6 @@ import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
 import Metal.OftenUsedFunctions;
-import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
 import qualified Metal.Default as Def;
@@ -32,13 +31,19 @@ import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | @getRoomInformation room a@ returns a 'Room'-based representation
--- of the Matrix room whose internal Matrix ID is specified within
--- @room@ if the "members" API query works.
+-- | @getRoomInformation@ fetches information regarding the specified
+-- Matrix room.
 --
--- @getRoomInformation room a@ otherwise returns a description of the
--- problem which is encountered when the "members" query is sent to the
--- Matrix homeserver.
+-- Information which is fetched includes the encryption information
+-- regarding the Matrix room, the topic of the Matrix room, and the
+-- display name of the Matrix room.
+--
+-- = Output
+--
+-- If the information regarding the specified room is /successfully/
+-- grabbed, then this information is returned as a 'Right' 'User.  If
+-- some breakage occurs, then a description of this breakage is returned
+-- as a 'Left' 'ErrorCode'.
 getRoomInformation :: Room
                    -- ^ This argument represents the room which should
                    -- be described.
@@ -49,16 +54,12 @@ getRoomInformation :: Room
 getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   where
   -- \| "@evil@" is an abbreviation of "@evaluate@".
-  evil :: Room -> IO (Either Stringth Room)
   evil g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
   -- \| The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
   -- directly access the Matrix API.
-  fetchRoomValues :: IO [Room]
   fetchRoomValues = mapConcurrently (\f -> f r a) functions
-  --
-  functions :: [Room -> Auth -> IO Room]
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
 -- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
@@ -74,7 +75,6 @@ getEncryptionStatus :: Room
                     -> IO Room;
 getEncryptionStatus room = process <.> rq room "/event/m.room_key"
   where
-  process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
     200 -> Def.room {publicKey = fmap (.! "{content:{session_key}") bd}
     _   -> Def.room
@@ -95,7 +95,6 @@ getMembers :: Room
            -> IO (Either Stringth Room);
 getMembers room = process <.> rq room "/members"
   where
-  process :: Response BS.ByteString -> Either Stringth Room
   process response = case getResponseStatusCode response of
     200 -> Right Def.room
            -- \^ TODO: Implement this thing.
@@ -120,15 +119,16 @@ getTopic :: Room
          -> IO Room;
 getTopic r = process <.> rq r "/state/m.room.topic/"
   where
-  process :: Response BS.ByteString -> Room
   process k = Def.room {topic = extractTopic k}
-  --
-  extractTopic :: Response BS.ByteString -> Maybe T.Text
   extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @getRoomName r youKnowTheDeal@ fetches the display name of the
--- Matrix room whose room ID is @roomId r@.  The @'roomName'@ value of
--- the output 'Room' record contains the desired information.
+-- | @getRoomName@ fetches the display name of the specified Matrix
+-- room.
+--
+-- = Output
+--
+-- The @roomName@ field of the returned 'Room' record contains the
+-- desired information.
 getRoomName :: Room
             -- ^ This value describes the room whose display name is
             -- fetched.
@@ -143,10 +143,7 @@ getRoomName :: Room
             -> IO Room;
 getRoomName r = process <.> rq r "/state/m.room.name/"
   where
-  process :: Response BS.ByteString -> Room
   process k = Def.room {roomName = extractName k}
-  --
-  extractName :: Response BS.ByteString -> Maybe T.Text
   extractName k = getResponseBody k ^? A.key "name" . A._String;
 
 -- | @rq@ sends very specific Matrix HTTP requests.

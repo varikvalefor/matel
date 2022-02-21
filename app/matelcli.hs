@@ -53,8 +53,8 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
                 -- ^ The input @matelcli@ command
                 -> Auth
@@ -76,6 +76,8 @@ determineAction (command:stuff) = case command of
   "kick"       -> runKick stuff
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
+  "ban"        -> blam stuff
+  "unban"      -> deblam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -111,10 +113,11 @@ list :: [String]
 list [] = error "You wimps suck.";
 list (k:_) = memberXIds >=> mapM_ putStrLn
   where
+  possibly f = either (error . T.unpack) (map f)
   memberXIds = case k of
-    "rooms"       -> map roomId <.> memberRooms
-    "communities" -> map commId <.> memberComms
-    "spaces"      -> map spaceId <.> memberSpaces
+    "rooms"       -> possibly roomId <.> memberRooms
+    "communities" -> possibly commId <.> memberComms
+    "spaces"      -> possibly spaceId <.> memberSpaces
     _             -> error "The pathologists will be listing your \
                      \injuries if you don't stop inputting crap.";
 
@@ -136,15 +139,15 @@ send :: [String]
      -- ^ This argument is the authorisation information.
      -> IO ();
 send [] a = error "I need some arguments, fat-ass.";
-send [_] a = error "I thought that you were improving.  I now see that I \
-                   \was wrong.  Really, I should be mad at myself for \
-                   \apparently going insane by having some faith in you.";
+send [_] a = error "I thought that you were improving.  I now see that \
+                   \I was wrong.  Really, I should be mad at myself \
+                   \for apparently going insane by having some faith \
+                   \in you.";
 send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
-    "text"     -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input}
+    "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
     "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
@@ -167,16 +170,13 @@ send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
-                        \ shit-tits.  Read the fucking manual."
+                        \shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
     where
-    diargumentalStuff :: [String]
     diargumentalStuff = ["file", "location"]
-    --
-    destIndex :: Int
-    destIndex = bool 2 1 $ msgtype `elem` diargumentalStuff
+    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
     -- the "send text" and "send notice" commands.
@@ -202,15 +202,65 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
+
+-- | @blam@ bans users... if the proper authorisation information is
+-- had.
+blam :: [String]
+     -- ^ This thing is a 3-list of the non-authorisation-related
+     -- arguments which are passed to @ban@.
+     --
+     -- The first argument is the MXID of the user which should be
+     -- banned.
+     --
+     -- The second argument is the room from which the user is forcibly
+     -- removed.
+     --
+     -- The third argument is the justification for the removal of the
+     -- user, e.g., "yo, this dude stole my fuckin' 'nanners."
+     -> Auth
+     -- ^ This thing is the authorisation information of the account
+     -- which is used to ban the /other/ user account.
+     -> IO ();
+blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
+
+-- | @deblam@ un-bans users... if the proper authorisation is had.
+deblam :: [String]
+       -- ^ This thing is a 2-list of the arguments which are tossed
+       -- to @unban@.
+       --
+       -- The first element of this list is the MXID of the user which
+       -- should be un-banned.
+       --
+       -- The second element of this list is the ID of the room @k@
+       -- such that the specified user should no longer be banned from
+       -- @k@.
+       -> Auth
+       -- ^ This argument is the authorisation information which is...
+       -- the reader probably "knows the deal".
+       -> IO ();
+deblam (u':r':_) = unban u r >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+deblam _ = error "The \"unban\" command demands 2 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
-     -- ^ This argument is a 4-list of the number of messages which are
-     -- fetched, "early" or "recent", an unused thing, and the internal
-     -- Matrix ID of the Matrix room from which the messages are
-     -- fetched.
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     -- fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
@@ -220,10 +270,6 @@ grab (decino:eeyore:jd:mexico:_) a
                    \  0 is not a natural number, anyway."
   | otherwise = nabMessages n destination a >>= mapM_ print
   where
-  nabMessages :: Integer
-              -> Room
-              -> Auth
-              -> IO (Either ErrorCode [StdMess])
   nabMessages = case eeyore of
     "recent" -> recentMessagesFrom
     "early"  -> earlyMessagesFrom
@@ -261,6 +307,11 @@ dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) (error . T.unpack);
 
 -- | @logIn@ generates authorisation tokens.
+--
+-- If the authorisation token is generated successfully, then @logIn@
+-- adds this authorisation token to @$PATH/.config/matel@, writes the
+-- authorisation token to the standard output, and returns this
+-- authorisation token.  @logIn@ otherwise 'splodes.
 logIn :: Auth
       -- ^ This bit is the authorisation information of the user for
       -- which an authorisation token is generated.
@@ -271,8 +322,8 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended >> pure phile
-      where writeAppended = T.writeFile path $ addToken phile toke
+    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = withNewToken $ withoutOldToken phile
@@ -281,7 +332,7 @@ logIn = loginPass >=> either busticate addAndDisplay
     withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
   --
   beginsWith :: T.Text -> T.Text -> Bool
-  beginsWith fieldName = ((== fieldName) . T.take (T.length fieldName))
+  beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)
   --
   busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
@@ -417,10 +468,10 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
                           \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm :: Room
-  rm = Def.room {roomName = Just $ T.pack nm, topic = Just $ T.pack tpc}
+  toMaybe :: String -> Maybe Stringth
+  toMaybe k = bool (Just $ T.pack k) Nothing $ null k
   --
-  display :: Either ErrorCode Room -> IO ()
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
   display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable@ is roughly equivalent to @show@.  However,

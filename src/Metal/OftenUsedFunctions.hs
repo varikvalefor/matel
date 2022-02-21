@@ -11,12 +11,16 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
-import Data.Bool;
 import Text.StringRandom;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
+
+-- | @(.:)@ is a function composition operator.  The type signature and
+-- source code are the best possible documentation.
+(.:) :: (c -> d) -> (a -> b -> c) -> a -> b -> d;
+(.:) g f a b = g $ f a b;
 
 -- | @detroit' k@ displays the status code and body of @k@.
 detroit' :: Response BS.ByteString -> String;
@@ -31,11 +35,9 @@ detroit' k = "Thus spake the homeserver: " ++
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
 class StringLike a where
-  -- | For all 'StringLike' values @a@, @fromString a@ is a 'String'
-  -- which is equivalent to @a@.
+  -- | fromString a@ is a 'String' which is equivalent to @a@.
   toString :: a -> String
-  -- | For all 'StringLike' types @a@, @fromString k :: a@ is an 'a'
-  -- value which is equivalent to @k@.
+  -- | @fromString k :: a@ is an 'a' value which is equivalent to @k@.
   fromString :: String -> a
 
 instance StringLike BSL.ByteString where

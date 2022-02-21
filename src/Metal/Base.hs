@@ -36,8 +36,8 @@ import qualified Data.Text as T;
 
 -- $highLevelMessageDataCrap
 --
--- This section of the module contains some type aliases essentially
--- just improve the readability of Metal's source code.
+-- This section of the module contains some type aliases which
+-- essentially just improve the readability of Metal's source code.
 
 -- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
 -- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny

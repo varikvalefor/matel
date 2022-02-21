@@ -16,7 +16,7 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Metal.Messages.FileInfo;
@@ -56,9 +56,6 @@ class Event a where
               --
               -- If this argument is \'f\', then the @n@ events which
               -- are earliest sent should be returned.
-              -> a
-              -- ^ The type of this argument is the type of events which
-              -- should be returned.
               -> Room
               -- ^ This argument represents the room from which events
               -- are fetched.
@@ -68,7 +65,7 @@ class Event a where
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
@@ -183,7 +180,7 @@ valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
   -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ reuturns a 'Maybe'-monadic value, using
+  -- 'Maybe'-monadic and @(.?)@ returns a 'Maybe'-monadic value, using
   -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"
@@ -191,7 +188,7 @@ valueMFileToStdMess k = Def.stdMess {
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
@@ -223,7 +220,7 @@ instance Event Encrypted where
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.encrypted%22%5D%7D" ++
-            -- \^ "Yo, only select the unencrypted stuff."
+            -- \^ "Yo, only select the encrypted stuff."
             "&dir=" ++ [d];
 
 -- | Where @merleHaggard@ is a 'Response' whose body contains a
