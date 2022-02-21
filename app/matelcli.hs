@@ -258,7 +258,7 @@ grab :: [String]
      -- 3. Junk data
      --
      -- 4. The Matrix ID of the Matrix room from which the messages are
-     -- fetched
+     --    fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
@@ -368,7 +368,7 @@ runJoin :: [String]
         -- a 4-list whose elements are as follows:
         --
         -- 1. The internal matrix ID of the room which the user should
-        -- join
+        --    join
         --
         -- 2. The username of the user which sends the invite to the
         --    user which should join the room
