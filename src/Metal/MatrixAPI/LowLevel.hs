@@ -177,13 +177,13 @@ joinedRooms :: Auth
             -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
-  processResponse r = case getResponseStatusCode r of
-    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
-    _   -> Left $ responseToStringth r
   toEither = maybe (Left "joinedRooms: Decoding fails!") Right
   maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
   querr = "_matrix/client/r0/joined_rooms"
-  toRoom k = Def.room {roomId = k};
+  toRoom k = Def.room {roomId = k}
+  processResponse r = case getResponseStatusCode r of
+    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
+    _   -> Left $ responseToStringth r;
 
 -- | @joinedSpaces@ fetches a list of the 'Space's of which Matel's user
 -- is a member.
@@ -411,14 +411,14 @@ getDisplayName :: User
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
+  toEither = maybe (Left failedDecodeMsg) Right
+  failedDecodeMsg = "getDisplayName: The decoding process fails."
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
   toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
   toDispName = toEither . (dnr_displayname <.> A.decode) .
                BSL.fromStrict . getResponseBody
   --
-  toEither = maybe (Left failedDecodeMsg) Right
-  failedDecodeMsg = "getDisplayName: The decoding process fails."
   processResponse r = case getResponseStatusCode r of
     200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
     -- \| This "404" thing accounts for users whose display names are
