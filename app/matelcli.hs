@@ -210,16 +210,15 @@ uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
 -- had.
 blam :: [String]
      -- ^ This thing is a 3-list of the non-authorisation-related
-     -- arguments which are passed to @ban@.
+     -- arguments which are passed to @ban@.  The elements of this list
+     -- are as follows:
      --
-     -- The first argument is the MXID of the user which should be
-     -- banned.
+     -- 1. The MXID of the user which should be banned
      --
-     -- The second argument is the room from which the user is forcibly
-     -- removed.
+     -- 2. The room from which the user is forcibly removed
      --
-     -- The third argument is the justification for the removal of the
-     -- user, e.g., "yo, this dude stole my fuckin' 'nanners."
+     -- 3. The justification for the removal of the user, e.g., "yo,
+     --    this dude stole my fuckin' 'nanners."
      -> Auth
      -- ^ This thing is the authorisation information of the account
      -- which is used to ban the /other/ user account.
@@ -232,15 +231,12 @@ blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 
 -- | @deblam@ un-bans users... if the proper authorisation is had.
 deblam :: [String]
-       -- ^ This thing is a 2-list of the arguments which are tossed
-       -- to @unban@.
+       -- ^ This thing is a 2-list whose elements are as follows:
        --
-       -- The first element of this list is the MXID of the user which
-       -- should be un-banned.
+       -- 1. The MXID of the user which should be un-banned.
        --
-       -- The second element of this list is the ID of the room @k@
-       -- such that the specified user should no longer be banned from
-       -- @k@.
+       -- 2. The ID of the room @k@ such that the specified user should
+       --    no longer be banned from @k@.
        -> Auth
        -- ^ This argument is the authorisation information which is...
        -- the reader probably "knows the deal".
