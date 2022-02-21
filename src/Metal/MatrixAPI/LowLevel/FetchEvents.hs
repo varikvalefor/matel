@@ -3,7 +3,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.FetchEvents
 -- Description : Metal's low-level event-fetching crap
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable

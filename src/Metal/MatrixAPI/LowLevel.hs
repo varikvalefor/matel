@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel
 -- Description : Low-level interface to the Matrix API
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
