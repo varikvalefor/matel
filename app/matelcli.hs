@@ -79,7 +79,7 @@ determineAction (command:stuff) = case command of
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
   "ban"        -> blam stuff
-  "unban"      -> deblam stuff
+  "unban"      -> deblam stuff >=> maybe (return ()) (error . T.unpack)
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -240,8 +240,8 @@ deblam :: [String]
        -> Auth
        -- ^ This argument is the authorisation information which is...
        -- the reader probably "knows the deal".
-       -> IO ();
-deblam (u':r':_) = unban u r >=> maybe (return ()) (error . T.unpack)
+       -> IO (Maybe ErrorCode);
+deblam (u':r':_) = unban u r
   where
   u = Def.user {username = u'}
   r = Def.room {roomId = r'};
