@@ -215,7 +215,8 @@ blam :: [String]
      --
      -- 1. The MXID of the user which should be banned
      --
-     -- 2. The room from which the user is forcibly removed
+     -- 2. The internal Matrix room ID of the room from which the user
+     --    is forcibly removed
      --
      -- 3. The justification for the removal of the user, e.g., "yo,
      --    this dude stole my fuckin' 'nanners."
