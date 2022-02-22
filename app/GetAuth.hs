@@ -20,6 +20,7 @@ import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
 import Metal.User;
+import Control.Monad;
 import System.Directory;
 import System.Environment;
 import qualified Data.Text as T;
@@ -63,7 +64,8 @@ getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
 
 -- | @configFilePath@ is the path of Matel's configuration file.
 configFilePath :: IO FilePath;
-configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
+configFilePath = liftM2 fromMaybe defPath (lookupEnv "XDG_CONFIG_HOME")
+  where defPath = (++ "/.config/matel") <$> getHomeDirectory;
 
 -- | @xOf a b@ 'Just' equals the content of the field of @b@ whose name
 -- is @a@ if @b@ contains such a field.  $xOf a b@ otherwise equals
