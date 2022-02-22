@@ -79,9 +79,10 @@ determineAction (command:stuff) = case command of
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
   "ban"        -> blam stuff
-  "unban"      -> deblam stuff >=> maybe (return ()) (error . T.unpack)
+  "unban"      -> deblam stuff >=> maybeToIO
   _            -> error "An unrecognised command is input.  \
-                  \RTFM, punk.";
+                  \RTFM, punk."
+  where maybeToIO = maybe (return ()) (error . T.unpack);
 
 -- | @list@ implements the "list" command.
 list :: [String]
