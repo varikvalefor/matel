@@ -20,6 +20,8 @@ module Metal.Base (
   -- * Key Containment Types
   --
   -- $keyContainers
+  Keyring,
+  Key,
   PublicKey,
   PrivateKey,
   SharedSecret,
@@ -107,3 +109,33 @@ data MessageFmt = MatrixCusHTML
                   -- ^ This value corresponds to the client-server
                   -- specification's "@org.matrix.custom.html@" format.
   deriving (Eq, Read, Show);
+
+-- | 'Keyring's are just collections of 'Key's.
+type Keyring = [Key];
+
+-- | For all 'Key's @a@, @a@ technically represents a key/pair/, as
+-- opposed to a single /key/.  However, the verbosity of "KeyPair" is
+-- greater than the verbosity of "Key", and the distinction is not /too/
+-- important, anyway.
+--
+-- = Fistful of Monads
+--
+-- Placing both elements of the 2-tuple into the 'Maybe' monad may at
+-- first glance appear to be redundant, as for all keys @a@, the public
+-- key of @a@ should be known.  However, for all 'Key's @a@, that @a@
+-- contains only a public key is possible.
+--
+-- == "But Why is the Public Key 'Maybe'-Monadic?"
+--
+-- The public key is 'Maybe'-monadic because some 'Key' values /can/
+-- reasonably lack a public key.
+--
+-- === "But WHY?!?!"
+--
+-- Matel, which is the primary user of Metal and, by extension,
+-- "Metal.Keys", saves the keys which Matel's user has created... but
+-- only saves the private keys; for all Matrix private keys @a@, the
+-- public key which encrypts stuff for @a@ can be calculated if @a@ is
+-- known.  This approach is relatively storage-cheap and
+-- hacker-friendly.
+type Key = (Maybe PublicKey, Maybe PrivateKey);
