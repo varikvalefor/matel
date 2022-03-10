@@ -43,9 +43,7 @@ data User = User {
   protocol :: Maybe String,
   -- | @keyring k@ 'Just' contains the private keys which @k@ has
   -- generated... or is 'Nothing'.
-  --
-  -- '()' is just a placeholder.
-  keyring :: Maybe (),
+  keyring :: Maybe Keyring,
   -- | @displayname tpForMyBunghole@ equals the "display name" of the
   -- Matrix user which @tpForMyBunghole@ represents, e.g., "Johnny
   -- Kissass".

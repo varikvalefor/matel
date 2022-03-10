@@ -58,8 +58,15 @@ getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
     password = bim "password" $ xOf "password" cfg,
     homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
     authToken = fromMaybe "whatever" $ T.unpack <$> xOf "authtoken" cfg,
+    keyring = xOf "keyring" cfg >>= parseKeys,
     protocol = T.unpack <$> xOf "protocol" cfg
   };
+
+-- | If @j@ is a properly-encoded list of private and public keys, then
+-- @parseKeys j@ is 'Just' a 'Keyring'-based representation of the keys
+-- which @j@ contains.  @parseKeys j@ is otherwise 'Nothing'.
+parseKeys :: Stringth -> Maybe Keyring;
+parseKeys _ = Nothing;
 
 -- | @configFilePath@ is the path of Matel's configuration file.
 configFilePath :: IO FilePath;
