@@ -311,13 +311,13 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
   maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
-                       -- \| These dullards can AT LEAST use
-                       -- encryption... allegedly.
-                       then encryptFor dullards
                        -- \| man yall dullards cant even use encryption
                        -- what a scam
                        -- dang
-                       else pure $ Right $ Left event;
+                       then pure $ Right $ Left event
+                       -- \| These dullards can AT LEAST use
+                       -- encryption... allegedly.
+                       else encryptFor dullards;
 
 -- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess
