@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
 -- Description : Miscellaneous cryptographic functions
 -- Copyright   : (c) Varik Valefor, 2022
@@ -15,6 +17,7 @@ module Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous (
 import Data.Maybe;
 import Metal.Base;
 import Crypto.Error;
+import Control.Monad;
 import Crypto.Cipher.AES;
 import Crypto.Cipher.Types;
 import Crypto.Random.Types;
@@ -23,9 +26,10 @@ import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 import qualified Crypto.PubKey.Curve25519 as X25519;
 
--- | @aes256CryptBS@ 'Just' encrypts or decrypts a value in accordance
--- with AES-256... unless something goes wrong, in which case 'Nothing'
--- is output.
+-- | @aes256CryptBS@ 'Either' encrypts or decrypts a value in accordance
+-- with AES-256, returning the resulting ciphertext as a 'Right'
+-- 'BS.ByteString'... or throws a 'Left' 'ErrorCode' which describes an
+-- error.
 aes256CryptBS :: BS.ByteString
               -- ^ This value is the thing which should be encrypted
               -- or decrypted.
@@ -40,17 +44,23 @@ aes256CryptBS :: BS.ByteString
               -- or decrypt the input text.
               -> BS.ByteString
               -- ^ This bit is the initialisation vector.
-              -> Maybe BS.ByteString;
-aes256CryptBS t sk iv = (\ndl -> ctrCombine cipher ndl t) <$> makeIV iv
+              -> Either ErrorCode BS.ByteString;
+aes256CryptBS t sk = makeIV' >=> combineUsingIV
   where
+  combineUsingIV n = cipher >>= \c -> pure $ ctrCombine c n t
+  makeIV' = maybe fI (Right . id) . makeIV
+  fI = Left "Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous.\
+            \aes256CryptBS: The IV generation fails!"
+  fM = Left "Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous.\
+            \aes256CryptBS: maybeCryptoError fails!"
   -- \| A HOPEFULLY INTERESTING NOTE: Unlike many other type
   -- specifications which exist within the "@where@" clauses of Metal,
   -- this type specification is actually necessary.
   --
   -- Go ahead and try to compile this module after removing the type
   -- specification.
-  cipher :: AES256
-  cipher = fromJust $ maybeCryptoError $ cipherInit sk;
+  cipher :: Either ErrorCode AES256
+  cipher = maybe fM (Right . id) $ maybeCryptoError $ cipherInit sk;
 
 -- | @genIVorKeyBS@ returns a pseudorandom 'BS.ByteString' which is
 -- suitable for use as an AES initialisation vector or secret key.
