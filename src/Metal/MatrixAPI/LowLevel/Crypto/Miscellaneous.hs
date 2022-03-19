@@ -67,7 +67,10 @@ aes256CryptBS t sk = makeIV' >=> combineUsingIV
 genIVorKeyBS :: IO BS.ByteString;
 genIVorKeyBS = getRandomBytes $ blockSize (undefined :: AES256);
 
--- | @calcSecret@ calculates a shared secret key.
+-- | @calcSecret@ calculates a shared secret key.  If the calculation
+-- of the key is successful, then the key is output as a 'Right'
+-- 'X25519.DhSecret'.  If some breakage is detected, then the output
+-- is a 'Left' 'ErrorCode' which describes such breakage.
 calcSecret :: PublicKey
            -- ^ This argument is the public X25519 key of the recipient
            -- of the data which is encrypted using the output shared
@@ -76,8 +79,8 @@ calcSecret :: PublicKey
            -- ^ This value is the private X25519 key of the sender of
            -- the data with which is encrypted using the output shared
            -- secret.
-           -> X25519.DhSecret;
-calcSecret pu pr = X25519.dh pu' pr'
+           -> Either ErrorCode X25519.DhSecret;
+calcSecret pu pr = liftM2 X25519.dh pu' pr'
   where
   toBS :: T.Text -> BS.ByteString
   toBS = fromString . T.unpack
@@ -93,8 +96,9 @@ calcSecret pu pr = X25519.dh pu' pr'
   -- @fromJust@'s error messages are not known for being particularly
   -- conducive to debugging; turning "fromJust is applied to Nothing"
   -- into a useful bug report as a layman is fairly difficult.
-  yield :: CryptoFailable a -> a
-  yield = fromMaybe nothingMsg . maybeCryptoError
+  yield :: CryptoFailable a -> Either ErrorCode a
+  yield = maybe nothingMsg pure . maybeCryptoError
   --
-  nothingMsg = error "Something goes horribly, horribly wrong.  \
-                     \maybeCryptoError is Nothing.";
+  nothingMsg = Left "Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous.\
+                    \calcSecret: Something goes horribly, horribly \
+                    \wrong.  maybeCryptoError is Nothing.";
