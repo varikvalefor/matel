@@ -54,6 +54,8 @@ library
     Metal.MatrixAPI.LowLevel.RecordCombination
     Metal.MatrixAPI.LowLevel.FetchEvents
     Metal.MatrixAPI.LowLevel.HTTP
+  default-extensions:
+    StrictData
   other-extensions:
     OverloadedStrings
     TemplateHaskell
