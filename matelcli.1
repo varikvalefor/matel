@@ -1,6 +1,6 @@
 .Dd $Mdocdate$
 .Dt matelcli 1
-.Os OpenBSD 6.9
+.Os OpenBSD 7.0
 .Sh NAME
 .Nm matelcli
 .Nd command-line interface to the Matrix messaging service
@@ -48,9 +48,13 @@ from
 .Ar username
 .Ar roomid
 .Ar reason
+.Pp
+.Nm matelcli unban
+.Ar username
+.Ar roomid
 .Sh DESCRIPTION
 .Nm matelcli
-is used to perform various Matrix-related tasks via a command-line
+performs various Matrix-related tasks via a command-line
 interface, as opposed to the terminal user interface of
 .Xr matel 1 .
 .Pp
@@ -108,7 +112,7 @@ matelcli send text dummies < methage
 .Ed
 .Pp
 Additionally, using the standard input-based approach facilitates
-sending arbitrary characters in the bodies of messages.
+including arbitrary characters in the bodies of messages.
 .Ss SENDING FILES
 .Nm matelcli send file
 .Ar path
@@ -174,13 +178,13 @@ fetches the
 .Ar n
 earliest messages of room
 .Ar roomId .
-.Sh MARKING MESSAGES AS HAVING BEEN READ
+.Sh MARKING EVENTS AS HAVING BEEN READ
 Where
 .Ar k
-is a message identifier which is known to be valid,
+is a valid event identifier,
 .Nm matelcli markread
 .Ar k
-marks the message whose message identifier is
+marks the event whose event identifier is
 .Ar k
 as having been read.
 .Sh ENTERING THE MATRIX
@@ -302,6 +306,16 @@ from the Matrix room whose room ID is
 justifying this action with explanation
 .Ar reason Ns ...
 if the user which attempts to run this command has the appropriate
+privileges.
+.Sh UN-BANNING USERS
+.Nm matelcli unban
+.Ar username
+.Ar roomid
+un-bans the user whose username is
+.Ar username
+from the Matrix room whose room ID is
+.Ar roomid Ns ...
+if the user which attempts to un-ban the user has the appropriate
 privileges.
 .Sh UPLOADING FILES
 .Nm matelcli upload

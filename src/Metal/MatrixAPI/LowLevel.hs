@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel
 -- Description : Low-level interface to the Matrix API
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -177,13 +177,13 @@ joinedRooms :: Auth
             -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
-  processResponse r = case getResponseStatusCode r of
-    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
-    _   -> Left $ responseToStringth r
   toEither = maybe (Left "joinedRooms: Decoding fails!") Right
   maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
   querr = "_matrix/client/r0/joined_rooms"
-  toRoom k = Def.room {roomId = k};
+  toRoom k = Def.room {roomId = k}
+  processResponse r = case getResponseStatusCode r of
+    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
+    _   -> Left $ responseToStringth r;
 
 -- | @joinedSpaces@ fetches a list of the 'Space's of which Matel's user
 -- is a member.
@@ -243,9 +243,10 @@ join :: Room
      -- should be 'Nothing'.
      --
      -- If the room which should be joined is /private/, then this value
-     -- is a 3-tuple of a description of the user which sends an (invite
-     -- to the room) @bk@ to the authenticated user, this invite's state
-     -- key, and the signature of this invite.
+     -- is 'Just' a 3-tuple @(a,b,c)@, where @a@ is a description of the
+     -- user which sends an (invite to the room) @bk@ to the
+     -- authenticated @b@ is the state key of the aforementioned invite,
+     -- and @c@ is the signature of the aforementioned invite.
      -> Auth
      -- ^ This value is the authorisation information of the user which
      -- joins the specified room.
@@ -410,14 +411,14 @@ getDisplayName :: User
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
+  toEither = maybe (Left failedDecodeMsg) Right
+  failedDecodeMsg = "getDisplayName: The decoding process fails."
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
   toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
   toDispName = toEither . (dnr_displayname <.> A.decode) .
                BSL.fromStrict . getResponseBody
   --
-  toEither = maybe (Left failedDecodeMsg) Right
-  failedDecodeMsg = "getDisplayName: The decoding process fails."
   processResponse r = case getResponseStatusCode r of
     200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
     -- \| This "404" thing accounts for users whose display names are
@@ -440,10 +441,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 --
 -- = Output
 --
--- If all goes well, then a 'Left' 'Room' value whose @roomId@ is the ID
+-- If all goes well, then a 'Right' 'Room' value whose @roomId@ is the ID
 -- of the new room is returned.
 --
--- If something 'splodes, then a 'Right' 'ErrorCode' which describes the
+-- If something 'splodes, then a 'Left' 'ErrorCode' which describes the
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
@@ -576,6 +577,7 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
   process k = case getResponseStatusCode k of
     200 -> Nothing
     _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
+
 -- $cryptoShit
 --
 -- This section of the module contains functions which directly
@@ -593,14 +595,14 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
 --
 -- = Meat and Potatoes
 --
--- Keep looking.  @decrypt@ just selects and runs an approprate
+-- Keep looking.  @decrypt@ just selects and runs an appropriate
 -- decryption function; "true" decryption logic is /not/ contained
 -- within the definition of @decrypt@.
-decrypt :: Auth
+decrypt :: Encrypted
+        -- ^ This record is the message which is to be decrypted.
+        -> Auth
         -- ^ This value contains the authorisation information of the
         -- user for whom the input message is encrypted.
-        -> Encrypted
-        -- ^ This record is the message which is to be decrypted.
         -> Either ErrorCode StdMess;
 decrypt _ _ = Left "decrypt is unimplemented.";
 

@@ -1,6 +1,6 @@
 -- | Module    : Metal.EventCommonFields
 -- Description : Metal's boilerplate record fields
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
