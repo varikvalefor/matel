@@ -218,7 +218,7 @@ blam :: [String]
      -- 2. The internal Matrix room ID of the room from which the user
      --    is forcibly removed
      --
-     -- 3. The justification of the removal of the user, e.g., "yo,
+     -- 3. The justification for the removal of the user, e.g., "yo,
      --    this dude stole my fuckin' 'nanners."
      -> Auth
      -- ^ This thing is the authorisation information of the account
