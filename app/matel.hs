@@ -1,6 +1,6 @@
 -- | Module    : Main
 -- Description : Business end of Matel
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
@@ -34,14 +34,16 @@ main =
   newEmptyMVar >>= \comVar ->
   forkIO (fetchData comVar aufFile) >> summonTUI comVar;
 
--- | For all 'MVar' 'Winda' @k@, @fetchData k@ collects data from
--- Matrix, parses this data appropriately, and outputs this data to @k@.
+-- | @fetchData k@ collects data from Matrix, parses this data
+-- appropriately, and outputs this data to @k@.
 --
 -- @fetchData@ is currently unimplemented.  @fetchData k@ just sends a
 -- placeholder message to @k@.
 fetchData :: MVar Winda
-          -- ^ The variable which is used to communicate with the TUI
+          -- ^ This argument is the thing which is used to communicate
+          -- with the TUI.
           -> Auth
-          -- ^ The authorisation deets
+          -- ^ This argument is the authorisation information which is
+          -- used to actually access Matrix.
           -> IO ();
 fetchData v a = putMVar v temporaryMessage;

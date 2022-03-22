@@ -1,6 +1,6 @@
 -- | Module    : Metal.User
 -- Description : Matel's representation of the Matrix user
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
@@ -41,6 +41,11 @@ data User = User {
   -- Metal should use to contact the homeserver.  However, other uses of
   -- this thing may be possible.
   protocol :: Maybe String,
+  -- | @keyring k@ 'Just' contains the private keys which @k@ has
+  -- generated... or is 'Nothing'.
+  --
+  -- '()' is just a placeholder.
+  keyring :: Maybe (),
   -- | @displayname tpForMyBunghole@ equals the "display name" of the
   -- Matrix user which @tpForMyBunghole@ represents, e.g., "Johnny
   -- Kissass".

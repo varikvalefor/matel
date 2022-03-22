@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.GetRoomInformation
 -- Description : Metal's stuff what fetches the information of rooms
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -122,9 +122,13 @@ getTopic r = process <.> rq r "/state/m.room.topic/"
   process k = Def.room {topic = extractTopic k}
   extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @getRoomName r youKnowTheDeal@ fetches the display name of the
--- Matrix room whose room ID is @roomId r@.  The @'roomName'@ value of
--- the output 'Room' record contains the desired information.
+-- | @getRoomName@ fetches the display name of the specified Matrix
+-- room.
+--
+-- = Output
+--
+-- The @roomName@ field of the returned 'Room' record contains the
+-- desired information.
 getRoomName :: Room
             -- ^ This value describes the room whose display name is
             -- fetched.

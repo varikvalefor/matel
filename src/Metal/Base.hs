@@ -1,6 +1,6 @@
 -- | Module    : Metal.Base
 -- Description : Metal's basic datatypes and whatnot
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -36,8 +36,8 @@ import qualified Data.Text as T;
 
 -- $highLevelMessageDataCrap
 --
--- This section of the module contains some type aliases essentially
--- just improve the readability of Metal's source code.
+-- This section of the module contains some type aliases which
+-- essentially just improve the readability of Metal's source code.
 
 -- | For all 'Identifier' @k@, @k@ is a "non-human-readable" name, e.g.,
 -- "\@johnnykissass:matrix.varikose.god", as opposed to "Johnny

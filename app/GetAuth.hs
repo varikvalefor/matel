@@ -2,7 +2,7 @@
 
 -- | Module    : GetAuth
 -- Description : Matel's 'Auth'-fetching crap
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -75,9 +75,11 @@ configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 --
 -- @xOf@ reduces the amount of boilerplate stuff.
 xOf :: Stringth
-    -- ^ The name of the field whose value is returned
+    -- ^ This argument is the name of the field whose content is
+    -- returned.
     -> Stringth
-    -- ^ The content of the configuration file whose fields are searched
+    -- ^ This argument is the content of the configuration file whose
+    -- fields are searched.
     -> Maybe Stringth;
 xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   where
@@ -85,14 +87,7 @@ xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   head' [] = Nothing
   head' j = Just $ head j
   --
-  isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take queryLen
-  --
-  queryLen :: Int
   queryLen = T.length query
-  --
-  query :: Stringth
   query = T.append query' fieldSeparator
-  --
-  fieldSeparator :: Stringth
   fieldSeparator = ": ";

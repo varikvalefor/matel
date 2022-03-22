@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.HighLevel
 -- Description : Metal's high-level Matrix API stuff
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -61,13 +61,12 @@ import Metal.Room;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Either as EE;
 import Metal.EventCommonFields;
 import Metal.MatrixAPI.LowLevel;
 import Metal.OftenUsedFunctions;
 import Metal.Messages.Standard as MS;
-import qualified Metal.Default as Def;
 import Metal.MatrixAPI.LowLevel.FetchEvents;
 
 -- $stuffImport
@@ -97,10 +96,11 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @recentMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 recentMessagesFrom :: Integer
                    -- ^ This argument is the number of messages which
                    -- are fetched.
@@ -114,7 +114,8 @@ recentMessagesFrom :: Integer
                    -> IO (Either ErrorCode [StdMess]);
 recentMessagesFrom = flip fetchMessages 'b';
 
--- | @fetchMessages@ fetches encrypted and unencrypted messages.
+-- | @fetchMessages@ fetches encrypted and unencrypted messages,
+-- transparently decrypting the encrypted messages.
 --
 -- = Output
 --
@@ -122,6 +123,12 @@ recentMessagesFrom = flip fetchMessages 'b';
 -- 'Right'-valued list of the decrypted and unencrypted messages which
 -- are fetched.  Otherwise, the output is a 'Left' 'ErrorCode' which
 -- describes the problem which prevents the fetching of messages.
+--
+-- = Incompleteness
+--
+-- @fetchMessages@'s decryption stuff is incomplete.  @fetchMessages@
+-- currently throws a 'Left' value when @fetchMessages@ attempts to
+-- decrypt encrypted messages.
 fetchMessages :: Integer
               -- ^ This bit is the number of messages which are fetched.
               -> Char
@@ -147,7 +154,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
   grabUnencrypted = fetchEvents n dir r a
   --
   grabDecrypted :: IO (Either ErrorCode [StdMess])
-  grabDecrypted = fmap (>>= dl . map (decrypt a)) grabEncrypted
+  grabDecrypted = fmap (>>= dl . map (`decrypt` a)) grabEncrypted
   --
   grabEncrypted :: IO (Either ErrorCode [Encrypted])
   grabEncrypted = fetchEvents n dir r a
@@ -170,10 +177,11 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
 --
--- = Lack of Support for Encrypted Messages
+-- = Internal Stuff
 --
--- @earlyMessagesFrom@ currently does not support the fetching of
--- encrypted messages.
+-- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
+-- The reader of /this/ piece of documentation should probably /also/
+-- read the documentation of @fetchMessages@.
 earlyMessagesFrom :: Integer
                   -- ^ This argument is the number of messages which
                   -- should be fetched.
@@ -214,6 +222,8 @@ dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
+--
+-- @memberSpaces@ is really just a synonym of 'joinedSpaces'.
 --
 -- = Output
 --
@@ -301,13 +311,13 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
   maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
-                       -- \| These dullards can AT LEAST use
-                       -- encryption... allegedly.
-                       then encryptFor dullards
                        -- \| man yall dullards cant even use encryption
                        -- what a scam
                        -- dang
-                       else pure $ Right $ Left event;
+                       then pure $ Right $ Left event
+                       -- \| These dullards can AT LEAST use
+                       -- encryption... allegedly.
+                       else encryptFor dullards;
 
 -- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess

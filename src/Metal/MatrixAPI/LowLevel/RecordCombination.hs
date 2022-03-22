@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.RecordCombination
 -- Description : Record type combination crap
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
@@ -16,10 +16,9 @@ import Metal.User;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Encrypted as En;
+import Metal.Messages.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.ThumbnailInfo;
 import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
 import qualified Metal.Default as Def;
@@ -58,6 +57,8 @@ instance Combinable User where
     password = g password,
     homeserver = g homeserver,
     authToken = g authToken,
+    protocol = g protocol,
+    keyring = g keyring,
     displayname = g displayname
   } where
     g :: Eq b => (User -> b) -> b
@@ -157,13 +158,16 @@ instance Combinable Encrypted where
 -- @combineSingleValue f a b c@ otherwise equals @f d@.
 combineSingleValue :: Eq b
                    => (a -> b)
-                   -- ^ The field constructor
+                   -- ^ This value is the field constructor of the field
+                   -- whose values should be analysed.
                    -> a
-                   -- ^ The first record whose value might be used
+                   -- ^ This value is the first record whose specified
+                   -- field value may be used.
                    -> a
-                   -- ^ The second record whose value might be used
+                   -- ^ This value is the second record whose specified
+                   -- field value may be used.
                    -> a
-                   -- ^ The default record
+                   -- ^ This value is a default-valued record.
                    -> b;
 combineSingleValue c a b d
   | c a == c b = c a
@@ -186,12 +190,13 @@ combineSingleValue c a b d
 combineSingleMaybeRecord :: Combinable b
                          => Eq b
                          => (a -> Maybe b)
-                         -- ^ The field constructor
+                         -- ^ This value is the field constructor of the
+                         -- field whose values should be analysed.
                          -> a
-                         -- ^ The first record whose field may be
-                         -- sacrificed or chimaera'd
+                         -- ^ This value is the first record whose
+                         -- specified field may be junked or used.
                          -> a
-                         -- ^ The second record whose field may be
-                         -- sacrificed or chimaera'd
+                         -- ^ This value is the second record whose
+                         -- specified field may be junked or used.
                          -> Maybe b
 combineSingleMaybeRecord c a b = liftM2 combine (c a) (c b);
