@@ -17,12 +17,6 @@
 -- not explicitly use HTTP queries, whereas the functions of
 -- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
 -- support only explicit encryption.
---
--- Additionally, several functions which this module provides just break
--- via @'error'@ if anything goes wrong, as opposed to returning an
--- error code or 'Nothing'.  However, VARIK is willing to modify this
--- module's functions such that these functions do not simply break
--- if such a change would benefit any users of this module.
 module Metal.MatrixAPI.HighLevel (
   -- * Stuff-Fetching Functions
   --
