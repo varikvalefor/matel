@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.RecordCombination
 -- Description : Record type combination crap
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
@@ -58,6 +58,7 @@ instance Combinable User where
     homeserver = g homeserver,
     authToken = g authToken,
     protocol = g protocol,
+    keyring = g keyring,
     displayname = g displayname
   } where
     g :: Eq b => (User -> b) -> b
@@ -189,7 +190,7 @@ combineSingleValue c a b d
 combineSingleMaybeRecord :: Combinable b
                          => Eq b
                          => (a -> Maybe b)
-                         -- ^ This value is the field constuctor of the
+                         -- ^ This value is the field constructor of the
                          -- field whose values should be analysed.
                          -> a
                          -- ^ This value is the first record whose

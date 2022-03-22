@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.Default
 -- Description : Metal's default records
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
@@ -31,6 +31,7 @@ user = User {
   homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  keyring = Nothing,
   protocol = Nothing
 };
 

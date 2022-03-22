@@ -2,7 +2,7 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.GetRoomInformation
 -- Description : Metal's stuff what fetches the information of rooms
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable

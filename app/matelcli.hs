@@ -2,7 +2,7 @@
 
 -- | Module    : Main
 -- Description : Business end of MATELCLI
--- Copyright   : (c) Varik Valefor, 2021
+-- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
@@ -53,12 +53,14 @@ main = ensureSecurity >> doStuff
   doStuff = getAuthorisationDetails >>= runWithAuth
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
-                -- ^ The input @matelcli@ command
+                -- ^ This argument is the @matelcli@ command, as read
+                -- from @argc@.
                 -> Auth
-                -- ^ Matel user's authorisation information
+                -- ^ This argument is the authorisation information of
+                -- the user of Matel.
                 -> IO ();
 determineAction [] = error "I never thought that I would have a \
                            \stress-induced heart attack by the age of \
@@ -76,6 +78,8 @@ determineAction (command:stuff) = case command of
   "kick"       -> runKick stuff
   "createroom" -> createRoom' stuff
   "upload"     -> ooplawed stuff
+  "ban"        -> blam stuff
+  "unban"      -> deblam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
@@ -91,7 +95,7 @@ list :: [String]
      -- If the first element of this dingus is "spaces", then the spaces
      -- of which the specified user is a member are listed.
      --
-     -- If the first element of the first argument is "communities",
+     -- If the first element of this thing is "communities",
      -- then the communities of which the specified user is a member are
      -- listed.
      --
@@ -141,7 +145,7 @@ send [_] a = error "I thought that you were improving.  I now see that \
                    \I was wrong.  Really, I should be mad at myself \
                    \for apparently going insane by having some faith \
                    \in you.";
-send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
+send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case msgtype of
@@ -173,10 +177,7 @@ send (msgtype:k) a = getTarget >>= \t -> H.send t dest a >>= dispError
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
     where
-    diargumentalStuff :: [String]
     diargumentalStuff = ["file", "location"]
-    --
-    destIndex :: Int
     destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
     -- \^ This bit is necessary because the number of arguments of the
     -- "send file" command is not equal to the number of arguments of
@@ -203,15 +204,61 @@ uploadStdinGetID :: String
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either ErrorCode Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
+
+-- | @blam@ bans users... if the proper authorisation information is
+-- had.
+blam :: [String]
+     -- ^ This thing is a 3-list of the non-authorisation-related
+     -- arguments which are passed to @ban@.  The elements of this list
+     -- are as follows:
+     --
+     -- 1. The MXID of the user which should be banned
+     --
+     -- 2. The room from which the user is forcibly removed
+     --
+     -- 3. The justification for the removal of the user, e.g., "yo,
+     --    this dude stole my fuckin' 'nanners."
+     -> Auth
+     -- ^ This thing is the authorisation information of the account
+     -- which is used to ban the /other/ user account.
+     -> IO ();
+blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
+
+-- | @deblam@ un-bans users... if the proper authorisation is had.
+deblam :: [String]
+       -- ^ This thing is a 2-list whose elements are as follows:
+       --
+       -- 1. The MXID of the user which should be un-banned.
+       --
+       -- 2. The ID of the room @k@ such that the specified user should
+       --    no longer be banned from @k@.
+       -> Auth
+       -- ^ This argument is the authorisation information which is...
+       -- the reader probably "knows the deal".
+       -> IO ();
+deblam (u':r':_) = unban u r >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+deblam _ = error "The \"unban\" command demands 2 arguments, tubby.";
 
 -- | @grab@ is used to fetch and output the messages of a room.
 grab :: [String]
-     -- ^ This argument is a 4-list of the number of messages which are
-     -- fetched, "early" or "recent", an unused thing, and the internal
-     -- Matrix ID of the Matrix room from which the messages are
-     -- fetched.
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     --    fetched
      -> Auth
      -- ^ This bit is the authorisation information of the user account.
      -> IO ();
@@ -221,10 +268,6 @@ grab (decino:eeyore:jd:mexico:_) a
                    \  0 is not a natural number, anyway."
   | otherwise = nabMessages n destination a >>= mapM_ print
   where
-  nabMessages :: Integer
-              -> Room
-              -> Auth
-              -> IO (Either ErrorCode [StdMess])
   nabMessages = case eeyore of
     "recent" -> recentMessagesFrom
     "early"  -> earlyMessagesFrom
@@ -320,12 +363,19 @@ runJoin :: [String]
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
-        -- If this argument is a 4-list, indicating that some user
-        -- has actively invited Matel's user to the Matrix room which
-        -- should be joined, then this 4-list contains, in order, the
-        -- internal Matrix ID of the room which is joined, the state key
-        -- of some invitation which Matel's user receives, and the
-        -- signature of this invite.
+        -- If some user has sent an invitation which permits joining
+        -- the room which should be joined, then this argument should be
+        -- a 4-list whose elements are as follows:
+        --
+        -- 1. The internal matrix ID of the room which the user should
+        --    join
+        --
+        -- 2. The username of the user which sends the invite to the
+        --    user which should join the room
+        --
+        -- 3. The state key of the invitation which the user receives
+        --
+        -- 4. The signature of the invite which is sent
         -> Auth
         -- ^ This thing, as ever, is the standard bullshit authorisation
         -- crap.
@@ -399,12 +449,17 @@ runKick _ = error "I'll kick YOUR ass if you don't start giving \
 -- ID of this Matrix room is written to the standard output.  If
 -- something violently falls apart, then an error is thrown.
 createRoom' :: [String]
-            -- ^ This argument is a 3-list whose elements, in order, are
-            -- the display name of the Matrix room which should be
-            -- created, the topic message of the Matrix room which
-            -- should be created, and "private" or "public", depending
-            -- upon whether the new Matrix room should be private or
-            -- public.
+            -- ^ This argument is a 3-list whose elements, are as
+            -- follows:
+            --
+            -- 1. The display name of the Matrix room which should be
+            --    created
+            --
+            -- 2. The topic message of the Matrix room which should be
+            --    created
+            --
+            -- 3. Depending upon whether the new room should be private
+            --    or public, "private" or "public", respectively
             -> Auth
             -- ^ This argument is a very imaginative representation of
             -- a turtle... or just the same old authorisation bullshit.
@@ -423,13 +478,10 @@ createRoom' [_,_] = error "Should I just assume that you want to make \
                           \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm :: Room
-  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
-  --
   toMaybe :: String -> Maybe Stringth
   toMaybe k = bool (Just $ T.pack k) Nothing $ null k
   --
-  display :: Either ErrorCode Room -> IO ()
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
   display = either (error . T.unpack) (putStrLn . roomId);
 
 -- | @messToHumanReadable@ is roughly equivalent to @show@.  However,
@@ -461,3 +513,4 @@ ooplawed :: [String]
          -- ^ Authorisation information... ZZZ...
          -> IO ();
 ooplawed (f:_) = uploadStdinGetID f >=> T.putStrLn;
+ooplawed _ = error "Hey, dummy, \"upload\" demands 1 argument.";
