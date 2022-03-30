@@ -218,7 +218,7 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
 --
 -- "@dl@" is an abbreviation of "de-list".
 dl :: [Either a b] -> Either a [b];
-dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
+dl j = bool (Right $ rights j) (Left $ head $ lefts j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
