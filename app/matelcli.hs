@@ -361,7 +361,7 @@ runJoin :: [String]
         -- ^ This argument contains the command-line arguments of the
         -- @join@ command.  This thing should be a 1-list or a 4-list.
         --
-        -- If thids argument is a 1-list, then this 1-list simply
+        -- If this argument is a 1-list, then this 1-list simply
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
