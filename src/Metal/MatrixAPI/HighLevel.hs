@@ -13,7 +13,7 @@
 -- Matrix API.
 --
 -- This module differs from Metal.MatrixAPI.LowLevel because the
--- functions within this module transparently support encryption and do
+-- functions within "Metal.MatrixAPI.HighLevel" transparently support encryption and do
 -- not explicitly use HTTP queries, whereas the functions of
 -- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
 -- support only explicit encryption.
