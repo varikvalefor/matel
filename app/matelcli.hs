@@ -234,10 +234,10 @@ blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 deblam :: [String]
        -- ^ This thing is a 2-list whose elements are as follows:
        --
-       -- 1. The MXID of the user which should be un-banned.
+       -- 1. The MXID of the user which should be un-banned
        --
        -- 2. The ID of the room @k@ such that the specified user should
-       --    no longer be banned from @k@.
+       --    no longer be banned from @k@
        -> Auth
        -- ^ This argument is the authorisation information which is...
        -- the reader probably "knows the deal".
