@@ -280,6 +280,7 @@ grab (decino:eeyore:jd:mexico:_) a
   --
   destination :: Room
   destination = Def.room {roomId = mexico};
+  -- \^ "Oh, baby, I was bound to let you go..."
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
