@@ -19,8 +19,8 @@ import qualified Data.ByteString.Char8 as BS8;
 -- user of Matel.
 --
 -- 'Auth' is really just a synonym of 'User'.  However, unlike most
--- instances of 'User', for all 'Auth' @k@, generally, the @username@,
--- @authToken@, and @homeserver@ fields of @k@ must be defined.
+-- instances of 'User', for all 'Auth' @k@, generally, the 'username',
+-- 'authToken', and 'homeserver' fields of 'k' must be defined.
 type Auth = User;
 
 -- | @authToken' k@ equals a version of the authorisation token of @k@
