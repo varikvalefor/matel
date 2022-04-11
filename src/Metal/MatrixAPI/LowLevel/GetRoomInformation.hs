@@ -54,7 +54,8 @@ getRoomInformation :: Room
 getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   where
   -- \| "@evil@" is an abbreviation of "@evaluate@".
-  evil g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
+  evil g = Right . foldCombine . (r:) . (g:) <$> fetchRoomValues
+  foldCombine = foldr combine Def.room
   -- \| The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
