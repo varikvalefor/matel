@@ -113,10 +113,10 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   --
   responseToLeftRight' :: Response BS.ByteString
                        -> Either Stringth Stringth
-  responseToLeftRight' j
+  responseToLeftRight' j = case getResponseStatusCode j of
     -- J
-    | getResponseStatusCode j == 200 = Right $ bodyValue Q..! "{access_token}"
-    | otherwise = responseToLeftRight j
+    200 -> Right $ bodyValue Q..! "{access_token}"
+    _   -> responseToLeftRight j
     where bodyValue = fromJust $ Q.decode $ BSL.fromStrict $
             getResponseBody j
   logreq :: BSL.ByteString
