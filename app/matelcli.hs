@@ -241,9 +241,11 @@ logIn = loginPass >=> either busticate addAndDisplay
                        T.writeFile path (addToken phile toke)
   --
   addToken :: T.Text -> T.Text -> T.Text
-  addToken phile toke = T.unlines $ (++ [T.append "authtoken: " toke]) $
-                        filter ((/= "authtoken: ") . T.take 11) $
-                        T.lines phile
+  addToken phile toke = lineFilter notToken phile `T.append` toke'
+    where
+    notToken = (/= "authtoken: ") . T.take 11
+    toke' = T.append "\nauthtoken: " toke
+    lineFilter f = T.unlines . filter f . T.lines
   --
   busticate :: T.Text -> IO ()
   busticate = error . ("logIn: " ++) . T.unpack;
