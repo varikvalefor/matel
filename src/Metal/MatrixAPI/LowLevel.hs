@@ -56,6 +56,7 @@ module Metal.MatrixAPI.LowLevel (
   -- $genericDescribe
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
+import Data.Bool;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
@@ -559,11 +560,11 @@ upload :: BSL.ByteString
 upload attachment name = process <.> TP.req TP.POST hdr qq atch
   where
   process :: Response BS.ByteString -> Either Stringth Stringth
-  process k = case getResponseStatusCode k of
-    200 -> Right $ fromJust $
-             (Q..! "{content_uri}") <$>
-             Q.decode (BSL.fromStrict $ getResponseBody k)
-    _   -> responseToLeftRight k
+  process k = bool (responseToLeftRight k) cURI requestSuccessful
+    where
+    requestSuccessful = getResponseStatusCode k == 200
+    cURI = Right $ fromJust $ (Q..! "{content_uri}") <$> bodhi
+    bodhi = Q.decode (BSL.fromStrict $ getResponseBody k)
   --
   hdr :: [(HeaderName, BS.ByteString)]
   hdr = [("Content-Type", "text/plain")]
