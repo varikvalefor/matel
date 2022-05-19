@@ -116,3 +116,11 @@ executable matelcli
     -- text is used for text-based data.
   hs-source-dirs: app
   default-language: Haskell2010
+
+test-suite send-unencrypted-message
+  type:           exitcode-stdio-1.0
+  main-is:        send-unencrypted-message.hs
+  hs-source-dirs: testes/matelcli
+  build-depends:
+    base ^>= 4.14.1.0,
+    process == 1.6.*
