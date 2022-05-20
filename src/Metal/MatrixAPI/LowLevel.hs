@@ -415,10 +415,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   toEither = maybe (Left failedDecodeMsg) Right
   failedDecodeMsg = "getDisplayName: The decoding process fails."
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  bodhi = BSL.fromStrict . getResponseBody
   --
   toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
-  toDispName = toEither . (dnr_displayname <.> A.decode) .
-               BSL.fromStrict . getResponseBody
+  toDispName = toEither . (dnr_displayname <.> A.decode) . bodhi
   --
   processResponse r = case getResponseStatusCode r of
     200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
