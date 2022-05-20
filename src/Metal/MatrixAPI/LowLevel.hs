@@ -540,8 +540,8 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
   hdr = [("Content-Type", "text/plain")]
-  qq = "_matrix/media/r0/upload?filename=" ++
-       toString (urlEncode True $ fromString name);
+  qq = "_matrix/media/r0/upload?filename=" ++ name'
+  name' = toString (urlEncode True $ fromString name);
 
 -- $spam
 --
