@@ -1,14 +1,14 @@
 -- | Module    : Metal.Messages.EncryptedFile
 -- Description : Encrypted file attachment record type
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
 --
 -- This file contains 'EncryptedFile' and company.
 module Metal.Messages.EncryptedFile where
--- | For all 'EncryptedFile' @k@, @k@ describes an encrypted file.
+-- | For all 'EncryptedFile' @k@, @k@ represents an encrypted file.
 data EncryptedFile = EncryptedFile {
   -- | @url k@ is the URL of the encrypted file.
   url :: String,
@@ -27,7 +27,7 @@ data EncryptedFile = EncryptedFile {
   v :: String
 } deriving (Eq, Read, Show);
 
--- | For all 'JWK' @a@, @a@ describes a JSON Web key.
+-- | For all 'JWK' @a@, @a@ represents a JSON Web key.
 data JWK = JWK {
   -- | @kty k@ is the key type of @k@.  According to the API
   -- specification, this thing must equal @"oct"@.

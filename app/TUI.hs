@@ -1,7 +1,7 @@
 -- | Module    : TUI
 -- Description : Matel's main TUI crap
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : POSIX
@@ -53,9 +53,10 @@ toScreen = withBorderStyle unicode . borderWithLabel (str "Matel");
 --
 -- @temporaryMessage@ is removed only if Matel functions as intended.
 temporaryMessage :: Winda;
-temporaryMessage = center $ str $
-  "Matel is unfinished -- check back later.\n" ++
-  "Alternatively, contribute to the project!";
+temporaryMessage = center $ str "Matel is unfinished -- check back \
+                                \later.\n\
+                                \Alternatively, contribute to the \
+                                \project!";
 
 -- | @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
 -- @x@.

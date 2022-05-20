@@ -2,8 +2,8 @@
 
 -- | Module    : GetAuth
 -- Description : Matel's 'Auth'-fetching crap
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -26,7 +26,7 @@ import qualified Data.Text as T;
 import qualified Data.Text.IO as T;
 import qualified Metal.Default as Def;
 
--- | @getAuthorisationDetails@ equals a 'User' value which contains
+-- | @getAuthorisationDetails@ returns a 'User' value which contains
 -- information which is used to authenticate Matel's user, e.g., the
 -- homeserver to which requests should be sent, as well as the username
 -- of Matel's user.
@@ -66,7 +66,7 @@ configFilePath :: IO FilePath;
 configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 
 -- | @xOf a b@ 'Just' equals the content of the field of @b@ whose name
--- is @a@ if @b@ contains such a field.  $xOf a b@ otherwise equals
+-- is @a@ if @b@ contains such a field.  @xOf a b@ otherwise equals
 -- 'Nothing'.
 --
 -- A 'Maybe' value is output because some requested fields may be
@@ -75,9 +75,11 @@ configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 --
 -- @xOf@ reduces the amount of boilerplate stuff.
 xOf :: Stringth
-    -- ^ The name of the field whose value is returned
+    -- ^ This argument is the name of the field whose content is
+    -- returned.
     -> Stringth
-    -- ^ The content of the configuration file whose fields are searched
+    -- ^ This argument is the content of the configuration file whose
+    -- fields are searched.
     -> Maybe Stringth;
 xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   where
@@ -85,14 +87,7 @@ xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   head' [] = Nothing
   head' j = Just $ head j
   --
-  isMatch :: T.Text -> Bool
   isMatch = (== query) . T.take queryLen
-  --
-  queryLen :: Int
   queryLen = T.length query
-  --
-  query :: Stringth
   query = T.append query' fieldSeparator
-  --
-  fieldSeparator :: Stringth
   fieldSeparator = ": ";

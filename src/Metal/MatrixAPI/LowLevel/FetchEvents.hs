@@ -3,8 +3,8 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.FetchEvents
 -- Description : Metal's low-level event-fetching crap
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -13,67 +13,66 @@
 -- @'fetchEvents'@.
 module Metal.MatrixAPI.LowLevel.FetchEvents (fetchEvents) where
 import Metal.Auth;
+import Metal.Base;
 import Metal.Room;
 import Metal.User;
-import Data.Maybe;
-import Metal.Encrypted;
+import Metal.Messages.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Metal.Messages.FileInfo;
 import Metal.EventCommonFields;
 import Metal.Messages.Standard;
+import qualified Data.Text as T;
 import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | For all 'Event' @A@, @A@ describes a Matrix room event.
+-- | For all 'Event' @A@, for all values @t@ of type @A@, @t@
+-- represents a Matrix room event.
 class Event a where
   -- | @nonDef a@ iff @a@ is not a default-valued thing.
   nonDef :: a
-         -- ^ The thing whose defaultness is determined
+         -- ^ This record is the record whose defaultness is determined.
          -> Bool
 
-  -- | @fetchEvents n d k r a@ fetches @n@ events of type @msgType k@
-  -- from the room which is specified in @r@.  The authorisation
-  -- information which is specified in @a@ is used to authenticate the
-  -- query.
+  -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
   --
-  -- If @d == 'b'@, then the @n@ most recent messages of @k@ are
-  -- returned.  If @d == 'f'@, then the @n@ earliest messages of @k@ are
-  -- returned.
+  -- = Output
+  --
+  -- If everything goes according to plan, then a list of the desired
+  -- Matrix events is 'Right'ly returned.  If just the most 'Left'-field
+  -- shit happens, then a description of this happening is returned.
   fetchEvents :: Integer
-              -- ^ The number of events which should be fetched
+              -- ^ This argument is the number of messages which should
+              -- be fetched.
               -> Char
-              -- ^ The direction of the fetching -- 'b' fetches messages
-              -- which are sent recently, and 'f' fetches messages
-              -- which are sent most early
-              -> a
-              -- ^ The type of event which should be fetched
+              -- ^ This bit refers to the direction in which messages
+              -- should be fetched.
+              --
+              -- If this argument is \'b\', then @n@ events which are
+              -- most recently sent should be returned.
+              --
+              -- If this argument is \'f\', then the @n@ events which
+              -- are earliest sent should be returned.
               -> Room
-              -- ^ The room from which events should be fetched
+              -- ^ This argument represents the room from which events
+              -- are fetched.
               -> Auth
-              -- ^ The authorisation information which is used to
-              -- authenticate the query
-              -> IO [a];
+              -- ^ This argument is the same old authorisation stuff.
+              -> IO (Either ErrorCode [a]);
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
-    process :: Response BS.ByteString -> [StdMess]
+    process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toMessage $ toValue k .! "{chunk}"
-      _   -> detroit k
-    --
-    toValue :: Response BS.ByteString -> Value
-    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-              getResponseBody
-    --
-    chunkMissing :: a
-    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                   \fetchEvents: The \"chunk\" field is absent!"
+      200 -> extractMessages . (.! "{chunk}") <$> toValue k
+      _   -> Left $ T.pack $ detroit' k
+    extractMessages :: [Value] -> [StdMess]
+    extractMessages = filter nonDef . map toMessage
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
@@ -82,7 +81,7 @@ instance Event StdMess where
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
 
--- | @toMessage k@ calls a functions which converts @k@ into a
+-- | @toMessage k@ calls a function which converts @k@ into a
 -- 'StdMess'.  Depending upon the \"type\" of @k@, any function of
 -- various functions may be called.
 toMessage :: Value -> StdMess;
@@ -97,10 +96,16 @@ toMessage k = case (k .! "{content:{msgtype}}" :: String) of
 -- | @valueToECF k@ describes the boilerplate portion of the Matrix
 -- message which @k@ represents.
 valueToECF :: Value
-           -- ^ A representation of the message whose boilerplate crap
-           -- should be described
+           -- ^ This value is a representation of the message whose
+           -- boilerplate junk should be described.
            -> EventCommonFields;
 valueToECF k = EventCommonFields {
+  -- \| Using @(.?)@ here is /mostly/ a waste of time; the values which
+  -- @valueToECF@ fetches MUST be present.
+  --
+  -- VARIK finds that accounting for cheesy-ass homeservers which do not
+  -- adhere to Matrix's client-server API is a waste of time which
+  -- probably just leads to the addition of some damn ugly source code.
   sender = Def.user {username = k .! "{sender}"},
   destRoom = Def.room {roomId = k .! "{room_id}"},
   eventId = k .! "{event_id}",
@@ -108,22 +113,22 @@ valueToECF k = EventCommonFields {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.text@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMTextToStdMess :: Value
-                    -- ^ The representation of the message which should
-                    -- become a 'StdMess'
+                    -- ^ This value represents the message which should
+                    -- become a 'StdMess'.
                     -> StdMess;
 valueMTextToStdMess k = Def.stdMess {
   body = k .! "{content:{body}}",
   fmtBody = k .? "{content:{formatted_body}}",
-  -- \^ The "formatted_body" field _should_ be
-  -- present... but _may_ not be present.
+  -- \^ The "formatted_body" field /should/ be present... but /may/ not
+  -- be present.
   boilerplate = valueToECF k
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.image@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMImageToStdMess :: Value
                      -- ^ The representation of the message which should
@@ -137,7 +142,7 @@ valueMImageToStdMess k = Def.stdMess {
     -- first glance seems a bit goofy.
     --
     -- However, using (.?) implies being able to handle some malformed
-    -- messages _and_ not needing to manually place values into the
+    -- messages /and/ not needing to manually place values into the
     -- 'Maybe' monad, which is nice.
     w = con .? "{info:{w}}",
     h = con .? "{info:{h}}",
@@ -151,11 +156,11 @@ valueMImageToStdMess k = Def.stdMess {
   con = k .! "{content}";
 
 -- | Where @k@ represents a @m.room.message@ of message type
--- @m.location@, @valueMTextToStdMess@ is a 'StdMess' which should be
+-- @m.location@, @valueMTextToStdMess k@ is a 'StdMess' which should be
 -- equivalent to @k@.
 valueMLocationToStdMess :: Value
-                        -- ^ The representation of the message which
-                        -- should become a 'StdMess'
+                        -- ^ This bit represents the message which
+                        -- should be represented as a 'StdMess'.
                         -> StdMess;
 valueMLocationToStdMess k = Def.stdMess {
   msgType = Location,
@@ -165,17 +170,17 @@ valueMLocationToStdMess k = Def.stdMess {
 };
 
 -- | Where @k@ represents a @m.room.message@ of message type @m.file@,
--- @valueMTextToStdMess@ is a 'StdMess' which should be equivalent to
+-- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
 valueMFileToStdMess :: Value
-                    -- ^ The representation of the message which should
-                    -- become a 'StdMess'
+                    -- ^ This thing represents the message which should
+                    -- become a 'StdMess'.
                     -> StdMess;
 valueMFileToStdMess k = Def.stdMess {
   msgType = Attach,
   body = k .! "{content:{body}}",
   -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ reuturns an IO-monadic value, using
+  -- 'Maybe'-monadic and @(.?)@ returns a 'Maybe'-monadic value, using
   -- @(.?)@ may be the best course of action.
   filename = k .? "{content:{filename}}",
   url = k .! "{content:{file}}"
@@ -183,21 +188,17 @@ valueMFileToStdMess k = Def.stdMess {
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
-  fetchEvents n d ms rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
     where
-    process :: Response BS.ByteString -> [Encrypted]
+    process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
-      200 -> filter nonDef $ map toEncrypted $ toValue k .! "{chunk}"
-      _   -> detroit k
+      200 -> extractEncrypted . (.! "{chunk}") <$> toValue k
+      _   -> Left $ T.pack $ detroit' k
     --
-    toValue :: Response BS.ByteString -> Value
-    toValue = fromMaybe chunkMissing . decode . BSL.fromStrict .
-              getResponseBody
+    extractEncrypted :: [Value] -> [Encrypted]
+    extractEncrypted = filter nonDef . map toEncrypted
     --
-    chunkMissing :: a
-    chunkMissing = error "Metal.MatrixAPI.LowLevel.FetchEvents.\
-                         \fetchEvents: The \"chunk\" field is absent!"
-    -- \| Using a "proper" @fromJSON@ thing is _possible_... but
+    -- \| Using a "proper" @fromJSON@ thing is /possible/... but
     -- involves a relatively great amount of effort and offers no real
     -- advantage over using @(.!)@ and company.
     --
@@ -219,5 +220,20 @@ instance Event Encrypted where
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
             "/messages?limit=" ++ show n ++ "&filter=%7B\"types\":\
             \%5B%22m.room.encrypted%22%5D%7D" ++
-            -- \^ "Yo, only select the unencrypted stuff."
+            -- \^ "Yo, only select the encrypted stuff."
             "&dir=" ++ [d];
+
+-- | Where @merleHaggard@ is a 'Response' whose body contains a
+-- "@chunk@" object, @toValue merleHaggard@ is 'Either' the content of
+-- the "@chunk@" object of this response or an 'ErrorCode' which
+-- indicates that this response lacks a "@chunk@" field for some stupid
+-- reason.
+toValue :: Response BS.ByteString -> Either ErrorCode Value
+toValue = maybeToEither . decode . BSL.fromStrict . getResponseBody
+  where
+  maybeToEither :: Maybe Value -> Either ErrorCode Value
+  maybeToEither = maybe (Left chunkMissing) Right
+  --
+  chunkMissing :: ErrorCode
+  chunkMissing = "Metal.MatrixAPI.LowLevel.FetchEvents.\
+                 \fetchEvents: The \"chunk\" field is absent!";

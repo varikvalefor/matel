@@ -1,6 +1,6 @@
 cabal-version: 2.4
 name:          matel
-version:       0.1.0.12
+version:       0.1.0.13
 synopsis:      TUI client for the Matrix instant messaging service.
 description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
@@ -17,10 +17,10 @@ description:   Matel is a currently incomplete Haskell-based Matrix
                The guidelines for contributing to Matel and for
                submitting bug reports are visible in README.md.
 bug-reports:   http://github.com/varikvalefor/matel/issues
-license:       BSD-3-Clause
+license:       Unlicense
 author:        Varik Valefor
 maintainer:    varikvalefor@aol.com
-copyright:     (c) Varik Valefor 2021.
+copyright:     (c) Varik Valefor 2022.
 category:      Chat
 
 library
@@ -35,13 +35,12 @@ library
     Metal.OftenUsedFunctions
     Metal.MatrixAPI.HighLevel
     Metal.MatrixAPI.LowLevel
-    Metal.Encrypted
+    Metal.Messages.Encrypted
     Metal.Messages.Standard
     Metal.Messages.EncryptedFile
     Metal.Messages.FileInfo
     Metal.Messages.ThumbnailInfo
     Metal.Default
-    Metal.FavoriteNoise
     Metal.EventCommonFields
     Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
   other-modules:
@@ -55,10 +54,8 @@ library
     Metal.MatrixAPI.LowLevel.RecordCombination
     Metal.MatrixAPI.LowLevel.FetchEvents
     Metal.MatrixAPI.LowLevel.HTTP
-    -- The following modules export stuff which is re-exported by
-    -- Metal.MatrixAPI.HighLevel.  These modules are hidden because the
-    -- exposure of these modules would be largely redundant.
-    Metal.MatrixAPI.LowLevel.Send
+  default-extensions:
+    StrictData
   other-extensions:
     OverloadedStrings
     TemplateHaskell

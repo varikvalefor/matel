@@ -1,19 +1,24 @@
--- | Module    : Metal.Encrypted
+{-# LANGUAGE OverloadedStrings #-}
+
+-- | Module    : Metal.Messages.Encrypted
 -- Description : Metal's datatype what represents encrypted events
 --               of the Matrix instant messaging service
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
 --
 -- Metal.Messages.Encrypted contains the source code of the
--- 'CryptoMess' record type.
-module Metal.Encrypted where
+-- 'Encrypted' record type.
+module Metal.Messages.Encrypted where
+import Data.Aeson;
+import Data.Maybe;
 import Metal.Base;
 import Metal.EventCommonFields;
 
--- | For all 'CryptoMess' @k@, @k@ is an encrypted Matrix message.
+-- | For all 'Encrypted' @k@, @k@ represents an encrypted Matrix
+-- message.
 data Encrypted = Encrypted {
   -- | @ciphertext k@ is the actual encrypted bit of @k@.
   ciphertext :: Stringth,
@@ -29,3 +34,16 @@ data Encrypted = Encrypted {
   -- contain.
   boilerplate :: EventCommonFields
 } deriving (Eq, Read, Show);
+
+-- This 'ToJSON' instance is placed into this file because GHC complains
+-- about "orphan instances" if this instance is placed into
+-- "Metal.MatrixAPI.LowLevel.Types".
+instance ToJSON Encrypted where
+  toJSON enk = object
+    [
+      "algorithm" .= algorithm enk,
+      "ciphertext" .= ciphertext enk,
+      "sender_key" .= sender_key enk,
+      "device_id" .= fromMaybe "" (device_id enk),
+      "session_id" .= fromMaybe "" (session_id enk)
+    ];

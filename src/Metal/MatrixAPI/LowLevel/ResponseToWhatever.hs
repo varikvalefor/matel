@@ -2,8 +2,8 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.ResponseToWhatever
 -- Description : HTTP response conversion gubbins
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
@@ -47,22 +47,22 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
   show (getResponseStatusCode r) ++ "; " ++ show (getResponseBody r);
 
 -- | If the status code of @k@ equals @200@, then @responseToMaybe k@
--- equals 'Nothing'.  @responseToMaybe k@ otherwise equals the 'String'
--- equivalent of @'responseToStringth' k@.
+-- equals 'Nothing'.  @responseToMaybe k@ otherwise equals
+-- @'responseToStringth' k@.
 responseToMaybe :: Show a
                 => Response a
-                -> Maybe String;
+                -> Maybe Stringth;
 responseToMaybe theResponse = case getResponseStatusCode theResponse of
   200 -> Nothing
-  _   -> Just $ T.unpack $ responseToStringth theResponse;
+  _   -> Just $ responseToStringth theResponse;
 
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a 'Stringth' which contains
 -- the status code of @k@.
 responseToLeftRight :: Response BS.ByteString
-                    -- ^ The 'Response' whose response code should be
-                    -- reported
+                    -- ^ This value is the 'Response' whose diagnostic
+                    -- crap should be reported.
                     -> Either Stringth Stringth;
 responseToLeftRight k = case getResponseStatusCode k of
   200 -> Right $ decodeUtf8 $ getResponseBody k

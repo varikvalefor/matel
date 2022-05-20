@@ -2,8 +2,8 @@
 
 -- | Module    : Main
 -- Description : Business end of MATELCLI
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
@@ -13,7 +13,7 @@
 -- @matelcli@ is written such that for all text-based features of Matel
 -- @k@, @matelcli@ is capable of doing @k@.
 --
--- The user-facing documentation/specification of the user interface is
+-- The user-facing documentation/specification of @matelcli@ is
 -- available in @matelcli@'s manual page, which is by default located at
 -- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
 -- is only of particular interest to men who wish to modify @matelcli@
@@ -21,6 +21,7 @@
 module Main where
 import Plegg;
 import GetAuth;
+import Data.Bool;
 import Text.Read;
 import Data.Maybe;
 import Metal.Base;
@@ -46,87 +47,113 @@ import qualified Data.ByteString.Lazy as BSL;
 
 -- | Chicken chow mein main...
 main :: IO ();
-main =
-  univac >> plegg >>
-  getAuthorisationDetails >>= \aufFile ->
-    getArgs >>= flip determineAction aufFile;
+main = ensureSecurity >> doStuff
+  where
+  ensureSecurity = univac >> plegg
+  doStuff = getAuthorisationDetails >>= runWithAuth
+  runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
--- | @determineAction@ is used to determine the action which should be
--- taken by @matelcli@, e.g., listing stuff or sending a message.
+-- | @determineAction@ determines the action which should be taken by
+-- @matelcli@, e.g., listing stuff or sending a message.
 determineAction :: [String]
-                -- ^ The input @matelcli@ command
+                -- ^ This argument is the @matelcli@ command, as read
+                -- from @argc@.
                 -> Auth
-                -- ^ Matel user's authorisation information
+                -- ^ This argument is the authorisation information of
+                -- the user of Matel.
                 -> IO ();
-determineAction [] a = error "I never thought that I would have a \
-  \stress-induced heart attack by the age of forty, but you're making \
-  \me rethink some things.";
-determineAction (command:stuff) a = case command of
-  "list"       -> list stuff a
-  "send"       -> Main.send stuff a
-  "grab"       -> grab stuff a
-  "login"      -> logIn a
-  "markread"   -> mkRead stuff a
-  "sync"       -> eddySmith stuff a >>= T.putStrLn
-  "join"       -> runJoin stuff a
-  "leave"      -> runLeave stuff a
-  "kick"       -> runKick stuff a
-  "createroom" -> createRoom' stuff a
-  "upload"     -> ooplawed stuff a
+determineAction [] = error "I never thought that I would have a \
+                           \stress-induced heart attack by the age of \
+                           \forty, but you're making me rethink some \
+                           \things.";
+determineAction (command:stuff) = case command of
+  "list"       -> list stuff
+  "send"       -> Main.send stuff
+  "grab"       -> grab stuff
+  "login"      -> logIn >=> T.putStrLn
+  "markread"   -> mkRead stuff
+  "sync"       -> eddySmith stuff >=> T.putStrLn
+  "join"       -> runJoin stuff
+  "leave"      -> runLeave stuff
+  "kick"       -> runKick stuff
+  "createroom" -> createRoom' stuff
+  "upload"     -> ooplawed stuff
+  "ban"        -> blam stuff
+  "unban"      -> deblam stuff
   _            -> error "An unrecognised command is input.  \
                   \RTFM, punk.";
 
--- | The "list" command is used to list stuff, e.g., rooms of which the
--- user is a member.
---
--- @list ["rooms"] a@ lists the Matrix rooms of which the user who is
--- specified in @a@ is a member.
---
--- @list ["communities"] a@ lists the Matrix communities of which the
--- user who is specified in @a@ is a member.
---
--- @list ["spaces"] a@ lists the Matrix spaces of which the user who is
--- specified in @a@ is a member.
-list :: [String] -> Auth -> IO ();
-list [] _ = error "You wimps suck.";
-list (k:_) a = case k of
-  "rooms"       -> memberRooms a >>= mapM_ (putStrLn . roomId)
-  "communities" -> memberComms a >>= mapM_ (putStrLn . commId)
-  "spaces"      -> memberSpaces a >>= mapM_ (putStrLn . spaceId)
-  _             -> error "The police will be listing your injuries \
-                   \if you don't stop inputting crap.";
+-- | @list@ implements the "list" command.
+list :: [String]
+     -- ^ The first argument specifies the type of the things which
+     -- should be listed.  The first element of the list is the only
+     -- part of the list which is actually used.
+     --
+     -- If the first element of this thing is "rooms", then the rooms of
+     -- which the specified user is a member are listed.
+     --
+     -- If the first element of this dingus is "spaces", then the spaces
+     -- of which the specified user is a member are listed.
+     --
+     -- If the first element of this thing is "communities",
+     -- then the communities of which the specified user is a member are
+     -- listed.
+     --
+     -- = "Yo, Why Is this Thing a List?"
+     --
+     -- Demanding that a singleton list\* is input seems a bit
+     -- ridiculous at first glance.  However, handling the extraction of
+     -- command line arguments within @list@ implies being able to have
+     -- a /somewhat/ short @'determineAction'@, which is nice.
+     --
+     -- \*Technically, the list /can/ have multiple elements.
+     -> Auth
+     -- ^ This argument is the authorisation information of the user
+     -- whose joined things are listed.  This user is /probably/ also
+     -- the user of @matelcli@.
+     -> IO ();
+list [] = error "You wimps suck.";
+list (k:_) = memberXIds >=> mapM_ putStrLn
+  where
+  possibly f = either (error . T.unpack) (map f)
+  memberXIds = case k of
+    "rooms"       -> possibly roomId <.> memberRooms
+    "communities" -> possibly commId <.> memberComms
+    "spaces"      -> possibly spaceId <.> memberSpaces
+    _             -> error "The pathologists will be listing your \
+                     \injuries if you don't stop inputting crap.";
 
 -- | @send@ implements the "send" command.
---
--- Via the account which is described in @n@,
--- @send ["text", foo] n@ sends a message whose body is the standard
--- input to the chatroom whose internal Matrix ID is @foo@.
---
--- Via the account which is described in @n@,
--- @send ["file", k, foo] n@ sends a message whose attachment is
--- @k@ to the chatroom whose internal Matrix ID is @foo@.
 send :: [String]
-     -- ^ The ['String']-based command-line arguments, e.g.,
-     -- @["text", "!hskonBonfjiIefqLUV:matrix.org"]@
+     -- ^ This bit is the ['String']-based command-line arguments of
+     -- @matelcli@, e.g., @["text", "!hskonBonfjiIefqLUV:matrix.org"]@.
+     --
+     -- If this value matches the pattern @["text", foo]@, then a
+     -- text-based message whose body is read from the standard is sent
+     -- to the Matrix room whose internal Matrix room ID is @foo@.
+     --
+     -- If this value matches the pattern @["file", filename, foo]@, then
+     -- the content of a file is read from the standard input.  This file
+     -- is uploaded to Matel's user's homeserver as @k@, and a link which
+     -- directs to this file is sent to the Matrix room whose internal ID
+     -- is @foo@.
      -> Auth
-     -- The information which is used to authenticate Matel's user
+     -- ^ This argument is the authorisation information.
      -> IO ();
-send k a
-  | k == [] = error "I need some arguments, fat-ass."
-  | length k < 2 = error "I thought that you were improving.  I now \
-                   \see that I was wrong.  Really, I should be mad at \
-                   \myself for apparently going insane by having some \
-                   \faith in you."
-  | otherwise = target >>= \t -> H.send t dest a >>= dispError
+send [] a = error "I need some arguments, fat-ass.";
+send [_] a = error "I thought that you were improving.  I now see that \
+                   \I was wrong.  Really, I should be mad at myself \
+                   \for apparently going insane by having some faith \
+                   \in you.";
+send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
-  target :: IO StdMess
-  target = case head k of
-    "text"     -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input}
-    "file"     -> uploadStdinGetID (k !! 1) a >>= \uploadID ->
+  getTarget :: IO StdMess
+  getTarget = case msgtype of
+    "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
+    "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
                   return Def.stdMess {
                     msgType = Attach,
-                    body = T.pack $ k !! 1,
+                    body = T.pack $ head k,
                     url = Just $ T.unpack uploadID,
                     fileInfo = Just Def.fileInfo {
                       mimetype = Just "text/plain"
@@ -137,81 +164,131 @@ send k a
     "location" -> T.getContents >>= \input ->
                   return Def.stdMess {
                     msgType = Location,
-                    geo_uri = Just $ T.pack $ k !! 1,
+                    -- \| Using @listToMaybe@ SHOULD be unnecessary, as
+                    -- @k@ SHOULD NOT be @null@.  However, using
+                    -- @listToMaybe@ implies not needing to manually
+                    -- place @head k@ into the 'Maybe' monad.
+                    geo_uri = T.pack <$> listToMaybe k,
                     body = input
                   }
     _          -> error "I ought to send you to the garbage disposal, \
-                        \ shit-tits.  Read the fucking manual."
+                        \shit-tits.  Read the fucking manual."
   --
   dest :: Room
   dest = Def.room {roomId = k !! destIndex}
     where
-    diargumentalStuff :: [String]
     diargumentalStuff = ["file", "location"]
-    --
-    destIndex :: Int
-    destIndex | head k `elem` diargumentalStuff = 2
-              | otherwise = 1;
-              -- \^ This bit is necessary because the number of
-              -- arguments of the "send file" command is not equal to
-              -- the number of arguments of the "send text" and "send
-              -- notice" commands.
+    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
+    -- \^ This bit is necessary because the number of arguments of the
+    -- "send file" command is not equal to the number of arguments of
+    -- the "send text" and "send notice" commands.
 
 -- | @uploadStdinGetID@ uploads some data which is read from the
 -- standard input to a homeserver, returning the URI of the uploaded
 -- file if everything goes according to plan.
 --
--- If NOT(EVERYTHING GOES ACCORDING TO PLAN), then @uploadStdinGetID@
--- probably just bursts into flame.
+-- = Output
+--
+-- If everything goes according to plan, then the MXC URI of the
+-- uploaded file is returned.
+--
+-- However, if NOT(EVERYTHING GOES ACCORDING TO PLAN), then
+-- @uploadStdinGetID@ probably just bursts into flame.
 uploadStdinGetID :: String
-                 -- ^ The name of the file which is uploaded
+                 -- ^ This bit is the name of the file which is
+                 -- uploaded.  This name need not be the current name of
+                 -- the file.
                  -> Auth
-                 -- ^ The authorisation information which is used to
-                 -- upload the file
+                 -- ^ This argument is the authorisation data of the
+                 -- user whose account uploads the file.
                  -> IO Stringth;
 uploadStdinGetID p90 = either (error . T.unpack) id <.> uploadThing
   where
-  uploadThing :: Auth -> IO (Either Stringth Stringth)
   uploadThing off = BSL.getContents >>= \c -> upload c p90 off;
 
--- | @grab@ is used to fetch and output the messages of a room.
---
--- @grab@'s argument follows the pattern [NUMBER OF MESSAGES, "EARLY" OR
--- "RECENT", JUNK DATA, ID OF DESIRED MATRIX ROOM].
-grab :: [String]
-     -- ^ The first 3 elements of this list are the decimal number of
-     -- messages which should be nabbed, "early" or "recent", some junk
-     -- data, and the internal Matrix ID of the room from which messages
-     -- should be nabbed.
+-- | @blam@ bans users... if the proper authorisation information is
+-- had.
+blam :: [String]
+     -- ^ This thing is a 3-list of the non-authorisation-related
+     -- arguments which are passed to @ban@.  The elements of this list
+     -- are as follows:
+     --
+     -- 1. The MXID of the user which should be banned
+     --
+     -- 2. The internal Matrix room ID of the room from which the user
+     --    is forcibly removed
+     --
+     -- 3. The justification for the removal of the user, e.g., "yo,
+     --    this dude stole my fuckin' 'nanners."
      -> Auth
-     -- ^ The authorisation information
+     -- ^ This thing is the authorisation information of the account
+     -- which is used to ban the /other/ user account.
      -> IO ();
-grab (decino:eeyore:jd:mexicid:_) a
+blam (u':r':j:_) = ban u r j >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
+
+-- | @deblam@ un-bans users... if the proper authorisation is had.
+deblam :: [String]
+       -- ^ This thing is a 2-list whose elements are as follows:
+       --
+       -- 1. The MXID of the user which should be un-banned
+       --
+       -- 2. The ID of the room @k@ such that the specified user should
+       --    no longer be banned from @k@
+       -> Auth
+       -- ^ This argument is the authorisation information which is...
+       -- the reader probably "knows the deal".
+       -> IO ();
+deblam (u':r':_) = unban u r >=> maybe (return ()) (error . T.unpack)
+  where
+  u = Def.user {username = u'}
+  r = Def.room {roomId = r'};
+deblam _ = error "The \"unban\" command demands 2 arguments, tubby.";
+
+-- | @grab@ is used to fetch and output the messages of a room.
+grab :: [String]
+     -- ^ This argument is a 4-list whose elements are as follows:
+     --
+     -- 1. The number of messages which should be fetched
+     --
+     -- 2. The word "early" or "recent"
+     --
+     -- 3. Junk data
+     --
+     -- 4. The Matrix ID of the Matrix room from which the messages are
+     --    fetched
+     -> Auth
+     -- ^ This bit is the authorisation information of the user account.
+     -> IO ();
+grab (decino:eeyore:jd:mexico:_) a
   | n < 0 = error "I need a natural number, not garbage."
   | n == 0 = error "Why in the hell would you want to take 0 messages?\
                    \  0 is not a natural number, anyway."
-  | otherwise = case eeyore of
-    "recent" -> recentMessagesFrom n room a >>= mapM_ print
-    "early"  -> earlyMessagesFrom n room a >>= mapM_ print
-    _        -> error "I'll grab you if you don't grab some sense."
+  | otherwise = nabMessages n destination a >>= mapM_ print
   where
+  nabMessages = case eeyore of
+    "recent" -> recentMessagesFrom
+    "early"  -> earlyMessagesFrom
+    _        -> error "I'll grab you if you don't grab some sense."
   -- \| This variable refers to the number of messages which should be
   -- fetched.
   n :: Integer
   n = fromMaybe (-42) $ readMaybe decino
   --
-  room :: Room
-  room = Def.room {roomId = mexicid};
+  destination :: Room
+  destination = Def.room {roomId = mexico};
 grab _ _ = error "Repent, motherfucker.";
 
--- | @mkRead [identifier] a@ marks the message whose identifier is
--- @identifier@ as having been read if this message exists.  @a@ is used
--- to authorise the request.
+-- | @mkRead@ marks messages as having been read.
 mkRead :: [String]
-       -- ^ [MESSAGE ID OF MESSAGE WHAT SHOULD DONE BE READ]
+       -- ^ This argument is a 1-list of the message ID of the message
+       -- which should be marked as having been read.
        -> Auth
-       -- ^ The authorisation information which is used to mark the
-       -- message as having been read.
+       -- ^ This bit is the authorisation information which is used to
+       -- mark the message as having been read.
        -> IO ();
 mkRead [] = error "Someone should knock you upside the head a few \
                   \times, punk.  Dismissed.";
@@ -226,19 +303,26 @@ mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
 -- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
 -- otherwise runs @error k@.
 dispError :: Maybe ErrorCode -> IO ();
-dispError = maybe (return ()) error;
+dispError = maybe (return ()) (error . T.unpack);
 
--- | @logIn k@ generates an authorisation token for the user which is
--- specified in @k@ and writes this authorisation token to the standard
--- output.
-logIn :: Auth -> IO ();
+-- | @logIn@ generates authorisation tokens.
+--
+-- If the authorisation token is generated successfully, then @logIn@
+-- adds this authorisation token to @$PATH/.config/matel@, writes the
+-- authorisation token to the standard output, and returns this
+-- authorisation token.  @logIn@ otherwise 'splodes.
+logIn :: Auth
+      -- ^ This bit is the authorisation information of the user for
+      -- which an authorisation token is generated.
+      -> IO T.Text;
 logIn = loginPass >=> either busticate addAndDisplay
   where
-  addAndDisplay :: T.Text -> IO ();
-  addAndDisplay toke = configFilePath >>= \path ->
-                       T.readFile path >>= \phile ->
-                       T.putStrLn toke >>
-                       T.writeFile path (addToken phile toke)
+  addAndDisplay :: T.Text -> IO T.Text
+  addAndDisplay toke = configFilePath >>= processPath
+    where
+    processPath path = T.readFile path >>= writeAndReturn path
+    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = lineFilter notToken phile `T.append` toke'
@@ -247,37 +331,61 @@ logIn = loginPass >=> either busticate addAndDisplay
     toke' = T.append "\nauthtoken: " toke
     lineFilter f = T.unlines . filter f . T.lines
   --
-  busticate :: T.Text -> IO ()
+  beginsWith :: T.Text -> T.Text -> Bool
+  beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)
+  --
+  busticate :: T.Text -> IO T.Text
   busticate = error . ("logIn: " ++) . T.unpack;
 
 -- | @eddySmith@ is a command-line-friendly wrapper for @'sync'@.
 --
--- If @t == []@, then @eddySmith t a@ sends a "since"-less "sync"
--- query to the Matrix homeserver.  @eddySmith t a@ otherwise sends a
--- "sync" query whose "since" value equals @t !! 1@.
+-- = Output
+--
+-- The output is the verbatim body of the homeserver's response to the
+-- "sync" request.
 eddySmith :: [String]
-          -- ^ The @matelcli@ command, e.g., "@sync bullshit@"
+          -- ^ This argument determines the "since" value which is
+          -- attached to the "sync" request.  If this argument is @[]@,
+          -- then no "since" value is attached.  If this argument is
+          -- some other thing, then the first element of this argument
+          -- is used as the "since" value of the sync request.
           -> Auth
-          -- ^ The authorisation information of Matel's user
+          -- ^ This argument, as ever, is the boring boilerplate
+          -- authorisation information.
           -> IO Stringth;
-eddySmith t a = either (error . T.unpack) id <$> sync since a
-  where
-  since :: Maybe String
-  since
-    | t == [] = Nothing
-    | otherwise = Just $ head t;
+eddySmith t = either (error . T.unpack) id <.> sync (listToMaybe t);
 
--- | @runJoin@ is a relatively command-line-friendly wrapper for 'join'.
+-- | @runJoin@ is a relatively command-line-friendly wrapper for
+-- @'join'@.
 runJoin :: [String]
-        -- ^ The arguments of the @matelcli@ command, e.g.,
-        -- @["!UxQFGskJBlUowxdIxQ:tapenet.org"]@
+        -- ^ This argument contains the command-line arguments of the
+        -- @join@ command.  This thing should be a 1-list or a 4-list.
+        --
+        -- If thids argument is a 1-list, then this 1-list simply
+        -- contains the internal Matrix ID of the room which should be
+        -- joined.
+        --
+        -- If some user has sent an invitation which permits joining
+        -- the room which should be joined, then this argument should be
+        -- a 4-list whose elements are as follows:
+        --
+        -- 1. The internal matrix ID of the room which the user should
+        --    join
+        --
+        -- 2. The username of the user which sends the invite to the
+        --    user which should join the room
+        --
+        -- 3. The state key of the invitation which the user receives
+        --
+        -- 4. The signature of the invite which is sent
         -> Auth
-        -- ^ The authorisation information of Matel's user
+        -- ^ This thing, as ever, is the standard bullshit authorisation
+        -- crap.
         -> IO ();
-runJoin [] a = error "Idiot!  How am I to join an unspecified room for \
-                     \you?  My strength is simplicity.  I can't work \
-                     \with this shit.";
-runJoin t a = join room inviteInfo a >>= dispError
+runJoin [] = error "Idiot!  How am I to join an unspecified room for \
+                   \you?  My strength is simplicity.  I can't work \
+                   \with this shit.";
+runJoin t = join room inviteInfo >=> dispError
   where
   room :: Room
   room = Def.room {roomId = t !! 0}
@@ -295,18 +403,19 @@ runJoin t a = join room inviteInfo a >>= dispError
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.
 --
--- The first element of the first argument is the room ID of the room
--- which the user should leave.  This element is the only element which
--- must be contained within this argument -- this argument is only of
--- type ['String'] and not 'String' because just making this thing use
--- a ['String'] facilitates writing a clean @'determineAction'@.
+-- = Processing
 --
--- The second argument is the authorisation information which is used to
--- actually leave the specified room.
+-- An error is encountered iff an error is thrown.
 runLeave :: [String]
-         -- ^ [ROOM ID OF THE ROOM WHAT SHOULD BE LEFT]
+         -- ^ The first element of this list is the room ID of the room
+         -- which the user should leave.  This element is the only
+         -- element which must be contained within this argument this
+         -- argument is only of type ['String'] and not 'String' because
+         -- just making this thing use a ['String'] facilitates writing
+         -- a clean @'determineAction'@.
          -> Auth
-         -- ^ Matel user's authorisation information
+         -- ^ This argument is the authorisation information which is
+         -- used to actually leave the specified room.
          -> IO ();
 runLeave (x:_) = leave Def.room {roomId = x} >=> dispError;
 runLeave _ = error "You'd best leave... or stop giving me \
@@ -315,17 +424,16 @@ runLeave _ = error "You'd best leave... or stop giving me \
 -- | @runKick@ is a relatively command-line-friendly interface for the
 -- @'kick'@ command.
 --
--- @runKick [user, room, reason]@ kicks user @user@ from the Matrix room
--- whose internal Matrix ID is @room@, justifying the kicking with
--- @reason@.  If @reason == []@, then no reason is supplied.
+-- = Processing
+--
+-- An error is encountered iff an error is thrown.
 runKick :: [String]
         -- ^ The first 3 elements of this list are the room ID of the
-        -- room from which the user should be removed, the reason for
-        -- the removal of this user, and the reason for the removal of
-        -- this user.  If the third element equals @""@, then no reason
-        -- is supplied.
+        -- room from which the user should be removed, and the reason
+        -- for the removal of this user.  If the third element equals
+        -- @""@, then no reason is supplied.
         -> Auth
-        -- The information which is used to authorise the kicking of the
+        -- ^ This argument is /still/ the same old authorisation stuff.
         -- user
         -> IO ();
 runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
@@ -335,14 +443,31 @@ runKick (uninat:cell:remo:_) = kick user room remo >=> dispError
 runKick _ = error "I'll kick YOUR ass if you don't start giving \
                   \me some actual directions."
 
--- | @createRoom [name_, topic_, permission_] a@ should create a Matrix
--- room @k@ such that @roomName k == name_@ and @topic k == topic_@.  If
--- @permission_ == "private"@, then a private room should be created.
--- If @permission_ == "public"@, then a public room should be created.
+-- | @createRoom'@ creates new Matrix rooms.
+--
+-- = Processing
+--
+-- If the creation of this room is a success, then the internal Matrix
+-- ID of this Matrix room is written to the standard output.  If
+-- something violently falls apart, then an error is thrown.
 createRoom' :: [String]
-            -- ^ The command-line arguments
+            -- ^ This argument is a 3-list whose elements, are as
+            -- follows:
+            --
+            -- 1. The display name of the Matrix room which should be
+            --    created
+            --
+            -- 2. The topic message of the Matrix room which should be
+            --    created
+            --
+            -- 3. Depending upon whether the new room should be private
+            --    or public, "private" or "public", respectively
             -> Auth
-            -- ^ The information which is used to authorise the request
+            -- ^ This argument is a very imaginative representation of
+            -- a turtle... or just the same old authorisation bullshit.
+            --
+            -- "Every day is exactly the same.  There is no love here,
+            -- and there is no pain."
             -> IO ();
 createRoom' [] = error "";
 -- The above error message is a particularly smart-ass error message.
@@ -350,38 +475,44 @@ createRoom' [] = error "";
 -- The error message in question might not be particularly enlightening,
 -- but reading the manual page should yield the desired enlightenment.
 createRoom' [_] = error "Your one-word demands are starting to piss me \
-                  \off.";
+                        \off.";
 createRoom' [_,_] = error "Should I just assume that you want to make \
-                    \all of your communications public?";
+                          \all of your communications public?";
 createRoom' (nm:tpc:pbl:_) = createRoom rm pbl >=> display
   where
-  rm :: Room
-  rm = Def.room {roomName = T.pack nm, topic = T.pack tpc}
+  toMaybe :: String -> Maybe Stringth
+  toMaybe k = bool (Just $ T.pack k) Nothing $ null k
   --
-  display :: Either String Room -> IO ()
-  display = either error (putStrLn . roomId);
+  rm = Def.room {roomName = toMaybe nm, topic = toMaybe tpc}
+  display = either (error . T.unpack) (putStrLn . roomId);
 
--- | @messToHumanReadable k@ is roughly equivalent to @show k@.
--- However, VARIK finds that the readability of @messToHumanReadable k@
--- is greater than the readability of @show k@.
+-- | @messToHumanReadable@ is roughly equivalent to @show@.  However,
+-- VARIK finds that the readability of @messToHumanReadable@'s output
+-- is greater than the readability of @show@'s output.
 messToHumanReadable :: StdMess
-                    -- ^ The message which should be described
+                    -- ^ This argument is the message whose
+                    -- "human-readable" representation is desired.
                     -> String;
-messToHumanReadable k =
-  "At " ++ show (origin_server_ts $ boilerplate k) ++ ", " ++
-  username (sender $ boilerplate k) ++ " sends the following " ++
-  show (msgType k) ++ ": " ++ show (body k);
+messToHumanReadable k = timespec ++ name ++ sendIntro ++ show (body k)
+  where
+  timespec = "At " ++ show (origin_server_ts $ boilerplate k) ++ ", "
+  name = username $ sender $ boilerplate k
+  sendIntro = " sends the following " ++ show (msgType k) ++ ": ";
 
--- | @ooplawed (filename:_) a@ uploads the file whose content is read
--- from the standard input to the homeserver of @a@.  The homeserver
--- is told that the filename of the uploaded file is @filename@.
+-- | @ooplawed@ uploads a file which is read from the standard input to
+-- the homeserver of Matel's user.
+--
+-- = Uploading Unencrypted Files
 --
 -- Users of @ooplawed@ should note that @ooplawed@ uploads UNENCRYPTED
--- files.  When the @protocol@ is HTTPS, @ooplawed@ _is_ TLS-protected.
--- However @ooplawed@ does _not_ support end-to-end encryption.
+-- files.  When the @protocol@ is HTTPS, @ooplawed@ /is/ TLS-protected.
+-- However, @ooplawed@ does /not/ support "true" end-to-end encryption.
 ooplawed :: [String]
-         -- ^ The @'tail'@ of the command-line arguments
+         -- ^ The first element of this list is the desired name of the
+         -- uploaded file.  No other elements of this list are actually
+         -- used.
          -> Auth
-         -- ^ The authorisation information
+         -- ^ Authorisation information... ZZZ...
          -> IO ();
 ooplawed (f:_) = uploadStdinGetID f >=> T.putStrLn;
+ooplawed _ = error "Hey, dummy, \"upload\" demands 1 argument.";

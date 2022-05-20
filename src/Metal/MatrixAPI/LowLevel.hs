@@ -2,8 +2,8 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel
 -- Description : Low-level interface to the Matrix API
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -13,7 +13,14 @@
 --
 -- Additionally, the functions of this module do NOT transparently
 -- support encryption.
+--
+-- The reader should note that this module is currently unfinished and
+-- /CANNOT/ access all functionalities of the Matrix API.
 module Metal.MatrixAPI.LowLevel (
+  -- * Classes
+  --
+  -- $classes
+  Event(..),
   -- * Authorisation Crap
   --
   -- $authorisation
@@ -46,11 +53,11 @@ module Metal.MatrixAPI.LowLevel (
   -- * Functions what Send Stuff
   --
   -- $spam
-  module Metal.MatrixAPI.LowLevel.Send,
+  sendEvent,
   -- * Functions what Hide Stuff
   --
   -- $cryptoShit
-  module Metal.MatrixAPI.LowLevel.Crypto,
+  Metal.MatrixAPI.LowLevel.decrypt,
   -- * Functions what Describe Stuff
   --
   -- $genericDescribe
@@ -64,19 +71,18 @@ import Metal.User;
 import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
+import Metal.Messages.Encrypted;
 import Network.HTTP.Simple;
+import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 import qualified Data.Text as T;
-import Network.HTTP.Types.Header;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
-import Metal.MatrixAPI.LowLevel.Send;
 import Metal.MatrixAPI.LowLevel.Types;
 import qualified Data.Aeson.Lens as A;
 import qualified Metal.Default as Def;
 import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
-import Metal.MatrixAPI.LowLevel.Crypto;
 import Network.HTTP.Types.URI (urlEncode);
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
@@ -84,43 +90,34 @@ import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- I need T.P. for my bunghole!
 
--- | @stillUnfinishedStayTuned@ exists only if Matel is useless as a
--- Matrix client.
---
--- @stillUnfinishedStayTuned@ is removed when proper Matrix API support
--- is added to Metal.
-stillUnfinishedStayTuned :: ();
-stillUnfinishedStayTuned = ();
-
 -- $authorisation
 --
 -- This section of this module contains some functions which perform
 -- authorisation-related tasks, e.g., fetching new authorisation tokens.
 
--- | If @username k@ and @password k@ are defined, then @login k@
--- fetches an authorisation token for Matrix user @k@.
+-- | @loginPass@ generates a new authorisation token for Matel's user.
 --
--- The 'Right' value of @loginPass k p@ equals the authorisation token
--- which results from signing in to Matrix.  The 'Left' value of
--- @loginPass k p@ exists only if an error is present... and equals a
--- description of such an error.
+-- = Output
+--
+-- If an authorisation token is successfully generated, then this
+-- authorisation token is returned as a 'Right' 'Stringth'.
+--
+-- If something fails such that no authorisation token can be nabbed,
+-- then a 'Left' 'ErrorCode' which describes this failure is returned.
 loginPass :: Auth
-          -- ^ The authorisation information of Matel's user
-          -> IO (Either Stringth Stringth);
+          -- ^ This bit is the authorisation information of the user for
+          -- which an authorisation token is generated.
+          -> IO (Either ErrorCode Stringth);
 loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
   where
-  querr :: String
   querr = "_matrix/client/r0/login"
-  --
-  responseToLeftRight' :: Response BS.ByteString
-                       -> Either Stringth Stringth
   responseToLeftRight' j = case getResponseStatusCode j of
-    -- J
-    200 -> Right $ bodyValue Q..! "{access_token}"
+    200 -> mayB2Eit $ (Q..! "{access_token}") <$> bodyValue j
     _   -> responseToLeftRight j
-    where bodyValue = fromJust $ Q.decode $ BSL.fromStrict $
-            getResponseBody j
-  logreq :: BSL.ByteString
+  mayB2Eit = maybe (Left invalidBodyMsg) Right
+  invalidBodyMsg = "loginPass: The body of the response cannot be \
+                   \parsed as valid JSON."
+  bodyValue = Q.decode . BSL.fromStrict . getResponseBody
   logreq = fromString $
     "{\n\t" ++
       "\"type\": \"m.login.password\",\n\t" ++
@@ -135,31 +132,23 @@ loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
 -- | @sync@ accesses the Matrix "sync" function, returning the result
 -- of this synchronisation.
 --
--- @sync Nothing g@ runs a parameterless "sync".
--- For all other @k@, @sync k g@ sends a "sync" query to Matrix such
--- that the "since" parameter of this query equals @fromJust k@.
+-- = Output
 --
--- The 'Right' value of @sync k g@ equals the raw output of the "sync"
--- command.  The 'Left' value of @sync k g@ exists only if an error is
--- present... and equals a description of such an error.
+-- If everything goes according to plan, then the raw body of the "sync"
+-- response is 'Right'ly returned.  Otherwise, a description of some
+-- breakage is returned as a 'Left' 'Stringth'.
 sync :: Maybe String
-     -- ^ The desired value of the query's "since" field
+     -- ^ If a "since" value should be attached, then this value is
+     -- 'Just' this "since" value.  This value should otherwise be
+     -- 'Nothing'.
      -> Auth
-     -- ^ The authorisation deets
+     -- ^ This argument is /still/ just authorisation stuff.
      -> IO (Either Stringth Stringth);
 sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
   where
-  querr :: String
   querr = "_matrix/client/r0/sync"
-  --
-  syncreq :: BSL.ByteString
-  syncreq
-    | isNothing since = ""
-    | otherwise = fromString $
-      "{\"since\": \"" ++ fromJust since ++ "\"}";
-    -- \^ Using this thing instead of @maybe@ looks a bit cheesy.
-    -- However, the line length of the @maybe@-based equivalent is
-    -- greater than the maximum line length of this cheesy thing.  Stet.
+  syncreq = maybe "" encapsulate since
+  encapsulate teavea = fromString $ "{\"since\": \"" ++ teavea ++ "\"}";
 
 -- $membershipDescribe
 --
@@ -168,63 +157,73 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 --
 -- Although this module is called \"Metal.MatrixAPI.LowLevel\", most
 -- functions which are contained within this section should be
--- _reasonably_ high-level.
+-- /reasonably/ high-level.
 
--- | @joinedRooms k@ sends the "joined_rooms" query to the homeserver of
--- @k@, authenticating as @k@.
+-- | @joinedRooms@ returns a list of 'Room's of which Matel's user is a
+-- member... or an 'ErrorCode'.
 --
--- The 'Right' value of @joinedRooms k g@ equals the authorisation
--- token which results from signing in to Matrix.  The 'Left' value of
--- @joinedRooms k@ exists only if an error is present... and equals a
--- description of such an error.
+-- = Output
+--
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Room's is 'Right'ly returned.  Otherwise, a 'Left' ErrorCode' which
+-- describes the problem which occurs is returned.
+--
+-- = Notes
 --
 -- The output 'Room' records are NOT completely filled; only the
 -- @roomId@ bits are actually defined.
-joinedRooms :: Auth -> IO (Either Stringth [Room]);
+joinedRooms :: Auth
+            -- ^ This bit is the authorisation information of the user
+            -- whose joined rooms are listed.
+            -> IO (Either ErrorCode [Room]);
 joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
   where
-  processResponse :: Response BS.ByteString -> Either Stringth [Room]
-  processResponse response
-    | getResponseStatusCode response == 200 = Right $ map toRoom $
-      (Q..! "{joined_rooms}") $ fromJust $ Q.decode $ BSL.fromStrict $
-      getResponseBody response
-    | otherwise = Left $ responseToStringth response
-  --
-  querr :: String
+  toEither = maybe (Left "joinedRooms: Decoding fails!") Right
+  maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
   querr = "_matrix/client/r0/joined_rooms"
-  --
-  toRoom :: String -> Room
-  toRoom k = Def.room {roomId = k};
+  toRoom k = Def.room {roomId = k}
+  processResponse r = case getResponseStatusCode r of
+    200 -> toEither $ maybeRooms $ BSL.fromStrict $ getResponseBody r
+    _   -> Left $ responseToStringth r;
 
--- | @joinedSpaces k@ sends the "not yet implemented" query to the
--- homeserver of @k@, authenticating as @k@.
+-- | @joinedSpaces@ fetches a list of the 'Space's of which Matel's user
+-- is a member.
 --
--- The 'Right' value of @joinedRooms k g@ equals a list of the 'Space's
--- which Matel's user has joined.  The 'Left' value of @joinedRooms k@
--- exists only if an error is present... and equals a description of
--- this error.
+-- = Output
+--
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Space's is 'Right'ly returned.  Otherwise, a 'Left' 'ErrorCode'
+-- which describes the problem which occurs is returned.
+--
+-- = Notes
 --
 -- The output 'Space' records are NOT completely filled; only the
 -- @spaceId@ bits are non-default.
 joinedSpaces :: Auth
-             -- ^ The authorisation information of Matel's user
-             -> IO (Either Stringth [Space]);
-joinedSpaces a = error "joinedSpaces is unimplemented.";
+             -- ^ This argument is the authorisation information of the
+             -- user whose joined spaces are listed.
+             -> IO (Either ErrorCode [Space]);
+joinedSpaces _ = pure $ Left "joinedSpaces is unimplemented.";
 
--- | @joinedComms k@ sends the "not yet implemented" query to the
--- homeserver of @k@, authenticating as @k@.
+-- | @joinedComms@ fetches a list of the 'Community's -- eugh -- of
+-- which Matel's user is a member.
 --
--- The 'Right' value of @joinedComms k g@ equals a list of the Matrix
--- communities which Matel's user has joined. The 'Left' value of
--- @joinedComms k@ exists only if an error is present... and equals a
--- description of this error.
+-- = Output
 --
--- The output 'Community' records are NOT completely filled; only the
--- @spaceId@ bits are non-default.
+-- If the fetching of the list of spaces works fine, then this list of
+-- 'Commnunity's -- again, eugh -- is 'Right'ly returned.  Otherwise, a
+-- 'Left' ErrorCode' which describes the problem which occurs is
+-- returned.
+--
+-- = Notes
+--
+-- The output 'Space' records are NOT completely filled; only the
+-- @commId@ bits are non-default.
 joinedComms :: Auth
-            -- ^ The authorisation information of Matel's user
-            -> IO (Either Stringth [Community]);
-joinedComms a = error "joinedComms is unimplemented.";
+            -- ^ This value is the authorisation information of the user
+            -- whose joined communities are listed.
+            -> IO (Either ErrorCode [Community]);
+joinedComms _ = pure $ Left "joinedComms is unimplemented.";
 
 -- $membershipDefine
 --
@@ -232,31 +231,30 @@ joinedComms a = error "joinedComms is unimplemented.";
 -- not arbitrary Matrix users are members of arbitrary Matrix objects,
 -- e.g., rooms and spaces.
 
--- | Where @a@ is the authorisation information of Matel's user, @i@ is
--- the 3-tuple (USER WHICH SENDS INVITE, STATE KEY OF INVITE, SIGNATURE
--- OF INVITE), and @t@ is a 'Room' whose @roomId@ value is appropriately
--- defined, @join t i a@ sends the
--- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/join@" command to
--- Matel's user's homeserver, thereby making Matel's user join the
--- specified room @t@.
+-- | @join@ is used to join Matrix rooms.
+--
+-- = Output
 --
 -- If the command is successful, then the output is Nothing.  The output
 -- otherwise equals a terse description of the error.
 join :: Room
      -- ^ The 'Room' which should be joined
      -> Maybe (User, String, String)
-     -- ^ The user which sends the invite, the state key of the invite,
-     -- and the signature of the invite, respectively, if the room is
-     -- not public -- otherwise, 'Nothing'
+     -- ^ If the room which should be joined is public, then this value
+     -- should be 'Nothing'.
+     --
+     -- If the room which should be joined is /private/, then this value
+     -- is 'Just' a 3-tuple @(a,b,c)@, where @a@ is a description of the
+     -- user which sends an (invite to the room) @bk@ to the
+     -- authenticated @b@ is the state key of the aforementioned invite,
+     -- and @c@ is the signature of the aforementioned invite.
      -> Auth
-     -- ^ The authorisation information of Matel's user
-     -> IO (Maybe String);
+     -- ^ This value is the authorisation information of the user which
+     -- joins the specified room.
+     -> IO (Maybe ErrorCode);
 join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
   where
-  querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
-  --
-  joinReq :: BSL.ByteString
   joinReq
     | isNothing i = fromString ""
     | otherwise = fromString $
@@ -275,140 +273,103 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
       -- Manually creating a JSON query is a bit cheesy.  But at least
       -- the speed of the compilation of this thing is greater than the
       -- speed of the compilation of the Aeson equivalent.
-  inviter :: User
   inviter = maybe Def.user (\(a',_,_) -> a') i
-  --
-  inviteStateKey :: String
   inviteStateKey = maybe "" (\(_,b,_) -> b) i
-  --
-  signature :: String
   signature = maybe "" (\(_,_,c) -> c) i;
 
--- | @kick@ implements the Matrix API's
--- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/kick@" command.
+-- | @kick@ non-permanently removes users from Matrix rooms.
 --
--- The first argument describes the user which should be kicked.  Only
--- the @username@ field is used.
+-- = Output
 --
--- The second argument describes the room from which the user should be
--- removed.  Only the @roomId@ field is used.
---
--- The third argument is the reason for the user's removal, e.g., "Your
--- e-mail addresses offend me."
---
--- The fourth argument is the authorisation information which is used
--- to run the command.
---
--- An error message is provided iff an error is encountered.
+-- If an error is encountered, then a description of this error is
+-- 'Just' returned.  Otherwise, an IO-monadic 'Nothing' is output.
 kick :: User
-     -- ^ A description of the user which should be "kicked"
+     -- ^ This thing represents the user which is to be kicked.  Only
+     -- the @username@ field of this record is used.
      -> Room
-     -- ^ The room from which the user should be removed
+     -- ^ This value is a representation of the Matrix room from which
+     -- the specified user is removed.  Only the @roomId@ value is used.
      -> String
-     -- ^ The reason for the removal of the user
+     -- ^ This bit is the reason for the removal of the user, e.g.,
+     -- "[y]our e-mail addresses offend me."
      -> Auth
-     -- ^ The authorisation information
-     -> IO (Maybe String);
+     -- ^ The final argument is the authorisation information of the
+     -- user which attempts to kick the other user.
+     -> IO (Maybe ErrorCode);
 kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
   where
-  querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
-  --
-  kickRq :: BSL.ByteString
-  kickRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  kickRq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "\"user_id\": " ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
--- | @ban@ implements the Matrix API's
--- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/ban@" command.
+-- | @ban@ "permanently" removes Matrix users from Matrix rooms.
 --
--- An error message is provided iff an error is encountered.
+-- = Output
 --
--- The first argument describes the user which should be banned.  Only
--- the @username@ field is used.
---
--- The second argument describes the room from which the user should be
--- banned.  Only the @roomId@ field is used.
---
--- The third argument is the reason for the banning of the user, e.g.,
--- "Your e-mail addresses offend me."
---
--- The fourth argument is the authorisation information which is used
--- to run the command.
+-- If some error, e.g., "hey, lard-ass, you can't ban the admin if you
+-- yourself are banned", is encountered, then a description of this
+-- error is 'Just' output.  Otherwise, 'Nothing' is returned.
 ban :: User
-    -- ^ A description of the user which should be banned
+    -- ^ This value represents the user which should be banned.
+    -- @username@ is the only value which is used.
     -> Room
-    -- ^ The room from which the user should be banned
+    -- ^ This record represents the room from which the user is banned.
+    -- @roomId@ is the only value which is used.
     -> String
-    -- ^ The reason for the banning of the user
+    -- ^ This bit is the justification for the banning of the user,
+    -- e.g., "this dude killed me".
     -> Auth
-    -- ^ The authorisation information
-    -> IO (Maybe String);
+    -- ^ This argument is the authorisation information of the user
+    -- which kicks the other user.
+    -> IO (Maybe ErrorCode);
 ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   where
-  querr :: String
-  querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/ban"
-  --
-  banReq :: BSL.ByteString
-  banReq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ ",\n\t" ++
-      "\"reason\": " ++ show m ++ "\n" ++
-    "}";
+  querr = "_matrix/client/v3/rooms/" ++ roomId rome ++ "/ban"
+  banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
+  st_user_id = "\"user_id\":" ++ show (username tarjay)
+  st_reason = "\"reason\": " ++ show m;
 
--- | @unban@ implements the Matrix API's
--- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/unban@" command.
+-- | @unban@ reverses users' being @'ban'@ned.
 --
--- The first argument describes the user which should be unbanned.  Only
--- the @username@ field is used.
+-- = Output
 --
--- The second argument describes the room from which the user should be
--- unbanned.  Only the @roomId@ field is used.
---
--- The third argument is the authorisation information which is used
--- to run the command.
---
--- An error message is provided iff an error is encountered.
+-- If some error, e.g., "yo, tubby, you can't un-ban yourself", is
+-- encountered, then a description of this error is 'Just' output.
+-- Otherwise, 'Nothing' is returned.
 unban :: User
-      -- ^ A description of the user which should be banned
+      -- ^ This argument represents the Matrix user which should be
+      -- un-banned.  @username@ is the only value which is used.
       -> Room
-      -- ^ The room from which the user should be banned
+      -- ^ This bit represents the Matrix room from which the
+      -- aforementioned Matrix user should be un-banned. @roomId@ is
+      -- the only value which is used.
       -> Auth
-      -- ^ The authorisation information
-      -> IO (Maybe String);
+      -- ^ This record is the authorisation information of the user
+      -- which un-bans the other user.
+      -> IO (Maybe ErrorCode);
 unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
   where
-  querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
-  --
-  unbanRq :: BSL.ByteString
-  unbanRq = fromString $
-    "{\n\t" ++
-      "\"user_id\": " ++ show (username tarjay) ++ "\n" ++
-    "}";
+  unbanRq = fromString ur'
+  ur' = unwords ["{", "\"user_id\":", show $ username tarjay, "}"];
 
--- | @leave@ implements the Matrix API's
--- "@POST \/_matrix\/client\/r0\/rooms\/{roomId}\/leave@" command.
+-- | @leave@ is used to leave Matrix rooms.
 --
--- The first argument specifies the room which the user leaves.  Only
--- the @roomId@ value must be defined.
+-- = Output
 --
--- The second argument is the authorisation information which is used to
--- actually leave the room.
---
--- If an error is encountered, then a 'Just' 'String' which describes
--- this error is output.  If no error is encountered, then 'Nothing' is
--- returned.
+-- If an error is encountered, then an 'ErrorCode' which describes
+-- this error is 'Just' output.  If no error is encountered, then
+-- 'Nothing' is returned.
 leave :: Room
-      -- ^ The room which should be left
+      -- ^ This argument represents the room which the user should
+      -- leave.  @roomId@ is the only value which is used.
       -> Auth
-      -- ^ The authorisation information
-      -> IO (Maybe String);
+      -- ^ This bit is the authorisation information of the user which
+      -- leaves the room.
+      -> IO (Maybe ErrorCode);
 leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
   where
-  querr :: String
   querr = "_matrix/client/r0/rooms/" ++ roomId lamersPalace ++ "/leave";
 
 -- $digitalDisplay
@@ -419,15 +380,11 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 
 -- | @getDisplayName@ implements the Matrix API's
 -- "@GET \/_matrix\/client\/r0\/profile\/{userId}\/displayname@"
--- command.
+-- command, fetching the username of the specified 'User'.
 --
--- The first argument describes the user whose display name should be
--- fetched.  Only the @username@ field is used.
+-- = Output
 --
--- The second argument describes the user of Matel.  This value is used
--- to determine the FQDN of the server which should be queried.  Because
--- no actual authorisation information is used, only the @homeserver@
--- value must be specified.
+-- == 'Right' Values
 --
 -- If the query returns a status code of 200, then the resulting
 -- @displayname@ is added to the input 'User' value and returned.
@@ -436,103 +393,113 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 -- assumes that the user has not set a display name and returns the
 -- input thing @k@ such that @displayname k == username k@.
 --
+-- == 'Left' Values
+--
 -- Where K denotes the set of all errors which @getDisplayName@ can
 -- encounter, for all l in K, @getDisplayName@ encounters l iff a
 -- 'Left' 'String' which describes l is output.
 getDisplayName :: User
-               -- ^ The user whose display name is fetched
+               -- ^ This argument describes the user whose display name
+               -- should be fetched.  @username@ is the only field which
+               -- is actually used.
                -> Auth
-               -- ^ The authorisation information of Matel's user, used
-               -- to determine the server which should be contacted
-               -> IO (Either String User);
+               -- ^ This argument describes the user of Matel.
+               --
+               -- This value is used to determine the FQDN of the server
+               -- which should be queried.  Because no actual
+               -- authorisation information is needed, @homeserver@ is
+               -- the only field which is actually used.
+               -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   where
-  querr :: String
+  toEither = maybe (Left failedDecodeMsg) Right
+  failedDecodeMsg = "getDisplayName: The decoding process fails."
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
   --
-  toDispName :: Response BS.ByteString -> Stringth
-  toDispName = dnr_displayname . fromJust . A.decode .
+  toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
+  toDispName = toEither . (dnr_displayname <.> A.decode) .
                BSL.fromStrict . getResponseBody
   --
-  processResponse :: Response BS.ByteString -> Either String User
-  processResponse r =
-    case getResponseStatusCode r of
-      200 -> Right Def.user {displayname = toDispName r}
-      404 -> Right Def.user {displayname = T.pack $ username u}
-      -- This "404" thing accounts for users whose display names are
-      -- undefined.
-      _   -> Left $ T.unpack $ responseToStringth r;
-      -- This case accounts for all situations which SHOULD NOT occur,
-      -- e.g., "this user does not exist" and "yo, the server done
-      -- broke".  Such responses should raise "red flags"; something has
-      -- gone wrong within this module, or the program which uses this
-      -- module is implemented poorly.  Alternatively, the homeserver
-      -- might just be a piece of crap.
+  processResponse r = case getResponseStatusCode r of
+    200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
+    -- \| This "404" thing accounts for users whose display names are
+    -- undefined.
+    404 -> Right Def.user {displayname = T.pack $ username u}
+    -- \| This case accounts for all situations which SHOULD NOT occur,
+    -- e.g., "this user does not exist" and "yo, the server done
+    -- broke".  Such responses should raise "red flags"; something has
+    -- gone wrong within this module, or the program which uses this
+    -- module is implemented poorly.  Alternatively, the homeserver
+    -- might just be a piece of crap.
+    _   -> Left $ responseToStringth r;
 
 -- $createsStuff
 --
 -- This section of the module contains some functions which are used to
 -- create or -- or just publish -- objects on Matrix.
 
--- | @createRoom r a@ attempts to create a Matrix room whose information
--- matches the information of @a@.  If this attempt fails, then a
--- 'Stringth' which describes the failure is returned.  If all goes
--- according to plan, then returned is a 'Room' whose @roomId@ value
--- is the room ID of the newly-created room.
+-- | @createRoom@ creates new Matrix rooms.
+--
+-- = Output
+--
+-- If all goes well, then a 'Right' 'Room' value whose @roomId@ is the ID
+-- of the new room is returned.
+--
+-- If something 'splodes, then a 'Left' 'ErrorCode' which describes the
+-- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
-           -- However, this value is currently unused.
+           -- The @roomName@ and @topic@ values SHOULD be defined... but
+           -- are technically not required.
            -> String
-           -- ^ This bit is describes whether the room should be private
-           -- or public.
+           -- ^ This bit describes whether the room should be private or
+           -- public.
            --
-           -- This value equals "private" iff the room should be
-           -- private.  This value equals "public" iff the room should
-           -- be a public room.
+           -- If this value is "public", then a public room is created.
+           --
+           -- If this value is "private", then a private room is
+           -- created.
+           --
+           -- If this value is some other thing, then @createRoom@
+           -- probably just 'splodes.
            -> Auth
-           -- ^ The information which is used to authorise the request
-           -> IO (Either String Room);
+           -- ^ This bit is the authorisation information of the account
+           -- which creates the new room.
+           -> IO (Either ErrorCode Room);
 createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
   where
-  querr :: String
   querr = "_matrix/client/r0/createRoom"
+  bod = fromString $ unwords ["{", visStat, namStat, topStat, "}"]
   --
-  bod :: BSL.ByteString
-  bod = fromString $
-    "{\n\t" ++
-      "\"visibility\": " ++ show publcty ++ ",\n" ++
-      "\"name\": " ++ show (roomName r) ++ ",\n" ++
-      "\"topic\": " ++ show (topic r) ++ "\n" ++
-    "}"
+  visStat = "\"visibility\": " ++ show publcty
+  namStat = maybeKVP "name" roomName
+  topStat = maybeKVP "topic" topic
   --
-  responseToEither :: Response BS.ByteString -> Either String Room
+  maybeKVP jf fc = maybe "" ((" ," ++) . toKVP jf) (fc r)
+  --
+  toKVP :: String -> T.Text -> String
+  toKVP header vl = show header ++ ": " ++ show vl
+  --
   responseToEither resp = case getResponseStatusCode resp of
-    200 -> Right Def.room {roomId = roomIdOf $ getResponseBody resp}
-    _   -> Left $ fromJust $ responseToMaybe resp
-  --
-  roomIdOf :: BS.ByteString -> Identifier
-  roomIdOf = T.unpack . fromMaybe err . (^? A.key "room_id" . A._String)
-  -- \^ @fromJust@ could be used... but when processsing Nothing,
-  -- @fromJust@ would provide a relatively nondescriptive error message,
-  -- and VARIK finds that nondescriptive error messages are crap.  As
-  -- such, VARIK elects to use @fromMaybe err@ in favour of @fromJust@.
-  --
-  err :: Stringth
-  err = error "An unexpected error occurs!  The response code \
-        \indicates success... but the body of the response lacks a \
-        \\"room_id\" field.\nThe homeserver could have broken \
-        \spectacularly, or createRoom could contain an error.";
+    200 -> roomWithId <$> roomIdOf (getResponseBody resp)
+    _   -> Left $ responseToStringth resp
+  roomWithId rid = Def.room {roomId = rid}
+  roomIdOf = toEither . (T.unpack <.> (^? A.key "room_id" . A._String))
+    where toEither = maybe (Left err) Right
+  err = "An unexpected error occurs!  The response code indicates \
+        \success... but the body of the response lacks a \"room_id\" \
+        \field.\nThe homeserver could have broken spectacularly, or \
+        \createRoom could contain an error.";
 
--- | @upload content filename a@ uploads the file whose content is
--- @content@ to the homeserver of @a@.  @upload@ claims that the
--- original filename of the file which contains @content@ is
--- @filename@; however, the name of this file need not be @filename@.
+-- | @upload@ uploads files to the homeserver of Matel's user.
 --
--- The 'Right' value of the output, if present, contains the MXC URI
--- of the file which is uploaded.
+-- = Output
 --
--- The 'Left' value of the output, if present, describes the error
--- which occurs such that the file is not properly uploaded.
+-- If the uploading is a success, then the MXC URI of the uploaded file
+-- is 'Right'ly output.
+--
+-- If the output is a failure for any reason, then a 'Left' 'ErrorCode'
+-- which hopefully explains this failure is returned.
 --
 -- = On Using 'BSL.ByteString'
 --
@@ -541,23 +508,27 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 --
 -- VARIK suspects that 'T.Text'\'s problem is caused by fancy UTF-8
 -- parsing which attempts to interpret some nonsense as UTF-8 text,
--- which leads to parsing errors, which leads to the \'splosions.
+-- which leads to parsing errors, which lead to the \'splosions.
 --
 -- This problem is not really the fault of 'T.Text', as 'T.Text' is not
--- meant to read binary files -- 'T.Text' contains _text_, as opposed to
--- _strings of bytes_; read the name, foo -- rather, this problem is the
--- fault of the author of @upload@.
+-- meant to read binary files -- 'T.Text' contains /text/, as opposed to
+-- /strings of bytes/; read the name, foo' -- rather, this problem is
+-- the fault of the author of @upload@.
 --
 -- PROTIP: Using the most fitting tools prevents a decent number of
 -- problems.
 upload :: BSL.ByteString
-       -- ^ The content of the file which should be uploaded
+       -- ^ This bit is the content of the file which is to be uploaded.
        -> String
-       -- ^ The name of the file which should be uploaded
+       -- ^ This argument is the name of the file which is to be
+       -- uploaded.  This argument can be the current name of the file
+       -- or just the desired name of the file.
        -> Auth
-       -- ^ The authorisation information
-       -> IO (Either Stringth Stringth);
-upload attachment name = process <.> TP.req TP.POST hdr qq atch
+       -- ^ This argument is -- as the reader hopefully guessed -- the
+       -- authorisation garbage which is used to actually upload the
+       -- file.
+       -> IO (Either ErrorCode Stringth);
+upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   where
   process :: Response BS.ByteString -> Either Stringth Stringth
   process k = bool (responseToLeftRight k) cURI requestSuccessful
@@ -566,13 +537,11 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
     cURI = Right $ fromJust $ (Q..! "{content_uri}") <$> bodhi
     bodhi = Q.decode (BSL.fromStrict $ getResponseBody k)
   --
-  hdr :: [(HeaderName, BS.ByteString)]
+  noBody = Left "upload: The JSON response lacks a valid \"body\" \
+                \field."
+  badCUri = Left "upload: The response body lacks a valid \
+                 \\"content_uri\" field."
   hdr = [("Content-Type", "text/plain")]
-  --
-  atch :: BSL.ByteString
-  atch = attachment
-  --
-  qq :: String
   qq = "_matrix/media/r0/upload?filename=" ++
        toString (urlEncode True $ fromString name);
 
@@ -581,13 +550,80 @@ upload attachment name = process <.> TP.req TP.POST hdr qq atch
 -- This section of the module contains the functions and whatnot which
 -- facilitate sending stuff to Matrix rooms.
 
+-- | @sendEvent@ sends the specified 'Event' to the specified Matrix
+-- room.
+--
+-- = Output
+--
+-- If the message is successfully sent, then 'Nothing' is returned.
+-- Otherwise, a description of whatever problem @sendEvent@ encounters
+-- is 'Just'ly returned.
+sendEvent :: Event a
+          => A.ToJSON a
+          => a
+          -- ^ This value is the 'Event' which should be sent.
+          -> Room
+          -- ^ This value is a representation of the Matrix room to
+          -- which the aforementioned 'Event' should be sent.
+          -> Auth
+          -- ^ This value is the authorisation information which is
+          -- used to actually send the 'Event'.
+          -> IO (Maybe ErrorCode);
+sendEvent ev rm a = qenerateQuery >>= sendQuery
+  where
+  sendQuery querr = process <$> TP.req TP.PUT [] querr (A.encode ev) a
+  qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
+                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise
+  process k = case getResponseStatusCode k of
+    200 -> Nothing
+    _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
+
 -- $cryptoShit
 --
 -- This section of the module contains functions which directly
 -- interface with Matrix's cryptographic protocols.
 
+-- | @decrypt@ decrypts Matrix messages.
+--
+-- = Output
+--
+-- If the input 'Encrypted' message is successfully decrypted, then the
+-- decrypted 'StdMess' is 'Right'ly output.
+--
+-- If something fails, then a description of this failure is output as a
+-- 'Left' 'ErrorCode'.
+--
+-- = Meat and Potatoes
+--
+-- Keep looking.  @decrypt@ just selects and runs an appropriate
+-- decryption function; "true" decryption logic is /not/ contained
+-- within the definition of @decrypt@.
+decrypt :: Encrypted
+        -- ^ This record is the message which is to be decrypted.
+        -> Auth
+        -- ^ This value contains the authorisation information of the
+        -- user for whom the input message is encrypted.
+        -> Either ErrorCode StdMess;
+decrypt _ _ = Left "decrypt is unimplemented.";
+
 -- $genericDescribe
 --
 -- This section of the module contains functions which describe things
--- such that these descriptions can be used for utilitarian puroses, as
+-- such that these descriptions can be used for utilitarian purposes, as
 -- opposed to being purely display-related.
+
+-- $classes
+--
+-- This section contains classes which are relevant only to this module.
+
+-- | Types whose values represent Matrix events belong to 'Event'.
+class Event a where
+  -- | @eventType k@ is a Matrix-friendly representation of the event
+  -- type of @k@, e.g., @"m.message"@.
+  eventType :: a -> String;
+
+instance Event StdMess where
+  eventType _ = "m.room.message";
+
+instance Event Encrypted where
+  eventType _ = "m.room.encrypted";

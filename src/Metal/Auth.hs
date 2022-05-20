@@ -2,8 +2,8 @@
 
 -- | Module    : Metal.Auth
 -- Description : Metal's 'Auth' type and similar stuff
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -19,8 +19,8 @@ import qualified Data.ByteString.Char8 as BS8;
 -- user of Matel.
 --
 -- 'Auth' is really just a synonym of 'User'.  However, unlike most
--- instances of 'User', generally, the @username@, @authToken@, and
--- @homeserver@ fields must be defined.
+-- instances of 'User', for all 'Auth' @k@, generally, the @username@,
+-- @authToken@, and @homeserver@ fields of @k@ must be defined.
 type Auth = User;
 
 -- | @authToken' k@ equals a version of the authorisation token of @k@

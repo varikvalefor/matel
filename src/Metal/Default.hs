@@ -2,8 +2,8 @@
 
 -- | Module    : Metal.Default
 -- Description : Metal's default records
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -19,7 +19,7 @@ import Metal.Space;
 import Metal.Community;
 import Metal.Messages.Standard;
 import Metal.EventCommonFields;
-import qualified Metal.Encrypted as E;
+import qualified Metal.Messages.Encrypted as E;
 import qualified Metal.Messages.FileInfo as FI;
 import qualified Metal.Messages.EncryptedFile as EF;
 
@@ -31,6 +31,7 @@ user = User {
   homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  keyring = Nothing,
   protocol = Nothing
 };
 
@@ -53,10 +54,9 @@ room :: Room;
 room = Room {
   roomId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   roomHumanId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  roomName = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  roomName = Nothing,
   members = [user],
-  topic = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  isEncrypted = False,
+  topic = Nothing,
   publicKey = Nothing
 };
 

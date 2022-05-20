@@ -2,8 +2,8 @@
 
 -- | Module    : Metal.MatrixAPI.LowLevel.GetRoomInformation
 -- Description : Metal's stuff what fetches the information of rooms
--- Copyright   : (c) Varik Valefor, 2021
--- License     : BSD-3-Clause
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : unstable
 -- Portability : portable
@@ -14,7 +14,6 @@
 module Metal.MatrixAPI.LowLevel.GetRoomInformation (
   getRoomInformation
 ) where
-import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.Auth;
@@ -22,7 +21,6 @@ import Data.Aeson.Quick;
 import Network.HTTP.Simple;
 import Control.Concurrent.Async;
 import Metal.OftenUsedFunctions;
-import qualified Data.Text as T;
 import qualified Data.Aeson as A;
 import Control.Lens hiding ((<.>));
 import qualified Metal.Default as Def;
@@ -33,59 +31,54 @@ import Metal.MatrixAPI.LowLevel.RecordCombination;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 
--- | @getRoomInformation room a@ equals a 'Room'-based representation of
--- the Matrix room whose internal Matrix ID is specified within @room@
--- if the "members" API query works.
+-- | @getRoomInformation@ fetches information regarding the specified
+-- Matrix room.
 --
--- @getRoomInformation room a@ otherwise equals a description of the
--- problem which is encountered when the "members" query is sent to the
--- Matrix homeserver.
+-- Information which is fetched includes the encryption information
+-- regarding the Matrix room, the topic of the Matrix room, and the
+-- display name of the Matrix room.
 --
--- The "fetch the room members" portion of @getRoomInformation@ is
--- currently unimplemented and always returns @[]@ for existent rooms.
+-- = Output
+--
+-- If the information regarding the specified room is /successfully/
+-- grabbed, then this information is returned as a 'Right' 'User.  If
+-- some breakage occurs, then a description of this breakage is returned
+-- as a 'Left' 'ErrorCode'.
 getRoomInformation :: Room
-                   -- ^ The room which should be described
+                   -- ^ This argument represents the room which should
+                   -- be described.
                    -> Auth
-                   -- ^ The authorisation information
+                   -- ^ This thing is the authorisation information
+                   -- which is used to run the HTTP queries.
                    -> IO (Either Stringth Room);
-getRoomInformation room a =
-  getMembers room a >>= either (return . Left) evaluate
+getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   where
-  evaluate :: Room -> IO (Either Stringth Room)
-  evaluate g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
-  --
-  fetchRoomValues :: IO [Room]
-  fetchRoomValues = mapConcurrently (\f -> f room a) functions
-  -- \^ The term "fetch", as opposed to "get", is used to indicate that
+  -- \| "@evil@" is an abbreviation of "@evaluate@".
+  evil g = Right . foldr combine Def.room . (g:) <$> fetchRoomValues
+  -- \| The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
   -- directly access the Matrix API.
-  functions :: [Room -> Auth -> IO Room]
+  fetchRoomValues = mapConcurrently (\f -> f r a) functions
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
 -- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
 -- such that this 'Room' represents the encryption status of the room
 -- which @r@ represents.
 getEncryptionStatus :: Room
-                    -- ^ The room whose encryption status should be
+                    -- ^ This record represents the room whose
+                    -- encryption information should be grabbed.
                     -- fetched
                     -> Auth
-                    -- ^ The authorisation information which is used to
-                    -- fetch the encryption status
+                    -- ^ This value is the authorisation information
+                    -- which is used to run the "@m.room.key@" query.
                     -> IO Room;
 getEncryptionStatus room = process <.> rq room "/event/m.room_key"
   where
-  process :: Response BS.ByteString -> Room
   process response = case getResponseStatusCode response of
-    200 -> Def.room {publicKey = Just $ bd .! "{content:{session_key}"}
+    200 -> Def.room {publicKey = fmap (.! "{content:{session_key}") bd}
     _   -> Def.room
-    where
-    bd = fromJust $ A.decode $ BSL.fromStrict $
-         getResponseBody response;
-         -- \^ @fromJust@ is used in favour of a relatively elegant
-         -- thing because @fromJust@ should always work here.  If
-         -- @fromJust@ does not work, then something has gone horribly,
-         -- horribly wrong.
+    where bd = A.decode $ BSL.fromStrict $ getResponseBody response;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
 -- equals a 'Room' record whose @members@ field is a list of the members
@@ -94,22 +87,14 @@ getEncryptionStatus room = process <.> rq room "/event/m.room_key"
 -- If something breaks, then a 'Stringth' which describes this breakage
 -- is output.
 getMembers :: Room
-           -- ^ The room whose members should be fetched
+           -- ^ This value represents the room whose members should be
+           -- listed.
            -> Auth
-           -- ^ The authorisation information which is used to fetch
-           -- the list of members
+           -- ^ This value is the authorisation information which is
+           -- used to run the query.
            -> IO (Either Stringth Room);
-getMembers room a = pure $ Right room -- process <.> rq room "/members"
-  -- \^ This hack is grody.
-  --
-  -- This hack is created when @getMembers@ is broken such that
-  -- @getMembers@'s HTTP request always returns a 404 error and
-  -- @getMembers@ _always_ returns 'Left' values; as a result of this
-  -- brokenness, @getMembers@ is currently damn near useless.
-  --
-  -- A fix should be created... eventually.
+getMembers room = process <.> rq room "/members"
   where
-  process :: Response BS.ByteString -> Either Stringth Room
   process response = case getResponseStatusCode response of
     200 -> Right Def.room
            -- \^ TODO: Implement this thing.
@@ -118,68 +103,62 @@ getMembers room a = pure $ Right room -- process <.> rq room "/members"
            -- program break at this point can be a bit inconvenient.
     _   -> Left $ responseToStringth response;
 
--- | Where @a@ is the authorisation information of the client,
--- @getTopic r a@ fetches the topic message of the Matrix room whose
--- internal Matrix room ID is @roomId r@.  This information is returned
--- as a 'Room' record whose @'topic'@ field is non-default.
---
--- The authorisation information is demanded because for all private
--- rooms, the topic of a private room can be fetched only if this
--- authorisation information is provided.
+-- @getTopic r whatevs@ fetches the topic message of the Matrix room
+-- whose internal Matrix room ID is @roomId r@.  This information is
+-- returned as a 'Room' record whose @'topic'@ field is non-default.
 getTopic :: Room
-         -- ^ The room whose topic message is hopefully fetched
+         -- ^ This thing is a representation of the Matrix room whose
+         -- topic should be nabbed.
          -> Auth
-         -- ^ The authorisation information of the user
+         -- ^ This 'Auth' record describes the user which requests the
+         -- topic.
+         --
+         -- The authorisation information is demanded because for all
+         -- private rooms, the topic of a private room can be fetched
+         -- only if this authorisation information is provided.
          -> IO Room;
 getTopic r = process <.> rq r "/state/m.room.topic/"
   where
-  process :: Response BS.ByteString -> Room
-  process k = Def.room {topic = fromMaybe kemo $ extractTopic k}
-  --
-  extractTopic :: Response BS.ByteString -> Maybe T.Text
-  extractTopic k = getResponseBody k ^? A.key "name" . A._String
-  --
-  kemo :: T.Text
-  kemo = error $ "A fairly goofy error is encountered.  The JSON " ++
-         "value which the \"m.room.topic\" request returns does " ++
-         "NOT contain a \"name\" field.";
+  process k = Def.room {topic = extractTopic k}
+  extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @getRoomName r a@ fetches the display name of the Matrix room whose
--- room ID is @roomId r@.  The @'roomName'@ value of the output 'Room'
--- record is used contains the desired information.
+-- | @getRoomName@ fetches the display name of the specified Matrix
+-- room.
 --
--- The authorisation information is demanded because for all private
--- rooms, the name of a private room can be fetched only if this
--- authorisation information is provided.
+-- = Output
+--
+-- The @roomName@ field of the returned 'Room' record contains the
+-- desired information.
 getRoomName :: Room
-            -- ^ The room whose display name is nabbed
+            -- ^ This value describes the room whose display name is
+            -- fetched.
             -> Auth
-            -- ^ The authorisation information
+            -- ^ This value is the 'Auth'orisation information of the
+            -- user which requests the display name.
+            --
+            -- This authorisation information is demanded because for
+            -- all private rooms, the name of a private room can be
+            -- fetched only if this authorisation information is
+            -- provided.
             -> IO Room;
 getRoomName r = process <.> rq r "/state/m.room.name/"
   where
-  process :: Response BS.ByteString -> Room
-  process k = Def.room {roomName = fromMaybe kemo $ extractName k}
-  --
-  extractName :: Response BS.ByteString -> Maybe T.Text
-  extractName k = getResponseBody k ^? A.key "name" . A._String
-  --
-  kemo :: T.Text
-  kemo = error "A fairly goofy error is encountered.  The \
-               \\"m.room.name\" request returns a JSON value which \
-               \does NOT contain a \"name\" field.";
+  process k = Def.room {roomName = extractName k}
+  extractName k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @rq room k a@ is the response to the authorised HTTP request
--- "GET https:\/\/[@homeserver a@]\/matrix\/\_client\/r0\/rooms\
--- [@roomId room@]\/[@k@]".
+-- | @rq@ sends very specific Matrix HTTP requests.
 rq :: Room
-   -- ^ The room which is the subject of the request
+   -- ^ This thing represents the room whose information is being
+   -- grabbed.
    -> String
-   -- ^ The "\/whatever" addition to the query
+   -- ^ The path of the HTTP request is the concatenation of
+   -- "@https:\/\/[HOMESERVER]\/\_matrix\/client\/v3\/rooms\/\
+   -- [roomId ROOM]\/" and this argument.
    -> Auth
-   -- ^ The user whose authorisation details/homeserver FQDN are used
+   -- ^ This argument is the authorisation information of the Matrix
+   -- user on whose behalf this HTTP request is sent.
    -> IO (Response BS.ByteString)
 rq room k = TP.req TP.GET [] querr ""
   where
   querr :: String
-  querr = "/matrix/_client/r0/rooms/" ++ roomId room ++ k;
+  querr = "_matrix/client/v3/rooms/" ++ roomId room ++ k;

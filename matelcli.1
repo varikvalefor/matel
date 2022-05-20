@@ -1,6 +1,6 @@
 .Dd $Mdocdate$
 .Dt matelcli 1
-.Os OpenBSD 6.9
+.Os OpenBSD 7.0
 .Sh NAME
 .Nm matelcli
 .Nd command-line interface to the Matrix messaging service
@@ -43,9 +43,18 @@ from
 .Pp
 .Nm matelcli upload
 .Ar filename
+.Pp
+.Nm matelcli ban
+.Ar username
+.Ar roomid
+.Ar reason
+.Pp
+.Nm matelcli unban
+.Ar username
+.Ar roomid
 .Sh DESCRIPTION
 .Nm matelcli
-is used to perform various Matrix-related tasks via a command-line
+performs various Matrix-related tasks via a command-line
 interface, as opposed to the terminal user interface of
 .Xr matel 1 .
 .Pp
@@ -103,7 +112,7 @@ matelcli send text dummies < methage
 .Ed
 .Pp
 Additionally, using the standard input-based approach facilitates
-sending arbitrary characters in the bodies of messages.
+including arbitrary characters in the bodies of messages.
 .Ss SENDING FILES
 .Nm matelcli send file
 .Ar path
@@ -150,7 +159,7 @@ command is used to fetch messages from Matrix rooms.
 .Pp
 .Ar roomId
 is of the format
-.Dq #[roomname]:[homeserver] .
+.Dq ![roomname]:[homeserver] .
 .Pp
 .Nm matelcli grab
 .Ar n
@@ -169,17 +178,18 @@ fetches the
 .Ar n
 earliest messages of room
 .Ar roomId .
-.Sh MARKING MESSAGES AS HAVING BEEN READ
+.Sh MARKING EVENTS AS HAVING BEEN READ
 Where
 .Ar k
-is a message identifier which is known to be valid,
+is a valid event identifier,
 .Nm matelcli markread
 .Ar k
-marks the message whose message identifier is
+marks the event whose event identifier is
 .Ar k
 as having been read.
 .Sh ENTERING THE MATRIX
-Using the username and password which are specified in Config.hs,
+Using the username and password which are specified in
+.Pa Config.hs ,
 .Nm matelcli login
 generates a new authorisation token for the user's Matrix account and
 prints this authorisation token to the standard output.
@@ -260,7 +270,7 @@ from the Matrix room whose internal Matrix ID is
 If some weird error is encountered, then a description of this error is
 written to the standard output.
 .Sh CREATING ROOMS
-.Nm matelcli
+.Nm matelcli createroom
 .Ar roomname topic permission
 creates a Matrix room whose display name and topic are
 .Ar roomname
@@ -284,6 +294,29 @@ the created room is written to the standard output.
 .Pp
 If something breaks, then a description of the breakage is written to
 the standard error.
+.Sh BANNING USERS
+.Nm matelcli ban
+.Ar username
+.Ar roomid
+.Ar reason
+bans the user whose username is
+.Ar username
+from the Matrix room whose room ID is
+.Ar roomid ,
+justifying this action with explanation
+.Ar reason Ns ...
+if the user which attempts to run this command has the appropriate
+privileges.
+.Sh UN-BANNING USERS
+.Nm matelcli unban
+.Ar username
+.Ar roomid
+un-bans the user whose username is
+.Ar username
+from the Matrix room whose room ID is
+.Ar roomid Ns ...
+if the user which attempts to un-ban the user has the appropriate
+privileges.
 .Sh UPLOADING FILES
 .Nm matelcli upload
 .Ar filename
@@ -328,7 +361,7 @@ however, re-writing these things should be reasonably easy for
 experienced Haskellers.  But inexperienced Haskellers need not worry;
 within reason, VARIK is willing to write custom
 .Dq Show
-instances for Matel users.  But men who wish to request custom
+instances for the users of Matel.  But men who wish to request custom
 .Dq Show
 instances should ensure that the desired
 .Dq Show
