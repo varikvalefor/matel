@@ -572,8 +572,10 @@ sendEvent :: Event a
 sendEvent ev rm a = qenerateQuery >>= sendQuery
   where
   sendQuery querr = process <$> TP.req TP.PUT [] querr (A.encode ev) a
-  qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
-                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise
+  qenerateQuery = prepend <$> favoriteNoise
+    where
+    prepend = ((pfx ++ roomId rm ++ "/send/" ++ eventType ev ++ "/") ++)
+    pfx = "_matrix/client/r0/rooms/"
   process k = case getResponseStatusCode k of
     200 -> Nothing
     _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
