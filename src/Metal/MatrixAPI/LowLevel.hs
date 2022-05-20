@@ -539,8 +539,6 @@ upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   --
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
-  badCUri = Left "upload: The response body lacks a valid \
-                 \\"content_uri\" field."
   hdr = [("Content-Type", "text/plain")]
   qq = "_matrix/media/r0/upload?filename=" ++
        toString (urlEncode True $ fromString name);
