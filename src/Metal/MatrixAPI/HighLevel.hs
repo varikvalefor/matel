@@ -34,7 +34,7 @@ module Metal.MatrixAPI.HighLevel (
   unban,
   kick,
   leave,
-  -- Metal.MatrixAPI.LowLevel.join and Control.Monad.join collide.
+  -- \| Metal.MatrixAPI.LowLevel.join and Control.Monad.join collide.
   Metal.MatrixAPI.LowLevel.join,
   sync,
   loginPass,
