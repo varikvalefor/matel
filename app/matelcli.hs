@@ -370,7 +370,7 @@ runJoin :: [String]
         -- the room which should be joined, then this argument should be
         -- a 4-list whose elements are as follows:
         --
-        -- 1. The internal matrix ID of the room which the user should
+        -- 1. The internal Matrix ID of the room which the user should
         --    join
         --
         -- 2. The username of the user which sends the invite to the
