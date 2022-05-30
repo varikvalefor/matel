@@ -295,6 +295,9 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
+  -- \| Including the type signature of @maybeCrp@ facilitates
+  -- understanding the purpose of @maybeCrp@.  The reader should
+  -- probably not remove this type signature.
   maybeCrp :: IO (Either ErrorCode (Either StdMess Encrypted))
   maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
