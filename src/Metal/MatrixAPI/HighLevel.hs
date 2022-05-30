@@ -89,12 +89,6 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- returned as a 'Right' ['StdMess'].
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
---
--- = Internal Stuff
---
--- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
--- The reader of /this/ piece of documentation should probably /also/
--- read the documentation of @fetchMessages@.
 recentMessagesFrom :: Integer
                    -- ^ This argument is the number of messages which
                    -- are fetched.
