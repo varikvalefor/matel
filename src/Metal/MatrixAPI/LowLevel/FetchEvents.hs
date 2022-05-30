@@ -37,7 +37,7 @@ class Event a where
          -- ^ This record is the record whose defaultness is determined.
          -> Bool
 
-  -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
+  -- | @fetchEvents@ fetches Matrix events of a specified type.
   --
   -- = Output
   --
