@@ -512,7 +512,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 --
 -- This problem is not really the fault of 'T.Text', as 'T.Text' is not
 -- meant to read binary files -- 'T.Text' contains /text/, as opposed to
--- /strings of bytes/; read the name, foo' -- rather, this problem is
+-- /strings of bytes/; read the name, foo\' -- rather, this problem is
 -- the fault of the author of @upload@.
 --
 -- PROTIP: Using the most fitting tools prevents a decent number of
