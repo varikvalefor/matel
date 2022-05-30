@@ -215,7 +215,8 @@ blam :: [String]
      --
      -- 1. The MXID of the user which should be banned
      --
-     -- 2. The room from which the user is forcibly removed
+     -- 2. The internal Matrix room ID of the room from which the user
+     --    is forcibly removed
      --
      -- 3. The justification for the removal of the user, e.g., "yo,
      --    this dude stole my fuckin' 'nanners."
@@ -233,10 +234,10 @@ blam _ = error "The \"ban\" command demands 3 arguments, tubby.";
 deblam :: [String]
        -- ^ This thing is a 2-list whose elements are as follows:
        --
-       -- 1. The MXID of the user which should be un-banned.
+       -- 1. The MXID of the user which should be un-banned
        --
        -- 2. The ID of the room @k@ such that the specified user should
-       --    no longer be banned from @k@.
+       --    no longer be banned from @k@
        -> Auth
        -- ^ This argument is the authorisation information which is...
        -- the reader probably "knows the deal".
@@ -324,10 +325,11 @@ logIn = loginPass >=> either busticate addAndDisplay
     writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
-  addToken phile toke = withNewToken $ withoutOldToken phile
+  addToken phile toke = lineFilter notToken phile `T.append` toke'
     where
-    withoutOldToken = filter (not . beginsWith "authToken: ") . T.lines
-    withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
+    notToken = (/= "authtoken: ") . T.take 11
+    toke' = T.append "\nauthtoken: " toke
+    lineFilter f = T.unlines . filter f . T.lines
   --
   beginsWith :: T.Text -> T.Text -> Bool
   beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)

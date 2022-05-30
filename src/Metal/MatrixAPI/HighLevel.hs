@@ -17,12 +17,6 @@
 -- not explicitly use HTTP queries, whereas the functions of
 -- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
 -- support only explicit encryption.
---
--- Additionally, several functions which this module provides just break
--- via @'error'@ if anything goes wrong, as opposed to returning an
--- error code or 'Nothing'.  However, VARIK is willing to modify this
--- module's functions such that these functions do not simply break
--- if such a change would benefit any users of this module.
 module Metal.MatrixAPI.HighLevel (
   -- * Stuff-Fetching Functions
   --
@@ -218,7 +212,7 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
 --
 -- "@dl@" is an abbreviation of "de-list".
 dl :: [Either a b] -> Either a [b];
-dl j = bool (Left $ head $ lefts j) (Right $ rights j) $ any isLeft j;
+dl j = bool (Right $ rights j) (Left $ head $ lefts j) $ any isLeft j;
 
 -- | @memberSpaces@ returns a list of the 'Space's of which a user is a
 -- member.
@@ -311,13 +305,13 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
   maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
   process dullards = if isNothing (publicKey dullards)
-                       -- \| These dullards can AT LEAST use
-                       -- encryption... allegedly.
-                       then encryptFor dullards
                        -- \| man yall dullards cant even use encryption
                        -- what a scam
                        -- dang
-                       else pure $ Right $ Left event;
+                       then pure $ Right $ Left event
+                       -- \| These dullards can AT LEAST use
+                       -- encryption... allegedly.
+                       else encryptFor dullards;
 
 -- | @roomEncrypt@ encrypts messages for Matrix rooms.
 roomEncrypt :: StdMess
