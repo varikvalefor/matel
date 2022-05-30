@@ -498,7 +498,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- If the uploading is a success, then the MXC URI of the uploaded file
 -- is 'Right'ly output.
 --
--- If the output is a failure for any reason, then a 'Left' 'ErrorCode'
+-- If the upload is a failure for any reason, then a 'Left' 'ErrorCode'
 -- which hopefully explains this failure is returned.
 --
 -- = On Using 'BSL.ByteString'
