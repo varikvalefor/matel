@@ -147,9 +147,9 @@ instance ToJSON StdMess where
         "msgtype" .= show (msgType s),
         "url" .= Metal.Messages.Standard.url s
       ]
-    _ -> error $ "A proper error!  ToJSON does not account \
-                 \for StdMess values of @msgType@ " ++
-                 show (msgType s) ++ "."
+    _unrecognised -> error $ "A proper error!  ToJSON does not account \
+                             \for StdMess values of @msgType@ " ++
+                             show (msgType s) ++ "."
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType s) ++
