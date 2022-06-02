@@ -21,6 +21,7 @@ import qualified Data.ByteString.Lazy as BSL;
 -- source code are the best possible documentation.
 (.:) :: (c -> d) -> (a -> b -> c) -> a -> b -> d;
 (.:) g f a b = g $ f a b;
+infixr 9 .:;
 
 -- | @detroit' k@ displays the status code and body of @k@.
 detroit' :: Response BS.ByteString -> String;
@@ -31,6 +32,7 @@ detroit' k = "Thus spake the homeserver: " ++
 -- | @(a <.> b) k@ is equivalent to @a <$> b k@.
 (<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
 (<.>) a b c = a <$> b c;
+infixl 4 <.>;
 
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
