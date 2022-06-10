@@ -329,7 +329,7 @@ logIn = loginPass >=> either busticate addAndDisplay
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = lineFilter notToken phile `T.append` toke'
     where
-    notToken = (/= "authtoken: ") . T.take 11
+    notToken = not . beginsWith "authtoken: "
     toke' = T.append "\nauthtoken: " toke
     lineFilter f = T.unlines . filter f . T.lines
   --
