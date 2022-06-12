@@ -77,10 +77,21 @@ decrypt :: Encrypted
 decrypt msg a = getKeys >>= either dOlm dMegolm >>= toStdMess
   where
   toStdMess _ = Left "toStdMess is unimplemented."
-  getKeys = bool (olmKeys msg a) (megolmKeys msg a) =<< usesMegolm
-  usesMegolm = Left "usesMegolm is unimplemented."
+  getKeys = bool (olmKeys msg a) (megolmKeys msg a) =<< usesMegolm msg
   dOlm (x,y,z) = O.decryptWKey x y z
   dMegolm (x,y,z) = M.decryptWKey x y z;
+
+-- | If the input 'Encrypted' message is valid and encrypted in
+-- accordance with Megolm, then the output is 'Right' 'True'.  If the
+-- input 'Encrypted' message is valid and encrypted in accordance with
+-- Olm, then the output is 'Right' 'False'.  If the input 'Encrypted'
+-- message is invalid, then the output is a 'Left' 'ErrorCode' which
+-- clarifies the invalidity.
+usesMegolm :: Encrypted
+           -- ^ This argument describes the message whose validity and
+           -- cryptosystem should be determined.
+           -> Either ErrorCode Bool;
+usesMegolm _ = Left "usesMegolm is unimplemented.";
 
 -- | If the input 'Encrypted' record is encrypted with 'Olm' and the
 -- input 'Auth' record contains the 'PrivateKey' which can be used to
