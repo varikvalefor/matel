@@ -73,7 +73,7 @@ configFilePath :: IO FilePath;
 configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 
 -- | @xOf a b@ 'Just' equals the content of the field of @b@ whose name
--- is @a@ if @b@ contains such a field.  $xOf a b@ otherwise equals
+-- is @a@ if @b@ contains such a field.  @xOf a b@ otherwise equals
 -- 'Nothing'.
 --
 -- A 'Maybe' value is output because some requested fields may be

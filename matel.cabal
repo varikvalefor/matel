@@ -57,6 +57,8 @@ library
     Metal.MatrixAPI.LowLevel.HTTP
     Metal.MatrixAPI.LowLevel.Crypto.Olm
     Metal.MatrixAPI.LowLevel.Crypto.Megolm
+  default-extensions:
+    StrictData
   other-extensions:
     OverloadedStrings
     TemplateHaskell
