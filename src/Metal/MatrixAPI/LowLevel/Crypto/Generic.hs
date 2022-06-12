@@ -1,6 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | "Metal.MatrixAPI.LowLevel.Crypto.Generic" contains (a
+-- | Module    : Metal.MatrixAPI.LowLevel.Crypto.Generic
+-- Description : Somewhat cryptosystem-agnostic cryptographic crap
+-- Copyright   : (c) Varik Valefor, 2022
+-- License     : Unlicense
+-- Maintainer  : varikvalefor@aol.com
+-- Stability   : unstable
+-- Portability : portable
+--
+-- "Metal.MatrixAPI.LowLevel.Crypto.Generic" contains (a
 -- decryption function which abstracts away the whole "Olm vs.
 -- Megolm" thing) and (an encryption function which simplifies the whole
 -- "Olm vs. Megolm" thing), as well as some supporting functions and
