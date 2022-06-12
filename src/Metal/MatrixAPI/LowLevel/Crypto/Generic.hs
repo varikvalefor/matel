@@ -141,6 +141,8 @@ type OlmEncryptable = (ByteData, PublicKey, PrivateKey);
 
 -- | @encrypt@ encrypts the specified message or just 'splodes.
 --
+-- = Output
+--
 -- If the encryption is successful, then the 'Right'ly-'Encrypted' message
 -- is returned.
 --
