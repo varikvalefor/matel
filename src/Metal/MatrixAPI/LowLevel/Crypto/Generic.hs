@@ -177,10 +177,29 @@ encrypt :: AlGoreRhythm
         -- ^ This bit is the authorisation information which contains the
         -- keys which are used to actually encrypt the message.
         -> IO (Either ErrorCode Encrypted);
-encrypt c s r a = (>>= toEncrypted) <$> eitherCrypt getCryptoCrap
+encrypt c s r a = (>>= toEncrypted) <$> eitherCrypt getCryptoCrap'
   where
   eitherCrypt = either (pure . Left) (either oCrypt mCrypt)
   toEncrypted _ = Left "toEncrypted is unimplemented."
-  getCryptoCrap = Left "getCryptoCrap is unimplemented."
+  getCryptoCrap' = getCryptoCrap c s r a
   oCrypt (x,y,z) = O.encryptWKey x y z
   mCrypt (x,y,z) = M.encryptWKey x y z
+
+-- | @getCryptoCrap@ 'Right'ly outputs a value which can be used to
+-- conveniently encrypt the specified 'StdMess' or outputs a 'Left'
+-- 'ErrorCode' which describes the error which is encountered.
+getCryptoCrap :: AlGoreRhythm
+              -- ^ This bit is the name of the cryptographic algorithm
+              -- which should be used to encrypt the message.
+              -> StdMess
+              -- ^ This argument is the message which should be
+              -- encrypted.
+              -> Room
+              -- ^ This argument specifies the Matrix room for which the
+              -- message should be encrypted.
+              -> Auth
+              -- ^ This record contains information which is used to
+              -- actually encrypt the message, e.g., the 'PrivateKey' of
+              -- the encrypting party.
+              -> Either ErrorCode Encryptable;
+getCryptoCrap _ _ _ _ = Left "getCryptoCrap is unimplemented.";
