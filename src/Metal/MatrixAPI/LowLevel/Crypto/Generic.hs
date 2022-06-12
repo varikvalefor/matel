@@ -173,6 +173,12 @@ encrypt :: AlGoreRhythm
         -> IO (Either ErrorCode Encrypted);
 encrypt c s r a = (>>= toEncrypted) <$> eitherCrypt getCryptoCrap'
   where
+  -- \| Because 'ErrorCode' is a synonym of 'CipherByteData', Haddock
+  -- at at least 1 point in time claims that @eitherCrypt@ outputs a
+  -- value of type 'Either' 'ErrorCode' 'ErrorCode', which is just
+  -- silly... but /technically correct/.  Luckily, because this type
+  -- inference is /technically correct/, this silliness has no /strong/
+  -- negative effects, aside from causing the overuse of /italic type/.
   eitherCrypt = either (pure . Left) (either oCrypt mCrypt)
   toEncrypted _ = Left "toEncrypted is unimplemented."
   getCryptoCrap' = getCryptoCrap c s r a
