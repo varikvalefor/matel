@@ -8,10 +8,10 @@
 -- Stability   : unstable
 -- Portability : portable
 --
--- Metal.LowLevel.MatrixAPI.Crypto.Olm contains some functions which
+-- Metal.MatrixAPI.LowLevel.Crypto.Olm contains some functions which
 -- implement the Olm cryptographic protocol such that messages and
 -- whatnot can be properly encrypted.
-module Metal.LowLevel.MatrixAPI.Crypto.Olm (
+module Metal.MatrixAPI.LowLevel.Crypto.Olm (
   encryptWKey,
   decryptWKey
 ) where

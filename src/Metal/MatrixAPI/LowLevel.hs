@@ -57,7 +57,8 @@ module Metal.MatrixAPI.LowLevel (
   -- * Functions what Hide Stuff
   --
   -- $cryptoShit
-  Metal.MatrixAPI.LowLevel.decrypt,
+  decrypt,
+  encrypt,
   -- * Functions what Describe Stuff
   --
   -- $genericDescribe
@@ -84,6 +85,7 @@ import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
 import Network.HTTP.Types.URI (urlEncode);
 import qualified Data.ByteString.Lazy as BSL;
+import Metal.MatrixAPI.LowLevel.Crypto.Generic;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
 import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
@@ -582,29 +584,6 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
 --
 -- This section of the module contains functions which directly
 -- interface with Matrix's cryptographic protocols.
-
--- | @decrypt@ decrypts Matrix messages.
---
--- = Output
---
--- If the input 'Encrypted' message is successfully decrypted, then the
--- decrypted 'StdMess' is 'Right'ly output.
---
--- If something fails, then a description of this failure is output as a
--- 'Left' 'ErrorCode'.
---
--- = Meat and Potatoes
---
--- Keep looking.  @decrypt@ just selects and runs an appropriate
--- decryption function; "true" decryption logic is /not/ contained
--- within the definition of @decrypt@.
-decrypt :: Encrypted
-        -- ^ This record is the message which is to be decrypted.
-        -> Auth
-        -- ^ This value contains the authorisation information of the
-        -- user for whom the input message is encrypted.
-        -> Either ErrorCode StdMess;
-decrypt _ _ = Left "decrypt is unimplemented.";
 
 -- $genericDescribe
 --

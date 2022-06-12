@@ -42,6 +42,7 @@ library
     Metal.Messages.ThumbnailInfo
     Metal.Default
     Metal.EventCommonFields
+    Metal.MatrixAPI.LowLevel.Crypto.Generic
     Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous
   other-modules:
     -- The following modules export stuff which is of real use only
@@ -54,6 +55,8 @@ library
     Metal.MatrixAPI.LowLevel.RecordCombination
     Metal.MatrixAPI.LowLevel.FetchEvents
     Metal.MatrixAPI.LowLevel.HTTP
+    Metal.MatrixAPI.LowLevel.Crypto.Olm
+    Metal.MatrixAPI.LowLevel.Crypto.Megolm
   other-extensions:
     OverloadedStrings
     TemplateHaskell
