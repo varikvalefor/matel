@@ -164,7 +164,7 @@ encrypt c s r a = (>>= toEncrypted) <$> eitherCrypt getCryptoCrap'
   toEncrypted _ = Left "toEncrypted is unimplemented."
   getCryptoCrap' = getCryptoCrap c s r a
   oCrypt (x,y,z) = O.encryptWKey x y z
-  mCrypt (x,y,z) = M.encryptWKey x y z
+  mCrypt (x,y,z) = M.encryptWKey x y z;
 
 -- | @getCryptoCrap@ 'Right'ly outputs a value which can be used to
 -- conveniently encrypt the specified 'StdMess' or outputs a 'Left'
