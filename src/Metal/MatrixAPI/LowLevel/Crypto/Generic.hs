@@ -100,7 +100,7 @@ usesMegolm j | ".megolm." `subseq` algae = Right True
              -- \| The name of this function may be one of the worst
              -- jokes of Matel.
              nutt = Left . fromString
-	     subseq = isSubsequenceOf
+             subseq = isSubsequenceOf
              algae = toString $ algorithm j
              nom = "Metal.MatrixAPI.LowLevel.Crypto.Generic.usesMegolm"
              unsupMsg = " is an unsupported algorithm.";
