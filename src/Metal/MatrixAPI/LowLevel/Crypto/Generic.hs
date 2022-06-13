@@ -18,11 +18,13 @@ module Metal.MatrixAPI.LowLevel.Crypto.Generic (
   decrypt
 ) where
 import Data.Bool;
+import Data.List;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.Messages.Standard;
 import Metal.Messages.Encrypted;
+import Metal.OftenUsedFunctions;
 import qualified Metal.MatrixAPI.LowLevel.Crypto.Olm as O;
 import qualified Metal.MatrixAPI.LowLevel.Crypto.Megolm as M;
 
@@ -91,7 +93,17 @@ usesMegolm :: Encrypted
            -- ^ This argument describes the message whose validity and
            -- cryptosystem should be determined.
            -> Either ErrorCode Bool;
-usesMegolm _ = Left "usesMegolm is unimplemented.";
+usesMegolm j | ".megolm." `subseq` algae = Right True 
+             | ".olm." `subseq` algae = Right False
+             | otherwise = nutt $ nom ++ ": " ++ algae ++ unsupMsg
+             where
+             -- \| The name of this function may be one of the worst
+             -- jokes of Matel.
+             nutt = Left . fromString
+	     subseq = isSubsequenceOf
+             algae = toString $ algorithm j
+             nom = "Metal.MatrixAPI.LowLevel.Crypto.Generic.usesMegolm"
+             unsupMsg = " is an unsupported algorithm.";
 
 -- | If the input 'Encrypted' record is encrypted with 'Olm' and the
 -- input 'Auth' record contains the 'PrivateKey' which can be used to
