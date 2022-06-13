@@ -166,11 +166,11 @@ type OlmEncryptable = (ByteData, PublicKey, PrivateKey);
 --
 -- = Output
 --
--- If the encryption is successful, then the 'Right'ly-'Encrypted' message
--- is returned.
+-- If the encryption is successful, then the 'Right'ly-'Encrypted'
+-- message is returned.
 --
--- If the encryption fails, then a 'Left' 'ErrorCode'-based description of
--- the failure is returned.
+-- If the encryption fails, then a 'Left' 'ErrorCode'-based description
+-- of the failure is returned.
 encrypt :: AlGoreRhythm
         -- ^ This value is the name of the cryptosystem which is used to
         -- encrypt the input message.
