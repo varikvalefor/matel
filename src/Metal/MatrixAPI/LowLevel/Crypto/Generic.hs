@@ -93,7 +93,7 @@ usesMegolm :: Encrypted
            -- ^ This argument describes the message whose validity and
            -- cryptosystem should be determined.
            -> Either ErrorCode Bool;
-usesMegolm j | ".megolm." `subseq` algae = Right True 
+usesMegolm j | ".megolm." `subseq` algae = Right True
              | ".olm." `subseq` algae = Right False
              | otherwise = nutt $ nom ++ ": " ++ algae ++ unsupMsg
              where
