@@ -616,6 +616,14 @@ decrypt _ _ = Left "decrypt is unimplemented.";
 
 -- | @internalRoomId @ fetches the internal Matrix room ID of the
 -- specified Matrix room.
+--
+-- = Output
+--
+-- If the fetching of the room ID is successful, then the room ID is
+-- 'Right'ly returned.
+--
+-- If something is fucked, then a 'Left' 'ErrorCode' which describes
+-- this fuckedness is returned.
 internalRoomId :: Identifier
                -- ^ This bit is the display name of the room whose
                -- internal ID should be grabbed.
