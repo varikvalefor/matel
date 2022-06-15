@@ -434,7 +434,6 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
     -- might just be a piece of crap.
     _   -> Left $ responseToStringth r;
 
-
 -- $createsStuff
 --
 -- This section of the module contains some functions which are used to
