@@ -321,14 +321,15 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAndReturn path phile = writeAppended path phile >> pure toke
     writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
-  addToken phile toke = withNewToken $ withoutOldToken phile
+  addToken phile toke = lineFilter notToken phile `T.append` toke'
     where
-    withoutOldToken = filter (not . beginsWith "authToken: ") . T.lines
-    withNewToken = T.unlines . (++ [T.append "authtoken: " toke])
+    notToken = (/= "authtoken: ") . T.take 11
+    toke' = T.append "\nauthtoken: " toke
+    lineFilter f = T.unlines . filter f . T.lines
   --
   beginsWith :: T.Text -> T.Text -> Bool
   beginsWith fieldName = (== fieldName) . T.take (T.length fieldName)

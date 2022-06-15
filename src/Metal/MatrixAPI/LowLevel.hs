@@ -64,6 +64,7 @@ module Metal.MatrixAPI.LowLevel (
   internalRoomId,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
+import Data.Bool;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
@@ -415,10 +416,10 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
   toEither = maybe (Left failedDecodeMsg) Right
   failedDecodeMsg = "getDisplayName: The decoding process fails."
   querr = "/_matrix/client/r0/profile/" ++ username u ++ "/displayname"
+  bodhi = BSL.fromStrict . getResponseBody
   --
   toDispName :: Response BS.ByteString -> Either ErrorCode Stringth
-  toDispName = toEither . (dnr_displayname <.> A.decode) .
-               BSL.fromStrict . getResponseBody
+  toDispName = toEither . (dnr_displayname <.> A.decode) . bodhi
   --
   processResponse r = case getResponseStatusCode r of
     200 -> (\j -> Def.user {displayname = j}) <$> toDispName r
@@ -531,21 +532,18 @@ upload :: BSL.ByteString
        -> IO (Either ErrorCode Stringth);
 upload attachment name = process <.> TP.req TP.POST hdr qq attachment
   where
-  process :: Response BS.ByteString -> Either ErrorCode Stringth
-  process k = case getResponseStatusCode k of
-    200 -> pj $ Q.decode $ BSL.fromStrict $ getResponseBody k
-    _   -> responseToLeftRight k
-  -- \| "pj" is an abbreviation of "procJSON".
-  pj :: Maybe Q.Value -> Either ErrorCode Stringth
-  pj = maybe noBody (maybe badCUri Right . (Q..! "{content_uri}"))
+  process :: Response BS.ByteString -> Either Stringth Stringth
+  process k = bool (responseToLeftRight k) cURI requestSuccessful
+    where
+    requestSuccessful = getResponseStatusCode k == 200
+    cURI = Right $ fromJust $ (Q..! "{content_uri}") <$> bodhi
+    bodhi = Q.decode (BSL.fromStrict $ getResponseBody k)
   --
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
-  badCUri = Left "upload: The response body lacks a valid \
-                 \\"content_uri\" field."
   hdr = [("Content-Type", "text/plain")]
-  qq = "_matrix/media/r0/upload?filename=" ++
-       toString (urlEncode True $ fromString name);
+  qq = "_matrix/media/r0/upload?filename=" ++ name'
+  name' = toString (urlEncode True $ fromString name);
 
 -- $spam
 --
@@ -574,8 +572,10 @@ sendEvent :: Event a
 sendEvent ev rm a = qenerateQuery >>= sendQuery
   where
   sendQuery querr = process <$> TP.req TP.PUT [] querr (A.encode ev) a
-  qenerateQuery = (("_matrix/client/r0/rooms/" ++ roomId rm ++
-                  "/send/" ++ eventType ev ++ "/") ++) <$> favoriteNoise
+  qenerateQuery = prepend <$> favoriteNoise
+    where
+    prepend = ((pfx ++ roomId rm ++ "/send/" ++ eventType ev ++ "/") ++)
+    pfx = "_matrix/client/r0/rooms/"
   process k = case getResponseStatusCode k of
     200 -> Nothing
     _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
