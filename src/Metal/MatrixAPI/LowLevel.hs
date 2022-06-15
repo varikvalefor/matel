@@ -61,6 +61,7 @@ module Metal.MatrixAPI.LowLevel (
   -- * Functions what Describe Stuff
   --
   -- $genericDescribe
+  internalRoomId,
   module Metal.MatrixAPI.LowLevel.GetRoomInformation
 ) where
 import Metal.Auth;
@@ -432,6 +433,7 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
     -- might just be a piece of crap.
     _   -> Left $ responseToStringth r;
 
+
 -- $createsStuff
 --
 -- This section of the module contains some functions which are used to
@@ -611,6 +613,19 @@ decrypt _ _ = Left "decrypt is unimplemented.";
 -- This section of the module contains functions which describe things
 -- such that these descriptions can be used for utilitarian purposes, as
 -- opposed to being purely display-related.
+
+-- | @internalRoomId @ fetches the internal Matrix room ID of the
+-- specified Matrix room.
+internalRoomId :: Identifier
+               -- ^ This bit is the display name of the room whose
+	       -- internal ID should be grabbed.
+               -> Auth
+	       -- ^ This bit is the authorisation information which is
+	       -- used to grab the display name.
+	       -> IO (Either ErrorCode Identifier);
+internalRoomId [] _ = pure $ Left "The room name is empty.";
+internalRoomId ('!':i) _ = pure $ Right $ '!' : i;
+internalRoomId _ _ = pure $ Left "internalRoomId is unimplemented.";
 
 -- $classes
 --
