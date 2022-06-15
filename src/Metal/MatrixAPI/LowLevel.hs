@@ -618,11 +618,11 @@ decrypt _ _ = Left "decrypt is unimplemented.";
 -- specified Matrix room.
 internalRoomId :: Identifier
                -- ^ This bit is the display name of the room whose
-	       -- internal ID should be grabbed.
+               -- internal ID should be grabbed.
                -> Auth
-	       -- ^ This bit is the authorisation information which is
-	       -- used to grab the display name.
-	       -> IO (Either ErrorCode Identifier);
+               -- ^ This bit is the authorisation information which is
+               -- used to grab the display name.
+               -> IO (Either ErrorCode Identifier);
 internalRoomId [] _ = pure $ Left "The room name is empty.";
 internalRoomId ('!':i) _ = pure $ Right $ '!' : i;
 internalRoomId _ _ = pure $ Left "internalRoomId is unimplemented.";
