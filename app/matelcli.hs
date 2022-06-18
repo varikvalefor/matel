@@ -295,9 +295,7 @@ mkRead :: [String]
 mkRead [] = error "Someone should knock you upside the head a few \
                   \times, punk.  Dismissed.";
 mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
-  where
-  boi :: EventCommonFields
-  boi = Def.eventCommonFields {eventId = eeee};
+  where boi = Def.eventCommonFields {eventId = eeee};
 
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
@@ -323,7 +321,7 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAndReturn path phile = writeAppended path phile >> pure toke
     writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
