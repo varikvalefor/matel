@@ -322,7 +322,7 @@ logIn = loginPass >=> either busticate addAndDisplay
   addAndDisplay toke = configFilePath >>= processPath
     where
     processPath path = T.readFile path >>= writeAndReturn path
-    writeAndReturn path phile = writeAppended path phile >> pure phile
+    writeAndReturn path phile = writeAppended path phile >> pure toke
     writeAppended path phile = T.writeFile path $ addToken phile toke
   --
   addToken :: T.Text -> T.Text -> T.Text
