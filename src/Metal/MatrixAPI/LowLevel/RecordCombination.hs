@@ -16,11 +16,11 @@ import Metal.User;
 import Metal.Space;
 import Control.Monad;
 import Metal.Community;
-import Metal.Messages.Encrypted as En;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
-import Metal.Messages.Standard as S;
 import Metal.Messages.EncryptedFile;
+import Metal.Messages.Standard as S;
+import Metal.Messages.Encrypted as En;
 import qualified Metal.Default as Def;
 
 -- | For all types @a@, @a@ belongs to 'Combinable' iff values of type
