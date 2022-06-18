@@ -15,12 +15,15 @@ import Text.StringRandom;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
+import qualified Data.ByteString.UTF8 as BS8;
 import qualified Data.ByteString.Lazy as BSL;
+import qualified Data.ByteString.Lazy.UTF8 as BSL8;
 
 -- | @(.:)@ is a function composition operator.  The type signature and
 -- source code are the best possible documentation.
 (.:) :: (c -> d) -> (a -> b -> c) -> a -> b -> d;
 (.:) g f a b = g $ f a b;
+infixr 9 .:;
 
 -- | @detroit' k@ displays the status code and body of @k@.
 detroit' :: Response BS.ByteString -> String;
@@ -31,6 +34,7 @@ detroit' k = "Thus spake the homeserver: " ++
 -- | @(a <.> b) k@ is equivalent to @a <$> b k@.
 (<.>) :: Functor f => (b -> c) -> (a -> f b) -> a -> f c;
 (<.>) a b c = a <$> b c;
+infixl 4 <.>;
 
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
@@ -41,12 +45,12 @@ class StringLike a where
   fromString :: String -> a
 
 instance StringLike BSL.ByteString where
-  fromString = BSL.pack . map (toEnum . fromEnum)
-  toString = map (toEnum . fromEnum) . BSL.unpack;
+  fromString = BSL8.fromString
+  toString = BSL8.toString
 
 instance StringLike BS.ByteString where
-  fromString = BS.pack . map (toEnum . fromEnum)
-  toString = map (toEnum . fromEnum) . BS.unpack;
+  fromString = BS8.fromString
+  toString = BS8.toString
 
 instance StringLike T.Text where
   fromString = T.pack
