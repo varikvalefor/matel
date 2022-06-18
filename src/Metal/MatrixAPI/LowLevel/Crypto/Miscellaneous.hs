@@ -48,7 +48,7 @@ aes256CryptBS :: BS.ByteString
 aes256CryptBS t sk = makeIV' >=> combineUsingIV
   where
   combineUsingIV n = cipher >>= \c -> pure $ ctrCombine c n t
-  makeIV' = maybe fI (Right . id) . makeIV
+  makeIV' = maybe fI Right . makeIV
   fI = Left "Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous.\
             \aes256CryptBS: The IV generation fails!"
   fM = Left "Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous.\
@@ -60,7 +60,7 @@ aes256CryptBS t sk = makeIV' >=> combineUsingIV
   -- Go ahead and try to compile this module after removing the type
   -- specification.
   cipher :: Either ErrorCode AES256
-  cipher = maybe fM (Right . id) $ maybeCryptoError $ cipherInit sk;
+  cipher = maybe fM Right $ maybeCryptoError $ cipherInit sk;
 
 -- | @genIVorKeyBS@ returns a pseudorandom 'BS.ByteString' which is
 -- suitable for use as an AES initialisation vector or secret key.
