@@ -282,6 +282,7 @@ grab (decino:eeyore:jd:mexico:_) a
   --
   destination :: Room
   destination = Def.room {roomId = mexico};
+  -- \^ "Oh, baby, I was bound to let you go..."
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
@@ -361,7 +362,7 @@ runJoin :: [String]
         -- ^ This argument contains the command-line arguments of the
         -- @join@ command.  This thing should be a 1-list or a 4-list.
         --
-        -- If thids argument is a 1-list, then this 1-list simply
+        -- If this argument is a 1-list, then this 1-list simply
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
@@ -369,7 +370,7 @@ runJoin :: [String]
         -- the room which should be joined, then this argument should be
         -- a 4-list whose elements are as follows:
         --
-        -- 1. The internal matrix ID of the room which the user should
+        -- 1. The internal Matrix ID of the room which the user should
         --    join
         --
         -- 2. The username of the user which sends the invite to the
