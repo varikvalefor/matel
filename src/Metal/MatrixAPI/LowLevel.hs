@@ -171,7 +171,7 @@ sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
 -- = Notes
 --
 -- The output 'Room' records are NOT completely filled; only the
--- @roomId@ bits are actually defined.
+-- 'roomId' bits are actually defined.
 joinedRooms :: Auth
             -- ^ This bit is the authorisation information of the user
             -- whose joined rooms are listed.
@@ -198,7 +198,7 @@ joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
 -- = Notes
 --
 -- The output 'Space' records are NOT completely filled; only the
--- @spaceId@ bits are non-default.
+-- 'spaceId' bits are non-default.
 joinedSpaces :: Auth
              -- ^ This argument is the authorisation information of the
              -- user whose joined spaces are listed.
@@ -218,7 +218,7 @@ joinedSpaces _ = pure $ Left "joinedSpaces is unimplemented.";
 -- = Notes
 --
 -- The output 'Space' records are NOT completely filled; only the
--- @commId@ bits are non-default.
+-- 'commId' bits are non-default.
 joinedComms :: Auth
             -- ^ This value is the authorisation information of the user
             -- whose joined communities are listed.
@@ -244,10 +244,10 @@ join :: Room
      -- should be 'Nothing'.
      --
      -- If the room which should be joined is /private/, then this value
-     -- is 'Just' a 3-tuple @(a,b,c)@, where @a@ is a description of the
-     -- user which sends an (invite to the room) @bk@ to the
-     -- authenticated @b@ is the state key of the aforementioned invite,
-     -- and @c@ is the signature of the aforementioned invite.
+     -- is 'Just' a 3-tuple @(a,b,c)@ such that there exists an
+     -- invitation @bk@ such that @bk@ is created by the user which is
+     -- described by @a@, @b@ is the invite state key of @bk@, and @c@
+     -- is the signature of @bk@.
      -> Auth
      -- ^ This value is the authorisation information of the user which
      -- joins the specified room.
@@ -285,10 +285,10 @@ join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
 -- 'Just' returned.  Otherwise, an IO-monadic 'Nothing' is output.
 kick :: User
      -- ^ This thing represents the user which is to be kicked.  Only
-     -- the @username@ field of this record is used.
+     -- the 'username' field of this record is used.
      -> Room
      -- ^ This value is a representation of the Matrix room from which
-     -- the specified user is removed.  Only the @roomId@ value is used.
+     -- the specified user is removed.  Only the 'roomId' value is used.
      -> String
      -- ^ This bit is the reason for the removal of the user, e.g.,
      -- "[y]our e-mail addresses offend me."
@@ -312,10 +312,10 @@ kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
 -- error is 'Just' output.  Otherwise, 'Nothing' is returned.
 ban :: User
     -- ^ This value represents the user which should be banned.
-    -- @username@ is the only value which is used.
+    -- 'username' is the only value which is used.
     -> Room
     -- ^ This record represents the room from which the user is banned.
-    -- @roomId@ is the only value which is used.
+    -- 'roomId' is the only value which is used.
     -> String
     -- ^ This bit is the justification for the banning of the user,
     -- e.g., "this dude killed me".
@@ -330,7 +330,7 @@ ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
   st_user_id = "\"user_id\":" ++ show (username tarjay)
   st_reason = "\"reason\": " ++ show m;
 
--- | @unban@ reverses users' being @'ban'@ned.
+-- | @unban@ reverses users' being 'ban'ned.
 --
 -- = Output
 --
@@ -339,10 +339,10 @@ ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
 -- Otherwise, 'Nothing' is returned.
 unban :: User
       -- ^ This argument represents the Matrix user which should be
-      -- un-banned.  @username@ is the only value which is used.
+      -- un-banned.  'username' is the only value which is used.
       -> Room
       -- ^ This bit represents the Matrix room from which the
-      -- aforementioned Matrix user should be un-banned. @roomId@ is
+      -- aforementioned Matrix user should be un-banned. 'roomId' is
       -- the only value which is used.
       -> Auth
       -- ^ This record is the authorisation information of the user
@@ -363,7 +363,7 @@ unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
 -- 'Nothing' is returned.
 leave :: Room
       -- ^ This argument represents the room which the user should
-      -- leave.  @roomId@ is the only value which is used.
+      -- leave.  'roomId' is the only value which is used.
       -> Auth
       -- ^ This bit is the authorisation information of the user which
       -- leaves the room.
@@ -387,11 +387,11 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 -- == 'Right' Values
 --
 -- If the query returns a status code of 200, then the resulting
--- @displayname@ is added to the input 'User' value and returned.
+-- 'displayname' is added to the input 'User' value and returned.
 --
 -- If the query returns a status code of 404, then @getDisplayName@
 -- assumes that the user has not set a display name and returns the
--- input thing @k@ such that @displayname k == username k@.
+-- input thing @k@ such that @'displayname' k == 'username' k@.
 --
 -- == 'Left' Values
 --
@@ -400,14 +400,14 @@ leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
 -- 'Left' 'String' which describes l is output.
 getDisplayName :: User
                -- ^ This argument describes the user whose display name
-               -- should be fetched.  @username@ is the only field which
+               -- should be fetched.  'username' is the only field which
                -- is actually used.
                -> Auth
                -- ^ This argument describes the user of Matel.
                --
                -- This value is used to determine the FQDN of the server
                -- which should be queried.  Because no actual
-               -- authorisation information is needed, @homeserver@ is
+               -- authorisation information is needed, 'homeserver' is
                -- the only field which is actually used.
                -> IO (Either ErrorCode User);
 getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
@@ -442,14 +442,14 @@ getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
 --
 -- = Output
 --
--- If all goes well, then a 'Right' 'Room' value whose @roomId@ is the ID
+-- If all goes well, then a 'Right' 'Room' value whose 'roomId' is the ID
 -- of the new room is returned.
 --
 -- If something 'splodes, then a 'Left' 'ErrorCode' which describes the
 -- 'splosion is returned.
 createRoom :: Room
            -- ^ This bit describes the room which should be created.
-           -- The @roomName@ and @topic@ values SHOULD be defined... but
+           -- The 'roomName' and 'topic' values SHOULD be defined... but
            -- are technically not required.
            -> String
            -- ^ This bit describes whether the room should be private or
@@ -498,7 +498,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 -- If the uploading is a success, then the MXC URI of the uploaded file
 -- is 'Right'ly output.
 --
--- If the output is a failure for any reason, then a 'Left' 'ErrorCode'
+-- If the upload is a failure for any reason, then a 'Left' 'ErrorCode'
 -- which hopefully explains this failure is returned.
 --
 -- = On Using 'BSL.ByteString'
@@ -512,7 +512,7 @@ createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
 --
 -- This problem is not really the fault of 'T.Text', as 'T.Text' is not
 -- meant to read binary files -- 'T.Text' contains /text/, as opposed to
--- /strings of bytes/; read the name, foo' -- rather, this problem is
+-- /strings of bytes/; read the name, foo\' -- rather, this problem is
 -- the fault of the author of @upload@.
 --
 -- PROTIP: Using the most fitting tools prevents a decent number of
