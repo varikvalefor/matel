@@ -468,12 +468,12 @@ createRoom :: Room
            -- ^ This bit is the authorisation information of the account
            -- which creates the new room.
            -> IO (Either ErrorCode Room);
-createRoom r publcty = responseToEither <.> TP.req TP.POST [] querr bod
+createRoom r visib = responseToEither <.> TP.req TP.POST [] querr bod
   where
   querr = "_matrix/client/r0/createRoom"
   bod = fromString $ unwords ["{", visStat, namStat, topStat, "}"]
   --
-  visStat = "\"visibility\": " ++ show publcty
+  visStat = "\"visibility\": " ++ show visib
   namStat = maybeKVP "name" roomName
   topStat = maybeKVP "topic" topic
   --

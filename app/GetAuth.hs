@@ -90,10 +90,7 @@ xOf :: Stringth
     -> Maybe Stringth;
 xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   where
-  head' :: [a] -> Maybe a
-  head' [] = Nothing
-  head' j = Just $ head j
-  --
+  head' = listToMaybe
   isMatch = (== query) . T.take queryLen
   queryLen = T.length query
   query = T.append query' fieldSeparator

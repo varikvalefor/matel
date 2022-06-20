@@ -65,8 +65,10 @@ req type_ headers query body auth = genRequest >>= httpBS
     where headersToAdd = ("Authorization", authToken' auth):headers
   --
   prefix :: String
-  prefix = show type_ ++ " " ++ fromJust (protocol auth) ++ "://" ++
-           homeserver auth ++ "/";
+  prefix = type_' ++ prot' ++ "://" ++ homeserver auth ++ "/"
+    where
+    type_' = show type_ ++ " "
+    prot' = fromJust (protocol auth);
 
 instance Show ReqType where
   show k = case k of
