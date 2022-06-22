@@ -301,7 +301,7 @@ mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
 --
--- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
+-- If @k == 'Nothing'@, then @dispError k@ does nothing.  @dispError k@
 -- otherwise runs @error k@.
 dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) (error . T.unpack);
