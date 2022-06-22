@@ -24,8 +24,8 @@ data ReqType = GET | POST | PUT;
 -- | @req@ sends a standardised HTTP request, returning the response to
 -- this HTTP request.
 req :: ReqType
-    -- ^ This bit is a representation of the type of HTTP request which
-    -- is sent.
+    -- ^ This bit is a representation of the type of the HTTP request
+    -- which is sent.
     -> [(HeaderName, BS.ByteString)]
     -- ^ This argument contains any additional values which are added to
     -- the HTTP request.
