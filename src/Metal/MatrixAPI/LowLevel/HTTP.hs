@@ -27,8 +27,8 @@ req :: ReqType
     -- ^ This bit is a representation of the type of the HTTP request
     -- which is sent.
     -> [(HeaderName, BS.ByteString)]
-    -- ^ This argument contains any additional values which are added to
-    -- the HTTP request.
+    -- ^ This argument contains any additional headers which are added
+    -- to the HTTP request.
     --
     -- For all elements of this list @t@, @t@ represents a HTTP header
     -- whose name is @fst t@ and whose value is @snd t@.
