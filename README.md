@@ -81,4 +81,4 @@ Additionally, VARIK welcomes new ideas... and is willing to "shoot down" new ide
 Pull requests are welcomed.
 
 ## The Matel Room
-There exists a Matrix room such that this Matrix room is dedicated to Matel.  See The Matel Room <`#johnnykissassSuckupfest:matrix.org`>.
+There exists a Matrix room such that this Matrix room is dedicated to Matel.  The Matel Room <`#johnnykissassSuckupfest:matrix.org`> is a Matrix room which is dedicated to Matel.
