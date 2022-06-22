@@ -12,7 +12,7 @@ The goals of the development of Matel are as follows:
 
 * Matel's source code is readable.
 
-* Matel is extensible.
+* Matel is hackable.
 
 * Matel runs perfectly on the BSDs, the Linux distros, and Microsoft Windows.
 
