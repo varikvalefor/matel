@@ -45,7 +45,7 @@ The use of Matel in production environments is not recommended.
 
 #### Required Stuff
 
-The basic information of Matel, e.g., the username and password of the user, are contained within the file `[HOME DIRECTORY]/.config/matel`.
+The basic information which is used by Matel, e.g., the username and password of the user, are contained within the file `[HOME DIRECTORY]/.config/matel`.
 
 For all lines of this file _g_, _g_ follows the format "[LABEL]: [CONTENT]".  The elements of {\<LABEL NAME, DESCRIPTION OF CONTENT AT LABEL\> : MATEL ACCEPTS LABEL} are as follows:
 
