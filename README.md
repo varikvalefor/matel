@@ -71,7 +71,7 @@ Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
 ## Officially-Supported Systems
 OpenBSD is the primary operating system on which Matel is written and tested, although FreeBSD is used for some testing.
 
-VARIK is willing to implement support for other operating systems but cannot guarantee that arbitrary versions of Matel work on operating systems which are not officially supported.
+VARIK is willing to implement support for other operating systems but cannot guarantee that arbitrary versions of Matel work on operating systems which are not officially supported by Matel.
 
 ## Help Wanted
 VARIK "NOT A COMPUTER PROGRAMMER!!!" VALEFOR could use some assistance with the implementation of cryptography.
