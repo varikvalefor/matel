@@ -65,8 +65,8 @@ The colours of Matel's TUI can be changed through the editing of the `Colour` mo
 ### Using Matel
 Matel is incomplete and currently useless.
 
-### Using MATELCLI
-Read `matelcli`'s beautifully detailed manual page in `matelcli.1`.
+### Using matelcli(1)
+Read matelcli(1)'s beautifully detailed manual page in `matelcli.1`.
 
 ## Officially-Supported Systems
 OpenBSD is the primary operating system on which Matel is written and tested, although FreeBSD is used for some testing.
