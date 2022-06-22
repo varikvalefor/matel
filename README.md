@@ -76,6 +76,8 @@ VARIK is willing to implement support for other operating systems but cannot gua
 ## Help Wanted
 VARIK "NOT A COMPUTER PROGRAMMER!!!" VALEFOR could use some assistance with the implementation of cryptography.
 
+Additionally, VARIK welcomes new ideas... and is willing to "shoot down" new ideas which happen to be stupid.
+
 Pull requests are welcomed.
 
 ## The Matel Room
