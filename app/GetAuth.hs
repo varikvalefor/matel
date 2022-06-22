@@ -16,6 +16,7 @@
 -- @getAuthorisationDetails@ is moved to this file to ensure that the
 -- complexity of Metal is minimised.
 module GetAuth (getAuthorisationDetails, configFilePath) where
+import Data.Char;
 import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
@@ -58,7 +59,7 @@ getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
     password = bim "password" $ xOf "password" cfg,
     homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
     authToken = fromMaybe "whatever" $ T.unpack <$> xOf "authtoken" cfg,
-    protocol = T.unpack <$> xOf "protocol" cfg
+    protocol = read . map toUpper . T.unpack <$> xOf "protocol" cfg
   };
 
 -- | @configFilePath@ is the path of Matel's configuration file.

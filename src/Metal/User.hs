@@ -35,12 +35,10 @@ data User = User {
   -- | @protocol k@, if present, describes the protocol which @l@ uses
   -- to connect to the Matrix homeserver of @l@.
   --
-  -- The standard values are "http" and "https".
-  --
   -- This value is only officially used to determine the protocol which
   -- Metal should use to contact the homeserver.  However, other uses of
   -- this thing may be possible.
-  protocol :: Maybe String,
+  protocol :: Maybe Protocol,
   -- | @keyring k@ 'Just' contains the private keys which @k@ has
   -- generated... or is 'Nothing'.
   --

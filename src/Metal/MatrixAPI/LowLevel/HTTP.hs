@@ -68,7 +68,7 @@ req type_ headers query body auth = genRequest >>= httpBS
   prefix = type_' ++ prot' ++ "://" ++ homeserver auth ++ "/"
     where
     type_' = show type_ ++ " "
-    prot' = fromJust (protocol auth);
+    prot' = show $ fromJust $ protocol auth;
 
 instance Show ReqType where
   show k = case k of
