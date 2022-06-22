@@ -29,7 +29,7 @@ For all new bugs, a bug can be mentioned via the GitHub "Issues" feature or by s
 
 Contributions are welcomed but must be released in accordance with Matel's licence.
 
-For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for this good change can be submitted to this GitHub repository.
+For all good changes, the diff of a good change can be pinged to Varik Valefor \<varikvalefor@aol.com\> such that the e-mail's subject line includes the phrase "MATEL CONTRIBUTION", or a pull request for this good change can be submitted to Matel's GitHub repository \<https://github.com/varikvalefor/matel\>.
 
 For all Matel issues, for all men, if a man wishes to fix a Matel issue, then this man should inform Varik Valefor via e-mail or Matrix at varikvalefor@aol.com or @varikvalefor:matrix.org of this man's intent to fix this Matel issue.  If VARIK is informed of this intent via e-mail, then the subject line of this e-mail should include the phrase "MATEL ISSUE ASSIGNMENT REQUEST".
 
