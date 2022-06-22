@@ -32,7 +32,6 @@ req :: ReqType
     --
     -- For all elements of this list @t@, @t@ represents a HTTP header
     -- whose name is @fst t@ and whose value is @snd t@.
-    -- should bear
     -> String
     -- ^ This argument is the concatenation of the path of the HTTP
     -- request which should be sent, a question mark, and the query
