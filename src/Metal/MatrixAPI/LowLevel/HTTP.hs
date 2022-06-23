@@ -19,7 +19,7 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
-data ReqType = GET | POST | PUT;
+data ReqType = GET | POST | PUT deriving Show;
 
 -- | @req@ sends a standardised HTTP request, returning the response to
 -- this HTTP request.
@@ -69,22 +69,3 @@ req type_ headers query body auth = genRequest >>= httpBS
     where
     type_' = show type_ ++ " "
     prot' = show $ fromJust $ protocol auth;
-
-instance Show ReqType where
-  show k = case k of
-    GET  -> "GET"
-    PUT  -> "PUT"
-    POST -> "POST"
-    _    -> error "show receives an unknown ReqType.  As a result of \
-            \not understanding this ReqType, show halts and catches \
-            \fire.  Although the fire is quickly extinguished, the \
-            \fire is extinguished with saltwater, and electronic \
-            \stuff does not particularly care for saltwater.  As \
-            \such, show is now broken.";
-            -- \^ No, GHC, this case is not redundant.  This case exists
-            -- to ensure that if some weird new ReqType is added without
-            -- receiving a 'Show' instance, then a descriptive error may
-            -- be thrown.
-            --
-            -- Additionally, keeping this thing implies being able to
-            -- keep a dumb joke.
