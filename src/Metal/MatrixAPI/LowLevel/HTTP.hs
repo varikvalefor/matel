@@ -12,7 +12,10 @@
 module Metal.MatrixAPI.LowLevel.HTTP where
 import Data.Maybe;
 import Metal.Auth;
+import Metal.OftenUsedFunctions;
+import Metal.Base;
 import Metal.User;
+import Control.Monad;
 import Network.HTTP.Simple;
 import Network.HTTP.Types.Header;
 import qualified Data.ByteString as BS;
@@ -51,24 +54,28 @@ req :: ReqType
     --
     -- In both cases, the @protocol@ and @homeserver@ values must be
     -- defined and valid.
-    -> IO (Response BS.ByteString);
-req type_ headers query body auth = genRequest >>= httpBS
+    -> IO (Either ErrorCode (Response BS.ByteString));
+req type_ h q b a = maybe noProt (Right <.> useRequest) $ protocol a
   where
-  genRequest :: IO Request
-  genRequest = addHeaders . addBody <$> parseRequest (prefix ++ query)
+  noProt :: IO (Either ErrorCode (Response BS.ByteString))
+  noProt = pure $ Left "req: The \"protocol\" content is Nothing."
+  --
+  useRequest :: Protocol -> IO (Response BS.ByteString)
+  useRequest = genRequest >=> httpBS
+  --
+  genRequest :: Protocol -> IO Request
+  genRequest p = addHeaders . addBody <$> parseRequest (prefix p ++ q)
   --
   addBody :: Request -> Request
-  addBody = setRequestBodyLBS body
+  addBody = setRequestBodyLBS b
   --
   addHeaders :: Request -> Request
   addHeaders j = foldr (uncurry addRequestHeader) j headersToAdd
-    where headersToAdd = ("Authorization", authToken' auth):headers
+    where headersToAdd = ("Authorization", authToken' a):h
   --
-  prefix :: String
-  prefix = type_' ++ prot' ++ "://" ++ homeserver auth ++ "/"
-    where
-    type_' = show type_ ++ " "
-    prot' = show $ fromJust $ protocol auth;
+  prefix :: Protocol -> String
+  prefix p = type_' ++ show p ++ "://" ++ homeserver a ++ "/"
+    where type_' = show type_ ++ " ";
 
 instance Show ReqType where
   show k = case k of
