@@ -24,8 +24,14 @@ import qualified Data.ByteString.Lazy as BSL;
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
 data ReqType = GET | POST | PUT;
 
--- | @req@ sends a standardised HTTP request, returning the response to
--- this HTTP request.
+-- | @req@ sends standardised HTTP requests or 'splodes... without
+-- /necessarily/ 'sploding the program which uses @req@.
+--
+-- If the input of @req@ can be used to send a standardised HTTP
+-- request, then @req@ uses this information to send such a standardised
+-- HTTP request and 'Right'y returns the response for this HTTP request.
+-- If such information is /incomplete/, then returned is a 'Left' value
+-- which explains such incompleteness.
 req :: ReqType
     -- ^ This bit is a representation of the type of HTTP request which
     -- is sent.

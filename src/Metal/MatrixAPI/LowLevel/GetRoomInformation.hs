@@ -66,9 +66,11 @@ getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   fetchRoomValues = mapConcurrently (\f -> f r a) functions
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
--- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
--- such that this 'Room' represents the encryption status of the room
--- which @r@ represents.
+-- | @getEncryptionStatus r a@ 'Either' returns a 'Def.room' which is
+-- modified such that this 'Room' describes the encryption status of the
+-- room which is represented by @r@ or returns an 'Errorcode' which
+-- explains @getEncryptionStatus@'s failure to return a 'Def.room'
+-- value.
 getEncryptionStatus :: Room
                     -- ^ This record represents the room whose
                     -- encryption information should be grabbed.
@@ -107,9 +109,10 @@ getMembers room = (>>= process) <.> rq room "/members"
            -- program break at this point can be a bit inconvenient.
     _   -> Left $ responseToStringth response;
 
--- @getTopic r whatevs@ fetches the topic message of the Matrix room
--- whose internal Matrix room ID is @roomId r@.  This information is
--- returned as a 'Room' record whose @'topic'@ field is non-default.
+-- | @getTopic r whatevs@ 'Either' returns a 'Room' record whose
+-- 'topic' value is the topic of the Matrix room whose MXID is
+-- @roomId r@) or returns an 'ErrorCode' which explains
+-- @getTopic@'s failure to fetch the topic message.
 getTopic :: Room
          -- ^ This thing is a representation of the Matrix room whose
          -- topic should be nabbed.
@@ -126,13 +129,10 @@ getTopic r = fmap process <.> rq r "/state/m.room.topic/"
   process k = Def.room {topic = extractTopic k}
   extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @getRoomName@ fetches the display name of the specified Matrix
--- room.
---
--- = Output
---
--- The @roomName@ field of the returned 'Room' record contains the
--- desired information.
+-- | @getRoomName j helljail@ 'Either' (returns a 'Room' record
+-- whose 'roomName' value is the display name of the Matrix room
+-- whose MXID is @roomId j@) or returns an 'ErrorCode' which
+-- explains @getRoomName@'s failure to return a 'Room' record.
 getRoomName :: Room
             -- ^ This value describes the room whose display name is
             -- fetched.
