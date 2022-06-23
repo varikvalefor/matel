@@ -133,7 +133,7 @@ instance Combinable EncryptedFile where
     g c = combineSingleValue c a b Def.encryptedFile;
 
 instance Combinable ErrorCode where
-  combine a b = b;
+  combine _ b = b;
 
 instance Combinable Encrypted where
   combine a b = Encrypted {
