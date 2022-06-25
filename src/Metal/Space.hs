@@ -14,7 +14,8 @@ import Metal.User;
 
 -- | For all 'Space' @k@, @k@ represents a Matrix space.
 --
--- Within this documentation, @l@ denotes the space which @k@
+-- Within this documentation, @l@ denotes the space which is
+-- represented by @k@.
 -- represents.
 data Space = Space {
   -- | @spaceId k@ equals the identifier of @l@.
