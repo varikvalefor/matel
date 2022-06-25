@@ -89,7 +89,7 @@ eventCommonFields = EventCommonFields {
   destRoom = room
 };
 
--- | @videoInfo@ is a default-valued 'VideoInfo' record.
+-- | @fileInfo@ is a default-valued 'FileInfo' record.
 fileInfo :: FI.FileInfo;
 fileInfo = FI.FileInfo {
   FI.duration = Nothing,
