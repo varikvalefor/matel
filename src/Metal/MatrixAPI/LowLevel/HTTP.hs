@@ -12,17 +12,26 @@
 module Metal.MatrixAPI.LowLevel.HTTP where
 import Data.Maybe;
 import Metal.Auth;
+import Metal.OftenUsedFunctions;
+import Metal.Base;
 import Metal.User;
+import Control.Monad;
 import Network.HTTP.Simple;
 import Network.HTTP.Types.Header;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
-data ReqType = GET | POST | PUT;
+data ReqType = GET | POST | PUT deriving Show;
 
--- | @req@ sends a standardised HTTP request, returning the response to
--- this HTTP request.
+-- | @req@ sends standardised HTTP requests or 'splodes... without
+-- /necessarily/ 'sploding the program which uses @req@.
+--
+-- If the input of @req@ can be used to send a standardised HTTP
+-- request, then @req@ uses this information to send such a standardised
+-- HTTP request and 'Right'y returns the response for this HTTP request.
+-- If such information is /incomplete/, then returned is a 'Left' value
+-- which explains such incompleteness.
 req :: ReqType
     -- ^ This bit is a representation of the type of the HTTP request
     -- which is sent.
@@ -50,40 +59,25 @@ req :: ReqType
     --
     -- In both cases, the @protocol@ and @homeserver@ values must be
     -- defined and valid.
-    -> IO (Response BS.ByteString);
-req type_ headers query body auth = genRequest >>= httpBS
+    -> IO (Either ErrorCode (Response BS.ByteString));
+req type_ h q b a = maybe noProt (Right <.> useRequest) $ protocol a
   where
-  genRequest :: IO Request
-  genRequest = addHeaders . addBody <$> parseRequest (prefix ++ query)
+  noProt :: IO (Either ErrorCode (Response BS.ByteString))
+  noProt = pure $ Left "req: The \"protocol\" content is Nothing."
+  --
+  useRequest :: Protocol -> IO (Response BS.ByteString)
+  useRequest = genRequest >=> httpBS
+  --
+  genRequest :: Protocol -> IO Request
+  genRequest p = addHeaders . addBody <$> parseRequest (prefix p ++ q)
   --
   addBody :: Request -> Request
-  addBody = setRequestBodyLBS body
+  addBody = setRequestBodyLBS b
   --
   addHeaders :: Request -> Request
   addHeaders j = foldr (uncurry addRequestHeader) j headersToAdd
-    where headersToAdd = ("Authorization", authToken' auth):headers
+    where headersToAdd = ("Authorization", authToken' a):h
   --
-  prefix :: String
-  prefix = type_' ++ prot' ++ "://" ++ homeserver auth ++ "/"
-    where
-    type_' = show type_ ++ " "
-    prot' = fromJust (protocol auth);
-
-instance Show ReqType where
-  show k = case k of
-    GET  -> "GET"
-    PUT  -> "PUT"
-    POST -> "POST"
-    _    -> error "show receives an unknown ReqType.  As a result of \
-            \not understanding this ReqType, show halts and catches \
-            \fire.  Although the fire is quickly extinguished, the \
-            \fire is extinguished with saltwater, and electronic \
-            \stuff does not particularly care for saltwater.  As \
-            \such, show is now broken.";
-            -- \^ No, GHC, this case is not redundant.  This case exists
-            -- to ensure that if some weird new ReqType is added without
-            -- receiving a 'Show' instance, then a descriptive error may
-            -- be thrown.
-            --
-            -- Additionally, keeping this thing implies being able to
-            -- keep a dumb joke.
+  prefix :: Protocol -> String
+  prefix p = type_' ++ show p ++ "://" ++ homeserver a ++ "/"
+    where type_' = show type_ ++ " ";

@@ -108,10 +108,10 @@ loginPass :: Auth
           -- ^ This bit is the authorisation information of the user for
           -- which an authorisation token is generated.
           -> IO (Either ErrorCode Stringth);
-loginPass a = responseToLeftRight' <$> TP.req TP.POST [] querr logreq a
+loginPass a = (>>= responseToLeftRight'') <$> TP.req TP.POST [] querr logreq a
   where
   querr = "_matrix/client/r0/login"
-  responseToLeftRight' j = case getResponseStatusCode j of
+  responseToLeftRight'' j = case getResponseStatusCode j of
     200 -> mayB2Eit $ (Q..! "{access_token}") <$> bodyValue j
     _   -> responseToLeftRight j
   mayB2Eit = maybe (Left invalidBodyMsg) Right
@@ -144,7 +144,7 @@ sync :: Maybe String
      -> Auth
      -- ^ This argument is /still/ just authorisation stuff.
      -> IO (Either Stringth Stringth);
-sync since = responseToLeftRight <.> TP.req TP.GET [] querr syncreq
+sync since = responseToLeftRight' <.> TP.req TP.GET [] querr syncreq
   where
   querr = "_matrix/client/r0/sync"
   syncreq = maybe "" encapsulate since
@@ -176,7 +176,7 @@ joinedRooms :: Auth
             -- ^ This bit is the authorisation information of the user
             -- whose joined rooms are listed.
             -> IO (Either ErrorCode [Room]);
-joinedRooms = processResponse <.> TP.req TP.GET [] querr ""
+joinedRooms = (>>= processResponse) <.> TP.req TP.GET [] querr ""
   where
   toEither = maybe (Left "joinedRooms: Decoding fails!") Right
   maybeRooms = (map toRoom . (Q..! "{joined_rooms}")) <.> Q.decode
@@ -252,7 +252,7 @@ join :: Room
      -- ^ This value is the authorisation information of the user which
      -- joins the specified room.
      -> IO (Maybe ErrorCode);
-join r i a = responseToMaybe <$> TP.req TP.POST [] querr joinReq a
+join r i a = responseToMaybe' <$> TP.req TP.POST [] querr joinReq a
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId r ++ "/join"
   joinReq
@@ -296,7 +296,7 @@ kick :: User
      -- ^ The final argument is the authorisation information of the
      -- user which attempts to kick the other user.
      -> IO (Maybe ErrorCode);
-kick tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr kickRq
+kick tarjay rome m = responseToMaybe' <.> TP.req TP.POST [] querr kickRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/kick"
   kickRq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
@@ -323,7 +323,7 @@ ban :: User
     -- ^ This argument is the authorisation information of the user
     -- which kicks the other user.
     -> IO (Maybe ErrorCode);
-ban tarjay rome m = responseToMaybe <.> TP.req TP.POST [] querr banReq
+ban tarjay rome m = responseToMaybe' <.> TP.req TP.POST [] querr banReq
   where
   querr = "_matrix/client/v3/rooms/" ++ roomId rome ++ "/ban"
   banReq = fromString $ unwords ["{", st_user_id, ",", st_reason, "}"]
@@ -348,7 +348,7 @@ unban :: User
       -- ^ This record is the authorisation information of the user
       -- which un-bans the other user.
       -> IO (Maybe ErrorCode);
-unban tarjay rome = responseToMaybe <.> TP.req TP.POST [] querr unbanRq
+unban tarjay rome = responseToMaybe' <.> TP.req TP.POST [] querr unbanRq
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId rome ++ "/unban"
   unbanRq = fromString ur'
@@ -368,7 +368,7 @@ leave :: Room
       -- ^ This bit is the authorisation information of the user which
       -- leaves the room.
       -> IO (Maybe ErrorCode);
-leave lamersPalace = responseToMaybe <.> TP.req TP.POST [] querr ""
+leave lamersPalace = responseToMaybe' <.> TP.req TP.POST [] querr ""
   where
   querr = "_matrix/client/r0/rooms/" ++ roomId lamersPalace ++ "/leave";
 
@@ -410,7 +410,7 @@ getDisplayName :: User
                -- authorisation information is needed, 'homeserver' is
                -- the only field which is actually used.
                -> IO (Either ErrorCode User);
-getDisplayName u = processResponse <.> TP.req TP.GET [] querr ""
+getDisplayName u = (>>= processResponse) <.> TP.req TP.GET [] querr ""
   where
   toEither = maybe (Left failedDecodeMsg) Right
   failedDecodeMsg = "getDisplayName: The decoding process fails."
@@ -466,12 +466,12 @@ createRoom :: Room
            -- ^ This bit is the authorisation information of the account
            -- which creates the new room.
            -> IO (Either ErrorCode Room);
-createRoom r visib = responseToEither <.> TP.req TP.POST [] querr bod
+createRoom r vis = (>>= responseToEither) <.> TP.req TP.POST [] querr bod
   where
   querr = "_matrix/client/r0/createRoom"
   bod = fromString $ unwords ["{", visStat, namStat, topStat, "}"]
   --
-  visStat = "\"visibility\": " ++ show visib
+  visStat = "\"visibility\": " ++ show vis
   namStat = maybeKVP "name" roomName
   topStat = maybeKVP "topic" topic
   --
@@ -528,7 +528,7 @@ upload :: BSL.ByteString
        -- authorisation garbage which is used to actually upload the
        -- file.
        -> IO (Either ErrorCode Stringth);
-upload attachment name = process <.> TP.req TP.POST hdr qq attachment
+upload attach name = (>>= process) <.> TP.req TP.POST hdr qq attach
   where
   process :: Response BS.ByteString -> Either Stringth Stringth
   process k = bool (responseToLeftRight k) cURI requestSuccessful
@@ -574,7 +574,8 @@ sendEvent ev rm a = qenerateQuery >>= sendQuery
     where
     prepend = ((pfx ++ roomId rm ++ "/send/" ++ eventType ev ++ "/") ++)
     pfx = "_matrix/client/r0/rooms/"
-  process k = case getResponseStatusCode k of
+  process = either pure process'
+  process' k = case getResponseStatusCode k of
     200 -> Nothing
     _   -> Just $ "sendEvent: " `T.append` responseToStringth k;
 

@@ -65,8 +65,10 @@ class Event a where
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
-  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = eit' process <.> TP.req TP.GET [] querr ""
     where
+    eit' a = either (Left) a
+    --
     process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
       200 -> extractMessages . (.! "{chunk}") <$> toValue k
@@ -188,7 +190,7 @@ valueMFileToStdMess k = Def.stdMess {
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
-  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = (>>= process) <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
