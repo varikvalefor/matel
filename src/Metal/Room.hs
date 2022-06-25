@@ -13,8 +13,8 @@ import Metal.User;
 
 -- | For all 'Room' @k@, @k@ represents a Matrix chatroom.
 --
--- Within this documentation, let @l@ denote the Matrix room which @k@
--- represents.
+-- Within this documentation, let @l@ denote the Matrix room which is
+-- represented by @l@.
 data Room = Room {
   -- | @roomId k@ is the "non-human-readable" identifier of @l@, e.g.,
   -- "!wnmjpIJcdaBNfOJrSw:matrix.org".
