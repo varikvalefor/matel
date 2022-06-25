@@ -112,7 +112,7 @@ encryptedFile = EF.EncryptedFile {
   EF.v = "FOR VENDETTA"
 };
 
--- | @jwk@ is a default-valued 'JWK' record.
+-- | @jwk@ is a default-valued 'EF.JWK' record.
 jwk :: EF.JWK;
 jwk = EF.JWK {
   EF.kty = "oct",
