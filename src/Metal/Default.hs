@@ -102,7 +102,7 @@ fileInfo = FI.FileInfo {
   FI.thumbnail_info = Nothing
 };
 
--- | @encryptedFile@ is a default-valued 'EncryptedFile' record.
+-- | @encryptedFile@ is a default-valued 'EF.EncryptedFile' record.
 encryptedFile :: EF.EncryptedFile;
 encryptedFile = EF.EncryptedFile {
   EF.url = "ass.varikose.god/asdfasdfasdfasdf",
