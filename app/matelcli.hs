@@ -429,7 +429,8 @@ runLeave _ = error "You'd best leave... or stop giving me \
 --
 -- An error is encountered iff an error is thrown.
 runKick :: [String]
-        -- ^ The first 3 elements of this list are the room ID of the
+        -- ^ The first 3 elements of this list are the MXID of the user
+        -- which should be removed from the room, the room ID of the
         -- room from which the user should be removed, and the reason
         -- for the removal of this user.  If the third element equals
         -- @""@, then no reason is supplied.
