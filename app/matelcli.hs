@@ -386,20 +386,19 @@ runJoin :: [String]
 runJoin [] = error "Idiot!  How am I to join an unspecified room for \
                    \you?  My strength is simplicity.  I can't work \
                    \with this shit.";
-runJoin t = join room inviteInfo >=> dispError
+runJoin (rmxid:t) = join room (inviteInfo t) >=> dispError
   where
   room :: Room
-  room = Def.room {roomId = t !! 0}
+  room = Def.room {roomId = rmxid}
   --
-  inviteInfo :: Maybe (User, String, String)
-  inviteInfo = case length t of
-    4 -> Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
-    1 -> Nothing
-    _ -> error "You have managed to completely disregard the \
-         \information which is specified in my manual page by \
-         \inputting a weird number of arguments, which is \
-         \actually not terribly impressive... but is still a bit \
-         \irritating.";
+  inviteInfo :: [String] -> Maybe (User, String, String)
+  inviteInfo [a,b,c] = Just (Def.user {username = a}, b, c)
+  inviteInfo [_] = Nothing
+  inviteInfo _ = error "You have managed to completely disregard the \
+                       \information which is specified in my manual \
+                       \page by inputting a weird number of arguments, \
+                       \which is actually not terribly impressive... \
+                       \but is still a bit irritating.";
 
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.
