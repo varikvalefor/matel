@@ -16,7 +16,7 @@ import Metal.Messages.Encrypted;
 import Metal.Messages.Standard;
 import Metal.OftenUsedFunctions;
 
--- | For all CryptoThing @a@, @a@ represents a Matix event which can
+-- | For all CryptoThing @a@, @a@ represents a Matrix event which can
 -- be encrypted.
 class CryptoThing a where
   -- | @encrypt@ encrypts a Matrix event, returning the resulting

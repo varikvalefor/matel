@@ -145,43 +145,38 @@ send [_] a = error "I thought that you were improving.  I now see that \
                    \I was wrong.  Really, I should be mad at myself \
                    \for apparently going insane by having some faith \
                    \in you.";
-send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
+send (mt:b:b':k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
-  getTarget = case msgtype of
+  getTarget = case mt of
     "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
-    "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
-                  return Def.stdMess {
-                    msgType = Attach,
-                    body = T.pack $ head k,
-                    url = Just $ T.unpack uploadID,
-                    fileInfo = Just Def.fileInfo {
-                      mimetype = Just "text/plain"
-                    }
-                  }
-    "notice"   -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input, msgType = Notice}
-    "location" -> T.getContents >>= \input ->
-                  return Def.stdMess {
-                    msgType = Location,
-                    -- \| Using @listToMaybe@ SHOULD be unnecessary, as
-                    -- @k@ SHOULD NOT be @null@.  However, using
-                    -- @listToMaybe@ implies not needing to manually
-                    -- place @head k@ into the 'Maybe' monad.
-                    geo_uri = T.pack <$> listToMaybe k,
-                    body = input
-                  }
+    "file"     -> attachWId <$> uploadStdinGetID b a
+    "notice"   -> (\i -> defNotice {body = i}) <$> T.getContents
+    "location" -> locWitBod <$> T.getContents
     _          -> error "I ought to send you to the garbage disposal, \
                         \shit-tits.  Read the fucking manual."
   --
-  dest :: Room
-  dest = Def.room {roomId = k !! destIndex}
-    where
-    diargumentalStuff = ["file", "location"]
-    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
-    -- \^ This bit is necessary because the number of arguments of the
-    -- "send file" command is not equal to the number of arguments of
-    -- the "send text" and "send notice" commands.
+  attachWId uploadId = Def.stdMess {
+                     msgType = Attach,
+                     body = T.pack b,
+                     url = Just $ T.unpack uploadId,
+                     fileInfo = Just Def.fileInfo {
+                       mimetype = Just "text/plain"
+                     }
+                   }
+  -- \| "@locWitBod@" is an abbreviation of "location with body".
+  locWitBod input = Def.stdMess {
+                      msgType = Location,
+                      geo_uri = Just $ T.pack b,
+                      body = input
+                    }
+  --
+  defNotice = Def.stdMess {msgType = Notice}
+  --
+  dest = Def.room {roomId = bool b b' $ mt `elem` ["file", "location"]};
+  -- \^ This bit is necessary because the number of arguments of the
+  -- "send file" command is not equal to the number of arguments of
+  -- the "send text" and "send notice" commands.
 
 -- | @uploadStdinGetID@ uploads some data which is read from the
 -- standard input to a homeserver, returning the URI of the uploaded
@@ -280,6 +275,7 @@ grab (decino:eeyore:jd:mexico:_) a
   --
   destination :: Room
   destination = Def.room {roomId = mexico};
+  -- \^ "Oh, baby, I was bound to let you go..."
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
@@ -325,7 +321,7 @@ logIn = loginPass >=> either busticate addAndDisplay
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = lineFilter notToken phile `T.append` toke'
     where
-    notToken = (/= "authtoken: ") . T.take 11
+    notToken = not . beginsWith "authtoken: "
     toke' = T.append "\nauthtoken: " toke
     lineFilter f = T.unlines . filter f . T.lines
   --
@@ -359,7 +355,7 @@ runJoin :: [String]
         -- ^ This argument contains the command-line arguments of the
         -- @join@ command.  This thing should be a 1-list or a 4-list.
         --
-        -- If thids argument is a 1-list, then this 1-list simply
+        -- If this argument is a 1-list, then this 1-list simply
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
@@ -367,7 +363,7 @@ runJoin :: [String]
         -- the room which should be joined, then this argument should be
         -- a 4-list whose elements are as follows:
         --
-        -- 1. The internal matrix ID of the room which the user should
+        -- 1. The internal Matrix ID of the room which the user should
         --    join
         --
         -- 2. The username of the user which sends the invite to the
@@ -383,20 +379,19 @@ runJoin :: [String]
 runJoin [] = error "Idiot!  How am I to join an unspecified room for \
                    \you?  My strength is simplicity.  I can't work \
                    \with this shit.";
-runJoin t = join room inviteInfo >=> dispError
+runJoin (rmxid:t) = join room (inviteInfo t) >=> dispError
   where
   room :: Room
-  room = Def.room {roomId = t !! 0}
+  room = Def.room {roomId = rmxid}
   --
-  inviteInfo :: Maybe (User, String, String)
-  inviteInfo = case length t of
-    4 -> Just (Def.user {username = t !! 1}, t !! 2, t !! 3)
-    1 -> Nothing
-    _ -> error "You have managed to completely disregard the \
-         \information which is specified in my manual page by \
-         \inputting a weird number of arguments, which is \
-         \actually not terribly impressive... but is still a bit \
-         \irritating.";
+  inviteInfo :: [String] -> Maybe (User, String, String)
+  inviteInfo [a,b,c] = Just (Def.user {username = a}, b, c)
+  inviteInfo [_] = Nothing
+  inviteInfo _ = error "You have managed to completely disregard the \
+                       \information which is specified in my manual \
+                       \page by inputting a weird number of arguments, \
+                       \which is actually not terribly impressive... \
+                       \but is still a bit irritating.";
 
 -- | @runLeave@ is a relatively high-level interface for the @'leave'@
 -- command.

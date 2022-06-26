@@ -1,4 +1,5 @@
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 -- | Module    : Metal.MatrixAPI.LowLevel.RecordCombination
 -- Description : Record type combination crap
@@ -10,7 +11,8 @@
 --
 -- | Metal.MatrixAPI.LowLevel.RecordCombination contains @'combine'@
 -- and some stuff which supports @'combine@'.
-module Metal.MatrixAPI.LowLevel.RecordCombination (combine) where
+module Metal.MatrixAPI.LowLevel.RecordCombination (Combinable(..)) where
+import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Metal.Space;
@@ -129,6 +131,9 @@ instance Combinable EncryptedFile where
   } where
     g :: Eq b => (EncryptedFile -> b) -> b
     g c = combineSingleValue c a b Def.encryptedFile;
+
+instance Combinable ErrorCode where
+  combine _ b = b;
 
 instance Combinable Encrypted where
   combine a b = Encrypted {

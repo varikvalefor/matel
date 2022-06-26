@@ -15,6 +15,7 @@ module Metal.MatrixAPI.LowLevel.GetRoomInformation (
   getRoomInformation
 ) where
 import Metal.Base;
+import Control.Monad;
 import Metal.Room;
 import Metal.Auth;
 import Data.Aeson.Quick;
@@ -54,8 +55,10 @@ getRoomInformation :: Room
 getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   where
   -- \| "@evil@" is an abbreviation of "@evaluate@".
-  evil g = Right . foldCombine . (r:) . (g:) <$> fetchRoomValues
-  foldCombine = foldr combine Def.room
+  evil g = foldCombine . (Right r:) . (Right g:) <$> fetchRoomValues
+  foldCombine = foldr combine' (Right Def.room)
+  --
+  combine' = liftM2 combine
   -- \| The term "fetch", as opposed to "get", is used to indicate that
   -- @fetchRoomValues@ just concatenates the outputs of various
   -- functions which directly access the Matrix API and does not
@@ -63,9 +66,11 @@ getRoomInformation r a = getMembers r a >>= either (pure . Left) evil
   fetchRoomValues = mapConcurrently (\f -> f r a) functions
   functions = [getEncryptionStatus, getTopic, getRoomName];
 
--- | @getEncryptionStatus r a@ returns a @'Def.room'@ which is modified
--- such that this 'Room' represents the encryption status of the room
--- which @r@ represents.
+-- | @getEncryptionStatus r a@ 'Either' returns a 'Def.room' which is
+-- modified such that this 'Room' describes the encryption status of the
+-- room which is represented by @r@ or returns an 'Errorcode' which
+-- explains @getEncryptionStatus@'s failure to return a 'Def.room'
+-- value.
 getEncryptionStatus :: Room
                     -- ^ This record represents the room whose
                     -- encryption information should be grabbed.
@@ -73,8 +78,8 @@ getEncryptionStatus :: Room
                     -> Auth
                     -- ^ This value is the authorisation information
                     -- which is used to run the "@m.room.key@" query.
-                    -> IO Room;
-getEncryptionStatus room = process <.> rq room "/event/m.room_key"
+                    -> IO (Either ErrorCode Room);
+getEncryptionStatus room = fmap process <.> rq room "/event/m.room_key"
   where
   process response = case getResponseStatusCode response of
     200 -> Def.room {publicKey = fmap (.! "{content:{session_key}") bd}
@@ -93,8 +98,8 @@ getMembers :: Room
            -> Auth
            -- ^ This value is the authorisation information which is
            -- used to run the query.
-           -> IO (Either Stringth Room);
-getMembers room = process <.> rq room "/members"
+           -> IO (Either ErrorCode Room);
+getMembers room = (>>= process) <.> rq room "/members"
   where
   process response = case getResponseStatusCode response of
     200 -> Right Def.room
@@ -104,9 +109,10 @@ getMembers room = process <.> rq room "/members"
            -- program break at this point can be a bit inconvenient.
     _   -> Left $ responseToStringth response;
 
--- @getTopic r whatevs@ fetches the topic message of the Matrix room
--- whose internal Matrix room ID is @roomId r@.  This information is
--- returned as a 'Room' record whose @'topic'@ field is non-default.
+-- | @getTopic r whatevs@ 'Either' returns a 'Room' record whose
+-- 'topic' value is the topic of the Matrix room whose MXID is
+-- @roomId r@) or returns an 'ErrorCode' which explains
+-- @getTopic@'s failure to fetch the topic message.
 getTopic :: Room
          -- ^ This thing is a representation of the Matrix room whose
          -- topic should be nabbed.
@@ -117,19 +123,16 @@ getTopic :: Room
          -- The authorisation information is demanded because for all
          -- private rooms, the topic of a private room can be fetched
          -- only if this authorisation information is provided.
-         -> IO Room;
-getTopic r = process <.> rq r "/state/m.room.topic/"
+         -> IO (Either ErrorCode Room);
+getTopic r = fmap process <.> rq r "/state/m.room.topic/"
   where
   process k = Def.room {topic = extractTopic k}
   extractTopic k = getResponseBody k ^? A.key "name" . A._String;
 
--- | @getRoomName@ fetches the display name of the specified Matrix
--- room.
---
--- = Output
---
--- The @roomName@ field of the returned 'Room' record contains the
--- desired information.
+-- | @getRoomName j helljail@ 'Either' (returns a 'Room' record
+-- whose 'roomName' value is the display name of the Matrix room
+-- whose MXID is @roomId j@) or returns an 'ErrorCode' which
+-- explains @getRoomName@'s failure to return a 'Room' record.
 getRoomName :: Room
             -- ^ This value describes the room whose display name is
             -- fetched.
@@ -141,8 +144,8 @@ getRoomName :: Room
             -- all private rooms, the name of a private room can be
             -- fetched only if this authorisation information is
             -- provided.
-            -> IO Room;
-getRoomName r = process <.> rq r "/state/m.room.name/"
+            -> IO (Either ErrorCode Room);
+getRoomName r = fmap process <.> rq r "/state/m.room.name/"
   where
   process k = Def.room {roomName = extractName k}
   extractName k = getResponseBody k ^? A.key "name" . A._String;
@@ -158,7 +161,7 @@ rq :: Room
    -> Auth
    -- ^ This argument is the authorisation information of the Matrix
    -- user on whose behalf this HTTP request is sent.
-   -> IO (Response BS.ByteString)
+   -> IO (Either ErrorCode (Response BS.ByteString));
 rq room k = TP.req TP.GET [] querr ""
   where
   querr :: String
