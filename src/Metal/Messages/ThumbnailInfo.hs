@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Module    : Metal.Messages.ThumbnailInfo
@@ -10,7 +11,7 @@
 --
 -- This module contains 'ThumbnailInfo'.
 module Metal.Messages.ThumbnailInfo where
-import Data.Aeson;
+import Data.Aeson.TH;
 
 -- | For all 'ThumbnailInfo' @k@, @k@ describes a thumbnail image.
 data ThumbnailInfo = ThumbnailInfo {
@@ -28,11 +29,4 @@ data ThumbnailInfo = ThumbnailInfo {
   size :: Integer
 } deriving (Eq, Read, Show);
 
-instance ToJSON ThumbnailInfo where
-  toJSON s = object
-    [
-      "w" .= w s,
-      "h" .= h s,
-      "mimetype" .= mimetype s,
-      "size" .= size s
-    ];
+$(deriveJSON defaultOptions ''ThumbnailInfo);
