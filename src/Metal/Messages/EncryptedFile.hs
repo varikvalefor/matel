@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.EncryptedFile
 -- Description : Encrypted file attachment record type
 -- Copyright   : (c) Varik Valefor, 2022
@@ -8,6 +10,8 @@
 --
 -- This file contains 'EncryptedFile' and company.
 module Metal.Messages.EncryptedFile where
+import Data.Aeson;
+
 -- | For all 'EncryptedFile' @k@, @k@ represents an encrypted file.
 data EncryptedFile = EncryptedFile {
   -- | @url k@ is the URL of the encrypted file.
@@ -44,3 +48,13 @@ data JWK = JWK {
   -- Matrix specification, this bit must equal 'True'.
   ext :: Bool
 } deriving (Eq, Read, Show);
+
+instance ToJSON JWK where
+  toJSON s = object
+    [
+      "kty" .= kty s,
+      "key_ops" .= key_ops s,
+      "alg" .= alg s,
+      "k" .= k s,
+      "ext" .= ext s
+    ];
