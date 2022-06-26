@@ -150,31 +150,33 @@ send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   getTarget :: IO StdMess
   getTarget = case msgtype of
     "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
-    "file"     -> uploadStdinGetID (head k) a >>= \uploadID ->
-                  return Def.stdMess {
-                    msgType = Attach,
-                    body = T.pack $ head k,
-                    url = Just $ T.unpack uploadID,
-                    fileInfo = Just Def.fileInfo {
-                      mimetype = Just "text/plain"
-                    }
-                  }
-    "notice"   -> T.getContents >>= \input ->
-                  return Def.stdMess {body = input, msgType = Notice}
-    "location" -> T.getContents >>= \input ->
-                  return Def.stdMess {
-                    msgType = Location,
-                    -- \| Using @listToMaybe@ SHOULD be unnecessary, as
-                    -- @k@ SHOULD NOT be @null@.  However, using
-                    -- @listToMaybe@ implies not needing to manually
-                    -- place @head k@ into the 'Maybe' monad.
-                    geo_uri = T.pack <$> listToMaybe k,
-                    body = input
-                  }
+    "file"     -> attachWId <$> uploadStdinGetID (head k) a
+    "notice"   -> (\i -> defNotice {body = i}) <$> T.getContents
+    "location" -> locWitBod <$> T.getContents
     _          -> error "I ought to send you to the garbage disposal, \
                         \shit-tits.  Read the fucking manual."
   --
-  dest :: Room
+  attachWId uploadId = Def.stdMess {
+                     msgType = Attach,
+                     body = T.pack $ head k,
+                     url = Just $ T.unpack uploadId,
+                     fileInfo = Just Def.fileInfo {
+                       mimetype = Just "text/plain"
+                     }
+                   }
+  -- \| "@locWitBod@" is an abbreviation of "location with body".
+  locWitBod input = Def.stdMess {
+                      msgType = Location,
+                      -- \| Using @listToMaybe@ SHOULD be unnecessary,
+                      -- as @k@ SHOULD NOT be @null@.  However, using
+                      -- @listToMaybe@ implies not needing to manually
+                      -- place @head k@ into the 'Maybe' monad.
+                      geo_uri = T.pack <$> listToMaybe k,
+                      body = input
+                    }
+  --
+  defNotice = Def.stdMess {msgType = Notice}
+  --
   dest = Def.room {roomId = k !! destIndex}
     where
     diargumentalStuff = ["file", "location"]
@@ -280,6 +282,7 @@ grab (decino:eeyore:jd:mexico:_) a
   --
   destination :: Room
   destination = Def.room {roomId = mexico};
+  -- \^ "Oh, baby, I was bound to let you go..."
 grab _ _ = error "Repent, motherfucker.";
 
 -- | @mkRead@ marks messages as having been read.
@@ -293,9 +296,7 @@ mkRead :: [String]
 mkRead [] = error "Someone should knock you upside the head a few \
                   \times, punk.  Dismissed.";
 mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
-  where
-  boi :: EventCommonFields
-  boi = Def.eventCommonFields {eventId = eeee};
+  where boi = Def.eventCommonFields {eventId = eeee};
 
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
@@ -327,7 +328,7 @@ logIn = loginPass >=> either busticate addAndDisplay
   addToken :: T.Text -> T.Text -> T.Text
   addToken phile toke = lineFilter notToken phile `T.append` toke'
     where
-    notToken = (/= "authtoken: ") . T.take 11
+    notToken = not . beginsWith "authtoken: "
     toke' = T.append "\nauthtoken: " toke
     lineFilter f = T.unlines . filter f . T.lines
   --
@@ -361,7 +362,7 @@ runJoin :: [String]
         -- ^ This argument contains the command-line arguments of the
         -- @join@ command.  This thing should be a 1-list or a 4-list.
         --
-        -- If thids argument is a 1-list, then this 1-list simply
+        -- If this argument is a 1-list, then this 1-list simply
         -- contains the internal Matrix ID of the room which should be
         -- joined.
         --
@@ -369,7 +370,7 @@ runJoin :: [String]
         -- the room which should be joined, then this argument should be
         -- a 4-list whose elements are as follows:
         --
-        -- 1. The internal matrix ID of the room which the user should
+        -- 1. The internal Matrix ID of the room which the user should
         --    join
         --
         -- 2. The username of the user which sends the invite to the

@@ -56,6 +56,14 @@ responseToMaybe theResponse = case getResponseStatusCode theResponse of
   200 -> Nothing
   _   -> Just $ responseToStringth theResponse;
 
+-- @responseToMaybe'@ is a derivative of 'responseToMaybe'
+-- whose input is 'Either'-monadic.
+--
+-- The documentation of 'responseToMaybe' should enlighten.
+responseToMaybe' :: Either ErrorCode (Response BS.ByteString)
+                 -> Maybe ErrorCode;
+responseToMaybe' = either pure responseToMaybe;
+
 -- | If the response code of @k@ equals @200@, then
 -- @responseToLeftRight k@ equals the response body of @k@.
 -- @responseToLeftRight k@ otherwise equals a 'Stringth' which contains
@@ -67,3 +75,11 @@ responseToLeftRight :: Response BS.ByteString
 responseToLeftRight k = case getResponseStatusCode k of
   200 -> Right $ decodeUtf8 $ getResponseBody k
   _   -> Left $ responseToStringth k;
+
+-- @responseToLeftRight'@ is a derivative of 'responseToLeftRight'
+-- whose input is 'Either'-monadic.
+--
+-- The documentation of 'responseToLeftRight' should enlighten.
+responseToLeftRight' :: Either ErrorCode (Response BS.ByteString)
+                     -> Either ErrorCode Stringth;
+responseToLeftRight' = either pure responseToLeftRight;

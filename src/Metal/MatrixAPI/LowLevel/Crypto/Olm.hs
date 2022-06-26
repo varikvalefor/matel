@@ -39,7 +39,7 @@ import qualified Crypto.PubKey.Curve25519 as X25519;
 -- which return pseudorandom stuff, e.g., the AES-256 keys which encrypt
 -- the actual data.
 encryptWKey :: ByteData
-            -- ^ This valut is the cleartext which should be encrypted.
+            -- ^ This value is the cleartext which should be encrypted.
             -> PublicKey
             -- ^ This value is the public key of the desired recipient
             -- of the ciphertext.
