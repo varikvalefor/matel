@@ -13,8 +13,8 @@ import Metal.Base;
 -- | For all 'User' @k@, @k@ holds data regarding an arbitrary Matrix
 -- user.
 --
--- Within this documentation, @l@ denotes the Matrix user which @k@
--- represents.
+-- Within this documentation, @l@ denotes the Matrix user which is
+-- represented by @k@.
 data User = User {
   -- | @username k@ equals the Matrix username of @l@.
   username :: Identifier,
