@@ -31,6 +31,16 @@ data EncryptedFile = EncryptedFile {
   v :: String
 } deriving (Eq, Read, Show);
 
+instance ToJSON EncryptedFile where
+  toJSON s = object
+    [
+      "url" .= url s,
+      "key" .= key s,
+      "iv" .= iv s,
+      "hashes" .= hashes s,
+      "v" .= v s
+    ];
+
 -- | For all 'JWK' @a@, @a@ represents a JSON Web key.
 data JWK = JWK {
   -- | @kty k@ is the key type of @k@.  According to the API
