@@ -145,12 +145,12 @@ send [_] a = error "I thought that you were improving.  I now see that \
                    \I was wrong.  Really, I should be mad at myself \
                    \for apparently going insane by having some faith \
                    \in you.";
-send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
+send (mt:b:b':k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
-  getTarget = case msgtype of
+  getTarget = case mt of
     "text"     -> (\i -> Def.stdMess {body = i}) <$> T.getContents
-    "file"     -> attachWId <$> uploadStdinGetID (head k) a
+    "file"     -> attachWId <$> uploadStdinGetID b a
     "notice"   -> (\i -> defNotice {body = i}) <$> T.getContents
     "location" -> locWitBod <$> T.getContents
     _          -> error "I ought to send you to the garbage disposal, \
@@ -158,7 +158,7 @@ send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   --
   attachWId uploadId = Def.stdMess {
                      msgType = Attach,
-                     body = T.pack $ head k,
+                     body = T.pack b,
                      url = Just $ T.unpack uploadId,
                      fileInfo = Just Def.fileInfo {
                        mimetype = Just "text/plain"
@@ -167,23 +167,16 @@ send (msgtype:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   -- \| "@locWitBod@" is an abbreviation of "location with body".
   locWitBod input = Def.stdMess {
                       msgType = Location,
-                      -- \| Using @listToMaybe@ SHOULD be unnecessary,
-                      -- as @k@ SHOULD NOT be @null@.  However, using
-                      -- @listToMaybe@ implies not needing to manually
-                      -- place @head k@ into the 'Maybe' monad.
-                      geo_uri = T.pack <$> listToMaybe k,
+                      geo_uri = Just $ T.pack b,
                       body = input
                     }
   --
   defNotice = Def.stdMess {msgType = Notice}
   --
-  dest = Def.room {roomId = k !! destIndex}
-    where
-    diargumentalStuff = ["file", "location"]
-    destIndex = bool 0 1 $ msgtype `elem` diargumentalStuff
-    -- \^ This bit is necessary because the number of arguments of the
-    -- "send file" command is not equal to the number of arguments of
-    -- the "send text" and "send notice" commands.
+  dest = Def.room {roomId = bool b b' $ mt `elem` ["file", "location"]};
+  -- \^ This bit is necessary because the number of arguments of the
+  -- "send file" command is not equal to the number of arguments of
+  -- the "send text" and "send notice" commands.
 
 -- | @uploadStdinGetID@ uploads some data which is read from the
 -- standard input to a homeserver, returning the URI of the uploaded
