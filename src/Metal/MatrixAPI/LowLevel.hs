@@ -534,8 +534,10 @@ upload attach name = (>>= process) <.> TP.req TP.POST hdr qq attach
   process k = bool (responseToLeftRight k) cURI requestSuccessful
     where
     requestSuccessful = getResponseStatusCode k == 200
-    cURI = Right $ fromJust $ (Q..! "{content_uri}") <$> bodhi
+    cURI = maybe noCUri Right $ (Q..! "{content_uri}") <$> bodhi
     bodhi = Q.decode (BSL.fromStrict $ getResponseBody k)
+    noCUri = Left "upload: A response body is returned... but lacks \
+                  \a \"content_uri\" field."
   --
   noBody = Left "upload: The JSON response lacks a valid \"body\" \
                 \field."
