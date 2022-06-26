@@ -22,6 +22,8 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
+--
+-- These values are described in section 9 of RFC 2616.
 data ReqType = GET | POST | PUT deriving Show;
 
 -- | @req@ sends standardised HTTP requests or 'splodes... without
