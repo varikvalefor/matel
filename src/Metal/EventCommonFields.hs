@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.EventCommonFields
 -- Description : Metal's boilerplate record fields
 -- Copyright   : (c) Varik Valefor, 2022
@@ -10,7 +12,8 @@
 --
 -- SIMON MICHAEL is partially responsible for this approach to adding
 -- boilerplate fields.  VARIK appreciates being slapped sensible.
-module Metal.EventCommonFields where
+module Metal.EventCommonFields (EventCommonFields(..)) where
+import Data.Aeson;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
@@ -32,3 +35,65 @@ data EventCommonFields = EventCommonFields {
   -- | @eventId k@ is the event ID of @l@.
   eventId :: String
 } deriving (Eq, Read, Show);
+
+instance ToJSON EventCommonFields where
+  toJSON s = object
+    [
+      "origin_server_ts" .= origin_server_ts s,
+      "sender" .= username (sender s),
+      "room_id" .= roomId (destRoom s),
+      "event_id" .= eventId s
+    ];
+
+instance FromJSON EventCommonFields where
+  parseJSON = withObject "EventCommonFields" parse
+    -- \| Yeah, yeah, "do" notation is gross, but what is the best
+    -- alternative in this case?
+    where
+    parse t = do {
+      ost <- t .: "origin_server_ts";
+      sdr <- t .: "sender";
+      dst <- t .: "room_id";
+      vnt <- t .: "event_id";
+      return EventCommonFields {
+        origin_server_ts = ost,
+        sender = user {username = sdr},
+        destRoom = room {roomId = dst},
+        eventId = vnt
+      };
+    }
+
+-- | @user@ is a default-valued 'User' record.
+--
+-- This thing is nabbed from "Metal.Default".  If "Metal.Default" is
+-- just imported, then this module 'splodes.  The jankiness is
+-- necessary.
+--
+-- [INSERT RETCHING HERE.]
+user :: User;
+user = User {
+  username = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  password = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  keyring = Nothing,
+  protocol = Nothing
+};
+
+-- | @room@ is a default-valued 'Room' record.
+--
+-- This thing is nabbed from "Metal.Default".  If "Metal.Default" is
+-- just imported, then this module 'splodes.  The jankiness is
+-- necessary.
+--
+-- [INSERT RETCHING HERE.]
+room :: Room;
+room = Room {
+  roomId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  roomHumanId = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  roomName = Nothing,
+  members = [user],
+  topic = Nothing,
+  publicKey = Nothing
+};
