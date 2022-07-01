@@ -94,7 +94,10 @@ instance FromJSON Encrypted where
       };
     };
 
--- | The source code is short and self-explanatory.
+-- | If @a@ is an uninterrupted subsequence of @b@, then @beyond a b@
+-- is 'Just' the entirety of @b@ which follows the first instance of
+-- @a@ in @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
+-- @beyond a b@ is 'Nothing'.
 beyond :: Eq a => [a] -> [a] -> [a];
 beyond _ [] = [];
 beyond x xs = bool (beyond x xs') (xs') $ take (length x) xs == x
