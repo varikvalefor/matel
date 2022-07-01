@@ -123,7 +123,7 @@ instance ToJSON StdMess where
   toJSON s = case msgType s of
     -- \| @m.notice@ messages are really just @m.text@ messages which
     -- are displayed a bit uniquely.  As such, @m.notice@ messages can
-    -- be handles mostly as @m.text@ events are handled.
+    -- be handled mostly as @m.text@ events are handled.
     m | m `elem` [TextInnit, Notice] -> object
       [
         "body" .= body s,
