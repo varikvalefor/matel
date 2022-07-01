@@ -77,7 +77,7 @@ instance FromJSON Encrypted where
             authToken = "",
             keyring = Nothing,
             password = "",
-            homeserver = beyond ":" sndr,
+            homeserver = bedBathAnd ":" sndr,
             protocol = Nothing
           },
           destRoom = Room {
@@ -94,11 +94,11 @@ instance FromJSON Encrypted where
       };
     };
 
--- | If @a@ is an uninterrupted subsequence of @b@, then @beyond a b@
--- is 'Just' the entirety of @b@ which follows the first instance of
+-- | If @a@ is an uninterrupted subsequence of @b@, then @bedBathAnd a
+-- b@ is 'Just' the entirety of @b@ which follows the first instance of
 -- @a@ in @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
--- @beyond a b@ is 'Nothing'.
-beyond :: Eq a => [a] -> [a] -> [a];
-beyond _ [] = [];
-beyond x xs = bool (beyond x xs') (xs') $ take (length x) xs == x
+-- @bedBathAnd a b@ is 'Nothing'.
+bedBathAnd :: Eq a => [a] -> [a] -> [a];
+bedBathAnd _ [] = [];
+bedBathAnd x xs = bool (bedBathAnd x xs') xs' $ take (length x) xs == x
   where xs' = drop (length x) xs;
