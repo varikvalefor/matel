@@ -158,6 +158,13 @@ instance ToJSON StdMess where
         "url" .= maybe (errorNoField "url") id (Metal.Messages.Standard.url s),
         "type" .= show (msgType s)
       ]
+    m | m `elem` [Image, Video] -> object
+      [
+        "body" .= body s,
+        "info" .= fileInfo s,
+        "msgtype" .= show (msgType s),
+        "url" .= Metal.Messages.Standard.url s
+      ]
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType s) ++
