@@ -11,10 +11,13 @@
 --
 -- Metal.Messages.Encrypted contains the source code of the
 -- 'Encrypted' record type.
-module Metal.Messages.Encrypted where
+module Metal.Messages.Encrypted (Encrypted(..)) where
+import Data.Bool;
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
+import Metal.Room;
+import Metal.User;
 import Metal.EventCommonFields;
 
 -- | For all 'Encrypted' @k@, @k@ represents an encrypted Matrix
@@ -47,3 +50,52 @@ instance ToJSON Encrypted where
       "device_id" .= fromMaybe "" (device_id enk),
       "session_id" .= fromMaybe "" (session_id enk)
     ];
+
+-- Ditto.
+instance FromJSON Encrypted where
+  parseJSON = withObject "Encrypted" parse
+    where parse e = do {
+      algo <- e .: "algorithm";
+      cipt <- e .: "ciphertext";
+      sndk <- e .: "sender_key";
+      dvcd <- e .: "device_id";
+      sesd <- e .: "session_id";
+      rmid <- e .: "room_id";
+      sndr <- e .: "sender";
+      evtd <- e .: "event_id";
+      osts <- e .: "origin_server_ts";
+      return Encrypted {
+        algorithm = algo,
+        ciphertext = cipt,
+        sender_key = sndk,
+        device_id = dvcd,
+        session_id = sesd,
+        boilerplate = EventCommonFields {
+          sender = User {
+            username = sndr,
+            displayname = "",
+            authToken = "",
+            keyring = Nothing,
+            password = "",
+            homeserver = beyond ":" sndr,
+            protocol = Nothing
+          },
+          destRoom = Room {
+            roomId = rmid,
+            roomHumanId = "",
+            roomName = Nothing,
+            members = [],
+            topic = Nothing,
+            publicKey = Nothing
+          },
+          eventId = evtd,
+          origin_server_ts = osts
+        }
+      };
+    };
+
+-- | The source code is short and self-explanatory.
+beyond :: Eq a => [a] -> [a] -> [a];
+beyond _ [] = [];
+beyond x xs = bool (beyond x xs') (xs') $ take (length x) xs == x
+  where xs' = drop (length x) xs;
