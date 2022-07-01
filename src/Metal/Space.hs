@@ -18,11 +18,11 @@ import Metal.User;
 -- represented by @k@.
 -- represents.
 data Space = Space {
-  -- | @spaceId k@ equals the identifier of @l@.
+  -- | @spaceId k@ is the identifier of @l@.
   spaceId :: Identifier,
-  -- | @spaceRooms k@ equals a list of all rooms which are contained
+  -- | @spaceRooms k@ is a list of all rooms which are contained
   -- within @l@.
   spaceRooms :: [Room],
-  -- | @spaceMembers k@ equals a list of the members of @l@.
+  -- | @spaceMembers k@ is a list of the members of @l@.
   spaceMembers :: [User]
 } deriving (Eq, Read, Show);

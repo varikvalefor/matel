@@ -23,7 +23,7 @@ import qualified Data.ByteString.Char8 as BS8;
 -- 'authToken', and 'homeserver' fields of 'k' must be defined.
 type Auth = User;
 
--- | @authToken' k@ equals a version of the authorisation token of @k@
+-- | @authToken' k@ is a version of the authorisation token of @k@
 -- which can be used as the content of the "Authorization" header of
 -- client requests.
 authToken' :: User -> BS8.ByteString;
