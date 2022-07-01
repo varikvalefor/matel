@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Module    : Metal.Messages.FileInfo
@@ -10,7 +11,7 @@
 --
 -- This module contains 'FileInfo'.
 module Metal.Messages.FileInfo where
-import Data.Aeson;
+import Data.Aeson.TH;
 import Metal.Messages.EncryptedFile;
 import Metal.Messages.ThumbnailInfo;
 
@@ -47,13 +48,4 @@ data FileInfo = FileInfo {
   thumbnail_info :: Maybe ThumbnailInfo
 } deriving (Eq, Read, Show);
 
-instance ToJSON FileInfo where
-  toJSON s = object
-    [
-      "size" .= Metal.Messages.FileInfo.size s,
-      "h" .= Metal.Messages.FileInfo.h s,
-      "w" .= Metal.Messages.FileInfo.w s,
-      "thumbnail_url" .= thumbnail_url s,
-      "thumbnail_info" .= thumbnail_info s,
-      "thumbnail_file" .= thumbnail_file s
-    ]
+$(deriveJSON defaultOptions ''FileInfo);
