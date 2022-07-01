@@ -1,23 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Module    : Main
--- Description : Business end of MATELCLI
+-- Description : Business end of matelcli(1)
 -- Copyright   : (c) Varik Valefor, 2022
 -- License     : Unlicense
 -- Maintainer  : varikvalefor@aol.com
 -- Stability   : experimental
 -- Portability : portable
--- @matelcli@ is a command-line interface for Matrix which uses
+-- matelcli(1) is a command-line interface for Matrix which uses
 -- Matel's underlying "Metal" infrastructure.
 --
--- @matelcli@ is written such that for all text-based features of Matel
--- @k@, @matelcli@ is capable of doing @k@.
+-- matelcli(1) is written such that for all text-based features of Matel
+-- @k@, matelcli(1) is capable of doing @k@.
 --
--- The user-facing documentation/specification of @matelcli@ is
--- available in @matelcli@'s manual page, which is by default located at
+-- The user-facing documentation/specification of matelcli(1) is
+-- available in matelcli(1)'s manual page, which is by default located at
 -- @[MATEL GIT REPOSITORY DIRECTORY]\/matelcli.1@.  This documentation
--- is only of particular interest to men who wish to modify @matelcli@
--- or understand the inner workings of @matelcli@.
+-- is only of particular interest to men who wish to modify matelcli(1)
+-- or understand the inner workings of matelcli(1).
 module Main where
 import Plegg;
 import GetAuth;
@@ -54,9 +54,9 @@ main = ensureSecurity >> doStuff
   runWithAuth aufFile = getArgs >>= flip determineAction aufFile;
 
 -- | @determineAction@ determines the action which should be taken by
--- @matelcli@, e.g., listing stuff or sending a message.
+-- matelcli(1), e.g., listing stuff or sending a message.
 determineAction :: [String]
-                -- ^ This argument is the @matelcli@ command, as read
+                -- ^ This argument is the matelcli(1) command, as read
                 -- from @argc@.
                 -> Auth
                 -- ^ This argument is the authorisation information of
@@ -110,7 +110,7 @@ list :: [String]
      -> Auth
      -- ^ This argument is the authorisation information of the user
      -- whose joined things are listed.  This user is /probably/ also
-     -- the user of @matelcli@.
+     -- the user of matelcli(1).
      -> IO ();
 list [] = error "You wimps suck.";
 list (k:_) = memberXIds >=> mapM_ putStrLn
@@ -126,7 +126,7 @@ list (k:_) = memberXIds >=> mapM_ putStrLn
 -- | @send@ implements the "send" command.
 send :: [String]
      -- ^ This bit is the ['String']-based command-line arguments of
-     -- @matelcli@, e.g., @["text", "!hskonBonfjiIefqLUV:matrix.org"]@.
+     -- matelcli(1), e.g., @["text", "!hskonBonfjiIefqLUV:matrix.org"]@.
      --
      -- If this value matches the pattern @["text", foo]@, then a
      -- text-based message whose body is read from the standard is sent
@@ -294,7 +294,7 @@ mkRead (eeee:_) = markRead Def.stdMess {boilerplate = boi} >=> dispError
 -- | @dispError@ displays error messages without needlessly feeding
 -- lines.
 --
--- If @k == Nothing@, then @dispError k@ does nothing.  @dispError k@
+-- If @k == 'Nothing'@, then @dispError k@ does nothing.  @dispError k@
 -- otherwise runs @error k@.
 dispError :: Maybe ErrorCode -> IO ();
 dispError = maybe (return ()) (error . T.unpack);
@@ -421,7 +421,8 @@ runLeave _ = error "You'd best leave... or stop giving me \
 --
 -- An error is encountered iff an error is thrown.
 runKick :: [String]
-        -- ^ The first 3 elements of this list are the room ID of the
+        -- ^ The first 3 elements of this list are the MXID of the user
+        -- which should be removed from the room, the room ID of the
         -- room from which the user should be removed, and the reason
         -- for the removal of this user.  If the third element equals
         -- @""@, then no reason is supplied.

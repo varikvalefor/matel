@@ -87,7 +87,7 @@ getEncryptionStatus room = fmap process <.> rq room "/event/m.room_key"
     where bd = A.decode $ BSL.fromStrict $ getResponseBody response;
 
 -- | Assuming that everything goes according to plan, @getMembers r a@
--- equals a 'Room' record whose @members@ field is a list of the members
+-- is a 'Room' record whose @members@ field is a list of the members
 -- of the Matrix room which @r@ represents.
 --
 -- If something breaks, then a 'Stringth' which describes this breakage

@@ -78,13 +78,13 @@ data StdMess = StdMess {
   --
   -- @msgType k == Video@ iff @k@ contains a video clip.
   msgType :: MessageType,
-  -- | @body k@ equals the unencrypted body of @k@.
+  -- | @body k@ is the unencrypted body of @k@.
   body :: MessageText,
   -- | If @k@ represents a message which is formatted using HTML, then
   -- @fmtBody k@ is 'Just' the value of the "@formatted_body@" field of
   -- the JSON equivalent of @k@.  @fmtBody k@ is otherwise 'Nothing'.
   fmtBody :: Maybe MessageText,
-  -- | @fmt k@ equals the content of the "format" field of the source of
+  -- | @fmt k@ is the content of the "format" field of the source of
   -- @k@.
   --
   -- @fmt k == MatrixCusHTML@ iff @k@ is formatted using HTML.
@@ -101,15 +101,15 @@ data StdMess = StdMess {
   -- | If @k@ contains a file and the original filename of the file
   -- which @k@ contains is known, then @filename@ is the original
   -- filename of the file which @k@ describes.  @filename k@ otherwise
-  -- equals 'Nothing'.
+  -- is 'Nothing'.
   filename :: Maybe String,
   -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
   -- originally encrypted, then @file k@ is 'Just' the content of the
-  -- file which @k@ describes.  @file k@ otherwise equals 'Nothing'.
+  -- file which @k@ describes.  @file k@ is otherwise 'Nothing'.
   file :: Maybe EncryptedFile,
   -- | If @k@ mentions a file, then @fileInfo k@ 'Just' contains some
   -- information regarding the file which @k@ describes.  @fileInfo k@
-  -- otherwise equals 'Nothing'.
+  -- is otherwise 'Nothing'.
   fileInfo :: Maybe FileInfo,
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
@@ -123,7 +123,7 @@ instance ToJSON StdMess where
   toJSON s = case msgType s of
     -- \| @m.notice@ messages are really just @m.text@ messages which
     -- are displayed a bit uniquely.  As such, @m.notice@ messages can
-    -- be handles mostly as @m.text@ events are handled.
+    -- be handled mostly as @m.text@ events are handled.
     m | m `elem` [TextInnit, Notice] -> object
       [
         "body" .= body s,

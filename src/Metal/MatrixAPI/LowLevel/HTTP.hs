@@ -21,6 +21,8 @@ import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
 
 -- | For all 'ReqType' @k@, @k@ represents the type of a HTTP request.
+--
+-- These values are described in section 9 of RFC 2616.
 data ReqType = GET | POST | PUT deriving Show;
 
 -- | @req@ sends standardised HTTP requests or 'splodes... without
@@ -32,15 +34,14 @@ data ReqType = GET | POST | PUT deriving Show;
 -- If such information is /incomplete/, then returned is a 'Left' value
 -- which explains such incompleteness.
 req :: ReqType
-    -- ^ This bit is a representation of the type of HTTP request which
-    -- is sent.
+    -- ^ This bit is a representation of the type of the HTTP request
+    -- which is sent.
     -> [(HeaderName, BS.ByteString)]
-    -- ^ This argument contains any additional values which are added to
-    -- the HTTP request.
+    -- ^ This argument contains any additional headers which are added
+    -- to the HTTP request.
     --
     -- For all elements of this list @t@, @t@ represents a HTTP header
     -- whose name is @fst t@ and whose value is @snd t@.
-    -- should bear
     -> String
     -- ^ This argument is the concatenation of the path of the HTTP
     -- request which should be sent, a question mark, and the query
