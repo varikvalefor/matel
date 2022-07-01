@@ -147,9 +147,17 @@ instance ToJSON StdMess where
         "msgtype" .= show (msgType s),
         "url" .= Metal.Messages.Standard.url s
       ]
-    _unrecognised -> error $ "A proper error!  ToJSON does not account \
-                             \for StdMess values of @msgType@ " ++
-                             show (msgType s) ++ "."
+    Sticker -> object
+      [
+        "body" .= body s,
+        "info" .= object
+        [
+          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo s),
+          "size" .= maybe (errorNoField "size") size (fileInfo s)
+        ],
+        "url" .= maybe (errorNoField "url") id (Metal.Messages.Standard.url s),
+        "type" .= show (msgType s)
+      ]
     where
     errorNoField :: String -> a
     errorNoField j = error $ "This " ++ show (msgType s) ++
