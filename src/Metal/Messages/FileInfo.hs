@@ -25,10 +25,10 @@ data FileInfo = FileInfo {
   -- millisecond-based duration of @l k@.
   duration :: Maybe Integer,
   -- | If @l k@ can be displayed as an image, then @h k@ is the
-  -- pixel-based height of @l k@.  @h k@ otherwise is 'Nothing'.
+  -- pixel-based height of @l k@.  @h k@ is otherwise 'Nothing'.
   h :: Maybe Integer,
   -- | If @l k@ can be displayed as an image, then @w k@ is the
-  -- pixel-based width of @l k@.  @w k@ otherwise is 'Nothing'.
+  -- pixel-based width of @l k@.  @w k@ is otherwise 'Nothing'.
   w :: Maybe Integer,
   -- | If @l k@ has a thumbnail image, then @thumbnail_url k@ is the URL
   -- of the thumbnail of @l k@.  This bit is only used if the attachment

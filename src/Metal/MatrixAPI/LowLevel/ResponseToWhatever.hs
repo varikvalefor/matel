@@ -47,7 +47,7 @@ responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
   show (getResponseStatusCode r) ++ "; " ++ show (getResponseBody r);
 
 -- | If the status code of @k@ is @200@, then @responseToMaybe k@
--- is 'Nothing'.  @responseToMaybe k@ otherwise is
+-- is 'Nothing'.  @responseToMaybe k@ is otherwise
 -- @'responseToStringth' k@.
 responseToMaybe :: Show a
                 => Response a
@@ -66,7 +66,7 @@ responseToMaybe' = either pure responseToMaybe;
 
 -- | If the response code of @k@ is @200@, then
 -- @responseToLeftRight k@ is the response body of @k@.
--- @responseToLeftRight k@ otherwise is a 'Stringth' which contains
+-- @responseToLeftRight k@ is otherwise a 'Stringth' which contains
 -- the status code of @k@.
 responseToLeftRight :: Response BS.ByteString
                     -- ^ This value is the 'Response' whose diagnostic

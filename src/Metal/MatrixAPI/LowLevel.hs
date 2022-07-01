@@ -236,7 +236,7 @@ joinedComms _ = pure $ Left "joinedComms is unimplemented.";
 -- = Output
 --
 -- If the command is successful, then the output is Nothing.  The output
--- otherwise is a terse description of the error.
+-- is otherwise a terse description of the error.
 join :: Room
      -- ^ The 'Room' which should be joined
      -> Maybe (User, String, String)

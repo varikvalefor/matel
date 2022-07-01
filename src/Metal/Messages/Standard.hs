@@ -105,11 +105,11 @@ data StdMess = StdMess {
   filename :: Maybe String,
   -- | If @msgType k == 'Attach'@ and the event which @k@ describes is
   -- originally encrypted, then @file k@ is 'Just' the content of the
-  -- file which @k@ describes.  @file k@ otherwise is 'Nothing'.
+  -- file which @k@ describes.  @file k@ is otherwise 'Nothing'.
   file :: Maybe EncryptedFile,
   -- | If @k@ mentions a file, then @fileInfo k@ 'Just' contains some
   -- information regarding the file which @k@ describes.  @fileInfo k@
-  -- otherwise is 'Nothing'.
+  -- is otherwise 'Nothing'.
   fileInfo :: Maybe FileInfo,
   -- | @boilerplate k@ contains the boilerplate fields of @k@, i.e., the
   -- fields which all event types should contain.
