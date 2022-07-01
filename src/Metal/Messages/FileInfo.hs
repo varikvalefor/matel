@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.FileInfo
 -- Description : File information crap
 -- Copyright   : (c) Varik Valefor, 2022
@@ -8,6 +10,7 @@
 --
 -- This module contains 'FileInfo'.
 module Metal.Messages.FileInfo where
+import Data.Aeson;
 import Metal.Messages.EncryptedFile;
 import Metal.Messages.ThumbnailInfo;
 
@@ -43,3 +46,14 @@ data FileInfo = FileInfo {
   -- @thumbnail_info k@ is otherwise 'Nothing'ness.
   thumbnail_info :: Maybe ThumbnailInfo
 } deriving (Eq, Read, Show);
+
+instance ToJSON FileInfo where
+  toJSON s = object
+    [
+      "size" .= Metal.Messages.FileInfo.size s,
+      "h" .= Metal.Messages.FileInfo.h s,
+      "w" .= Metal.Messages.FileInfo.w s,
+      "thumbnail_url" .= thumbnail_url s,
+      "thumbnail_info" .= thumbnail_info s,
+      "thumbnail_file" .= thumbnail_file s
+    ]
