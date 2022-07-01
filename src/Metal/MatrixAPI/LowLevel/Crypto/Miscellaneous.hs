@@ -14,7 +14,6 @@ module Metal.MatrixAPI.LowLevel.Crypto.Miscellaneous (
   calcSecret,
   genIVorKeyBS
 ) where
-import Data.Maybe;
 import Metal.Base;
 import Crypto.Error;
 import Control.Monad;
