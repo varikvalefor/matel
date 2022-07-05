@@ -95,9 +95,9 @@ instance FromJSON Encrypted where
     };
 
 -- | If @a@ is an uninterrupted subsequence of @b@, then @bedBathAnd a
--- b@ is 'Just' the entirety of @b@ which follows the first instance of
--- @a@ in @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
--- @bedBathAnd a b@ is 'Nothing'.
+-- b@ is the entirety of @b@ which follows the first instance of @a@ in
+-- @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
+-- @bedBathAnd a b@ is @[]@.
 bedBathAnd :: Eq a => [a] -> [a] -> [a];
 bedBathAnd _ [] = [];
 bedBathAnd x xs = bool (bedBathAnd x xs') xs' $ take (length x) xs == x
