@@ -91,7 +91,7 @@ instance FromJSON Encrypted where
           eventId = evtd,
           origin_server_ts = osts
         }
-      };
+      }
     };
 
 -- | If @a@ is an uninterrupted subsequence of @b@, then @bedBathAnd a
