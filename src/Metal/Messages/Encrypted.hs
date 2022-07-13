@@ -55,11 +55,12 @@ instance ToJSON Encrypted where
 instance FromJSON Encrypted where
   parseJSON = withObject "Encrypted" parse
     where parse e = do {
-      algo <- e .: "algorithm";
-      cipt <- e .: "ciphertext";
-      sndk <- e .: "sender_key";
-      dvcd <- e .: "device_id";
-      sesd <- e .: "session_id";
+      cunt <- e .: "content";
+      algo <- cunt .: "algorithm";
+      cipt <- cunt .: "ciphertext";
+      sndk <- cunt .: "sender_key";
+      dvcd <- cunt .: "device_id";
+      sesd <- cunt .: "session_id";
       rmid <- e .: "room_id";
       sndr <- e .: "sender";
       evtd <- e .: "event_id";
