@@ -12,6 +12,7 @@
 -- This module contains @'fetchEvents'@ and some things which support
 -- @'fetchEvents'@.
 module Metal.MatrixAPI.LowLevel.FetchEvents (fetchEvents) where
+import Data.Aeson;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
@@ -114,6 +115,7 @@ valueToECF k = EventCommonFields {
   origin_server_ts = k .! "{origin_server_ts}"
 };
 
+
 -- | Where @k@ represents a @m.room.message@ of message type @m.text@,
 -- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
 -- @k@.
@@ -194,29 +196,21 @@ instance Event Encrypted where
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of
-      200 -> extractEncrypted . (.! "{chunk}") <$> toValue k
+      200 -> extractEncrypted . (.! "{chunk}") =<< toValue k
       _   -> Left $ T.pack $ detroit' k
     --
-    extractEncrypted :: [Value] -> [Encrypted]
-    extractEncrypted = filter nonDef . map toEncrypted
+    extractEncrypted :: [Value] -> Either ErrorCode [Encrypted]
+    extractEncrypted = dl . filter nonDef' . map (decode . encode)
     --
-    -- \| Using a "proper" @fromJSON@ thing is /possible/... but
-    -- involves a relatively great amount of effort and offers no real
-    -- advantage over using @(.!)@ and company.
+    nonDef' :: Maybe Encrypted -> Bool
+    nonDef' Nothing = False
+    nonDef' (Just t) = nonDef t
+    dl = toEither . sequence
     --
-    -- @(.!)@ and company, however, are advantageous primarily because
-    -- @(.!)@ and company are relatively reader-and-writer-friendly.
-    toEncrypted :: Value -> Encrypted
-    toEncrypted k = Def.encrypted {
-      algorithm   = ct .! "{algorithm}",
-      ciphertext  = ct .! "{ciphertext}",
-      device_id   = ct .! "{device_id}",
-      sender_key  = ct .! "{sender_key}",
-      session_id  = ct .! "{session_id}",
-      boilerplate = valueToECF k
-    } where
-      ct :: Value
-      ct = k .! "{content}"
+    toEither :: Maybe [Encrypted] -> Either ErrorCode [Encrypted]
+    toEither (Just t) = Right t
+    toEither Nothing = Left "Some Encrypted event lacks the required\
+                            \ fields."
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
