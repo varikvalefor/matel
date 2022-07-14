@@ -445,7 +445,7 @@ runKick _ = error "I'll kick YOUR ass if you don't start giving \
 -- ID of this Matrix room is written to the standard output.  If
 -- something violently falls apart, then an error is thrown.
 createRoom' :: [String]
-            -- ^ This argument is a 3-list whose elements, are as
+            -- ^ This argument is a 3-list whose elements are as
             -- follows:
             --
             -- 1. The display name of the Matrix room which should be
