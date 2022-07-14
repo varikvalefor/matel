@@ -16,11 +16,8 @@ import Data.Aeson;
 import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
-import Metal.User;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
-import Metal.EventCommonFields;
-import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
 import Metal.Messages.Encrypted;
 import Metal.OftenUsedFunctions;
@@ -72,10 +69,22 @@ instance Event StdMess where
     --
     process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
-      200 -> extractMessages . (.! "{chunk}") <$> toValue k
+      200 -> extractMessages . (.! "{chunk}") =<< toValue k
       _   -> Left $ T.pack $ detroit' k
-    extractMessages :: [Value] -> [StdMess]
-    extractMessages = filter nonDef . map toMessage
+    extractMessages :: [Value] -> Either ErrorCode [StdMess]
+    extractMessages = dl . filter nonDef' . map (decode . encode)
+    --
+    nonDef' :: Maybe StdMess -> Bool
+    nonDef' Nothing = False
+    nonDef' (Just t) = nonDef t
+    --
+    dl :: [Maybe StdMess] -> Either ErrorCode [StdMess]
+    dl = toEither . sequence
+    --
+    toEither :: Maybe [StdMess] -> Either ErrorCode [StdMess]
+    toEither (Just t) = Right t
+    toEither Nothing = Left "Some StdMess event lacks the required\
+                            \ fields."
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
@@ -83,112 +92,6 @@ instance Event StdMess where
             \%5B%22m.room.message%22%5D%7D" ++
             -- \^ "Yo, only select the unencrypted stuff."
             "&dir=" ++ [d];
-
--- | @toMessage k@ calls a function which converts @k@ into a
--- 'StdMess'.  Depending upon the \"type\" of @k@, any function of
--- various functions may be called.
-toMessage :: Value -> StdMess;
-toMessage k = case (k .! "{content:{msgtype}}" :: String) of
-  "m.text"     -> valueMTextToStdMess k
-  "m.notice"   -> (valueMTextToStdMess k) {msgType = Notice}
-  "m.image"    -> valueMImageToStdMess k
-  "m.location" -> valueMLocationToStdMess k
-  "m.file"     -> valueMFileToStdMess k
-  _            -> Def.stdMess;
-
--- | @valueToECF k@ describes the boilerplate portion of the Matrix
--- message which @k@ represents.
-valueToECF :: Value
-           -- ^ This value is a representation of the message whose
-           -- boilerplate junk should be described.
-           -> EventCommonFields;
-valueToECF k = EventCommonFields {
-  -- \| Using @(.?)@ here is /mostly/ a waste of time; the values which
-  -- @valueToECF@ fetches MUST be present.
-  --
-  -- VARIK finds that accounting for cheesy-ass homeservers which do not
-  -- adhere to Matrix's client-server API is a waste of time which
-  -- probably just leads to the addition of some damn ugly source code.
-  sender = Def.user {username = k .! "{sender}"},
-  destRoom = Def.room {roomId = k .! "{room_id}"},
-  eventId = k .! "{event_id}",
-  origin_server_ts = k .! "{origin_server_ts}"
-};
-
-
--- | Where @k@ represents a @m.room.message@ of message type @m.text@,
--- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
--- @k@.
-valueMTextToStdMess :: Value
-                    -- ^ This value represents the message which should
-                    -- become a 'StdMess'.
-                    -> StdMess;
-valueMTextToStdMess k = Def.stdMess {
-  body = k .! "{content:{body}}",
-  fmtBody = k .? "{content:{formatted_body}}",
-  -- \^ The "formatted_body" field /should/ be present... but /may/ not
-  -- be present.
-  boilerplate = valueToECF k
-};
-
--- | Where @k@ represents a @m.room.message@ of message type @m.image@,
--- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
--- @k@.
-valueMImageToStdMess :: Value
-                     -- ^ The representation of the message which should
-                     -- become a 'StdMess'
-                     -> StdMess;
-valueMImageToStdMess k = Def.stdMess {
-  msgType = Image,
-  body = con .! "{body}",
-  fileInfo = Just Def.fileInfo {
-    -- \| (Using @(.?)@ for values which absolutely should exist) at
-    -- first glance seems a bit goofy.
-    --
-    -- However, using (.?) implies being able to handle some malformed
-    -- messages /and/ not needing to manually place values into the
-    -- 'Maybe' monad, which is nice.
-    w = con .? "{info:{w}}",
-    h = con .? "{info:{h}}",
-    mimetype = con .? "{info:{mimetype}}",
-    size = con .? "{info:{size}}"
-  },
-  url = con .? "{url}",
-  boilerplate = valueToECF k
-} where
-  con :: Value
-  con = k .! "{content}";
-
--- | Where @k@ represents a @m.room.message@ of message type
--- @m.location@, @valueMTextToStdMess k@ is a 'StdMess' which should be
--- equivalent to @k@.
-valueMLocationToStdMess :: Value
-                        -- ^ This bit represents the message which
-                        -- should be represented as a 'StdMess'.
-                        -> StdMess;
-valueMLocationToStdMess k = Def.stdMess {
-  msgType = Location,
-  body = k .! "{content:body}",
-  geo_uri = k .! "{content:geo_uri}",
-  boilerplate = valueToECF k
-};
-
--- | Where @k@ represents a @m.room.message@ of message type @m.file@,
--- @valueMTextToStdMess k@ is a 'StdMess' which should be equivalent to
--- @k@.
-valueMFileToStdMess :: Value
-                    -- ^ This thing represents the message which should
-                    -- become a 'StdMess'.
-                    -> StdMess;
-valueMFileToStdMess k = Def.stdMess {
-  msgType = Attach,
-  body = k .! "{content:{body}}",
-  -- \| @filename@ should be present.  However, because @filename@ is
-  -- 'Maybe'-monadic and @(.?)@ returns a 'Maybe'-monadic value, using
-  -- @(.?)@ may be the best course of action.
-  filename = k .? "{content:{filename}}",
-  url = k .! "{content:{file}}"
-};
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
