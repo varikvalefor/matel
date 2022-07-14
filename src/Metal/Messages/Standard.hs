@@ -140,12 +140,20 @@ data StdMess = StdMess {
 instance ToJSON StdMess where
   toJSON s = object
     [
-      "body" .= body s,
-      "filename" .= filename s,
-      "geo_uri" .= geo_uri s,
-      "info" .= fileInfo s,
-      "msgtype" .= show (msgType s),
-      "url" .= Metal.Messages.Standard.url s
+      "content"          .= object [
+        "body"           .= body s,
+        "format"         .= show (fmt s),
+        "formatted_body" .= fmtBody s,
+        "msgtype"        .= show (msgType s),
+        "filename"       .= filename s,
+        "info"           .= fileInfo s,
+        "url"            .= Metal.Messages.Standard.url s,
+        "geo_uri"        .= geo_uri s
+      ],
+      "event_id"         .= eventId (boilerplate s),
+      "origin_server_ts" .= origin_server_ts (boilerplate s),
+      "sender"           .= username (sender $ boilerplate s),
+      "room_id"          .= roomId (destRoom $ boilerplate s)
     ];
 
 -- Ditto.
