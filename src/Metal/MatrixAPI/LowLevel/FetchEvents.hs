@@ -30,9 +30,11 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- | For all 'Event' @A@, for all values @t@ of type @A@, @t@
 -- represents a Matrix room event.
 class Event a where
-  -- | @nonDef a@ iff @a@ is not a default-valued thing.
-  nonDef :: a
-         -- ^ This record is the record whose defaultness is determined.
+  -- | @nonDef a@ iff @a@ is not a 'Just' default-valued thing and is
+  -- not 'Nothing'.
+  nonDef :: Maybe a
+         -- ^ This record is 'Maybe' the record whose defaultness is
+         -- determined.
          -> Bool
 
   -- | @fetchEvents@ fetches Matrix events of a specified type.
@@ -62,7 +64,9 @@ class Event a where
               -> IO (Either ErrorCode [a]);
 
 instance Event StdMess where
-  nonDef = (/= Def.stdMess)
+  nonDef Nothing = False
+  nonDef (Just t) = t /= Def.stdMess
+  --
   fetchEvents n d rm = eit' process <.> TP.req TP.GET [] querr ""
     where
     eit' a = either (Left) a
@@ -72,19 +76,13 @@ instance Event StdMess where
       200 -> extractMessages . (.! "{chunk}") =<< toValue k
       _   -> Left $ T.pack $ detroit' k
     extractMessages :: [Value] -> Either ErrorCode [StdMess]
-    extractMessages = dl . filter nonDef' . map (decode . encode)
-    --
-    nonDef' :: Maybe StdMess -> Bool
-    nonDef' Nothing = False
-    nonDef' (Just t) = nonDef t
+    extractMessages = dl . filter nonDef . map (decode . encode)
     --
     dl :: [Maybe StdMess] -> Either ErrorCode [StdMess]
     dl = toEither . sequence
     --
     toEither :: Maybe [StdMess] -> Either ErrorCode [StdMess]
-    toEither (Just t) = Right t
-    toEither Nothing = Left "Some StdMess event lacks the required\
-                            \ fields."
+    toEither  = m2e "Some StdMess event lacks the required fields."
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
@@ -94,7 +92,9 @@ instance Event StdMess where
             "&dir=" ++ [d];
 
 instance Event Encrypted where
-  nonDef = (/= Def.encrypted)
+  nonDef Nothing = False
+  nonDef (Just t) = t /= Def.encrypted
+  --
   fetchEvents n d rm = (>>= process) <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
@@ -103,17 +103,12 @@ instance Event Encrypted where
       _   -> Left $ T.pack $ detroit' k
     --
     extractEncrypted :: [Value] -> Either ErrorCode [Encrypted]
-    extractEncrypted = dl . filter nonDef' . map (decode . encode)
+    extractEncrypted = dl . filter nonDef . map (decode . encode)
     --
-    nonDef' :: Maybe Encrypted -> Bool
-    nonDef' Nothing = False
-    nonDef' (Just t) = nonDef t
     dl = toEither . sequence
     --
     toEither :: Maybe [Encrypted] -> Either ErrorCode [Encrypted]
-    toEither (Just t) = Right t
-    toEither Nothing = Left "Some Encrypted event lacks the required\
-                            \ fields."
+    toEither = m2e "Some Encrypted event lacks the required fields."
     --
     querr :: String
     querr = "_matrix/client/r0/rooms/" ++ roomId rm ++
@@ -136,3 +131,10 @@ toValue = maybeToEither . decode . BSL.fromStrict . getResponseBody
   chunkMissing :: ErrorCode
   chunkMissing = "Metal.MatrixAPI.LowLevel.FetchEvents.\
                  \fetchEvents: The \"chunk\" field is absent!";
+
+-- | @m2e@ converts 'Maybe's into 'Either's.
+--
+-- @m2e t 'Nothing' == 'Right' t@.  @m2e _ ('Just' l) == 'Right' l@.
+m2e :: b -> Maybe a -> Either b a;
+m2e _ (Just l) = Right l;
+m2e l Nothing = Left l;
