@@ -145,10 +145,10 @@ test-suite drip-drip-drip-goes-the-water
     process == 1.6.*
   default-language: Haskell2010
 
-test-suite fromjson-encrypted
+test-suite fromjson
   type:           exitcode-stdio-1.0
-  main-is:        encrypted.hs
-  hs-source-dirs: testes/core/fromjson
+  main-is:        fromjson.hs
+  hs-source-dirs: testes/core
   build-depends:
     matel,
     base ^>= 4.14.1.0,
