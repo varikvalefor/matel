@@ -12,13 +12,13 @@
 -- Metal.Messages.Encrypted contains the source code of the
 -- 'Encrypted' record type.
 module Metal.Messages.Encrypted (Encrypted(..)) where
-import Data.Bool;
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
 import Metal.EventCommonFields;
+import Metal.OftenUsedFunctions (bedBathAnd);
 
 -- | For all 'Encrypted' @k@, @k@ represents an encrypted Matrix
 -- message.
@@ -94,12 +94,3 @@ instance FromJSON Encrypted where
         }
       }
     };
-
--- | If @a@ is an uninterrupted subsequence of @b@, then @bedBathAnd a
--- b@ is the entirety of @b@ which follows the first instance of @a@ in
--- @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
--- @bedBathAnd a b@ is @[]@.
-bedBathAnd :: Eq a => [a] -> [a] -> [a];
-bedBathAnd _ [] = [];
-bedBathAnd x xs = bool (bedBathAnd x xs') xs' $ take (length x) xs == x
-  where xs' = drop (length x) xs;
