@@ -18,6 +18,7 @@ import Metal.User;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.EncryptedFile;
+import Metal.OftenUsedFunctions (bedBathAnd);
 
 -- | 'MessageType' is used to describe the types of the messages which
 -- 'StdMess' records represent.  Useful documentation of this thing is
@@ -202,7 +203,7 @@ instance FromJSON StdMess where
           sender           = User {
             username    = sndr,
             password    = "",
-            homeserver  = "",
+            homeserver  = bedBathAnd ":" sndr,
             authToken   = "",
             keyring     = Nothing,
             protocol    = Nothing,
