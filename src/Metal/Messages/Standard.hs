@@ -147,6 +147,7 @@ instance ToJSON StdMess where
         "formatted_body" .= fmtBody s,
         "msgtype"        .= show (msgType s),
         "filename"       .= filename s,
+        "file"           .= file s,
         "info"           .= fileInfo s,
         "url"            .= Metal.Messages.Standard.url s,
         "geo_uri"        .= geo_uri s
@@ -173,6 +174,7 @@ instance FromJSON StdMess where
       -- type 'StdMess' -> 'Maybe' 'MessageFmt'; the commented-out bit
       -- works fine if 'msgType' is of type 'StdMess' -> 'Maybe'
       -- 'MessageFmt', and "@funk <- cunt@" just looks funny.
+      phil <- cunt .:? "file";
       funb <- cunt .:? "formatted_body";
       info <- cunt .:? "info";
       hurl <- cunt .:? "url";
@@ -187,8 +189,8 @@ instance FromJSON StdMess where
         filename                    = film,
         geo_uri                     = gary,
         msgType                     = purse taip,
-        file                        = info,
-        fileInfo                    = Nothing,
+        file                        = phil,
+        fileInfo                    = info,
         boilerplate                 = EventCommonFields {
           origin_server_ts = orts,
           eventId          = evid,
