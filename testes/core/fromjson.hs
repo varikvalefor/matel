@@ -35,7 +35,9 @@ tStdMess = "{\n\t\
                \\"body\": \"Bro, you stole my soup.  You are dead to me.\",\n\t\t\t\
                \\"file\": {\n\t\t\t\
                  \\"url\": \"https://media.varikose.god/bulls-hit/QuaUPjqr\",\n\t\t\t\
-                 \\"hashes\": {},\n\t\t\t\
+                 \\"hashes\": {\n\t\t\t\t\t\
+                   \\"a\": \"b\"\n\t\t\t\t\
+                 \},\n\t\t\t\
                  \\"iv\": \"SHA4-65536\",\n\t\t\t\
                  \\"v\": \"FOR VENDETTA\",\n\t\t\t\
                  \\"key\": {\n\t\t\t\t\
@@ -73,7 +75,7 @@ rStdMess = S.StdMess {
                           \QuaUPjqr",
              S.file = Just EncryptedFile {
                url = "https://media.varikose.god/bulls-hit/QuaUPjqr",
-               hashes = [],
+               hashes = [("a", "b")],
                iv = "SHA4-65536",
                v = "FOR VENDETTA",
                key = JWK {
