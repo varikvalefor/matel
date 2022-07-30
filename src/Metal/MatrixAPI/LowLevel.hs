@@ -95,7 +95,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- This section of this module contains some functions which perform
 -- authorisation-related tasks, e.g., fetching new authorisation tokens.
 
--- | @loginPass@ generates a new authorisation token for Matel's user.
+-- | @loginPass@ generates a new authorisation token.
 --
 -- = Output
 --
@@ -236,7 +236,7 @@ joinedComms _ = pure $ Left "joinedComms is unimplemented.";
 -- = Output
 --
 -- If the command is successful, then the output is Nothing.  The output
--- otherwise equals a terse description of the error.
+-- is otherwise a terse description of the error.
 join :: Room
      -- ^ The 'Room' which should be joined
      -> Maybe (User, String, String)
