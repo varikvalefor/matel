@@ -30,7 +30,7 @@ import qualified Metal.MatrixAPI.LowLevel.HTTP as TP;
 -- | For all 'Event' @A@, for all values @t@ of type @A@, @t@
 -- represents a Matrix room event.
 class Event a where
-  -- | @nonDef a@ iff @a@ is not a 'Just' default-valued thing and is
+  -- | @nonDef a@ iff @a@ is not 'Just' a default-valued thing and is
   -- not 'Nothing'.
   nonDef :: Maybe a
          -- ^ This record is 'Maybe' the record whose defaultness is
