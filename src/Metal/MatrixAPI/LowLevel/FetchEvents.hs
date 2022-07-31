@@ -16,14 +16,14 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import Metal.User;
-import Metal.Messages.Encrypted;
 import Data.Aeson.Quick;
 import Network.HTTP.Simple;
-import Metal.Messages.FileInfo;
 import Metal.EventCommonFields;
+import Metal.Messages.FileInfo;
 import Metal.Messages.Standard;
-import qualified Data.Text as T;
+import Metal.Messages.Encrypted;
 import Metal.OftenUsedFunctions;
+import qualified Data.Text as T;
 import qualified Metal.Default as Def;
 import qualified Data.ByteString as BS;
 import qualified Data.ByteString.Lazy as BSL;
@@ -37,7 +37,7 @@ class Event a where
          -- ^ This record is the record whose defaultness is determined.
          -> Bool
 
-  -- | @fetchEvents@ is used to fetch Matrix events of a specified type.
+  -- | @fetchEvents@ fetches Matrix events of a specified type.
   --
   -- = Output
   --
@@ -65,8 +65,10 @@ class Event a where
 
 instance Event StdMess where
   nonDef = (/= Def.stdMess)
-  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = eit' process <.> TP.req TP.GET [] querr ""
     where
+    eit' a = either (Left) a
+    --
     process :: Response BS.ByteString -> Either ErrorCode [StdMess]
     process k = case getResponseStatusCode k of
       200 -> extractMessages . (.! "{chunk}") <$> toValue k
@@ -188,7 +190,7 @@ valueMFileToStdMess k = Def.stdMess {
 
 instance Event Encrypted where
   nonDef = (/= Def.encrypted)
-  fetchEvents n d rm = process <.> TP.req TP.GET [] querr ""
+  fetchEvents n d rm = (>>= process) <.> TP.req TP.GET [] querr ""
     where
     process :: Response BS.ByteString -> Either ErrorCode [Encrypted]
     process k = case getResponseStatusCode k of

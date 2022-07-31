@@ -13,8 +13,8 @@ import Metal.User;
 
 -- | For all 'Room' @k@, @k@ represents a Matrix chatroom.
 --
--- Within this documentation, let @l@ denote the Matrix room which @k@
--- represents.
+-- Within this documentation, let @l@ denote the Matrix room which is
+-- represented by @l@.
 data Room = Room {
   -- | @roomId k@ is the "non-human-readable" identifier of @l@, e.g.,
   -- "!wnmjpIJcdaBNfOJrSw:matrix.org".
@@ -29,10 +29,10 @@ data Room = Room {
   -- | @members k@ is a list of the members of @l@.  Matel does not
   -- sort members according to any particular thing.
   members :: [User],
-  -- | If @l@ has a topic, then @topic k@ 'Just' equals the topic of
+  -- | If @l@ has a topic, then @topic k@ is 'Just' the topic of
   -- @l@.  @topic k@ is otherwise 'Nothing'.
   topic :: Maybe Stringth,
-  -- | If @l@ is encrypted, then @publicKey k@ 'Just' equals the public
+  -- | If @l@ is encrypted, then @publicKey k@ is 'Just' the public
   -- key of @l@.  @publicKey k@ is otherwise 'Nothing'.
   publicKey :: Maybe PublicKey
 } deriving (Eq, Read, Show);

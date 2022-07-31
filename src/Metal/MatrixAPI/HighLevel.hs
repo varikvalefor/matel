@@ -8,25 +8,26 @@
 -- Stability   : unstable
 -- Portability : portable
 --
--- Metal.MatrixAPI.HighLevel contains functions which use the Matrix
+-- "Metal.MatrixAPI.HighLevel" contains functions which use the Matrix
 -- API by chaining together relatively low-level functions for the
 -- Matrix API.
 --
--- This module differs from Metal.MatrixAPI.LowLevel because the
--- functions within this module transparently support encryption and do
--- not explicitly use HTTP queries, whereas the functions of
--- Metal.MatrixAPI.LowLevel generally explicitly use HTTP queries and
--- support only explicit encryption.
+-- This module differs "from Metal.MatrixAPI.LowLevel" because the
+-- functions within "Metal.MatrixAPI.HighLevel" transparently support
+-- encryption and do not explicitly use HTTP queries, whereas the
+-- functions of "Metal.MatrixAPI.LowLevel" generally explicitly use HTTP
+-- queries and support only explicit encryption.
 module Metal.MatrixAPI.HighLevel (
   -- * Stuff-Fetching Functions
   --
   -- $stuffFetch
+  fetchMessages,
   recentMessagesFrom,
   earlyMessagesFrom,
   memberRooms,
   memberSpaces,
   memberComms,
-  -- * Stuff which is Imported from Metal.MatrixAPI.LowLevel
+  -- * Stuff which is Imported from "Metal.MatrixAPI.LowLevel"
   --
   -- $stuffImport
   sendEvent,
@@ -34,7 +35,7 @@ module Metal.MatrixAPI.HighLevel (
   unban,
   kick,
   leave,
-  -- Metal.MatrixAPI.LowLevel.join and Control.Monad.join collide.
+  -- \| Metal.MatrixAPI.LowLevel.join and Control.Monad.join collide.
   Metal.MatrixAPI.LowLevel.join,
   sync,
   loginPass,
@@ -66,9 +67,9 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- $stuffImport
 --
 -- This section of this module contains some functions which are
--- imported from Metal.MatrixAPI.LowLevel.  These functions are
+-- imported from "Metal.MatrixAPI.LowLevel".  These functions are
 -- exported exactly as these functions appear in
--- Metal.MatrixAPI.LowLevel because writing wrappers for these
+-- "Metal.MatrixAPI.LowLevel" because writing wrappers for these
 -- functions would be a fairly pointless process; these functions
 -- are already reasonably high-level.
 
@@ -89,12 +90,6 @@ import Metal.MatrixAPI.LowLevel.FetchEvents;
 -- returned as a 'Right' ['StdMess'].
 -- If the messages are not fetched correctly, then a 'Left' 'ErrorCode'
 -- is returned.
---
--- = Internal Stuff
---
--- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
--- The reader of /this/ piece of documentation should probably /also/
--- read the documentation of @fetchMessages@.
 recentMessagesFrom :: Integer
                    -- ^ This argument is the number of messages which
                    -- are fetched.
@@ -138,7 +133,7 @@ fetchMessages :: Integer
               -- ^ This argument represents the room whose messages
               -- are fetched.
               --
-              -- The @roomId@ value must be defined.
+              -- The 'roomId' value must be defined.
               -> Auth
               -- ^ This bit is the same old authorisation junk.
               -> IO (Either ErrorCode [StdMess]);
@@ -175,7 +170,7 @@ fetchMessages n dir r a = liftM2 combin8 grabUnencrypted grabDecrypted
 --
 -- @earlyMessagesFrom@ is really just a wrapper for @fetchMessages@.
 -- The reader of /this/ piece of documentation should probably /also/
--- read the documentation of @fetchMessages@.
+-- read the documentation of 'fetchMessages'.
 earlyMessagesFrom :: Integer
                   -- ^ This argument is the number of messages which
                   -- should be fetched.
@@ -260,8 +255,8 @@ markRead :: StdMess
          -- ^ This argument represents the message which should be
          -- marked as having been "read".
          --
-         -- The @messageId@ field of this argument MUST be defined and
-         -- valid; if @messageId@ is undefined or invalid, then
+         -- The 'messageId' field of this argument MUST be defined and
+         -- valid; if 'messageId' is undefined or invalid, then
          -- @markRead@ may be reduced to a small pile of leaf-rolling
          -- weevils.  But such behaviour is not guaranteed.
          -> Auth
@@ -292,7 +287,7 @@ send :: StdMess
      -- be sent.
      -> Room
      -- ^ This argument specifies the Matrix room to which the message
-     -- should be sent.  Only the @roomId@ field must be non-default.
+     -- should be sent.  Only the 'roomId' field must be non-default.
      -> Auth
      -- ^ The authorisation garbage which is used to send the message...
      -- blah, blah, blah, blah, blah... boilerplate crap...
@@ -301,6 +296,9 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
   where
   -- \| "Just send the damned thing!"
   jstdt = either (\e -> sendEvent e italy a) (\e -> sendEvent e italy a)
+  -- \| Including the type signature of @maybeCrp@ facilitates
+  -- understanding the purpose of @maybeCrp@.  The reader should
+  -- probably not remove this type signature.
   maybeCrp :: IO (Either ErrorCode (Either StdMess Encrypted))
   maybeCrp = getRoomInformation italy a >>= either (pure . Left) process
   encryptFor foo = either Left (Right . Right) <$> roomEncrypt event foo
