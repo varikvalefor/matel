@@ -143,3 +143,13 @@ test-suite drip-drip-drip-goes-the-water
     base ^>= 4.14.1.0,
     process == 1.6.*
   default-language: Haskell2010
+
+test-suite oeuf
+  type:           exitcode-stdio-1.0
+  ghc-options:    -dynamic
+  main-is:        oeuf.hs
+  hs-source-dirs: testes/core
+  build-depends:
+    matel,
+    base ^>= 4.14.1.0
+  default-language: Haskell2010
