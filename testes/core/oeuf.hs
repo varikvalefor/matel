@@ -8,4 +8,5 @@ import Metal.OftenUsedFunctions;
 main :: IO ExitCode;
 main = bool exitFailure exitSuccess $ and correctness
   where
-  correctness = [((++ "b") .: (++)) "bo" "o" == "boob"];
+  correctness = [((++ "b") .: (++)) "bo" "o" == "boob",
+                 ((+1) <.> (:[])) 4 == [5]];
