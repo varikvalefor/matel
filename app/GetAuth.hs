@@ -16,6 +16,8 @@
 -- @getAuthorisationDetails@ is moved to this file to ensure that the
 -- complexity of Metal is minimised.
 module GetAuth (getAuthorisationDetails, configFilePath) where
+import Data.Char;
+import Text.Read;
 import Data.Maybe;
 import Metal.Auth;
 import Metal.Base;
@@ -59,7 +61,7 @@ getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
     homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
     authToken = fromMaybe "whatever" $ T.unpack <$> xOf "authtoken" cfg,
     keyring = xOf "keyring" cfg >>= parseKeys,
-    protocol = T.unpack <$> xOf "protocol" cfg
+    protocol = readMaybe . map toUpper . T.unpack =<< xOf "protocol" cfg
   };
 
 -- | If @j@ is a properly-encoded list of private and public keys, then
@@ -72,8 +74,8 @@ parseKeys _ = Nothing;
 configFilePath :: IO FilePath;
 configFilePath = (++ "/.config/matel") <$> getHomeDirectory;
 
--- | @xOf a b@ 'Just' equals the content of the field of @b@ whose name
--- is @a@ if @b@ contains such a field.  @xOf a b@ otherwise equals
+-- | @xOf a b@ 'Just' is the content of the field of @b@ whose name
+-- is @a@ if @b@ contains such a field.  @xOf a b@ is otherwise
 -- 'Nothing'.
 --
 -- A 'Maybe' value is output because some requested fields may be
@@ -90,10 +92,7 @@ xOf :: Stringth
     -> Maybe Stringth;
 xOf query' = fmap (T.drop queryLen) . head' . filter isMatch . T.lines
   where
-  head' :: [a] -> Maybe a
-  head' [] = Nothing
-  head' j = Just $ head j
-  --
+  head' = listToMaybe
   isMatch = (== query) . T.take queryLen
   queryLen = T.length query
   query = T.append query' fieldSeparator

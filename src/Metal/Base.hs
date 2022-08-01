@@ -32,7 +32,8 @@ module Metal.Base (
   ErrorCode,
   -- * High-Level Datatypes
   AlGoreRhythm (..),
-  MessageFmt (..)
+  MessageFmt (..),
+  Protocol (..)
 ) where
 import qualified Data.Text as T;
 
@@ -102,6 +103,16 @@ type ErrorCode = T.Text;
 data AlGoreRhythm = Olm
                   | Megolm
                   deriving (Eq);
+
+-- | For all 'Protocol' @k@, @k@ represents a protocol which can be used
+-- by a Matrix client for the purpose of communicating with a Matrix
+-- homeserver.
+data Protocol = HTTP
+              -- ^ 'HTTP' represents the Hypertext Transfer Protocol.
+              | HTTPS
+              -- ^ 'HTTPS' represents the Hypertext Transfer Protocol
+              -- Secure.
+              deriving (Eq, Read, Show);
 
 -- | For all 'MessageFmt' @x@, @x@ is a message type, as defined by the
 -- Matrix client-server specification.
