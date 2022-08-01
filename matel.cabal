@@ -147,3 +147,12 @@ test-suite drip-drip-drip-goes-the-water
     base ^>= 4.14.1.0,
     process == 1.6.*
   default-language: Haskell2010
+
+test-suite crypto
+  type:           exitcode-stdio-1.0
+  main-is:        crypto.hs
+  hs-source-dirs: testes
+  build-depends:
+    base ^>= 4.14.1.0,
+    matel
+  default-language: Haskell2010
