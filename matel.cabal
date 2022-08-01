@@ -150,6 +150,7 @@ test-suite drip-drip-drip-goes-the-water
 
 test-suite crypto
   type:           exitcode-stdio-1.0
+  ghc-options:    -dynamic -Wall
   main-is:        crypto.hs
   hs-source-dirs: testes
   build-depends:
