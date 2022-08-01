@@ -8,10 +8,7 @@ import Metal.Auth;
 import Metal.Base;
 import Metal.Room;
 import System.Exit;
-import Control.Monad;
 import Metal.MatrixAPI.LowLevel;
-import Metal.Messages.Encrypted;
-import Metal.OftenUsedFunctions;
 import qualified Metal.Default as Jam;
 
 -- | @main@ is equivalent to @exitSuccess@ iff @main@ determines that
