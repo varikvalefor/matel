@@ -1,3 +1,6 @@
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.FileInfo
 -- Description : File information crap
 -- Copyright   : (c) Varik Valefor, 2022
@@ -8,6 +11,7 @@
 --
 -- This module contains 'FileInfo'.
 module Metal.Messages.FileInfo where
+import Data.Aeson.TH;
 import Metal.Messages.EncryptedFile;
 import Metal.Messages.ThumbnailInfo;
 
@@ -43,3 +47,5 @@ data FileInfo = FileInfo {
   -- @thumbnail_info k@ is otherwise 'Nothing'ness.
   thumbnail_info :: Maybe ThumbnailInfo
 } deriving (Eq, Read, Show);
+
+$(deriveJSON defaultOptions ''FileInfo);

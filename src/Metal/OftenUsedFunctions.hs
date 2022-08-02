@@ -11,6 +11,7 @@
 -- Metal.OftenUsedFunctions contains some functions which are used by
 -- numerous modules of Metal.
 module Metal.OftenUsedFunctions where
+import Data.Bool;
 import Text.StringRandom;
 import Network.HTTP.Simple;
 import qualified Data.Text as T;
@@ -64,3 +65,12 @@ instance StringLike T.Text where
 -- \(10^{43}\) pseudorandom sequences should be sufficient.
 favoriteNoise :: IO String;
 favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
+
+-- | If @a@ is an uninterrupted subsequence of @b@, then @bedBathAnd a
+-- b@ is the entirety of @b@ which follows the first instance of @a@ in
+-- @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
+-- @bedBathAnd a b@ is @[]@.
+bedBathAnd :: Eq a => [a] -> [a] -> [a];
+bedBathAnd _ [] = [];
+bedBathAnd x xs = bool (bedBathAnd x xs') xs' $ take (length x) xs == x
+  where xs' = drop (length x) xs;
