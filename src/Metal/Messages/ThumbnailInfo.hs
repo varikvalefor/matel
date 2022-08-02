@@ -1,3 +1,6 @@
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.ThumbnailInfo
 -- Description : Thumbnail image crap
 -- Copyright   : (c) Varik Valefor, 2022
@@ -8,6 +11,8 @@
 --
 -- This module contains 'ThumbnailInfo'.
 module Metal.Messages.ThumbnailInfo where
+import Data.Aeson.TH;
+
 -- | For all 'ThumbnailInfo' @k@, @k@ describes a thumbnail image.
 data ThumbnailInfo = ThumbnailInfo {
   -- | @h k@ is the pixel-based height of the thumbnail which @k@
@@ -23,3 +28,5 @@ data ThumbnailInfo = ThumbnailInfo {
   -- describes.
   size :: Integer
 } deriving (Eq, Read, Show);
+
+$(deriveJSON defaultOptions ''ThumbnailInfo);
