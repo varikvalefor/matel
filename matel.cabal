@@ -148,7 +148,7 @@ test-suite drip-drip-drip-goes-the-water
 
 test-suite fromjson
   type:           exitcode-stdio-1.0
-  ghc-options:    -dynamic
+  ghc-options:    -dynamic -Wall
   main-is:        fromjson.hs
   hs-source-dirs: testes/core
   build-depends:
