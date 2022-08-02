@@ -160,10 +160,10 @@ test-suite oeuf
   other-extensions:
     OverloadedStrings
 
-test-suite fromjson
+test-suite voorhees
   type:           exitcode-stdio-1.0
   ghc-options:    -dynamic -Wall
-  main-is:        fromjson.hs
+  main-is:        voorhees.hs
   hs-source-dirs: testes/core
   build-depends:
     matel,

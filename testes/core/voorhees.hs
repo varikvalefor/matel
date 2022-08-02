@@ -24,8 +24,8 @@ import qualified Metal.Messages.Standard as S;
 main :: IO ExitCode;
 main = bool exitFailure exitSuccess $ and correctness
   where
-  correctness = [decode tEncrypted == Just rEncrypted,
-                 decode tStdMess   == Just rStdMess]
+  correctness = [decode (encode rEncrypted) == Just rEncrypted,
+                 decode (encode rStdMess) == Just rStdMess]
 
 -- | @tStdMess@ is a JSON representation of the 'S.StdMess' which is
 -- validly represented by 'rStdMess'.
