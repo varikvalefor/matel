@@ -64,8 +64,7 @@ class Event a where
               -> IO (Either ErrorCode [a]);
 
 instance Event StdMess where
-  nonDef Nothing = False
-  nonDef (Just t) = t /= Def.stdMess
+  nonDef = maybe False (/= Def.stdMess)
   --
   fetchEvents n d rm = eit' process <.> TP.req TP.GET [] querr ""
     where
@@ -92,8 +91,7 @@ instance Event StdMess where
             "&dir=" ++ [d];
 
 instance Event Encrypted where
-  nonDef Nothing = False
-  nonDef (Just t) = t /= Def.encrypted
+  nonDef = maybe False (/= Def.encrypted)
   --
   fetchEvents n d rm = (>>= process) <.> TP.req TP.GET [] querr ""
     where
