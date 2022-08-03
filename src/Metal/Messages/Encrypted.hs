@@ -44,11 +44,17 @@ data Encrypted = Encrypted {
 instance ToJSON Encrypted where
   toJSON enk = object
     [
-      "algorithm" .= algorithm enk,
-      "ciphertext" .= ciphertext enk,
-      "sender_key" .= sender_key enk,
-      "device_id" .= fromMaybe "" (device_id enk),
-      "session_id" .= fromMaybe "" (session_id enk)
+      "content" .= object [
+        "algorithm" .= algorithm enk,
+        "ciphertext" .= ciphertext enk,
+        "sender_key" .= sender_key enk,
+        "device_id" .= fromMaybe "" (device_id enk),
+        "session_id" .= fromMaybe "" (session_id enk)
+      ],
+      "room_id" .= roomId (destRoom $ boilerplate enk),
+      "sender" .= username (sender $ boilerplate enk),
+      "origin_server_ts" .= origin_server_ts (boilerplate enk),
+      "event_id" .= eventId (boilerplate enk)
     ];
 
 -- Ditto.
