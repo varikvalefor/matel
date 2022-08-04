@@ -39,6 +39,9 @@ infixl 4 <.>;
 
 -- | 'StringLike' contains the types which can be converted to and from
 -- 'String's.
+--
+-- For all 'StringLike's @A@, for all 'String's @t@,
+-- @toString (fromString t :: A) == t@.
 class StringLike a where
   -- | fromString a@ is a 'String' which is equivalent to @a@.
   toString :: a -> String
