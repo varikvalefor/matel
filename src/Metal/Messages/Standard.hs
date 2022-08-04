@@ -10,13 +10,15 @@
 -- Portability : portable
 --
 -- Metal.Messages.Standard contains the 'StdMess' record type.
-module Metal.Messages.Standard where
+module Metal.Messages.Standard (MessageType(..), StdMess(..)) where
 import Data.Aeson;
 import Metal.Base;
-import Data.Maybe;
+import Metal.Room;
+import Metal.User;
 import Metal.EventCommonFields;
 import Metal.Messages.FileInfo;
 import Metal.Messages.EncryptedFile;
+import Metal.OftenUsedFunctions (bedBathAnd);
 
 -- | 'MessageType' is used to describe the types of the messages which
 -- 'StdMess' records represent.  Useful documentation of this thing is
@@ -54,6 +56,23 @@ instance Show MessageType where
     Location  -> "m.location"
     Video     -> "m.video"
     Notice    -> "m.notice";
+
+-- | Where @t@ is a valid Matrix API-native representation of a Matrix
+-- message type, @purse t@ is the 'MessageType' which is equivalent to
+-- @t@.
+purse :: String
+      -- ^ This bit is the Matrix API-native representation of the type
+      -- of some unencrypted @m.room.message@.
+      -> MessageType;
+purse t = case t of
+    "m.text"     -> TextInnit
+    "m.image"    -> Image
+    "m.file"     -> Attach
+    "m.sticker"  -> Sticker
+    "m.location" -> Location
+    "m.video"    -> Video
+    "m.notice"   -> Notice
+    _            -> error $ t ++ " is an unrecognised message type.";
 
 -- | For all 'StdMess' @k@, @k@ is an unencrypted or decrypted Matrix
 -- message.  @k@ may be a standard text-based message or a message which
@@ -120,37 +139,78 @@ data StdMess = StdMess {
 -- about "orphan instances" if this instance is placed into
 -- "Metal.MatrixAPI.LowLevel.Types".
 instance ToJSON StdMess where
-  toJSON s = case msgType s of
-    -- \| @m.notice@ messages are really just @m.text@ messages which
-    -- are displayed a bit uniquely.  As such, @m.notice@ messages can
-    -- be handled mostly as @m.text@ events are handled.
-    m | m `elem` [TextInnit, Notice] -> object
-      [
-        "body" .= body s,
-        "msgtype" .= show (msgType s)
-      ]
-    Location -> object
-      [
-        "body" .= body s,
-        "geo_uri" .= fromMaybe (errorNoField "geo_uri") (geo_uri s),
-        "msgtype" .= show (msgType s)
-      ]
-    Attach -> object
-      [
-        "body" .= body s,
-        "filename" .= filename s,
-        "info" .= object
-        [
-          "mimetype" .= maybe (errorNoField "mimetype") mimetype (fileInfo s),
-          "size" .= maybe (errorNoField "size") size (fileInfo s)
-        ],
-        "msgtype" .= show (msgType s),
-        "url" .= Metal.Messages.Standard.url s
-      ]
-    _unrecognised -> error $ "A proper error!  ToJSON does not account \
-                             \for StdMess values of @msgType@ " ++
-                             show (msgType s) ++ "."
-    where
-    errorNoField :: String -> a
-    errorNoField j = error $ "This " ++ show (msgType s) ++
-                     " lacks a " ++ show j ++ "field!";
+  toJSON s = object
+    [
+      "content"          .= object [
+        "body"           .= body s,
+        "format"         .= show (fmt s),
+        "formatted_body" .= fmtBody s,
+        "msgtype"        .= show (msgType s),
+        "filename"       .= filename s,
+        "file"           .= file s,
+        "info"           .= fileInfo s,
+        "url"            .= Metal.Messages.Standard.url s,
+        "geo_uri"        .= geo_uri s
+      ],
+      "event_id"         .= eventId (boilerplate s),
+      "origin_server_ts" .= origin_server_ts (boilerplate s),
+      "sender"           .= username (sender $ boilerplate s),
+      "room_id"          .= roomId (destRoom $ boilerplate s)
+    ];
+
+-- Ditto.
+instance FromJSON StdMess where
+  parseJSON = withObject "StdMess" parse
+    where parse t = do {
+      evid <- t    .:  "event_id";
+      orts <- t    .:  "origin_server_ts";
+      sndr <- t    .:  "sender";
+      rmid <- t    .:  "room_id";
+      cunt <- t    .:  "content";
+      bdhi <- cunt .:  "body";
+      taip <- cunt .:  "msgtype";
+      -- funk <- cunt .:? "format";
+      -- \^ This bit should remain commented-out until 'msgType' is of
+      -- type 'StdMess' -> 'Maybe' 'MessageFmt'; the commented-out bit
+      -- works fine if 'msgType' is of type 'StdMess' -> 'Maybe'
+      -- 'MessageFmt', and "@funk <- cunt@" just looks funny.
+      phil <- cunt .:? "file";
+      funb <- cunt .:? "formatted_body";
+      info <- cunt .:? "info";
+      hurl <- cunt .:? "url";
+      film <- cunt .:? "filename";
+      gary <- cunt .:? "geo_uri";
+      return StdMess {
+        body                        = bdhi,
+        fmt                         = MatrixCusHTML, -- read <$> funk,
+                                                     -- \^ Stet.
+        fmtBody                     = funb,
+        Metal.Messages.Standard.url = hurl,
+        filename                    = film,
+        geo_uri                     = gary,
+        msgType                     = purse taip,
+        file                        = phil,
+        fileInfo                    = info,
+        boilerplate                 = EventCommonFields {
+          origin_server_ts = orts,
+          eventId          = evid,
+          destRoom         = Room {
+            roomId      = rmid,
+            roomHumanId = "",
+            roomName    = Nothing,
+            members     = [],
+            topic       = Nothing,
+            publicKey   = Nothing
+          },
+          sender           = User {
+            username    = sndr,
+            password    = "",
+            homeserver  = bedBathAnd ":" sndr,
+            authToken   = "",
+            keyring     = Nothing,
+            protocol    = Nothing,
+            displayname = ""
+          }
+        }
+      };
+    };
