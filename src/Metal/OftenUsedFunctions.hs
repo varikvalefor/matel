@@ -73,6 +73,8 @@ favoriteNoise = T.unpack <$> stringRandomIO "[A-Za-z0-9]{24}";
 -- b@ is the entirety of @b@ which follows the first instance of @a@ in
 -- @b@.  If @a@ is not an uninterrupted subsequence of @b@, then
 -- @bedBathAnd a b@ is @[]@.
+--
+-- @a@ and @b@ must be finite.
 bedBathAnd :: Eq a => [a] -> [a] -> [a];
 bedBathAnd _ [] = [];
 bedBathAnd x xs = bool (bedBathAnd x xs') xs' $ take (length x) xs == x
