@@ -11,11 +11,14 @@
 --
 -- Metal.Messages.Encrypted contains the source code of the
 -- 'Encrypted' record type.
-module Metal.Messages.Encrypted where
+module Metal.Messages.Encrypted (Encrypted(..)) where
 import Data.Aeson;
 import Data.Maybe;
 import Metal.Base;
+import Metal.Room;
+import Metal.User;
 import Metal.EventCommonFields;
+import Metal.OftenUsedFunctions (bedBathAnd);
 
 -- | For all 'Encrypted' @k@, @k@ represents an encrypted Matrix
 -- message.
@@ -41,9 +44,59 @@ data Encrypted = Encrypted {
 instance ToJSON Encrypted where
   toJSON enk = object
     [
-      "algorithm" .= algorithm enk,
-      "ciphertext" .= ciphertext enk,
-      "sender_key" .= sender_key enk,
-      "device_id" .= fromMaybe "" (device_id enk),
-      "session_id" .= fromMaybe "" (session_id enk)
+      "content" .= object [
+        "algorithm" .= algorithm enk,
+        "ciphertext" .= ciphertext enk,
+        "sender_key" .= sender_key enk,
+        "device_id" .= fromMaybe "" (device_id enk),
+        "session_id" .= fromMaybe "" (session_id enk)
+      ],
+      "room_id" .= roomId (destRoom $ boilerplate enk),
+      "sender" .= username (sender $ boilerplate enk),
+      "origin_server_ts" .= origin_server_ts (boilerplate enk),
+      "event_id" .= eventId (boilerplate enk)
     ];
+
+-- Ditto.
+instance FromJSON Encrypted where
+  parseJSON = withObject "Encrypted" parse
+    where parse e = do {
+      cunt <- e .: "content";
+      algo <- cunt .: "algorithm";
+      cipt <- cunt .: "ciphertext";
+      sndk <- cunt .: "sender_key";
+      dvcd <- cunt .: "device_id";
+      sesd <- cunt .: "session_id";
+      rmid <- e .: "room_id";
+      sndr <- e .: "sender";
+      evtd <- e .: "event_id";
+      osts <- e .: "origin_server_ts";
+      return Encrypted {
+        algorithm = algo,
+        ciphertext = cipt,
+        sender_key = sndk,
+        device_id = dvcd,
+        session_id = sesd,
+        boilerplate = EventCommonFields {
+          sender = User {
+            username = sndr,
+            displayname = "",
+            authToken = Nothing,
+            keyring = Nothing,
+            password = Nothing,
+            homeserver = bedBathAnd ":" sndr,
+            protocol = Nothing
+          },
+          destRoom = Room {
+            roomId = rmid,
+            roomHumanId = "",
+            roomName = Nothing,
+            members = [],
+            topic = Nothing,
+            publicKey = Nothing
+          },
+          eventId = evtd,
+          origin_server_ts = osts
+        }
+      }
+    };

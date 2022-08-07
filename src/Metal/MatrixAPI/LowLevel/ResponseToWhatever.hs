@@ -21,7 +21,7 @@ import Network.HTTP.Simple;
 import qualified Data.Text as T;
 import qualified Data.ByteString as BS;
 
--- | @responseToString k@ equals a 'String' which describes the status
+-- | @responseToString k@ is a 'String' which describes the status
 -- code of @k@.
 --
 -- Adherence to the "Show" class is demanded to ensure that the bodies
@@ -35,7 +35,7 @@ responseToString = T.unpack. responseToStringth;
 -- @responseToString@, because as of 20211226, 'String' is mostly
 -- deprecated.
 
--- | @responseToStringth k@ equals a 'Stringth' which describes the
+-- | @responseToStringth k@ is a 'Stringth' which describes the
 -- status code of @k@.
 --
 -- Adherence to the "Show" class is demanded to ensure that the bodies
@@ -46,8 +46,8 @@ responseToStringth :: Show a
 responseToStringth r = T.pack $ "Thus spake the homeserver: " ++
   show (getResponseStatusCode r) ++ "; " ++ show (getResponseBody r);
 
--- | If the status code of @k@ equals @200@, then @responseToMaybe k@
--- equals 'Nothing'.  @responseToMaybe k@ otherwise equals
+-- | If the status code of @k@ is @200@, then @responseToMaybe k@
+-- is 'Nothing'.  @responseToMaybe k@ is otherwise
 -- @'responseToStringth' k@.
 responseToMaybe :: Show a
                 => Response a
@@ -56,9 +56,17 @@ responseToMaybe theResponse = case getResponseStatusCode theResponse of
   200 -> Nothing
   _   -> Just $ responseToStringth theResponse;
 
--- | If the response code of @k@ equals @200@, then
--- @responseToLeftRight k@ equals the response body of @k@.
--- @responseToLeftRight k@ otherwise equals a 'Stringth' which contains
+-- @responseToMaybe'@ is a derivative of 'responseToMaybe'
+-- whose input is 'Either'-monadic.
+--
+-- The documentation of 'responseToMaybe' should enlighten.
+responseToMaybe' :: Either ErrorCode (Response BS.ByteString)
+                 -> Maybe ErrorCode;
+responseToMaybe' = either pure responseToMaybe;
+
+-- | If the response code of @k@ is @200@, then
+-- @responseToLeftRight k@ is the response body of @k@.
+-- @responseToLeftRight k@ is otherwise a 'Stringth' which contains
 -- the status code of @k@.
 responseToLeftRight :: Response BS.ByteString
                     -- ^ This value is the 'Response' whose diagnostic
@@ -67,3 +75,11 @@ responseToLeftRight :: Response BS.ByteString
 responseToLeftRight k = case getResponseStatusCode k of
   200 -> Right $ decodeUtf8 $ getResponseBody k
   _   -> Left $ responseToStringth k;
+
+-- @responseToLeftRight'@ is a derivative of 'responseToLeftRight'
+-- whose input is 'Either'-monadic.
+--
+-- The documentation of 'responseToLeftRight' should enlighten.
+responseToLeftRight' :: Either ErrorCode (Response BS.ByteString)
+                     -> Either ErrorCode Stringth;
+responseToLeftRight' = either pure responseToLeftRight;

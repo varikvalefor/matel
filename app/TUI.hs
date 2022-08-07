@@ -39,7 +39,7 @@ summonTUI :: MVar Winda
           -> IO ();
 summonTUI = takeMVar >=> simpleMain . toScreen;
 
--- | @toScreen g@ equals a 'Screen' which accurately represents the
+-- | @toScreen g@ is a 'Screen' which accurately represents the
 -- content of @g@.
 --
 -- @toScreen k@ is currently just a bordered @k@.
@@ -58,7 +58,7 @@ temporaryMessage = center $ str "Matel is unfinished -- check back \
                                 \Alternatively, contribute to the \
                                 \project!";
 
--- | @dataToWinda r t x@ equals a 'Winda' which displays @r@, @t@, and
+-- | @dataToWinda r t x@ is a 'Winda' which displays @r@, @t@, and
 -- @x@.
 --
 -- @dataToWinda@ is currently unimplemented.

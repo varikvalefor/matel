@@ -1,3 +1,6 @@
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Module    : Metal.Messages.FileInfo
 -- Description : File information crap
 -- Copyright   : (c) Varik Valefor, 2022
@@ -8,6 +11,7 @@
 --
 -- This module contains 'FileInfo'.
 module Metal.Messages.FileInfo where
+import Data.Aeson.TH;
 import Metal.Messages.EncryptedFile;
 import Metal.Messages.ThumbnailInfo;
 
@@ -21,14 +25,14 @@ data FileInfo = FileInfo {
   size :: Maybe Integer,
   -- | @mimetype k@ is the MIME type of the file which @k@ describes.
   mimetype :: Maybe String,
-  -- | If @l k@ is a video file, then @duration k@ equals the
+  -- | If @l k@ is a video file, then @duration k@ is the
   -- millisecond-based duration of @l k@.
   duration :: Maybe Integer,
-  -- | If @l k@ can be displayed as an image, then @h k@ equals the
-  -- pixel-based height of @l k@.  @h k@ otherwise equals 'Nothing'.
+  -- | If @l k@ can be displayed as an image, then @h k@ is the
+  -- pixel-based height of @l k@.  @h k@ is otherwise 'Nothing'.
   h :: Maybe Integer,
-  -- | If @l k@ can be displayed as an image, then @w k@ equals the
-  -- pixel-based width of @l k@.  @w k@ otherwise equals 'Nothing'.
+  -- | If @l k@ can be displayed as an image, then @w k@ is the
+  -- pixel-based width of @l k@.  @w k@ is otherwise 'Nothing'.
   w :: Maybe Integer,
   -- | If @l k@ has a thumbnail image, then @thumbnail_url k@ is the URL
   -- of the thumbnail of @l k@.  This bit is only used if the attachment
@@ -43,3 +47,5 @@ data FileInfo = FileInfo {
   -- @thumbnail_info k@ is otherwise 'Nothing'ness.
   thumbnail_info :: Maybe ThumbnailInfo
 } deriving (Eq, Read, Show);
+
+$(deriveJSON defaultOptions ''FileInfo);
