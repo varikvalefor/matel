@@ -72,6 +72,7 @@ import Metal.User;
 import Data.Maybe;
 import Metal.Space;
 import Metal.Community;
+import Control.Monad ((<=<));
 import Metal.Messages.Encrypted;
 import Network.HTTP.Simple;
 import Metal.Messages.Standard;
@@ -85,6 +86,7 @@ import qualified Metal.Default as Def;
 import qualified Data.Aeson.Quick as Q;
 import qualified Data.ByteString as BS;
 import Network.HTTP.Types.URI (urlEncode);
+import qualified Network.URI.Encode as URI;
 import qualified Data.ByteString.Lazy as BSL;
 import Metal.MatrixAPI.LowLevel.GetRoomInformation;
 import Metal.MatrixAPI.LowLevel.ResponseToWhatever;
@@ -633,7 +635,16 @@ internalRoomId :: Identifier
                -> IO (Either ErrorCode Identifier);
 internalRoomId [] _ = pure $ Left "The room name is empty.";
 internalRoomId ('!':i) _ = pure $ Right $ '!' : i;
-internalRoomId _ _ = pure $ Left "internalRoomId is unimplemented.";
+internalRoomId i a = (>>= processResponse) <$> TP.req TP.GET [] q "" a
+  where
+  q = "_matrix/client/r0/directory/room/" ++ URI.encode i
+  maybeExtract = (Q..? "{room_id}") <=< Q.decode . BSL.fromStrict
+  processResponse r = case getResponseStatusCode r of
+    200 -> maybe (Left noID) Right $ maybeExtract $ getResponseBody r
+    _   -> Left $ responseToStringth r
+  noID = "internalRoomID: The Matrix homeserver indicates that the \
+         \request is successful, but the response body lacks a \
+         \\"room_id\" object.";
 
 -- $classes
 --
