@@ -204,7 +204,7 @@ instance FromJSON StdMess where
           },
           sender           = User {
             username    = sndr,
-            password    = "",
+            password    = Nothing,
             homeserver  = bedBathAnd ":" sndr,
             authToken   = "",
             keyring     = Nothing,

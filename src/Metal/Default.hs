@@ -27,7 +27,7 @@ import qualified Metal.Messages.EncryptedFile as EF;
 user :: User;
 user = User {
   username = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
-  password = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
+  password = Nothing,
   homeserver = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   authToken = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
   displayname = "UNDEFINED!!!  I MAY BE AN ERROR!!!",
