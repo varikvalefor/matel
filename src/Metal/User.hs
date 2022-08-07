@@ -18,10 +18,10 @@ import Metal.Base;
 data User = User {
   -- | @username k@ is the Matrix username of @l@.
   username :: Identifier,
-  -- | @password k@ is the password of @l@.  For reasons which should
-  -- be obvious, @password@ is only officially used for the
+  -- | @password k@ is 'Maybe' the password of @l@.  For reasons which
+  -- should be obvious, @password@ is only officially used for the
   -- authentication of Matel's user.
-  password :: Stringth,
+  password :: Maybe Stringth,
   -- | @homeserver k@ is the FQDN of the homeserver of @l@.
   --
   -- This value should only be used to determine the FQDN of the server

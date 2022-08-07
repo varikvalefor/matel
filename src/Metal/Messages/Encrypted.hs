@@ -83,7 +83,7 @@ instance FromJSON Encrypted where
             displayname = "",
             authToken = "",
             keyring = Nothing,
-            password = "",
+            password = Nothing,
             homeserver = bedBathAnd ":" sndr,
             protocol = Nothing
           },
