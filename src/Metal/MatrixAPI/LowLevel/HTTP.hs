@@ -61,23 +61,27 @@ req :: ReqType
     -- In both cases, the @protocol@ and @homeserver@ values must be
     -- defined and valid.
     -> IO (Either ErrorCode (Response BS.ByteString));
-req type_ h q b a = maybe noProt (Right <.> useRequest) $ protocol a
+req type_ h q b a = maybe noProt useRequest $ protocol a
   where
   noProt :: IO (Either ErrorCode (Response BS.ByteString))
   noProt = pure $ Left "req: The \"protocol\" content is Nothing."
   --
-  useRequest :: Protocol -> IO (Response BS.ByteString)
-  useRequest = genRequest >=> httpBS
+  useRequest :: Protocol
+             -> IO (Either ErrorCode (Response BS.ByteString))
+  useRequest = genRequest >=> either (pure . Left) (Right <.> httpBS)
   --
-  genRequest :: Protocol -> IO Request
+  genRequest :: Protocol -> IO (Either ErrorCode Request)
   genRequest p = addHeaders . addBody <$> parseRequest (prefix p ++ q)
   --
   addBody :: Request -> Request
   addBody = setRequestBodyLBS b
   --
-  addHeaders :: Request -> Request
-  addHeaders j = foldr (uncurry addRequestHeader) j headersToAdd
-    where headersToAdd = ("Authorization", authToken' a):h
+  addHeaders :: Request -> Either ErrorCode Request
+  addHeaders j = maybe (Left noAuthToken) usingAT $ authToken' a
+    where
+    noAuthToken = "req: The \"authToken\" field is Nothing."
+    usingAT = Right . foldr (uncurry addRequestHeader) j . headersToAdd
+    headersToAdd t = ("Authorization", t):h
   --
   prefix :: Protocol -> String
   prefix p = type_' ++ show p ++ "://" ++ homeserver a ++ "/"

@@ -28,10 +28,10 @@ data User = User {
   -- to which API requests should be sent; Metal does /not/ guarantee
   -- that for all 'User' @k@, @homeserver k@ is a non-default value.
   homeserver :: String,
-  -- | @authToken k@ is the authorisation token of @l@.
+  -- | @authToken k@ is 'Maybe' the authorisation token of @l@.
   --
   -- Like @'password'@, @authToken@ is used only for the user of Matel.
-  authToken :: String,
+  authToken :: Maybe String,
   -- | @protocol k@, if present, describes the protocol which @l@ uses
   -- to connect to the Matrix homeserver of @l@.
   --

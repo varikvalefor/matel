@@ -12,6 +12,7 @@
 -- the authentication of Matel's user.
 module Metal.Auth (Auth, authToken') where
 import Metal.User;
+import Metal.OftenUsedFunctions;
 import qualified Data.Text.Lazy as T;
 import qualified Data.ByteString.Lazy as BSL;
 import qualified Data.ByteString.Char8 as BS8;
@@ -26,10 +27,10 @@ import qualified Data.Text.Lazy.Encoding as T;
 -- 'authToken', and 'homeserver' fields of 'k' must be defined.
 type Auth = User;
 
--- | @authToken' k@ is a version of the authorisation token of @k@
--- which can be used as the content of the "Authorization" header of
+-- | @authToken' k@ is 'Maybe' a version of the authorisation token of
+-- @k@ which can be used as the content of the "Authorization" header of
 -- client requests.
-authToken' :: User -> BS8.ByteString;
-authToken' = pack . ("Bearer " ++ ) . authToken
+authToken' :: User -> Maybe BS8.ByteString;
+authToken' = pack . ("Bearer " ++ ) <.> authToken
   where
   pack = BSL.toStrict . T.encodeUtf8 . T.pack;
