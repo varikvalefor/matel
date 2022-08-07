@@ -81,7 +81,7 @@ instance FromJSON Encrypted where
           sender = User {
             username = sndr,
             displayname = "",
-            authToken = "",
+            authToken = Nothing,
             keyring = Nothing,
             password = Nothing,
             homeserver = bedBathAnd ":" sndr,
