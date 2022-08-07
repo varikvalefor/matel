@@ -66,7 +66,8 @@ req type_ h q b a = maybe noProt useRequest $ protocol a
   noProt :: IO (Either ErrorCode (Response BS.ByteString))
   noProt = pure $ Left "req: The \"protocol\" content is Nothing."
   --
-  useRequest :: Protocol -> IO (Either ErrorCode (Response BS.ByteString))
+  useRequest :: Protocol
+             -> IO (Either ErrorCode (Response BS.ByteString))
   useRequest = genRequest >=> either (pure . Left) (Right <.> httpBS)
   --
   genRequest :: Protocol -> IO (Either ErrorCode Request)
