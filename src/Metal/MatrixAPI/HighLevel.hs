@@ -201,9 +201,9 @@ memberRooms bugspray = joinedRooms bugspray >>= nabIfSuccessful
   actuallyNab :: [Room] -> IO (Either ErrorCode [Room])
   actuallyNab = dl <.> mapM (flip getRoomInformation bugspray);
 
--- | If @k@ contains a 'Left' value, then the first such 'Left' value
--- is returned.  @k@ is otherwise a 'Right' list of the values which
--- @k@'s 'Either's contain.
+-- | If @k@ contains a 'Left' value, then @dl k@ is the 'Left'-contained
+-- first 'Left' value of @k@.  @dl k@ is otherwise a 'Right' list of the
+-- values which are contained within the 'Either's of @k@.
 --
 -- "@dl@" is an abbreviation of "de-list".
 dl :: [Either a b] -> Either a [b];
