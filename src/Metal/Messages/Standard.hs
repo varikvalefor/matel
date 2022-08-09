@@ -206,7 +206,7 @@ instance FromJSON StdMess where
             username    = sndr,
             password    = Nothing,
             homeserver  = bedBathAnd ":" sndr,
-            authToken   = "",
+            authToken   = Nothing,
             keyring     = Nothing,
             protocol    = Nothing,
             displayname = ""
