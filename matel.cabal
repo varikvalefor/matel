@@ -6,14 +6,14 @@ description:   Matel is a currently incomplete Haskell-based Matrix
                client.  Matel aims to have a terminal user interface
                which is intuitive but well-documented, in addition to
                having some very readable source code.
-               .
+
                Despite originating as a TUI-based thing, Matel _does_
                also offer a command-line interface, called "matelcli".
-               .
+
                Additionally, as of version 0.1.0.4, Matel's underlying
                infrastructure can now be used within other projects via
                the "matel" library.
-               .
+
                The guidelines for contributing to Matel and for
                submitting bug reports are visible in README.md.
 bug-reports:   http://github.com/varikvalefor/matel/issues
@@ -76,6 +76,7 @@ library
     utf8-string == 1.0.*,
     text >= 1.2.4 && < 1.3,
     unordered-containers >= 0.2.19 && < 0.3,
+    uri-encode >= 1.5 && < 1.6,
     bytestring == 0.10.12.0
     -- \^ Using both Text and ByteString may seem a bit much.  However,
     -- the purpose of Text is not the purpose of ByteString; Text

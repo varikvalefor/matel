@@ -12,8 +12,8 @@ import Metal.Base;
 
 -- | For all 'Community' @k@, @k@ represents a Matrix community.
 --
--- Note that communities are essentially deprecated and are largely
--- replaced by 'Space's.
+-- The reader should note  that communities are essentially deprecated
+-- and are largely replaced by 'Space's.
 data Community = Community {
   -- | @commId k@ is the community ID of @k@, e.g.,
   -- "+haskell:matrix.org".
