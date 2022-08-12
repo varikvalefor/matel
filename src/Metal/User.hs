@@ -18,20 +18,20 @@ import Metal.Base;
 data User = User {
   -- | @username k@ is the Matrix username of @l@.
   username :: Identifier,
-  -- | @password k@ is the password of @l@.  For reasons which should
-  -- be obvious, @password@ is only officially used for the
+  -- | @password k@ is 'Maybe' the password of @l@.  For reasons which
+  -- should be obvious, @password@ is only officially used for the
   -- authentication of Matel's user.
-  password :: Stringth,
+  password :: Maybe Stringth,
   -- | @homeserver k@ is the FQDN of the homeserver of @l@.
   --
   -- This value should only be used to determine the FQDN of the server
   -- to which API requests should be sent; Metal does /not/ guarantee
   -- that for all 'User' @k@, @homeserver k@ is a non-default value.
   homeserver :: String,
-  -- | @authToken k@ is the authorisation token of @l@.
+  -- | @authToken k@ is 'Maybe' the authorisation token of @l@.
   --
   -- Like @'password'@, @authToken@ is used only for the user of Matel.
-  authToken :: String,
+  authToken :: Maybe String,
   -- | @protocol k@, if present, describes the protocol which @l@ uses
   -- to connect to the Matrix homeserver of @l@.
   --

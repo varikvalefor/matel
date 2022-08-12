@@ -57,9 +57,9 @@ getAuthorisationDetails = fmap cfgToUser $ T.readFile =<< configFilePath
   cfgToUser :: Stringth -> User
   cfgToUser cfg = Def.user {
     username = bim "username" $ T.unpack <$> xOf "username" cfg,
-    password = bim "password" $ xOf "password" cfg,
+    password = readMaybe . T.unpack =<< xOf "password" cfg,
     homeserver = bim "homeserver" $ T.unpack <$> xOf "homeserver" cfg,
-    authToken = fromMaybe "whatever" $ T.unpack <$> xOf "authtoken" cfg,
+    authToken = T.unpack <$> xOf "authtoken" cfg,
     protocol = readMaybe . map toUpper . T.unpack =<< xOf "protocol" cfg
   };
 
