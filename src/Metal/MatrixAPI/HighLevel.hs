@@ -271,13 +271,15 @@ markRead _ _ = pure $ Just "markRead is unimplemented.";
 
 -- | @send@ sends messages to encrypted and unencrypted Matrix rooms.
 --
--- = Encryption
+-- = Specification
+--
+-- == Encryption
 --
 -- If the room to which the message is sent is encrypted, then an
 -- encrypted version of this message is sent to the room.  Otherwise, a
 -- mostly unaltered version of the message is sent.
 --
--- = Output
+-- == Output
 --
 -- If an error is encountered, then 'Just' a description of this error
 -- is returned.  Otherwise, 'Nothing' is returned.
