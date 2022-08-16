@@ -103,21 +103,21 @@ recentMessagesFrom :: Integer
                    -> IO (Either ErrorCode [StdMess]);
 recentMessagesFrom = flip fetchMessages 'b';
 
--- | @fetchMessages@ fetches encrypted and unencrypted messages,
--- transparently decrypting the encrypted messages.
+-- | @fetchMessages@ is used to fetch messages from Matrix rooms.
 --
--- = Output
+-- = Specification
 --
--- If the messages are fetched correctly, then the output is a
--- 'Right'-valued list of the decrypted and unencrypted messages which
--- are fetched.  Otherwise, the output is a 'Left' 'ErrorCode' which
--- describes the problem which prevents the fetching of messages.
+-- == 'Right' Output ==
 --
--- = Incompleteness
+-- If the fetching and whatnot is successful, then @fetchMessages n d r
+-- a@ uses the authorisation information which is contained within @a@
+-- to fetch and return a @d@-directional list of messages which are sent
+-- to the room which is represented by @r@.  The length of the list is
+-- less than or equal to @n@.
 --
--- @fetchMessages@'s decryption stuff is incomplete.  @fetchMessages@
--- currently throws a 'Left' value when @fetchMessages@ attempts to
--- decrypt encrypted messages.
+-- If the fetching and whatnot is not successful, then @fetchMessages n
+-- d r a@ returns a 'Left' 'ErrorCode' which explains the lack of
+-- success.
 fetchMessages :: Integer
               -- ^ This bit is the number of messages which are fetched.
               -> Char
