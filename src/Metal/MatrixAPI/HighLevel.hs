@@ -238,24 +238,26 @@ memberComms :: Auth
             -> IO (Either ErrorCode [Community]);
 memberComms = joinedComms;
 
--- | @markRead@ marks messages as having been read.
+-- | @markRead@ is used to mark messages as having been read.
 --
 -- @markRead@ is currently nonfunctional.
 --
--- = Output
+-- = Specification
 --
--- @markRead@ returns 'Nothing' if no problem is encountered.
---
--- However, if a problem is encountered, then @markRead@ 'Just' returns
--- a description of this problem.
+-- If @markRead s a@ successfully uses @a@ to mark the message whose
+-- event ID is @eventId (boilerplate s)@ as having been read, then
+-- @markRead s a@ returns 'Nothing'.  If some failure is encountered,
+-- then @markRead s a@ returns a 'Just' and deserved description of
+-- this failure.
 markRead :: StdMess
          -- ^ This argument represents the message which should be
          -- marked as having been "read".
          --
-         -- The 'messageId' field of this argument MUST be defined and
-         -- valid; if 'messageId' is undefined or invalid, then
-         -- @markRead@ may be reduced to a small pile of leaf-rolling
-         -- weevils.  But such behaviour is not guaranteed.
+         -- The 'eventId' field of the 'boilerplate' portion of this
+         -- argument MUST be defined and valid; if the 'eventId' is
+         -- undefined or invalid, then @markRead@ may be reduced to a
+         -- small pile of leaf-rolling weevils.  But such behaviour is
+         -- not guaranteed.
          -> Auth
          -- This bit is the authorisation stuff which has already been
          -- documentated 87956 times.
