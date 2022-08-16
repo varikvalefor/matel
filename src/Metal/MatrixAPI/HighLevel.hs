@@ -115,6 +115,8 @@ recentMessagesFrom = flip fetchMessages 'b';
 -- to the room which is represented by @r@.  The length of the list is
 -- less than or equal to @n@.
 --
+-- == 'Left' Output
+--
 -- If the fetching and whatnot is not successful, then @fetchMessages n
 -- d r a@ returns a 'Left' 'ErrorCode' which explains the lack of
 -- success.
