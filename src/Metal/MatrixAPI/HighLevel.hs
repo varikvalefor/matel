@@ -269,7 +269,8 @@ markRead _ _ = pure $ Just "markRead is unimplemented.";
 -- This section of the module contains the functions of this module
 -- which are responsible for the sending of stuff, e.g., messages.
 
--- | @send@ sends messages to encrypted and unencrypted Matrix rooms.
+-- | @send@ is used to messages to encrypted and unencrypted Matrix
+-- rooms.
 --
 -- = Specification
 --
