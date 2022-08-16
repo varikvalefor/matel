@@ -76,6 +76,7 @@ library
     utf8-string == 1.0.*,
     text >= 1.2.4 && < 1.3,
     unordered-containers >= 0.2.19 && < 0.3,
+    uri-encode >= 1.5 && < 1.6,
     bytestring == 0.10.12.0
     -- \^ Using both Text and ByteString may seem a bit much.  However,
     -- the purpose of Text is not the purpose of ByteString; Text
@@ -145,6 +146,20 @@ test-suite drip-drip-drip-goes-the-water
     base ^>= 4.14.1.0,
     process == 1.6.*
   default-language: Haskell2010
+
+test-suite oeuf
+  type:           exitcode-stdio-1.0
+  ghc-options:    -dynamic
+  main-is:        oeuf.hs
+  hs-source-dirs: testes/core
+  build-depends:
+    matel,
+    base ^>= 4.14.1.0,
+    bytestring == 0.10.12.0,
+    text >= 1.2.4 && < 1.3
+  default-language: Haskell2010
+  other-extensions:
+    OverloadedStrings
 
 test-suite fromjson
   type:           exitcode-stdio-1.0
