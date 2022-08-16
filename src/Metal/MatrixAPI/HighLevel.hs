@@ -311,7 +311,13 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
                        -- encryption... allegedly.
                        else encryptFor dullards;
 
--- | @roomEncrypt@ encrypts messages for Matrix rooms.
+-- | @roomEncrypt@ is used to encrypt messages for Matrix rooms.
+--
+-- If something 'splodes, then @roomEncrypt a b@ returns a 'Left'
+-- 'ErrorCode' which describes this 'splosion.  If all is 'Right',
+-- then @roomEncrypt a b@ returns an 'Encrypted' version of @a@ which
+-- can be decrypted by the members of the room which is represented by
+-- @b@.
 roomEncrypt :: StdMess
             -- ^ This bit is the message which should be encrypted.
             -> Room
