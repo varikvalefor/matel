@@ -310,6 +310,8 @@ send event italy a = maybeCrp >>= either (pure . pure) jstdt
 
 -- | @roomEncrypt@ is used to encrypt messages for Matrix rooms.
 --
+-- = Specification
+--
 -- If something 'splodes, then @roomEncrypt a b@ returns a 'Left'
 -- 'ErrorCode' which describes this 'splosion.  If all is 'Right',
 -- then @roomEncrypt a b@ returns an 'Encrypted' version of @a@ which
