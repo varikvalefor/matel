@@ -227,14 +227,11 @@ memberSpaces :: Auth
              -> IO (Either ErrorCode [Space]);
 memberSpaces = joinedSpaces;
 
--- | @memberComms@ returns a list of the 'Community's --
--- EEUUUAAaaARGH -- of which Matel's user is a member.
---
--- = Output
---
--- If everything goes according to plan, then the list is 'Right'ly
--- returned.  If something fails, then a 'Left' 'ErrorCode' which
--- describes this failure is returned.
+-- | If everything works, then @memberComms t@ 'Right'ly returns a list
+-- of the 'Community's -- EEUUUAAaaARGH -- which are joined by the user
+-- whose correct authorisation information is contained by @t@.  If
+-- @memberComms@ breaks, then @memberComms t@ returns a 'Left'
+-- 'ErrorCode' which describes the breakage.
 memberComms :: Auth
             -- ^ This bit is the authorisation information of the user
             -- whose 'Community's -- again, EEUUUAAaaARGH -- are listed.
