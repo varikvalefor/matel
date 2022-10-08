@@ -145,7 +145,7 @@ send [_] a = error "I thought that you were improving.  I now see that \
                    \I was wrong.  Really, I should be mad at myself \
                    \for apparently going insane by having some faith \
                    \in you.";
-send (mt:b:b':k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
+send (mt:b:k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
   where
   getTarget :: IO StdMess
   getTarget = case mt of
@@ -172,6 +172,13 @@ send (mt:b:b':k) a = getTarget >>= (\t -> H.send t dest a) >>= dispError
                     }
   --
   defNotice = Def.stdMess {msgType = Notice}
+  --
+  b' = fromMaybe errorNoRequiredField $ listToMaybe k
+  --
+  errorNoRequiredField = error "Hey!  You just gave me some argumnts \
+			       \but forgot to supply some required \
+			       \argument.  I know where you live, \
+			       \fucker!  Don't do this again!"
   --
   dest = Def.room {roomId = bool b b' $ mt `elem` ["file", "location"]};
   -- \^ This bit is necessary because the number of arguments of the
