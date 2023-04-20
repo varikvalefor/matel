@@ -61,23 +61,23 @@ library
     TemplateHaskell
     DeriveAnyClass
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     basic-prelude >= 0.7.0 && < 0.8,
     http-conduit >= 2.3.8 && < 2.4,
-    aeson >= 1.5.6 && < 1.6,
+    aeson >= 2.1 && < 2.2,
     string-random >= 0.1.4 && < 0.2,
     async >= 2.2.4 && < 2.3,
-    lens-aeson == 1.1.1,
-    aeson-quick == 0.1.3,
-    lens == 5.0.1,
+    lens-aeson >= 1.2.2 && < 1.3,
+    aeson-quick >= 0.2 && < 0.3,
+    lens >= 5.2 && < 5.3,
     http-types >= 0.12.3 && < 0.13,
-    cryptonite == 0.29,
-    memory >= 0.16.0 && < 0.17,
+    cryptonite >= 0.30 && < 0.31,
+    memory >= 0.18 && < 0.19,
     utf8-string == 1.0.*,
     text >= 1.2.4 && < 1.3,
     unordered-containers >= 0.2.19 && < 0.3,
     uri-encode >= 1.5 && < 1.6,
-    bytestring == 0.10.12.0
+    bytestring >= 0.11.3.0 && < 0.12
     -- \^ Using both Text and ByteString may seem a bit much.  However,
     -- the purpose of Text is not the purpose of ByteString; Text
     -- contains _text_, whereas ByteString contains byte-oriented data,
@@ -94,12 +94,12 @@ executable matel
     Colour
     GetAuth
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     directory >= 1.3.6 && < 1.4,
-    brick >= 0.64.2 && < 0.65,
+    brick >= 1.4 && < 1.5,
     matel,
     text >= 1.2.4 && < 1.3,
-    vty >= 5.33 && < 5.34
+    vty >= 5.36 && < 5.37
   hs-source-dirs: app
   default-language: Haskell2010
 
@@ -110,11 +110,11 @@ executable matelcli
     GetAuth
     Plegg
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     directory >= 1.3.6 && < 1.4,
     matel,
     text >= 1.2.4 && < 1.3,
-    bytestring == 0.10.12.0
+    bytestring >= 0.11.3.0 && < 0.12
     -- \^ bytestring is used for binary stuff.
     -- text is used for text-based data.
   hs-source-dirs: app
@@ -126,7 +126,7 @@ test-suite send-unencrypted-message
   hs-source-dirs: testes/matelcli
   default-language: Haskell2010
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     process == 1.6.*
 
 test-suite grab-unencrypted-messages
@@ -134,7 +134,7 @@ test-suite grab-unencrypted-messages
   main-is:        grab-unencrypted-messages.hs
   hs-source-dirs: testes/matelcli
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     process == 1.6.*
   default-language: Haskell2010
 
@@ -143,7 +143,7 @@ test-suite drip-drip-drip-goes-the-water
   main-is:        sync.hs
   hs-source-dirs: testes/matelcli
   build-depends:
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     process == 1.6.*
   default-language: Haskell2010
 
@@ -154,8 +154,8 @@ test-suite oeuf
   hs-source-dirs: testes/core
   build-depends:
     matel,
-    base ^>= 4.14.1.0,
-    bytestring == 0.10.12.0,
+    base >= 4.14.1.0 && < 4.18,
+    bytestring >= 0.11.3.0 && < 0.12,
     text >= 1.2.4 && < 1.3
   default-language: Haskell2010
   other-extensions:
@@ -168,7 +168,7 @@ test-suite fromjson
   hs-source-dirs: testes/core
   build-depends:
     matel,
-    base ^>= 4.14.1.0,
+    base >= 4.14.1.0 && < 4.18,
     bytestring  == 0.10.12.0,
-    aeson >= 1.5.6 && < 1.6
+    aeson >= 2.1 && < 2.2
   default-language: Haskell2010
