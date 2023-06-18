@@ -13,6 +13,7 @@
 module Metal.Messages.EncryptedFile where
 import Data.Aeson;
 import Data.Aeson.TH;
+import Data.Aeson.Key;
 import qualified Data.Text as T;
 import Data.HashMap.Strict (toList);
 
@@ -89,4 +90,4 @@ instance ToJSON EncryptedFile where
       "hashes" .= object (map fromHash $ hashes t)
     ]
     where
-    fromHash (a,b) = T.pack a .= b;
+    fromHash (a,b) = fromText (T.pack a) .= b;
